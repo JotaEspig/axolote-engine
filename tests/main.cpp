@@ -1,14 +1,11 @@
 #include <iostream>
 
-#include <GL/glut.h>
-
 #include <axolote/window.hpp>
 
-int main()
+int main(int argc, char **argv)
 {
     std::cout << "hello world axolote engine!" << std::endl;
-    using namespace axolote;
-    Window w = Window();
-    std::cout << w.x << std::endl;
+    auto w = axolote::Window(argc, argv);
+    w.main_loop();
     return 0;
 }
