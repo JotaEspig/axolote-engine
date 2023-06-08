@@ -1,5 +1,8 @@
 #include <axolote/window.hpp>
 
+#include <iostream>
+
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 using namespace axolote;
@@ -27,10 +30,18 @@ void Window::main_loop()
     GLFWwindow* window = glfwCreateWindow(640, 480, "My Title", NULL, NULL);
     if (!window)
     {
-        // Window or OpenGL context creation failed
+        std::cout << "Error initialing window" << std::endl;
+        glfwTerminate();
+        return;
     }
 
     glfwMakeContextCurrent(window);
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+    {
+        std::cout << "Failed to initialize GLAD" << std::endl;
+        return;
+    }
+
     int width, height;
     glfwGetFramebufferSize(window, &width, &height);
     glViewport(0, 0, width, height);

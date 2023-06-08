@@ -1,10 +1,11 @@
 CC = g++
-CC_FLAGS = -I./include/ -lglfw -lGL -fPIC -Wall
+CC_FLAGS = -I./include/ -I./external/glad/include/ -lglfw -lGL -fPIC -Wall
 CC_TEST_FLAGS = -I./include/ -L./lib -laxolote -Wall
 
 TARGET = libaxolote.so
 TARGET_DIR = lib
 SRC = $(shell find ./src -name "*.cpp")
+SRC += external/glad/src/glad.c
 OBJ = $(patsubst ./src/%.cpp, ./obj/%.o, $(SRC))
 
 TEST = axolote-engine-test
