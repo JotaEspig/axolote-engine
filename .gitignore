@@ -1,0 +1,7 @@
+# folder
+lib/
+bin/
+obj/
+
+# files
+*.so
