@@ -1,6 +1,6 @@
 CC = g++
-CC_FLAGS = -I./include/ -lglut -lGLU -lGL -Wall
-CC_TEST_FLAGS = -I./include/ -L./lib/ -laxolote -Wall
+CC_FLAGS = -I./include/ -lglfw -lGL -fPIC -Wall
+CC_TEST_FLAGS = -I./include/ -L./lib -laxolote -Wall
 
 TARGET = libaxolote.so
 TARGET_DIR = lib
@@ -15,7 +15,8 @@ TEST_TARGET_DIR = tests/bin
 $(TARGET): dir
 	$(CC) -c $(SRC) $(CC_FLAGS)
 	mv *.o ./obj/
-	$(CC) -shared -o ./$(TARGET_DIR)/$(TARGET) $(OBJ)
+	$(CC) -shared -o ./$(TARGET_DIR)/$(TARGET) $(OBJ) $(CC_FLAGS)
+	printf "\e[1;31m==== Finished compiling library ====\e[0m\n"
 
 debug: CC_FLAGS += -g3 -fsanitize=address,undefined
 debug: $(TARGET)
@@ -24,6 +25,8 @@ test: $(TARGET)
 	$(CC) -c $(TEST_SRC) $(CC_TEST_FLAGS)
 	mv *.o ./obj/
 	$(CC) -o ./$(TEST_TARGET_DIR)/$(TEST) $(TEST_OBJ) $(CC_TEST_FLAGS)
+	printf "\e[1;31m==== Finished compiling tests ====\e[0m\n\n"
+
 	LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:./lib" ./$(TEST_TARGET_DIR)/$(TEST)
 
 .PHONY: dir
