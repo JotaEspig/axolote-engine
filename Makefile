@@ -6,7 +6,8 @@ TARGET = libaxolote.so
 TARGET_DIR = lib
 SRC = $(shell find ./src -name "*.cpp")
 SRC += external/glad/src/glad.c
-OBJ = $(patsubst ./src/%.cpp, ./obj/%.o, $(SRC))
+OBJ = $(patsubst ./src/%.cpp, ./obj/%.o, $(filter %.cpp, $(SRC)))
+OBJ += obj/glad.o
 
 TEST = axolote-engine-test
 TEST_SRC = $(shell find ./tests -name "*.cpp")
