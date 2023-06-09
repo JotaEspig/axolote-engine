@@ -7,34 +7,50 @@
 
 using namespace axolote;
 
-Window::Window(int argc, char **argv)
+Window::Window()
 {
-    init(argc, argv);
+    init();
 }
 
 Window::~Window()
 {
+    glfwTerminate();
 }
 
-void Window::init(int argc, char **argv)
+void Window::init()
 {
-}
+    title = "default";
+    width = 800;
+    height = 600;
+    window = NULL;
 
-void Window::main_loop()
-{
     if (!glfwInit())
     {
-        // error
+        std::cout << "Error initializing glfw" << std::endl;
     }
 
-    GLFWwindow* window = glfwCreateWindow(640, 480, "My Title", NULL, NULL);
+    window = glfwCreateWindow(width, height, title.c_str(), NULL, NULL);
     if (!window)
     {
         std::cout << "Error initialing window" << std::endl;
         glfwTerminate();
         return;
     }
+}
 
+static void framebuffer_size_callback(GLFWwindow *window, int width, int height)
+{
+    glViewport(0, 0, width, height);
+}
+
+void Window::process_input()
+{
+    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        glfwSetWindowShouldClose(window, true);
+}
+
+void Window::main_loop()
+{
     glfwMakeContextCurrent(window);
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
@@ -42,10 +58,10 @@ void Window::main_loop()
         return;
     }
 
-    int width, height;
-    glfwGetFramebufferSize(window, &width, &height);
-    glViewport(0, 0, width, height);
-    while (true);
-
-    glfwTerminate();
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    while (!glfwWindowShouldClose(window))
+    {
+        glfwSwapBuffers(window);
+        glfwPollEvents();
+    }
 }
