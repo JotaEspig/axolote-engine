@@ -29,7 +29,8 @@ test: $(TARGET)
 	$(CC) -o ./$(TEST_TARGET_DIR)/$(TEST) $(TEST_OBJ) $(CC_TEST_FLAGS)
 	printf "\e[1;31m==== Finished compiling tests ====\e[0m\n\n"
 
-	LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:./lib" ./$(TEST_TARGET_DIR)/$(TEST)
+	LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:./lib" MESA_GL_VERSION_OVERRIDE=3.3 \
+	./$(TEST_TARGET_DIR)/$(TEST)
 
 .PHONY: dir
 dir:
