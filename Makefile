@@ -1,27 +1,33 @@
 CC = g++
-CC_FLAGS = -I./include/ -I./external/glad/include/ -lglfw -lGL -fPIC -Wall
+CC_FLAGS = -I./include/ -I./external/include/ -lglfw -lGL -fPIC -Wall
 CC_TEST_FLAGS = -I./include/ -L./lib -laxolote -Wall
 
 TARGET = libaxolote.so
 TARGET_DIR = lib
+
 SRC = $(shell find ./src -name "*.cpp")
-SRC += external/glad/src/glad.c
 OBJ = $(patsubst ./src/%.cpp, ./obj/%.o, $(filter %.cpp, $(SRC)))
-OBJ += obj/glad.o
+
+SRC_EXTERNAL = external/glad/src/glad.c
+OBJ_EXTERNAL = obj/glad.o
 
 TEST = axolote-engine-test
 TEST_SRC = $(shell find ./tests -name "*.cpp")
 TEST_OBJ = $(patsubst ./tests/%.cpp, ./obj/%.o, $(TEST_SRC))
 TEST_TARGET_DIR = tests/bin
 
-$(TARGET): dir
-	$(CC) -c $(SRC) $(CC_FLAGS)
-	mv *.o ./obj/
-	$(CC) -shared -o ./$(TARGET_DIR)/$(TARGET) $(OBJ) $(CC_FLAGS)
+$(TARGET): dir $(OBJ) $(OBJ_EXTERNAL)
+	$(CC) -shared -o ./$(TARGET_DIR)/$(TARGET) -o $@ $(OBJ) $(OBJ_EXTERNAL) $(CC_FLAGS)
 	printf "\e[1;31m==== Finished compiling library ====\e[0m\n"
 
 debug: CC_FLAGS += -g3 -fsanitize=address,undefined
 debug: $(TARGET)
+
+$(OBJ): obj/%.o : src/%.cpp
+	$(CC) $(CC_FLAGS) -c -o $@ $<
+
+$(OBJ_EXTERNAL): obj/%.o : external/glad/src/%.c
+	$(CC) $(CC_FLAGS) -c -o $@ $<
 
 test: $(TARGET)
 	$(CC) -c $(TEST_SRC) $(CC_TEST_FLAGS)

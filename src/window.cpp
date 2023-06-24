@@ -1,27 +1,18 @@
-#include <axolote/window.hpp>
-
 #include <iostream>
 #include <cmath>
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <stb/stb_image.h>
 
+#include <axolote/window.hpp>
 #include <axolote/structs.hpp>
+#include <axolote/shader.hpp>
+#include <axolote/vao.hpp>
+#include <axolote/vbo.hpp>
+#include <axolote/ebo.hpp>
 
 using namespace axolote;
-
-const char *vertex_shader_src = "#version 330 core\n"
-"layout (location = 0) in vec3 aPos;\n"
-"void main()\n"
-"{\n"
-"    gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-"}\0";
-const char *fragment_shader_src = "#version 330 core\n"
-"out vec4 FragColor;\n"
-"void main()\n"
-"{\n"
-"    FragColor = vec4(0.8f, 0.3f, 0.02f, 1.0f);\n"
-"}\n\0";
 
 Window::Window()
 {
@@ -91,72 +82,41 @@ void Window::main_loop()
     glfwSwapInterval(1);
 
     GLfloat vertices[] = {
-        -0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f,
-        0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f,
-        0.0f, 0.5f * float(sqrt(3)) * 2 / 3, 0.0f
+        -0.5f, -0.5f, 0.0f,   1.0f, 0.0f, 0.0f,
+        -0.5f, 0.5f, 0.0f,    0.5f, 0.0f, 0.5f,
+        0.5f, 0.5f, 0.0f,    0.0f, 0.0f, 1.0f,
+        0.5f, -0.5f, 0.0f,     0.5f, 0.0f, 0.5f
     };
 
-    GLuint vertex_shader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertex_shader, 1, &vertex_shader_src, NULL);
+    GLuint indices[] = {
+        0, 2, 1,
+        0, 3, 2
+    };
 
-    glCompileShader(vertex_shader);
-    GLint success;
-    GLchar info_log[512];
-    glGetShaderiv(vertex_shader, GL_COMPILE_STATUS, &success);
-    if (!success)
-    {
-        glGetShaderInfoLog(vertex_shader, 512, NULL, info_log);
-        std::cerr << "Vertex shader compilation failed: " << info_log << std::endl;
-    }
+    Shader shader_program("./resources/shaders/vertex_shader.txt",
+                          "./resources/shaders/fragment_shader.txt");
+    
+    VAO vao1;
+    vao1.bind();
+    VBO vbo1(vertices, sizeof(vertices));
+        EBO ebo1(indices, sizeof(indices));
 
-    GLuint fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragment_shader, 1, &fragment_shader_src, NULL);
-
-    glCompileShader(fragment_shader);
-    glGetShaderiv(fragment_shader, GL_COMPILE_STATUS, &success);
-    if (!success)
-    {
-        glGetShaderInfoLog(fragment_shader, 512, NULL, info_log);
-        std::cerr << "Fragment shader compilation failed: " << info_log << std::endl;
-    }
-
-
-    GLuint shader_program = glCreateProgram();
-    glAttachShader(shader_program, vertex_shader);
-    glAttachShader(shader_program, fragment_shader);
-
-    glLinkProgram(shader_program);
-
-    glDeleteShader(vertex_shader);
-    glDeleteShader(fragment_shader);
-
-    GLuint VAO, VBO;
-
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
-
-    glBindVertexArray(VAO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float) ,(void*)0);
-    glEnableVertexAttribArray(0);
-
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindVertexArray(0);
-
-    glClearColor(_color.r, _color.g, _color.b, _color.opacity);
-    glClear(GL_COLOR_BUFFER_BIT);
-    glfwSwapBuffers(window);
+    vao1.link_attrib(vbo1, 0, 3, GL_FLOAT, 6 * sizeof(GLfloat), (void *)0);
+    vao1.link_attrib(vbo1, 1, 3, GL_FLOAT, 6 * sizeof(GLfloat),
+                  (void *)(3 * sizeof(GLfloat)));
+    vao1.unbind();
+    vbo1.unbind();
+    ebo1.unbind();
 
     while (!glfwWindowShouldClose(window))
     {
         glClearColor(_color.r, _color.g, _color.b, _color.opacity);
         glClear(GL_COLOR_BUFFER_BIT);
-        glUseProgram(shader_program);
-        glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+
+        shader_program.activate();
+        vao1.bind();
+
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
         glfwSwapBuffers(window);
 
@@ -164,9 +124,9 @@ void Window::main_loop()
         process_input();
     }
 
-    glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(1, &VBO);
-    glDeleteProgram(shader_program);
+    vao1.destroy();
+    vbo1.destroy();
+    shader_program.destroy();
 }
 
 // GETTERS AND SETTERS
