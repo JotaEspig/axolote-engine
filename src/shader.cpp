@@ -25,6 +25,16 @@ static std::string get_file_content(const char *filename)
     return content;
 }
 
+static GLint check_shader_compilation(GLuint shader_id, char *log, size_t size)
+{
+    GLint success;
+    glGetShaderiv(shader_id, GL_COMPILE_STATUS, &success);
+    if (!success)
+        glGetShaderInfoLog(shader_id, size, NULL, log);
+
+    return success;
+}
+
 Shader::Shader(const char *vertex_file, const char *fragment_file)
 {
     std::string vertex_code = get_file_content(vertex_file);
@@ -36,29 +46,16 @@ Shader::Shader(const char *vertex_file, const char *fragment_file)
     glShaderSource(vertex_shader, 1, &vertex_src, NULL);
 
     glCompileShader(vertex_shader);
-    GLint success;
     GLchar info_log[512];
-    glGetShaderiv(vertex_shader, GL_COMPILE_STATUS, &success);
-    if (!success)
-    {
-        glGetShaderInfoLog(vertex_shader, 512, NULL, info_log);
-        std::cerr << "Vertex shader compilation failed: "
-                  << info_log << std::endl;
-        return;
-    }
+    if (!check_shader_compilation(vertex_shader, info_log, 512))
+        std::cerr << "Error when compiling shader: " << info_log << std::endl;
 
     GLuint fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(fragment_shader, 1, &fragment_src, NULL);
 
     glCompileShader(fragment_shader);
-    glGetShaderiv(fragment_shader, GL_COMPILE_STATUS, &success);
-    if (!success)
-    {
-        glGetShaderInfoLog(fragment_shader, 512, NULL, info_log);
-        std::cerr << "Fragment shader compilation failed: "
-                  << info_log << std::endl;
-        return;
-    }
+    if (!check_shader_compilation(fragment_shader, info_log, 512))
+        std::cerr << "Error when compiling shader: " << info_log << std::endl;
 
     id = glCreateProgram();
     glAttachShader(id, vertex_shader);
