@@ -17,7 +17,7 @@ TEST_OBJ = $(patsubst ./tests/%.cpp, ./obj/%.o, $(TEST_SRC))
 TEST_TARGET_DIR = tests/bin
 
 $(TARGET): dir $(OBJ) $(OBJ_EXTERNAL)
-	$(CC) -shared -o ./$(TARGET_DIR)/$(TARGET) -o $@ $(OBJ) $(OBJ_EXTERNAL) $(CC_FLAGS)
+	$(CC) -shared -o ./$(TARGET_DIR)/$(TARGET) $(OBJ) $(OBJ_EXTERNAL) $(CC_FLAGS)
 	printf "\e[1;31m==== Finished compiling library ====\e[0m\n"
 
 debug: CC_FLAGS += -g3 -fsanitize=address,undefined
