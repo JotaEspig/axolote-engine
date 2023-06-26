@@ -8,6 +8,7 @@
 #include <axolote/window.hpp>
 #include <axolote/structs.hpp>
 #include <axolote/shader.hpp>
+#include <axolote/texture.hpp>
 #include <axolote/vao.hpp>
 #include <axolote/vbo.hpp>
 #include <axolote/ebo.hpp>
@@ -109,38 +110,30 @@ void Window::main_loop()
     vbo1.unbind();
     ebo1.unbind();
 
-    int width_img, height_img, num_channels_img;
-    stbi_set_flip_vertically_on_load(true);
-    unsigned char *data = stbi_load("./resources/textures/dog.jpg",
-                                    &width_img, &height_img,
-                                    &num_channels_img, 0);
-    if (!data)
-    {
-        std::cerr << "Error loading the image" << std::endl;
-        return;
-    }
+    Texture tex0("./resources/textures/wall.jpg", GL_TEXTURE_2D, GL_TEXTURE0,
+                 GL_RGB, GL_UNSIGNED_BYTE);
+    if (!tex0.loaded)
+        std::cerr << "Error when loading texture" << std::endl;
 
-    GLuint texture;
-    glGenTextures(1, &texture);
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, texture);
+    tex0.set_tex_unit_uniform(shader_program, "tex1", 0);
 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    Texture tex1("./resources/textures/pedro.png", GL_TEXTURE_2D,
+                 GL_TEXTURE1, GL_RGBA, GL_UNSIGNED_BYTE);
+    if (!tex1.loaded)
+        std::cerr << "Error when loading texture" << std::endl;
 
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width_img, height_img, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-    glGenerateMipmap(GL_TEXTURE_2D);
-
-    stbi_image_free(data);
+    tex1.set_tex_unit_uniform(shader_program, "tex2", 1);
 
     while (!glfwWindowShouldClose(window))
     {
         glClearColor(_color.r, _color.g, _color.b, _color.opacity);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        glBindTexture(GL_TEXTURE_2D, texture);
+        tex0.activate();
+        tex0.bind();
+        tex1.activate();
+        tex1.bind();
+
         shader_program.activate();
         vao1.bind();
 
@@ -155,6 +148,8 @@ void Window::main_loop()
     vao1.destroy();
     vbo1.destroy();
     shader_program.destroy();
+    tex0.destroy();
+    tex1.destroy();
 }
 
 // GETTERS AND SETTERS
