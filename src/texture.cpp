@@ -37,7 +37,7 @@ Texture::Texture(const char *texture_file, GLenum _type, GLenum _slot, GLenum fo
     loaded = true;
 }
 
-void Texture::set_tex_unit_uniform(Shader shader, const char *uniform, GLuint unit)
+void Texture::set_tex_unit_uniform(Shader &shader, const char *uniform, GLuint unit)
 {
     shader.activate();
     GLuint uniform_id = glGetUniformLocation(shader.id, uniform);

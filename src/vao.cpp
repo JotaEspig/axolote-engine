@@ -10,7 +10,7 @@ VAO::VAO()
     glGenVertexArrays(1, &id);
 }
 
-void VAO::link_attrib(VBO vbo, GLuint layout, GLuint num_components,
+void VAO::link_attrib(VBO &vbo, GLuint layout, GLuint num_components,
                       GLenum type, GLsizeiptr stribe, void *offset)
 {
     vbo.bind();
