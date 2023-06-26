@@ -17,11 +17,13 @@ TEST_OBJ = $(patsubst ./tests/%.cpp, ./obj/%.o, $(TEST_SRC))
 TEST_TARGET_DIR = tests/bin
 
 $(TARGET): dir $(OBJ) $(OBJ_EXTERNAL)
+	@printf "\e[1;33m==== Compiling library ====\e[0m\n"
 	$(CC) -shared -o ./$(TARGET_DIR)/$(TARGET) $(OBJ) $(OBJ_EXTERNAL) $(CC_FLAGS)
-	printf "\e[1;31m==== Finished compiling library ====\e[0m\n"
+	@printf "\e[1;31m==== Finished compiling library ====\e[0m\n\n"
 
 debug: CC_FLAGS += -g3 -fsanitize=address,undefined
-debug: $(TARGET)
+debug: CC_TEST_FLAGS += -g3 -fsanitize=address,undefined
+debug: test
 
 $(OBJ): obj/%.o : src/%.cpp
 	$(CC) $(CC_FLAGS) -c -o $@ $<
@@ -30,19 +32,21 @@ $(OBJ_EXTERNAL): obj/%.o : external/glad/src/%.c
 	$(CC) $(CC_FLAGS) -c -o $@ $<
 
 test: $(TARGET)
+	@printf "\e[1;33m==== Compiling tests ====\e[0m\n"
 	$(CC) -c $(TEST_SRC) $(CC_TEST_FLAGS)
-	mv *.o ./obj/
+	@mv *.o ./obj/
 	$(CC) -o ./$(TEST_TARGET_DIR)/$(TEST) $(TEST_OBJ) $(CC_TEST_FLAGS)
-	printf "\e[1;31m==== Finished compiling tests ====\e[0m\n\n"
+	@printf "\e[1;31m==== Finished compiling tests ====\e[0m\n\n"
+	@printf "\e[1;33mRunning...\e[0m\n\n"
 
-	LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:./lib" MESA_GL_VERSION_OVERRIDE=3.3 \
+	@LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:./lib" MESA_GL_VERSION_OVERRIDE=3.3 \
 	./$(TEST_TARGET_DIR)/$(TEST)
 
 .PHONY: dir
 dir:
-	if [ ! -d $(TARGET_DIR) ]; then mkdir $(TARGET_DIR); fi
-	if [ ! -d $(TEST_TARGET_DIR) ]; then mkdir -p $(TEST_TARGET_DIR); fi
-	if [ ! -d obj ]; then mkdir obj; fi
+	@if [ ! -d $(TARGET_DIR) ]; then mkdir $(TARGET_DIR); fi
+	@if [ ! -d $(TEST_TARGET_DIR) ]; then mkdir -p $(TEST_TARGET_DIR); fi
+	@if [ ! -d obj ]; then mkdir obj; fi
 
 .PHONY: clean
 clean: ./$(TARGET_DIR)/$(TARGET)
