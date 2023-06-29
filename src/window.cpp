@@ -113,6 +113,18 @@ void Window::main_loop()
     vbo1.unbind();
     ebo1.unbind();
 
+    VAO vao2;
+    vao2.bind();
+    VBO vbo2(vertices, sizeof(vertices));
+    EBO ebo2(indices, sizeof(indices));
+
+    vao2.link_attrib(vbo2, 0, 3, GL_FLOAT, 8 * sizeof(float), (void *)0);
+    vao2.link_attrib(vbo2, 1, 3, GL_FLOAT, 8 * sizeof(float), (void *)(3 * sizeof(float)));
+    vao2.link_attrib(vbo2, 2, 2, GL_FLOAT, 8 * sizeof(float), (void *)(6 * sizeof(float)));
+    vao2.unbind();
+    vbo2.unbind();
+    ebo2.unbind();
+
     Texture tex0("./resources/textures/wall.jpg", GL_TEXTURE_2D, GL_TEXTURE0,
                  GL_RGB, GL_UNSIGNED_BYTE);
     if (!tex0.loaded)
@@ -123,6 +135,11 @@ void Window::main_loop()
     Texture tex1("./resources/textures/pedro.png", GL_TEXTURE_2D,
                  GL_TEXTURE1, GL_RGBA, GL_UNSIGNED_BYTE);
     if (!tex1.loaded)
+        std::cerr << "Error when loading texture" << std::endl;
+
+    Texture tex2("./resources/textures/dog.png", GL_TEXTURE_2D,
+                 GL_TEXTURE1, GL_RGB, GL_UNSIGNED_BYTE);
+    if (!tex2.loaded)
         std::cerr << "Error when loading texture" << std::endl;
 
     tex1.set_tex_unit_uniform(shader_program, "tex2", 1);
@@ -147,8 +164,23 @@ void Window::main_loop()
         glUniformMatrix4fv(uniform, 1, GL_FALSE, glm::value_ptr(trans));
 
         vao1.bind();
-
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        vao1.unbind();
+
+        tex2.activate();
+        tex2.bind();
+
+        /*
+         * TODO Resolve the error where it prints the dog strangely
+        */
+        trans = glm::mat4(1.0f);
+        trans = glm::translate(trans, glm::vec3(-0.5, 0.5, 0.0));
+        trans = glm::scale(trans, glm::vec3(fabs(sin(now)), fabs(sin(now)), 0.0));
+        glUniformMatrix4fv(uniform, 1, GL_FALSE, glm::value_ptr(trans));
+
+        vao2.bind();
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        vao2.unbind();
 
         glfwSwapBuffers(window);
 
