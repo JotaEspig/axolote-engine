@@ -4,6 +4,9 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <stb/stb_image.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #include <axolote/window.hpp>
 #include <axolote/structs.hpp>
@@ -135,6 +138,14 @@ void Window::main_loop()
         tex1.bind();
 
         shader_program.activate();
+
+        double now = glfwGetTime();
+        glm::mat4 trans = glm::mat4(1.0f);
+        trans = glm::translate(trans, glm::vec3(sin(now) / 3, cos(now) / 3, 0.0f));
+        trans = glm::rotate(trans, (float)now, glm::vec3(0.0, 0.0, 1.0));
+        GLuint uniform = glGetUniformLocation(shader_program.id, "transform");
+        glUniformMatrix4fv(uniform, 1, GL_FALSE, glm::value_ptr(trans));
+
         vao1.bind();
 
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
