@@ -42,8 +42,6 @@ static void error_callback(int error, const char *description)
 void Window::init()
 {
     _title = "Axolote Engine";
-    _width = 800;
-    _height = 600;
     window = NULL;
     _color.r = 0x00;
     _color.g = 0x00;
@@ -56,7 +54,7 @@ void Window::init()
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
-    window = glfwCreateWindow(_width, _height, _title.c_str(), NULL, NULL);
+    window = glfwCreateWindow(800, 700, _title.c_str(), NULL, NULL);
     if (!window)
     {
         std::cerr << "Error initialing window" << std::endl;
@@ -208,26 +206,28 @@ void Window::set_title(std::string new_title)
     _title = new_title;
 }
 
-uint16_t Window::width()
+int Window::width()
 {
-    return _width;
+    int width, height;
+    glfwGetWindowSize(window, &width, &height);
+    return width;
 }
 
-void Window::set_width(uint16_t new_width)
+void Window::set_width(int new_width)
 {
-    glfwSetWindowSize(window, new_width, _height);
-    _width = new_width;
+    glfwSetWindowSize(window, new_width, height());
 }
 
-uint16_t Window::height()
+int Window::height()
 {
-    return _height;
+    int width, height;
+    glfwGetWindowSize(window, &width, &height);
+    return height;
 }
 
-void Window::set_height(uint16_t new_height)
+void Window::set_height(int new_height)
 {
-    glfwSetWindowSize(window, _width, new_height);
-    _height = new_height;
+    glfwSetWindowSize(window, width(), new_height);
 }
 
 Color Window::color()

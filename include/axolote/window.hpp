@@ -15,8 +15,6 @@ namespace axolote
     {
     private:
         std::string _title;
-        uint16_t _width;
-        uint16_t _height;
         Color _color;
         GLFWwindow *window;
 
@@ -28,10 +26,10 @@ namespace axolote
         ~Window();
         std::string title();
         void set_title(std::string new_title);
-        uint16_t width();
-        void set_width(uint16_t new_width);
-        uint16_t height();
-        void set_height(uint16_t new_height);
+        int width();
+        void set_width(int new_width);
+        int height();
+        void set_height(int new_height);
         Color color();
         void set_color(uint8_t r, uint8_t g, uint8_t b, float opacity = 1.0f);
         void main_loop();
