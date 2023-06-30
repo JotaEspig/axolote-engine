@@ -85,15 +85,35 @@ void Window::main_loop()
 
     GLfloat vertices[] = {
         // positions          // colors           // texture coords
-         0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right
-         0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // bottom right
-        -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left
-        -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // top left
+         0.5f,  0.5f, 0.5f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right
+         0.5f, -0.5f, 0.5f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // bottom right
+        -0.5f, -0.5f, 0.5f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left
+        -0.5f,  0.5f, 0.5f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f,   // top left
+         0.5f,  0.5f, -0.5f,  1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // back top right
+         0.5f, -0.5f, -0.5f,  0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // back bottom right
+        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // back bottom left
+        -0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 0.0f,   0.0f, 1.0f,   // back top left
     };
 
     GLuint indices[] = {
+        //front face
         0, 1, 3,
-        1, 2, 3
+        1, 2, 3,
+        // right face
+        0, 4, 1,
+        1, 5, 4,
+        // left face
+        3, 7, 2,
+        2, 6, 7,
+        // top face
+        0, 3, 4,
+        3, 4, 7,
+        // bottom face
+        1, 2, 5,
+        2, 6, 5,
+        // back face
+        4, 5, 6,
+        6, 7, 4
     };
 
     Shader shader_program("./resources/shaders/vertex_shader.txt",
@@ -128,24 +148,20 @@ void Window::main_loop()
     if (!tex0.loaded)
         std::cerr << "Error when loading texture" << std::endl;
 
-    tex0.set_tex_unit_uniform(shader_program, "tex1", 0);
+    shader_program.set_uniform_int("tex1", 0);
 
     Texture tex1("./resources/textures/pedro.png", GL_TEXTURE_2D,
                  GL_TEXTURE1, GL_RGBA, GL_UNSIGNED_BYTE);
     if (!tex1.loaded)
         std::cerr << "Error when loading texture" << std::endl;
 
-    Texture tex2("./resources/textures/dog.png", GL_TEXTURE_2D,
-                 GL_TEXTURE1, GL_RGB, GL_UNSIGNED_BYTE);
-    if (!tex2.loaded)
-        std::cerr << "Error when loading texture" << std::endl;
+    shader_program.set_uniform_int("tex2", 1);
 
-    tex1.set_tex_unit_uniform(shader_program, "tex2", 1);
-
+    glEnable(GL_DEPTH_TEST);
     while (!glfwWindowShouldClose(window))
     {
         glClearColor(_color.r, _color.g, _color.b, _color.opacity);
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         tex0.activate();
         tex0.bind();
@@ -155,36 +171,38 @@ void Window::main_loop()
         shader_program.activate();
 
         double now = glfwGetTime();
-        glm::mat4 trans = glm::mat4(1.0f);
-        trans = glm::translate(trans, glm::vec3(sin(now) / 3, cos(now) / 3, 0.0f));
-        trans = glm::rotate(trans, (float)now, glm::vec3(0.0, 0.0, 1.0));
-        GLuint uniform = glGetUniformLocation(shader_program.id, "transform");
-        glUniformMatrix4fv(uniform, 1, GL_FALSE, glm::value_ptr(trans));
+        glm::mat4 model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
+        model = glm::rotate(model, (float)now, glm::vec3(0.5f, 1.0f, 0.0f));
+        glm::mat4 view = glm::mat4(1.0f);
+        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+        glm::mat4 projection = glm::perspective(glm::radians(90.0f), (float)width() / height(), 0.1f, 100.0f);
+
+        GLuint model_loc = glGetUniformLocation(shader_program.id, "model");
+        GLuint view_loc = glGetUniformLocation(shader_program.id, "view");
+        GLuint projection_loc = glGetUniformLocation(shader_program.id, "projection");
+
+        glUniformMatrix4fv(model_loc, 1, GL_FALSE, glm::value_ptr(model));
+        glUniformMatrix4fv(view_loc, 1, GL_FALSE, glm::value_ptr(view));
+        glUniformMatrix4fv(projection_loc, 1, GL_FALSE, glm::value_ptr(projection));
 
         vao1.bind();
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, sizeof(indices) / sizeof(int), GL_UNSIGNED_INT, 0);
+
+        model = glm::mat4(1.0f);
+        model = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));
+        model = glm::translate(model, glm::vec3(8.0f * sin(now), 0.0f, -3.0f + 8.0f * cos(now)));
+        glUniformMatrix4fv(model_loc, 1, GL_FALSE, glm::value_ptr(model));
+        glDrawElements(GL_TRIANGLES, sizeof(indices) / sizeof(int), GL_UNSIGNED_INT, 0);
         vao1.unbind();
-
-        tex2.activate();
-        tex2.bind();
-
-        /*
-         * TODO Resolve the error where it prints the dog strangely
-        */
-        trans = glm::mat4(1.0f);
-        trans = glm::translate(trans, glm::vec3(-0.5, 0.5, 0.0));
-        trans = glm::scale(trans, glm::vec3(fabs(sin(now)), fabs(sin(now)), 0.0));
-        glUniformMatrix4fv(uniform, 1, GL_FALSE, glm::value_ptr(trans));
-
-        vao2.bind();
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-        vao2.unbind();
 
         glfwSwapBuffers(window);
 
         glfwPollEvents();
         process_input();
     }
+
+    glDisable(GL_DEPTH_TEST);
 
     vao1.destroy();
     vbo1.destroy();
