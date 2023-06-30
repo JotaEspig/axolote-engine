@@ -67,6 +67,13 @@ Shader::Shader(const char *vertex_file, const char *fragment_file)
     glDeleteShader(fragment_shader);
 }
 
+void Shader::set_uniform_int(const char *uniform_name, int value)
+{
+    activate();
+    GLuint uniform_location = glGetUniformLocation(id, uniform_name);
+    glUniform1i(uniform_location, value);
+}
+
 void Shader::activate()
 {
     glUseProgram(id);

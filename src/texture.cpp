@@ -30,18 +30,12 @@ Texture::Texture(const char *texture_file, GLenum _type, GLenum _slot, GLenum fo
     glTexParameteri(type, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
     glTexImage2D(type, 0, format, width_img, height_img, 0, format, pixel_type, data);
+
     glGenerateMipmap(type);
 
     stbi_image_free(data);
     unbind();
     loaded = true;
-}
-
-void Texture::set_tex_unit_uniform(Shader &shader, const char *uniform, GLuint unit)
-{
-    shader.activate();
-    GLuint uniform_id = glGetUniformLocation(shader.id, uniform);
-    glUniform1i(uniform_id, unit);
 }
 
 void Texture::activate()

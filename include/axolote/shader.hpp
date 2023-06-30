@@ -10,6 +10,7 @@ namespace axolote
         GLuint id;
         Shader(const char *vertex_file, const char *fragment_file);
 
+        void set_uniform_int(const char *uniform_name, int value);
         void activate();
         void destroy();
     };
