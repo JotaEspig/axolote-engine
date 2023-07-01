@@ -85,35 +85,57 @@ void Window::main_loop()
 
     GLfloat vertices[] = {
         // positions          // colors           // texture coords
+	// front
          0.5f,  0.5f, 0.5f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right
          0.5f, -0.5f, 0.5f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // bottom right
         -0.5f, -0.5f, 0.5f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left
         -0.5f,  0.5f, 0.5f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f,   // top left
-         0.5f,  0.5f, -0.5f,  1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // back top right
+	// right
+         0.5f, -0.5f, 0.5f,   0.0f, 1.0f, 0.0f,   0.0f, 0.0f,   // bottom right
          0.5f, -0.5f, -0.5f,  0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // back bottom right
+         0.5f,  0.5f, -0.5f,  1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // back top right
+         0.5f,  0.5f, 0.5f,   1.0f, 0.0f, 0.0f,   0.0f, 1.0f,   // top right
+	// left
         -0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // back bottom left
+        -0.5f, -0.5f, 0.5f,   0.0f, 0.0f, 1.0f,   1.0f, 0.0f,   // bottom left
+        -0.5f,  0.5f, 0.5f,   1.0f, 1.0f, 0.0f,   1.0f, 1.0f,   // top left
         -0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 0.0f,   0.0f, 1.0f,   // back top left
+	// top
+        -0.5f,  0.5f, 0.5f,   1.0f, 1.0f, 0.0f,   0.0f, 0.0f,   // top left
+         0.5f,  0.5f, 0.5f,   1.0f, 0.0f, 0.0f,   1.0f, 0.0f,   // top right
+         0.5f,  0.5f, -0.5f,  1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // back top right
+        -0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 0.0f,   0.0f, 1.0f,   // back top left
+	// bottom
+        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // back bottom left
+         0.5f, -0.5f, -0.5f,  0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // back bottom right
+         0.5f, -0.5f, 0.5f,   0.0f, 1.0f, 0.0f,   1.0f, 1.0f,   // bottom right
+        -0.5f, -0.5f, 0.5f,   0.0f, 0.0f, 1.0f,   0.0f, 1.0f,   // bottom left
+	// back
+         0.5f, -0.5f, -0.5f,  0.0f, 1.0f, 0.0f,   0.0f, 0.0f,   // back bottom right
+        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 1.0f,   1.0f, 0.0f,   // back bottom left
+        -0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 0.0f,   1.0f, 1.0f,   // back top left
+         0.5f,  0.5f, -0.5f,  1.0f, 0.0f, 0.0f,   0.0f, 1.0f,   // back top right
     };
 
     GLuint indices[] = {
         //front face
-        0, 1, 3,
-        1, 2, 3,
+        0, 1, 2,
+        0, 2, 3,
         // right face
-        0, 4, 1,
-        1, 5, 4,
-        // left face
-        3, 7, 2,
-        2, 6, 7,
-        // top face
-        0, 3, 4,
-        3, 4, 7,
-        // bottom face
-        1, 2, 5,
-        2, 6, 5,
-        // back face
         4, 5, 6,
-        6, 7, 4
+        4, 6, 7,
+        // left face
+        8, 9, 10,
+        8, 10, 11,
+        // top face
+        12, 13, 14,
+        12, 14, 15,
+        // bottom face
+        16, 17, 18,
+        16, 18, 19,
+        // back face
+        20, 21, 22,
+        20, 22, 23
     };
 
     Shader shader_program("./resources/shaders/vertex_shader.txt",
@@ -150,8 +172,8 @@ void Window::main_loop()
 
     shader_program.set_uniform_int("tex1", 0);
 
-    Texture tex1("./resources/textures/pedro.png", GL_TEXTURE_2D,
-                 GL_TEXTURE1, GL_RGBA, GL_UNSIGNED_BYTE);
+    Texture tex1("./resources/textures/mano.jpg", GL_TEXTURE_2D,
+                 GL_TEXTURE1, GL_RGB, GL_UNSIGNED_BYTE);
     if (!tex1.loaded)
         std::cerr << "Error when loading texture" << std::endl;
 
@@ -175,7 +197,7 @@ void Window::main_loop()
         model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
         model = glm::rotate(model, (float)now, glm::vec3(0.5f, 1.0f, 0.0f));
         glm::mat4 view = glm::mat4(1.0f);
-        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -1.0f));
         glm::mat4 projection = glm::perspective(glm::radians(90.0f), (float)width() / height(), 0.1f, 100.0f);
 
         GLuint model_loc = glGetUniformLocation(shader_program.id, "model");
