@@ -1,35 +1,27 @@
 #pragma once
 
+#include <glm/glm.hpp>
+
 namespace axolote
 {
     class Camera
     {
     public:
-        float speed = 0.5f;
-        struct
-        {
-            float x;
-            float y;
-            float z;
-        } pos;
-        struct
-        {
-            float x;
-            float y;
-            float z;
-        } front;
-        struct
-        {
-            float x;
-            float y;
-            float z;
-        } up;
+        float speed = 0.1f;
+        float sensibility = 100.0f;
+        float fov = 45.0f;
+        glm::vec3 pos;
+        glm::vec3 orientation = glm::vec3(0.0f, 0.0f, -1.0f);
+        glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
         
         Camera();
+        Camera(glm::vec3 position);
 
         void forward();
-        void left();
-        void right();
-        void backwards();
+        void leftward();
+        void rightward();
+        void backward();
+        void upward();
+        void downward();
     };
 }

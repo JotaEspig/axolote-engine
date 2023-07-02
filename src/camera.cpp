@@ -1,5 +1,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/gtx/rotate_vector.hpp>
+#include <glm/gtx/vector_angle.hpp>
 
 #include <axolote/camera.hpp>
 
@@ -7,57 +10,40 @@ using namespace axolote;
 
 Camera::Camera()
 {
-    pos.x = 0.0f;
-    pos.y = 0.0f;
-    pos.z = 3.0f;
-    front.x = 0.0f;
-    front.y = 0.0f;
-    front.z = -1.0f;
-    up.x = 0.0f;
-    up.y = 1.0f;
-    up.z = 0.0f;
+    pos = glm::vec3(0.0f, 0.0f, 0.0f);
 }
 
-// IT's not working fuck merda que bosta 2 da manhã e nada
+Camera::Camera(glm::vec3 position)
+{
+    pos = position;
+}
 
 void Camera::forward()
 {
-    glm::vec3 vec_pos = glm::vec3(pos.x, pos.y, pos.z);
-    glm::vec3 vec_front = glm::vec3(front.x, front.y, front.z);
-    vec_pos += speed * vec_front;
-    pos.x = vec_pos.x;
-    pos.y = vec_pos.y;
-    pos.z = vec_pos.z;
+    pos += speed * orientation;
 }
 
-void Camera::backwards()
+void Camera::backward()
 {
-    glm::vec3 vec_pos = glm::vec3(pos.x, pos.y, pos.z);
-    glm::vec3 vec_front = glm::vec3(front.x, front.y, front.z);
-    vec_pos -= speed * vec_front;
-    pos.x = vec_pos.x;
-    pos.y = vec_pos.y;
-    pos.z = vec_pos.z;
+    pos += speed * -orientation;
 }
 
-void Camera::left()
+void Camera::leftward()
 {
-    glm::vec3 vec_pos = glm::vec3(pos.x, pos.y, pos.z);
-    glm::vec3 vec_front = glm::vec3(front.x, front.y, front.z);
-    glm::vec3 vec_up = glm::vec3(up.x, up.y, up.z);
-    vec_pos -= speed * glm::normalize(glm::cross(vec_front, vec_up));
-    pos.x = vec_pos.x;
-    pos.y = vec_pos.y;
-    pos.z = vec_pos.z;
+    pos += speed * -glm::normalize(glm::cross(orientation, up));
 }
 
-void Camera::right()
+void Camera::rightward()
 {
-    glm::vec3 vec_pos = glm::vec3(pos.x, pos.y, pos.z);
-    glm::vec3 vec_front = glm::vec3(front.x, front.y, front.z);
-    glm::vec3 vec_up = glm::vec3(up.x, up.y, up.z);
-    vec_pos += speed * glm::normalize(glm::cross(vec_front, vec_up));
-    pos.x = vec_pos.x;
-    pos.y = vec_pos.y;
-    pos.z = vec_pos.z;
+    pos += speed * glm::normalize(glm::cross(orientation, up));
+}
+
+void Camera::upward()
+{
+    pos += speed * up;
+}
+
+void Camera::downward()
+{
+    pos += speed * -up;
 }
