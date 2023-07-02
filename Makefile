@@ -1,6 +1,6 @@
 CC = g++
 CC_FLAGS = -I./include/ -I./external/include/ -lglfw -lGL -fPIC -Wall
-CC_TEST_FLAGS = -I./include/ -L./lib -laxolote -Wall
+CC_TEST_FLAGS = -I./include/ -I./external/include/ -L./lib -laxolote -Wall
 
 TARGET = libaxolote.so
 TARGET_DIR = lib
