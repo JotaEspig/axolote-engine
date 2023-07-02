@@ -7,6 +7,7 @@
 
 #include <GLFW/glfw3.h>
 
+#include <axolote/camera.hpp>
 #include <axolote/structs.hpp>
 
 namespace axolote
@@ -16,6 +17,7 @@ namespace axolote
     private:
         std::string _title;
         Color _color;
+        Camera camera;
         GLFWwindow *window;
 
         void init();
