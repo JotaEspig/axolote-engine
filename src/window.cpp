@@ -47,7 +47,7 @@ void Window::init()
     _color.r = 0x00;
     _color.g = 0x00;
     _color.b = 0x00;
-    camera = Camera();
+    camera = Camera(glm::vec3(0.0f, 0.0f, 3.0f));
 
     if (!glfwInit())
     {
@@ -69,26 +69,23 @@ void Window::process_input()
 {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
+
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-    {
         camera.forward();
-        std::cout << "forward: " << camera.pos.x << " " << camera.pos.y << " " << camera.pos.z << std::endl;
-    }
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-    {
-        camera.backwards();
-        std::cout << "backwards: " << camera.pos.x << " " << camera.pos.y << " " << camera.pos.z << std::endl;
-    }
+        camera.backward();
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-    {
-        camera.left();
-        std::cout << "left: " << camera.pos.x << " " << camera.pos.y << " " << camera.pos.z << std::endl;
-    }
+        camera.leftward();
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-    {
-        camera.right();
-        std::cout << "right: " << camera.pos.x << " " << camera.pos.y << " " << camera.pos.z << std::endl;
-    }
+        camera.rightward();
+    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+        camera.upward();
+    if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+        camera.downward();
+    if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
+        camera.speed = 0.5f;
+    if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_RELEASE)
+        camera.speed = 0.1f;
 }
 
 void Window::main_loop()
@@ -204,6 +201,9 @@ void Window::main_loop()
     glEnable(GL_DEPTH_TEST);
     while (!glfwWindowShouldClose(window))
     {
+        glfwPollEvents();
+        process_input();
+
         glClearColor(_color.r, _color.g, _color.b, _color.opacity);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -220,13 +220,9 @@ void Window::main_loop()
         model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
         model = glm::rotate(model, (float)now, glm::vec3(0.5f, 1.0f, 0.0f));
 
-        glm::vec3 vec_pos, vec_front, vec_up;
-        vec_pos = glm::vec3(camera.pos.x, camera.pos.y, camera.pos.z);
-        vec_front = glm::vec3(camera.front.x, camera.front.y, camera.front.z);
-        vec_up = glm::vec3(camera.up.x, camera.up.y, camera.up.z);
-        glm::mat4 view = glm::lookAt(vec_pos, vec_pos + vec_front, vec_up);
+        glm::mat4 view = glm::lookAt(camera.pos, camera.pos + camera.orientation, camera.up);
 
-        glm::mat4 projection = glm::perspective(glm::radians(90.0f), (float)width() / height(), 0.1f, 100.0f);
+        glm::mat4 projection = glm::perspective(glm::radians(camera.fov), (float)width() / height(), 0.1f, 100.0f);
 
         GLuint model_loc = glGetUniformLocation(shader_program.id, "model");
         GLuint view_loc = glGetUniformLocation(shader_program.id, "view");
@@ -247,9 +243,6 @@ void Window::main_loop()
         vao1.unbind();
 
         glfwSwapBuffers(window);
-
-        glfwPollEvents();
-        process_input();
     }
 
     glDisable(GL_DEPTH_TEST);
