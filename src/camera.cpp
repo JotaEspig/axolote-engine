@@ -47,3 +47,21 @@ void Camera::downward()
 {
     pos += speed * -up;
 }
+
+void Camera::move_vision(float x, float y, float width, float height)
+{
+    if (first_click)
+        first_click = false;
+
+    float rot_x = sensitivity * (y - (height / 2)) / height;
+    float rot_y = sensitivity * (x - (height / 2)) / height;
+    glm::vec3 new_orientation = glm::rotate(orientation, glm::radians(-rot_x), glm::normalize(glm::cross(orientation, up)));
+
+    if (!((glm::angle(orientation, up) <= glm::radians(5.0f))
+        || (glm::angle(orientation, -up) <= glm::radians(5.0f))))
+    {
+        orientation = new_orientation;
+    }
+
+    orientation = glm::rotate(orientation, glm::radians(-rot_y), up);
+}

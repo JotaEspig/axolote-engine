@@ -8,8 +8,9 @@ namespace axolote
     {
     public:
         float speed = 0.1f;
-        float sensibility = 100.0f;
+        float sensitivity = 200.0f;
         float fov = 45.0f;
+        bool first_click = true;
         glm::vec3 pos;
         glm::vec3 orientation = glm::vec3(0.0f, 0.0f, -1.0f);
         glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
@@ -23,5 +24,6 @@ namespace axolote
         void backward();
         void upward();
         void downward();
+        void move_vision(float x, float y, float width, float height);
     };
 }

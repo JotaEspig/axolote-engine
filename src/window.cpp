@@ -86,6 +86,24 @@ void Window::process_input()
         camera.speed = 0.5f;
     if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_RELEASE)
         camera.speed = 0.1f;
+    if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
+    {
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+
+        if (camera.first_click)
+            glfwSetCursorPos(window, width() / 2, height() / 2);
+
+        double mouse_x, mouse_y;
+        glfwGetCursorPos(window, &mouse_x, &mouse_y);
+        camera.move_vision((float)mouse_x, (float)mouse_y, (float)width(), (float)height());
+        glfwSetCursorPos(window, width() / 2, height() / 2);
+    }
+    if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_RELEASE)
+    {
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        camera.first_click = true;
+    }
+
 }
 
 void Window::main_loop()
