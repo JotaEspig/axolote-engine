@@ -49,5 +49,7 @@ dir:
 	@if [ ! -d obj ]; then mkdir obj; fi
 
 .PHONY: clean
-clean: ./$(TARGET_DIR)/$(TARGET)
+clean: dir
 	rm ./$(TARGET_DIR)/*
+	rm ./$(TEST_TARGET_DIR)/*
+	rm ./obj/*
