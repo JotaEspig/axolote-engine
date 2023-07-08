@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include <GL/gl.h>
 
 namespace axolote
@@ -8,7 +10,8 @@ namespace axolote
     {
     public:
         GLuint id;
-        EBO(GLuint *indices, GLsizeiptr size);
+        EBO() = default;
+        EBO(std::vector<GLuint> indices);
 
         void bind();
         void unbind();
