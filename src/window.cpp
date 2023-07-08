@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cmath>
+#include <vector>
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -13,9 +14,8 @@
 #include <axolote/structs.hpp>
 #include <axolote/shader.hpp>
 #include <axolote/texture.hpp>
-#include <axolote/vao.hpp>
+#include <axolote/mesh.hpp>
 #include <axolote/vbo.hpp>
-#include <axolote/ebo.hpp>
 
 using namespace axolote;
 
@@ -120,41 +120,41 @@ void Window::main_loop()
 
     glfwSwapInterval(1);
 
-    GLfloat vertices[] = {
-        // positions          // colors           // texture coords
-	// front
-         0.5f,  0.5f, 0.5f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right
-         0.5f, -0.5f, 0.5f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // bottom right
-        -0.5f, -0.5f, 0.5f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left
-        -0.5f,  0.5f, 0.5f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f,   // top left
-	// right
-         0.5f, -0.5f, 0.5f,   0.0f, 1.0f, 0.0f,   0.0f, 0.0f,   // bottom right
-         0.5f, -0.5f, -0.5f,  0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // back bottom right
-         0.5f,  0.5f, -0.5f,  1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // back top right
-         0.5f,  0.5f, 0.5f,   1.0f, 0.0f, 0.0f,   0.0f, 1.0f,   // top right
-	// left
-        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // back bottom left
-        -0.5f, -0.5f, 0.5f,   0.0f, 0.0f, 1.0f,   1.0f, 0.0f,   // bottom left
-        -0.5f,  0.5f, 0.5f,   1.0f, 1.0f, 0.0f,   1.0f, 1.0f,   // top left
-        -0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 0.0f,   0.0f, 1.0f,   // back top left
-	// top
-        -0.5f,  0.5f, 0.5f,   1.0f, 1.0f, 0.0f,   0.0f, 0.0f,   // top left
-         0.5f,  0.5f, 0.5f,   1.0f, 0.0f, 0.0f,   1.0f, 0.0f,   // top right
-         0.5f,  0.5f, -0.5f,  1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // back top right
-        -0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 0.0f,   0.0f, 1.0f,   // back top left
-	// bottom
-        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // back bottom left
-         0.5f, -0.5f, -0.5f,  0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // back bottom right
-         0.5f, -0.5f, 0.5f,   0.0f, 1.0f, 0.0f,   1.0f, 1.0f,   // bottom right
-        -0.5f, -0.5f, 0.5f,   0.0f, 0.0f, 1.0f,   0.0f, 1.0f,   // bottom left
-	// back
-         0.5f, -0.5f, -0.5f,  0.0f, 1.0f, 0.0f,   0.0f, 0.0f,   // back bottom right
-        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 1.0f,   1.0f, 0.0f,   // back bottom left
-        -0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 0.0f,   1.0f, 1.0f,   // back top left
-         0.5f,  0.5f, -0.5f,  1.0f, 0.0f, 0.0f,   0.0f, 1.0f,   // back top right
+    std::vector<Vertex> vertices =
+    {
+        // front
+        Vertex{glm::vec3(0.5f,  0.5f, 0.5f), glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(1.0f, 1.0f)},   // top right
+        Vertex{glm::vec3(0.5f, -0.5f, 0.5f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(1.0f, 0.0f)},   // bottom right
+        Vertex{glm::vec3(-0.5f, -0.5f, 0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f)},  // bottom left
+        Vertex{glm::vec3(-0.5f,  0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 0.0f), glm::vec2(0.0f, 1.0f)},  // top left
+        // right
+        Vertex{glm::vec3(0.5f, -0.5f, 0.5f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(0.0f, 0.0f)},   // bottom right
+        Vertex{glm::vec3(0.5f, -0.5f, -0.5f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(1.0f, 0.0f)},  // back bottom right
+        Vertex{glm::vec3(0.5f,  0.5f, -0.5f), glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(1.0f, 1.0f)},  // back top right
+        Vertex{glm::vec3(0.5f,  0.5f, 0.5f), glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(0.0f, 1.0f)},   // top right
+        // left
+        Vertex{glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f)}, // back bottom left
+        Vertex{glm::vec3(-0.5f, -0.5f, 0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 0.0f)},  // bottom left
+        Vertex{glm::vec3(-0.5f,  0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 0.0f), glm::vec2(1.0f, 1.0f)},  // top left
+        Vertex{glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec3(1.0f, 1.0f, 0.0f), glm::vec2(0.0f, 1.0f)}, // back top left
+        // top
+        Vertex{glm::vec3(-0.5f,  0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 0.0f), glm::vec2(0.0f, 0.0f)},  // top left
+        Vertex{glm::vec3(0.5f,  0.5f, 0.5f), glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(1.0f, 0.0f)},   // top right
+        Vertex{glm::vec3(0.5f,  0.5f, -0.5f), glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(1.0f, 1.0f)},  // back top right
+        Vertex{glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec3(1.0f, 1.0f, 0.0f), glm::vec2(0.0f, 1.0f)}, // back top left
+        // bottom
+        Vertex{glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f)}, // back bottom left
+        Vertex{glm::vec3(0.5f, -0.5f, -0.5f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(1.0f, 0.0f)},  // back bottom right
+        Vertex{glm::vec3(0.5f, -0.5f, 0.5f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(1.0f, 1.0f)},   // bottom right
+        Vertex{glm::vec3(-0.5f, -0.5f, 0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 1.0f)},  // bottom left
+        // back
+        Vertex{glm::vec3(0.5f, -0.5f, -0.5f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(0.0f, 0.0f)},  // back bottom right
+        Vertex{glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 0.0f)}, // back bottom left
+        Vertex{glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec3(1.0f, 1.0f, 0.0f), glm::vec2(1.0f, 1.0f)}, // back top left
+        Vertex{glm::vec3(0.5f,  0.5f, -0.5f), glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(0.0f, 1.0f)}   // back top right
     };
 
-    GLuint indices[] = {
+    std::vector<GLuint> indices = {
         //front face
         0, 1, 2,
         0, 2, 3,
@@ -178,43 +178,17 @@ void Window::main_loop()
     Shader shader_program("./resources/shaders/vertex_shader.txt",
                           "./resources/shaders/fragment_shader.txt");
 
-    VAO vao1;
-    vao1.bind();
-    VBO vbo1(vertices, sizeof(vertices));
-    EBO ebo1(indices, sizeof(indices));
-
-    vao1.link_attrib(vbo1, 0, 3, GL_FLOAT, 8 * sizeof(float), (void *)0);
-    vao1.link_attrib(vbo1, 1, 3, GL_FLOAT, 8 * sizeof(float), (void *)(3 * sizeof(float)));
-    vao1.link_attrib(vbo1, 2, 2, GL_FLOAT, 8 * sizeof(float), (void *)(6 * sizeof(float)));
-    vao1.unbind();
-    vbo1.unbind();
-    ebo1.unbind();
-
-    VAO vao2;
-    vao2.bind();
-    VBO vbo2(vertices, sizeof(vertices));
-    EBO ebo2(indices, sizeof(indices));
-
-    vao2.link_attrib(vbo2, 0, 3, GL_FLOAT, 8 * sizeof(float), (void *)0);
-    vao2.link_attrib(vbo2, 1, 3, GL_FLOAT, 8 * sizeof(float), (void *)(3 * sizeof(float)));
-    vao2.link_attrib(vbo2, 2, 2, GL_FLOAT, 8 * sizeof(float), (void *)(6 * sizeof(float)));
-    vao2.unbind();
-    vbo2.unbind();
-    ebo2.unbind();
-
     Texture tex0("./resources/textures/wall.jpg", GL_TEXTURE_2D, GL_TEXTURE0,
                  GL_RGB, GL_UNSIGNED_BYTE);
     if (!tex0.loaded)
         std::cerr << "Error when loading texture" << std::endl;
-
-    shader_program.set_uniform_int("tex1", 0);
 
     Texture tex1("./resources/textures/mano.jpg", GL_TEXTURE_2D,
                  GL_TEXTURE1, GL_RGB, GL_UNSIGNED_BYTE);
     if (!tex1.loaded)
         std::cerr << "Error when loading texture" << std::endl;
 
-    shader_program.set_uniform_int("tex2", 1);
+    Mesh m1(vertices, indices, {tex0, tex1});
 
     glEnable(GL_DEPTH_TEST);
     while (!glfwWindowShouldClose(window))
@@ -224,13 +198,6 @@ void Window::main_loop()
 
         glClearColor(_color.r, _color.g, _color.b, _color.opacity);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        tex0.activate();
-        tex0.bind();
-        tex1.activate();
-        tex1.bind();
-
-        shader_program.activate();
 
         double now = glfwGetTime();
 
@@ -250,23 +217,20 @@ void Window::main_loop()
         glUniformMatrix4fv(view_loc, 1, GL_FALSE, glm::value_ptr(view));
         glUniformMatrix4fv(projection_loc, 1, GL_FALSE, glm::value_ptr(projection));
 
-        vao1.bind();
-        glDrawElements(GL_TRIANGLES, sizeof(indices) / sizeof(int), GL_UNSIGNED_INT, 0);
+        m1.draw(shader_program);
 
         model = glm::mat4(1.0f);
         model = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));
         model = glm::translate(model, glm::vec3(8.0f * sin(now), 0.0f, -3.0f + 8.0f * cos(now)));
         glUniformMatrix4fv(model_loc, 1, GL_FALSE, glm::value_ptr(model));
-        glDrawElements(GL_TRIANGLES, sizeof(indices) / sizeof(int), GL_UNSIGNED_INT, 0);
-        vao1.unbind();
+
+        m1.draw(shader_program);
 
         glfwSwapBuffers(window);
     }
 
     glDisable(GL_DEPTH_TEST);
 
-    vao1.destroy();
-    vbo1.destroy();
     shader_program.destroy();
     tex0.destroy();
     tex1.destroy();
