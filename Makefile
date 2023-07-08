@@ -56,6 +56,6 @@ dir:
 
 .PHONY: clean
 clean: dir
-	-rm ./$(TARGET_DIR)/*
-	-rm ./$(TEST_TARGET_DIR)/*
-	-rm ./$(OBJ_DIR)/*
+	-rm ./$(TARGET_DIR)/* 2> /dev/null
+	-rm ./$(TEST_TARGET_DIR)/* 2> /dev/null
+	-rm ./$(OBJ_DIR)/* 2> /dev/null
