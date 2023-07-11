@@ -5,6 +5,8 @@
 #include <cerrno>
 
 #include <glad/glad.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #include <axolote/shader.hpp>
 
@@ -72,6 +74,12 @@ void Shader::set_uniform_int(const char *uniform_name, int value)
     activate();
     GLuint uniform_location = glGetUniformLocation(id, uniform_name);
     glUniform1i(uniform_location, value);
+}
+
+void Shader::set_uniform_matrix4(const char *uniform_name, glm::mat4 matrix)
+{
+    GLuint uniform_location = glGetUniformLocation(id, uniform_name);
+    glUniformMatrix4fv(uniform_location, 1, GL_FALSE, glm::value_ptr(matrix));
 }
 
 void Shader::activate()
