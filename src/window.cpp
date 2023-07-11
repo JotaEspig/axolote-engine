@@ -209,20 +209,16 @@ void Window::main_loop()
 
         glm::mat4 projection = glm::perspective(glm::radians(camera.fov), (float)width() / height(), 0.1f, 100.0f);
 
-        GLuint model_loc = glGetUniformLocation(shader_program.id, "model");
-        GLuint view_loc = glGetUniformLocation(shader_program.id, "view");
-        GLuint projection_loc = glGetUniformLocation(shader_program.id, "projection");
-
-        glUniformMatrix4fv(model_loc, 1, GL_FALSE, glm::value_ptr(model));
-        glUniformMatrix4fv(view_loc, 1, GL_FALSE, glm::value_ptr(view));
-        glUniformMatrix4fv(projection_loc, 1, GL_FALSE, glm::value_ptr(projection));
+        shader_program.set_uniform_matrix4("model", model);
+        shader_program.set_uniform_matrix4("view", view);
+        shader_program.set_uniform_matrix4("projection", projection);
 
         m1.draw(shader_program);
 
         model = glm::mat4(1.0f);
         model = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));
         model = glm::translate(model, glm::vec3(8.0f * sin(now), 0.0f, -3.0f + 8.0f * cos(now)));
-        glUniformMatrix4fv(model_loc, 1, GL_FALSE, glm::value_ptr(model));
+        shader_program.set_uniform_matrix4("model", model);
 
         m1.draw(shader_program);
 
