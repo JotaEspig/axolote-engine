@@ -201,17 +201,15 @@ void Window::main_loop()
 
         double now = glfwGetTime();
 
+        glm::mat4 view = glm::lookAt(camera.pos, camera.pos + camera.orientation, camera.up);
+        glm::mat4 projection = glm::perspective(glm::radians(camera.fov), (float)width() / height(), 0.1f, 100.0f);
+
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
         model = glm::rotate(model, (float)now, glm::vec3(0.5f, 1.0f, 0.0f));
 
-        glm::mat4 view = glm::lookAt(camera.pos, camera.pos + camera.orientation, camera.up);
-
-        glm::mat4 projection = glm::perspective(glm::radians(camera.fov), (float)width() / height(), 0.1f, 100.0f);
-
         shader_program.set_uniform_matrix4("model", model);
-        shader_program.set_uniform_matrix4("view", view);
-        shader_program.set_uniform_matrix4("projection", projection);
+        shader_program.set_uniform_matrix4("camera", projection * view);
 
         m1.draw(shader_program);
 
