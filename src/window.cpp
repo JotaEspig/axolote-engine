@@ -178,35 +178,35 @@ void Window::main_loop()
     std::vector<Vertex> light_vertices =
     {
         // front
-        Vertex{glm::vec3(0.5f,  0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f)},   // top right
-        Vertex{glm::vec3(0.5f, -0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f)},   // bottom right
-        Vertex{glm::vec3(-0.5f, -0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)},  // bottom left
-        Vertex{glm::vec3(-0.5f,  0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 0.0f), glm::vec2(0.0f, 1.0f)},  // top left
+        Vertex{glm::vec3(0.5f,  0.5f, 0.5f), glm::vec3(1.0f, 0.94f, 0.56f), glm::vec2(1.0f, 1.0f)},   // top right
+        Vertex{glm::vec3(0.5f, -0.5f, 0.5f), glm::vec3(1.0f, 0.94f, 0.56f), glm::vec2(1.0f, 0.0f)},   // bottom right
+        Vertex{glm::vec3(-0.5f, -0.5f, 0.5f), glm::vec3(1.0f, 0.94f, 0.56f), glm::vec2(0.0f, 0.0f)},  // bottom left
+        Vertex{glm::vec3(-0.5f,  0.5f, 0.5f), glm::vec3(1.0f, 0.94f, 0.56f), glm::vec2(0.0f, 1.0f)},  // top left
         // right
-        Vertex{glm::vec3(0.5f, -0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)},   // bottom right
-        Vertex{glm::vec3(0.5f, -0.5f, -0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f)},  // back bottom right
-        Vertex{glm::vec3(0.5f,  0.5f, -0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f)},  // back top right
-        Vertex{glm::vec3(0.5f,  0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)},   // top right
+        Vertex{glm::vec3(0.5f, -0.5f, 0.5f), glm::vec3(1.0f, 0.94f, 0.56f), glm::vec2(0.0f, 0.0f)},   // bottom right
+        Vertex{glm::vec3(0.5f, -0.5f, -0.5f), glm::vec3(1.0f, 0.94f, 0.56f), glm::vec2(1.0f, 0.0f)},  // back bottom right
+        Vertex{glm::vec3(0.5f,  0.5f, -0.5f), glm::vec3(1.0f, 0.94f, 0.56f), glm::vec2(1.0f, 1.0f)},  // back top right
+        Vertex{glm::vec3(0.5f,  0.5f, 0.5f), glm::vec3(1.0f, 0.94f, 0.56f), glm::vec2(0.0f, 1.0f)},   // top right
         // left
-        Vertex{glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)}, // back bottom left
-        Vertex{glm::vec3(-0.5f, -0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f)},  // bottom left
-        Vertex{glm::vec3(-0.5f,  0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 0.0f), glm::vec2(1.0f, 1.0f)},  // top left
-        Vertex{glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec3(1.0f, 1.0f, 0.0f), glm::vec2(0.0f, 1.0f)}, // back top left
+        Vertex{glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(1.0f, 0.94f, 0.56f), glm::vec2(0.0f, 0.0f)}, // back bottom left
+        Vertex{glm::vec3(-0.5f, -0.5f, 0.5f), glm::vec3(1.0f, 0.94f, 0.56f), glm::vec2(1.0f, 0.0f)},  // bottom left
+        Vertex{glm::vec3(-0.5f,  0.5f, 0.5f), glm::vec3(1.0f, 0.94f, 0.56f), glm::vec2(1.0f, 1.0f)},  // top left
+        Vertex{glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec3(1.0f, 0.94f, 0.56f), glm::vec2(0.0f, 1.0f)}, // back top left
         // top
-        Vertex{glm::vec3(-0.5f,  0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 0.0f), glm::vec2(0.0f, 0.0f)},  // top left
-        Vertex{glm::vec3(0.5f,  0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f)},   // top right
-        Vertex{glm::vec3(0.5f,  0.5f, -0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f)},  // back top right
-        Vertex{glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec3(1.0f, 1.0f, 0.0f), glm::vec2(0.0f, 1.0f)}, // back top left
+        Vertex{glm::vec3(-0.5f,  0.5f, 0.5f), glm::vec3(1.0f, 0.94f, 0.56f), glm::vec2(0.0f, 0.0f)},  // top left
+        Vertex{glm::vec3(0.5f,  0.5f, 0.5f), glm::vec3(1.0f, 0.94f, 0.56f), glm::vec2(1.0f, 0.0f)},   // top right
+        Vertex{glm::vec3(0.5f,  0.5f, -0.5f), glm::vec3(1.0f, 0.94f, 0.56f), glm::vec2(1.0f, 1.0f)},  // back top right
+        Vertex{glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec3(1.0f, 0.94f, 0.56f), glm::vec2(0.0f, 1.0f)}, // back top left
         // bottom
-        Vertex{glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)}, // back bottom left
-        Vertex{glm::vec3(0.5f, -0.5f, -0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f)},  // back bottom right
-        Vertex{glm::vec3(0.5f, -0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f)},   // bottom right
-        Vertex{glm::vec3(-0.5f, -0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)},  // bottom left
+        Vertex{glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(1.0f, 0.94f, 0.56f), glm::vec2(0.0f, 0.0f)}, // back bottom left
+        Vertex{glm::vec3(0.5f, -0.5f, -0.5f), glm::vec3(1.0f, 0.94f, 0.56f), glm::vec2(1.0f, 0.0f)},  // back bottom right
+        Vertex{glm::vec3(0.5f, -0.5f, 0.5f), glm::vec3(1.0f, 0.94f, 0.56f), glm::vec2(1.0f, 1.0f)},   // bottom right
+        Vertex{glm::vec3(-0.5f, -0.5f, 0.5f), glm::vec3(1.0f, 0.94f, 0.56f), glm::vec2(0.0f, 1.0f)},  // bottom left
         // back
-        Vertex{glm::vec3(0.5f, -0.5f, -0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)},  // back bottom right
-        Vertex{glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f)}, // back bottom left
-        Vertex{glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec3(1.0f, 1.0f, 0.0f), glm::vec2(1.0f, 1.0f)}, // back top left
-        Vertex{glm::vec3(0.5f,  0.5f, -0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)}   // back top right
+        Vertex{glm::vec3(0.5f, -0.5f, -0.5f), glm::vec3(1.0f, 0.94f, 0.56f), glm::vec2(0.0f, 0.0f)},  // back bottom right
+        Vertex{glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(1.0f, 0.94f, 0.56f), glm::vec2(1.0f, 0.0f)}, // back bottom left
+        Vertex{glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec3(1.0f, 0.94f, 0.56f), glm::vec2(1.0f, 1.0f)}, // back top left
+        Vertex{glm::vec3(0.5f,  0.5f, -0.5f), glm::vec3(1.0f, 0.94f, 0.56f), glm::vec2(0.0f, 1.0f)}   // back top right
     };
 
     std::vector<GLuint> light_indices = {
@@ -267,12 +267,7 @@ void Window::main_loop()
         shader_program.set_uniform_matrix4("model", model);
         shader_program.set_uniform_matrix4("camera", projection * view);
 
-        m1.draw(shader_program);
-
-        model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(0.0f, 5.0f, -1.0f));
-
-        // m2.draw(shader_program);
+        m2.draw(shader_program);
 
         model = glm::mat4(1.0f);
         model = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));
