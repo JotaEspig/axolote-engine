@@ -36,12 +36,15 @@ void Mesh::draw(Shader &shader)
 {
     shader.activate();
     vao.bind();
+    if (textures.size() > 0)
+        shader.set_uniform_int("is_tex_set", 1);
 
     size_t i = 0;
     for (auto e : textures)
     {
-        std::string str = "tex" + std::to_string(i);
-        shader.set_uniform_int(str.c_str(), i);
+        int slot = e.slot - GL_TEXTURE0;
+        std::string tex_uniform = "tex" + std::to_string(i);
+        shader.set_uniform_int(tex_uniform.c_str(), slot);
         e.activate();
         e.bind();
         ++i;
