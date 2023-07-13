@@ -36,8 +36,11 @@ void Mesh::draw(Shader &shader)
 {
     shader.activate();
     vao.bind();
+
     if (textures.size() > 0)
         shader.set_uniform_int("is_tex_set", 1);
+    else
+        shader.set_uniform_int("is_tex_set", 0);
 
     size_t i = 0;
     for (auto e : textures)
