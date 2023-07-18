@@ -6,6 +6,8 @@ in vec2 tex_coord;
 in vec3 normal;
 in vec3 current_pos;
 
+uniform float ambient;
+uniform vec3 camera_pos;
 uniform vec4 light_color;
 uniform vec3 light_pos;
 uniform bool is_light_color_set;
@@ -25,7 +27,14 @@ void main()
         vec3 normal = normalize(normal);
         vec3 light_direction = normalize(light_pos - current_pos);
         float diffuse = max(dot(normal, light_direction), 0.0f);
-        temp_frag_color *= light_color * diffuse;
+
+        float specular_light = 0.5f;
+        vec3 view_direction = normalize(camera_pos - current_pos);
+        vec3 reflection_direction = reflect(-light_direction, normal);
+        float spec_amount = pow(max(dot(view_direction, reflection_direction), 0.0f), 8);
+        float specular = spec_amount * specular_light;
+
+        temp_frag_color *= light_color * (ambient + diffuse + specular);
     }
 
     FragColor = temp_frag_color;
