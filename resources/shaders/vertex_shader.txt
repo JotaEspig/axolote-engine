@@ -18,5 +18,8 @@ void main()
     gl_Position = camera * vec4(current_pos, 1.0f);
     color = aColor;
     tex_coord = aTex;
-    normal = aNormal;
+
+    // These operations seems to fix the "rotation problem"
+    // but it's considered costly
+    normal = mat3(transpose(inverse(model))) * aNormal;
 }
