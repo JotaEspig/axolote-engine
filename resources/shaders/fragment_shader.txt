@@ -3,7 +3,12 @@ out vec4 FragColor;
 
 in vec3 color;
 in vec2 tex_coord;
+in vec3 normal;
+in vec3 current_pos;
 
+uniform vec4 light_color;
+uniform vec3 light_pos;
+uniform bool is_light_color_set;
 uniform sampler2D tex0;
 uniform sampler2D tex1;
 uniform bool is_tex_set;
@@ -15,5 +20,13 @@ void main()
     {
         temp_frag_color = mix(texture(tex0, tex_coord), texture(tex1, tex_coord), 0.5f);
     }
+    if (is_light_color_set)
+    {
+        vec3 normal = normalize(normal);
+        vec3 light_direction = normalize(light_pos - current_pos);
+        float diffuse = max(dot(normal, light_direction), 0.0f);
+        temp_frag_color *= light_color * diffuse;
+    }
+
     FragColor = temp_frag_color;
 }
