@@ -50,6 +50,8 @@ void Camera::downward()
 
 void Camera::move_vision(float x, float y, float width, float height)
 {
+    // TODO Fix error in camera when looking totally down. The camera gets stuck in that angle
+    // Same for when looking totally up
     if (first_click)
         first_click = false;
 
