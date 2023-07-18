@@ -247,6 +247,7 @@ void Window::main_loop()
     Mesh m2(light_vertices, light_indices, {});
 
     shader_program.activate();
+    glUniform1f(glGetUniformLocation(shader_program.id, "ambient"), 0.03f);
     glUniform4f(glGetUniformLocation(shader_program.id, "light_color"), 1.0f, 0.94f, 0.56f, 1.0f);
     glUniform3f(glGetUniformLocation(shader_program.id, "light_pos"), 0.0f, 0.0f, -1.0f);
 
@@ -259,17 +260,17 @@ void Window::main_loop()
         glClearColor(_color.r, _color.g, _color.b, _color.opacity);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        glUniform3f(glGetUniformLocation(shader_program.id, "camera_pos"), camera.pos.x, camera.pos.y, camera.pos.z);
+
         double now = glfwGetTime();
 
         glm::mat4 view = glm::lookAt(camera.pos, camera.pos + camera.orientation, camera.up);
         glm::mat4 projection = glm::perspective(glm::radians(camera.fov), (float)width() / height(), 0.1f, 100.0f);
 
         glm::mat4 model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
-        model = glm::rotate(model, (float)now, glm::vec3(0.5f, 1.0f, 0.0f));
 
-        shader_program.set_uniform_matrix4("model", model);
         shader_program.set_uniform_matrix4("camera", projection * view);
+        shader_program.set_uniform_matrix4("model", model);
         // disable light normals for the light emissor
         glUniform1i(glGetUniformLocation(shader_program.id, "is_light_color_set"), 0);
 
@@ -277,9 +278,10 @@ void Window::main_loop()
 
         model = glm::mat4(1.0f);
         model = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));
-        model = glm::translate(model, glm::vec3(8.0f * sin(now), 0.0f, -3.0f + 8.0f * cos(now)));
-        model = glm::rotate(model, glm::radians(20.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-        model = glm::rotate(model, (float)now, glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::translate(model, glm::vec3(8.0f * sin(now / 3), 0.0f, -3.0f + 8.0f * cos(now / 3)));
+        model = glm::rotate(model, glm::radians(23.5f), glm::vec3(0.0f, 0.0f, 1.0f));
+        model = glm::rotate(model, (float)now / 2, glm::vec3(0.0f, 1.0f, 0.0f));
+
         shader_program.set_uniform_matrix4("model", model);
         // enable light normals for light receivers
         glUniform1i(glGetUniformLocation(shader_program.id, "is_light_color_set"), 1);
