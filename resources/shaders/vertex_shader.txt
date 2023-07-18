@@ -14,9 +14,9 @@ uniform mat4 camera;
 
 void main()
 {
-    gl_Position = camera * model * vec4(aPos, 1.0f);
+    current_pos = vec3(model * vec4(aPos, 1.0f));
+    gl_Position = camera * vec4(current_pos, 1.0f);
     color = aColor;
     tex_coord = aTex;
     normal = aNormal;
-    current_pos = vec3(camera * model * vec4(aPos, 1.0f));
 }
