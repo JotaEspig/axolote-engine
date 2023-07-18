@@ -4,6 +4,7 @@
 #include <axolote/vao.hpp>
 #include <axolote/vbo.hpp>
 #include <axolote/ebo.hpp>
+#include <axolote/structs.hpp>
 
 using namespace axolote;
 

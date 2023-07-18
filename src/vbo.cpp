@@ -3,6 +3,7 @@
 #include <glad/glad.h>
 
 #include <axolote/vbo.hpp>
+#include <axolote/structs.hpp>
 
 using namespace axolote;
 
