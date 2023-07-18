@@ -5,15 +5,10 @@
 #include <GL/gl.h>
 #include <glm/glm.hpp>
 
+#include <axolote/structs.hpp>
+
 namespace axolote
 {
-    struct Vertex
-    {
-        glm::vec3 position;
-        glm::vec3 color;
-        glm::vec2 tex_UV;
-    };
-
     class VBO
     {
     public:
