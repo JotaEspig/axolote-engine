@@ -15,6 +15,7 @@ namespace axolote
         GLenum type;
         GLuint unit;
         bool loaded;
+        Texture();
         Texture(const char *image, GLenum _type, GLuint _unit, GLenum format,
                 GLenum pixel_type);
 

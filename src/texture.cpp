@@ -6,6 +6,11 @@
 
 using namespace axolote;
 
+Texture::Texture()
+{
+    loaded = false;
+}
+
 Texture::Texture(const char *texture_file, GLenum _type, GLuint _unit, GLenum format,
                  GLenum pixel_type)
 {
