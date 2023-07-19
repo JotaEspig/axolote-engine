@@ -1,7 +1,5 @@
 #include <iostream>
 #include <string>
-#include <fstream>
-#include <sstream>
 #include <cerrno>
 
 #include <glad/glad.h>
@@ -9,23 +7,9 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include <axolote/shader.hpp>
+#include <axolote/utils.hpp>
 
 using namespace axolote;
-
-static std::string get_file_content(const char *filename)
-{
-    std::ifstream in(filename, std::ios::binary);
-    if (!in)
-        throw (errno);
-
-    std::string content;
-    in.seekg(0, std::ios::end);
-    content.resize(in.tellg());
-    in.seekg(0, std::ios::beg);
-    in.read(&content[0], content.size());
-    in.close();
-    return content;
-}
 
 static GLint check_shader_compilation(GLuint shader_id, char *log, size_t size)
 {
