@@ -12,12 +12,11 @@ namespace axolote
     {
     public:
         GLuint id;
-        GLenum type;
+        const char *type;
         GLuint unit;
         bool loaded;
         Texture();
-        Texture(const char *image, GLenum _type, GLuint _unit, GLenum format,
-                GLenum pixel_type);
+        Texture(const char *texture_filename, const char *tex_type, GLuint _unit);
 
         void activate();
         void bind();

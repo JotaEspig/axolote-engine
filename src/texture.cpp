@@ -11,11 +11,10 @@ Texture::Texture()
     loaded = false;
 }
 
-Texture::Texture(const char *texture_file, GLenum _type, GLuint _unit, GLenum format,
-                 GLenum pixel_type)
+Texture::Texture(const char *texture_filename, const char *tex_type, GLuint _unit)
 {
     loaded = false;
-    type = _type;
+    type = tex_type;
     unit = _unit;
 
     stbi_set_flip_vertically_on_load(true);
@@ -29,14 +28,24 @@ Texture::Texture(const char *texture_file, GLenum _type, GLuint _unit, GLenum fo
     activate();
     bind();
 
-    glTexParameteri(type, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(type, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(type, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(type, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-    glTexImage2D(type, 0, format, width_img, height_img, 0, format, pixel_type, data);
+    if (num_channels_img == 4)
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width_img, height_img, 0,
+                     GL_RGBA, GL_UNSIGNED_BYTE, data);
+    if (num_channels_img == 3)
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width_img, height_img, 0,
+                     GL_RGB, GL_UNSIGNED_BYTE, data);
+    if (num_channels_img == 1)
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width_img, height_img, 0,
+                     GL_RED, GL_UNSIGNED_BYTE, data);
+    else
+        throw std::invalid_argument("Texture type recognition failed");
 
-    glGenerateMipmap(type);
+    glGenerateMipmap(GL_TEXTURE_2D);
 
     stbi_image_free(data);
     unbind();
@@ -50,12 +59,12 @@ void Texture::activate()
 
 void Texture::bind()
 {
-    glBindTexture(type, id);
+    glBindTexture(GL_TEXTURE_2D, id);
 }
 
 void Texture::unbind()
 {
-    glBindTexture(type, 0);
+    glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void Texture::destroy()
