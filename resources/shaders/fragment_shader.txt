@@ -12,7 +12,6 @@ uniform vec4 light_color;
 uniform vec3 light_pos;
 uniform bool is_light_color_set;
 uniform sampler2D tex0;
-uniform sampler2D tex1;
 uniform bool is_tex_set;
 
 void main()
@@ -20,7 +19,7 @@ void main()
     vec4 temp_frag_color = vec4(color, 1.0f);
     if (is_tex_set)
     {
-        temp_frag_color = mix(texture(tex0, tex_coord), texture(tex1, tex_coord), 0.5f);
+        temp_frag_color = texture(tex0, tex_coord);
     }
     if (is_light_color_set)
     {
