@@ -6,12 +6,12 @@
 
 using namespace axolote;
 
-Texture::Texture(const char *texture_file, GLenum _type, GLenum _slot, GLenum format,
+Texture::Texture(const char *texture_file, GLenum _type, GLuint _unit, GLenum format,
                  GLenum pixel_type)
 {
     loaded = false;
     type = _type;
-    slot = _slot;
+    unit = _unit;
 
     stbi_set_flip_vertically_on_load(true);
     int width_img, height_img, num_channels_img;
@@ -40,7 +40,7 @@ Texture::Texture(const char *texture_file, GLenum _type, GLenum _slot, GLenum fo
 
 void Texture::activate()
 {
-    glActiveTexture(slot);
+    glActiveTexture(GL_TEXTURE0 + unit);
 }
 
 void Texture::bind()

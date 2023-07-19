@@ -47,9 +47,8 @@ void Mesh::draw(Shader &shader)
     size_t i = 0;
     for (auto e : textures)
     {
-        int slot = e.slot - GL_TEXTURE0;
         std::string tex_uniform = "tex" + std::to_string(i);
-        shader.set_uniform_int(tex_uniform.c_str(), slot);
+        shader.set_uniform_int(tex_uniform.c_str(), e.unit);
         e.activate();
         e.bind();
         ++i;
