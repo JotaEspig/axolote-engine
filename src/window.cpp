@@ -176,10 +176,10 @@ void Window::main_loop()
     };
 
     std::vector<Vertex> floor_v = {
-        Vertex{glm::vec3(-0.5f, 0.0f, 0.5f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)},
-        Vertex{glm::vec3(0.5f, 0.0f, 0.5f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f)},
-        Vertex{glm::vec3(-0.5f, 0.0f, -0.5f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(1.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)},
-        Vertex{glm::vec3(0.5f, 0.0f, -0.5f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f)},
+        Vertex{glm::vec3(-1.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)},
+        Vertex{glm::vec3(1.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f)},
+        Vertex{glm::vec3(-1.0f, 0.0f, -1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(1.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)},
+        Vertex{glm::vec3(1.0f, 0.0f, -1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f)},
     };
 
     std::vector<GLuint> floor_indices = {
@@ -272,7 +272,7 @@ void Window::main_loop()
     shader_program.activate();
     shader_program.set_uniform_float("ambient", 0.05f);
     shader_program.set_uniform_float4("light_color", 1.0f, 1.0f, 1.0f, 1.0f);
-    shader_program.set_uniform_float3("light_pos", 0.0f, 0.0f, -1.0f);
+    shader_program.set_uniform_float3("light_pos", 0.0f, 0.0f, 0.0f);
 
     glEnable(GL_DEPTH_TEST);
     while (!glfwWindowShouldClose(window))
@@ -291,6 +291,7 @@ void Window::main_loop()
         glm::mat4 projection = glm::perspective(glm::radians(camera.fov), (float)width() / height(), 0.1f, 100.0f);
 
         glm::mat4 model = glm::mat4(1.0f);
+        model = glm::scale(model, glm::vec3(0.25f, 0.25f, 0.25f));
 
         shader_program.set_uniform_matrix4("camera", projection * view);
         shader_program.set_uniform_matrix4("model", model);
@@ -312,8 +313,7 @@ void Window::main_loop()
         m1.draw(shader_program);
 
         model = glm::mat4(1.0f);
-        model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));
-        model = glm::translate(model, glm::vec3(0.0f, -0.5f - 1.5f * fabs(sin(now) / 2), 0.0f));
+        model = glm::translate(model, glm::vec3(0.0f, -0.5f, 0.0f));
 
         shader_program.set_uniform_matrix4("model", model);
         shader_program.set_uniform_int("is_light_color_set", 1);
