@@ -233,13 +233,13 @@ void Window::main_loop()
     Shader shader_program("./resources/shaders/vertex_shader.txt",
                           "./resources/shaders/fragment_shader.txt");
 
-    Texture tex0("./resources/textures/wall.jpg", GL_TEXTURE_2D, GL_TEXTURE0,
-                 GL_RGB, GL_UNSIGNED_BYTE);
+    Texture tex0("./resources/textures/wall.jpg", GL_TEXTURE_2D, 0, GL_RGB,
+                 GL_UNSIGNED_BYTE);
     if (!tex0.loaded)
         std::cerr << "Error when loading texture" << std::endl;
 
-    Texture tex1("./resources/textures/mano.jpg", GL_TEXTURE_2D, GL_TEXTURE1,
-                 GL_RGB, GL_UNSIGNED_BYTE);
+    Texture tex1("./resources/textures/mano.jpg", GL_TEXTURE_2D, 1, GL_RGB,
+                 GL_UNSIGNED_BYTE);
     if (!tex1.loaded)
         std::cerr << "Error when loading texture" << std::endl;
 
