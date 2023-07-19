@@ -245,23 +245,19 @@ void Window::main_loop()
     Shader shader_program("./resources/shaders/vertex_shader.txt",
                           "./resources/shaders/fragment_shader.txt");
 
-    Texture tex0("./resources/textures/wall.jpg", GL_TEXTURE_2D, 0, GL_RGB,
-                 GL_UNSIGNED_BYTE);
+    Texture tex0("./resources/textures/wall.jpg", "", 0);
     if (!tex0.loaded)
         std::cerr << "Error when loading texture" << std::endl;
 
-    Texture tex1("./resources/textures/mano.jpg", GL_TEXTURE_2D, 1, GL_RGB,
-                 GL_UNSIGNED_BYTE);
+    Texture tex1("./resources/textures/mano.jpg", "", 1);
     if (!tex1.loaded)
         std::cerr << "Error when loading texture" << std::endl;
 
-    Texture tex2("./resources/textures/planks.png", GL_TEXTURE_2D, 2, GL_RGBA,
-                 GL_UNSIGNED_BYTE);
+    Texture tex2("./resources/textures/planks.png", "", 2);
     if (!tex2.loaded)
         std::cerr << "Error when loading texture" << std::endl;
 
-    Texture floor_spec("./resources/textures/planksSpec.png", GL_TEXTURE_2D, 3,
-                       GL_RED, GL_UNSIGNED_BYTE);
+    Texture floor_spec("./resources/textures/planksSpec.png", "", 3);
     if (!floor_spec.loaded)
         std::cerr << "Error when loading texture" << std::endl;
 
