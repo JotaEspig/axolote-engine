@@ -31,7 +31,7 @@ void main()
         vec3 light_direction = normalize(light_pos - current_pos);
         float diffuse = max(dot(normal, light_direction), 0.0f);
 
-        float specular_light = 0.5f;
+        float specular_light = 0.75f;
         vec3 view_direction = normalize(camera_pos - current_pos);
         vec3 reflection_direction = reflect(-light_direction, normal);
         float spec_amount = pow(max(dot(view_direction, reflection_direction), 0.0f), 16);
