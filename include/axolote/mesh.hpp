@@ -16,13 +16,14 @@ namespace axolote
     public:
         std::vector<Vertex> vertices;
         std::vector<GLuint> indices;
-        std::vector<Texture> textures;
+        Texture texture;
+        Texture specular_map;
         VAO vao;
         VBO vbo;
         EBO ebo;
 
         Mesh(std::vector<Vertex> _vertices, std::vector<GLuint> _indices,
-             std::vector<Texture> _textures);
+             Texture _texture = Texture(), Texture _specular_map = Texture());
         ~Mesh();
 
         void draw(Shader &shader);

@@ -9,11 +9,12 @@
 using namespace axolote;
 
 Mesh::Mesh(std::vector<Vertex> _vertices, std::vector<GLuint> _indices,
-     std::vector<Texture> _textures)
+     Texture _texture, Texture _specular_map)
 {
     vertices = _vertices;
     indices = _indices;
-    textures = _textures;
+    texture = _texture;
+    specular_map = _specular_map;
 
 
     vao.bind();
@@ -39,20 +40,26 @@ void Mesh::draw(Shader &shader)
     shader.activate();
     vao.bind();
 
-    if (textures.size() > 0)
+    if (texture.loaded)
+    {
         shader.set_uniform_int("is_tex_set", 1);
+        shader.set_uniform_int("tex", texture.unit);
+    }
     else
         shader.set_uniform_int("is_tex_set", 0);
 
-    size_t i = 0;
-    for (auto e : textures)
+    if (specular_map.loaded)
     {
-        std::string tex_uniform = "tex" + std::to_string(i);
-        shader.set_uniform_int(tex_uniform.c_str(), e.unit);
-        e.activate();
-        e.bind();
-        ++i;
+        shader.set_uniform_int("is_specular_map_set", 1);
+        shader.set_uniform_int("tex_specular_map", specular_map.unit);
     }
+    else
+        shader.set_uniform_int("is_specular_map_set", 0);
+
+    texture.activate();
+    texture.bind();
+    specular_map.activate();
+    specular_map.bind();
 
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 
