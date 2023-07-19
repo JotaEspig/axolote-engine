@@ -175,38 +175,50 @@ void Window::main_loop()
         20, 22, 23
     };
 
+    std::vector<Vertex> floor_v = {
+        Vertex{glm::vec3(-0.5f, 0.0f, 0.5f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)},
+        Vertex{glm::vec3(0.5f, 0.0f, 0.5f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f)},
+        Vertex{glm::vec3(-0.5f, 0.0f, -0.5f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(1.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)},
+        Vertex{glm::vec3(0.5f, 0.0f, -0.5f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f)},
+    };
+
+    std::vector<GLuint> floor_indices = {
+        0, 1, 2,
+        1, 2, 3
+    };
+
     std::vector<Vertex> light_vertices =
     {
         // front
-        Vertex{glm::vec3(0.5f,  0.5f, 0.5f), glm::vec3(1.0f, 0.94f, 0.56f), glm::vec2(1.0f, 1.0f)},   // top right
-        Vertex{glm::vec3(0.5f, -0.5f, 0.5f), glm::vec3(1.0f, 0.94f, 0.56f), glm::vec2(1.0f, 0.0f)},   // bottom right
-        Vertex{glm::vec3(-0.5f, -0.5f, 0.5f), glm::vec3(1.0f, 0.94f, 0.56f), glm::vec2(0.0f, 0.0f)},  // bottom left
-        Vertex{glm::vec3(-0.5f,  0.5f, 0.5f), glm::vec3(1.0f, 0.94f, 0.56f), glm::vec2(0.0f, 1.0f)},  // top left
+        Vertex{glm::vec3(0.5f,  0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f)},   // top right
+        Vertex{glm::vec3(0.5f, -0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f)},   // bottom right
+        Vertex{glm::vec3(-0.5f, -0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)},  // bottom left
+        Vertex{glm::vec3(-0.5f,  0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)},  // top left
         // right
-        Vertex{glm::vec3(0.5f, -0.5f, 0.5f), glm::vec3(1.0f, 0.94f, 0.56f), glm::vec2(0.0f, 0.0f)},   // bottom right
-        Vertex{glm::vec3(0.5f, -0.5f, -0.5f), glm::vec3(1.0f, 0.94f, 0.56f), glm::vec2(1.0f, 0.0f)},  // back bottom right
-        Vertex{glm::vec3(0.5f,  0.5f, -0.5f), glm::vec3(1.0f, 0.94f, 0.56f), glm::vec2(1.0f, 1.0f)},  // back top right
-        Vertex{glm::vec3(0.5f,  0.5f, 0.5f), glm::vec3(1.0f, 0.94f, 0.56f), glm::vec2(0.0f, 1.0f)},   // top right
+        Vertex{glm::vec3(0.5f, -0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)},   // bottom right
+        Vertex{glm::vec3(0.5f, -0.5f, -0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f)},  // back bottom right
+        Vertex{glm::vec3(0.5f,  0.5f, -0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f)},  // back top right
+        Vertex{glm::vec3(0.5f,  0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)},   // top right
         // left
-        Vertex{glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(1.0f, 0.94f, 0.56f), glm::vec2(0.0f, 0.0f)}, // back bottom left
-        Vertex{glm::vec3(-0.5f, -0.5f, 0.5f), glm::vec3(1.0f, 0.94f, 0.56f), glm::vec2(1.0f, 0.0f)},  // bottom left
-        Vertex{glm::vec3(-0.5f,  0.5f, 0.5f), glm::vec3(1.0f, 0.94f, 0.56f), glm::vec2(1.0f, 1.0f)},  // top left
-        Vertex{glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec3(1.0f, 0.94f, 0.56f), glm::vec2(0.0f, 1.0f)}, // back top left
+        Vertex{glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)}, // back bottom left
+        Vertex{glm::vec3(-0.5f, -0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f)},  // bottom left
+        Vertex{glm::vec3(-0.5f,  0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f)},  // top left
+        Vertex{glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)}, // back top left
         // top
-        Vertex{glm::vec3(-0.5f,  0.5f, 0.5f), glm::vec3(1.0f, 0.94f, 0.56f), glm::vec2(0.0f, 0.0f)},  // top left
-        Vertex{glm::vec3(0.5f,  0.5f, 0.5f), glm::vec3(1.0f, 0.94f, 0.56f), glm::vec2(1.0f, 0.0f)},   // top right
-        Vertex{glm::vec3(0.5f,  0.5f, -0.5f), glm::vec3(1.0f, 0.94f, 0.56f), glm::vec2(1.0f, 1.0f)},  // back top right
-        Vertex{glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec3(1.0f, 0.94f, 0.56f), glm::vec2(0.0f, 1.0f)}, // back top left
+        Vertex{glm::vec3(-0.5f,  0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)},  // top left
+        Vertex{glm::vec3(0.5f,  0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f)},   // top right
+        Vertex{glm::vec3(0.5f,  0.5f, -0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f)},  // back top right
+        Vertex{glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)}, // back top left
         // bottom
-        Vertex{glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(1.0f, 0.94f, 0.56f), glm::vec2(0.0f, 0.0f)}, // back bottom left
-        Vertex{glm::vec3(0.5f, -0.5f, -0.5f), glm::vec3(1.0f, 0.94f, 0.56f), glm::vec2(1.0f, 0.0f)},  // back bottom right
-        Vertex{glm::vec3(0.5f, -0.5f, 0.5f), glm::vec3(1.0f, 0.94f, 0.56f), glm::vec2(1.0f, 1.0f)},   // bottom right
-        Vertex{glm::vec3(-0.5f, -0.5f, 0.5f), glm::vec3(1.0f, 0.94f, 0.56f), glm::vec2(0.0f, 1.0f)},  // bottom left
+        Vertex{glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)}, // back bottom left
+        Vertex{glm::vec3(0.5f, -0.5f, -0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f)},  // back bottom right
+        Vertex{glm::vec3(0.5f, -0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f)},   // bottom right
+        Vertex{glm::vec3(-0.5f, -0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)},  // bottom left
         // back
-        Vertex{glm::vec3(0.5f, -0.5f, -0.5f), glm::vec3(1.0f, 0.94f, 0.56f), glm::vec2(0.0f, 0.0f)},  // back bottom right
-        Vertex{glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(1.0f, 0.94f, 0.56f), glm::vec2(1.0f, 0.0f)}, // back bottom left
-        Vertex{glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec3(1.0f, 0.94f, 0.56f), glm::vec2(1.0f, 1.0f)}, // back top left
-        Vertex{glm::vec3(0.5f,  0.5f, -0.5f), glm::vec3(1.0f, 0.94f, 0.56f), glm::vec2(0.0f, 1.0f)}   // back top right
+        Vertex{glm::vec3(0.5f, -0.5f, -0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)},  // back bottom right
+        Vertex{glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f)}, // back bottom left
+        Vertex{glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f)}, // back top left
+        Vertex{glm::vec3(0.5f,  0.5f, -0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)}   // back top right
     };
 
     std::vector<GLuint> light_indices = {
@@ -243,12 +255,23 @@ void Window::main_loop()
     if (!tex1.loaded)
         std::cerr << "Error when loading texture" << std::endl;
 
-    Mesh m1(vertices, indices, {tex0, tex1});
-    Mesh m2(light_vertices, light_indices, {});
+    Texture tex2("./resources/textures/planks.png", GL_TEXTURE_2D, 2, GL_RGBA,
+                 GL_UNSIGNED_BYTE);
+    if (!tex2.loaded)
+        std::cerr << "Error when loading texture" << std::endl;
+
+    Texture floor_spec("./resources/textures/planksSpec.png", GL_TEXTURE_2D, 3,
+                       GL_RED, GL_UNSIGNED_BYTE);
+    if (!floor_spec.loaded)
+        std::cerr << "Error when loading texture" << std::endl;
+
+    Mesh m1(vertices, indices, tex0);
+    Mesh m2(light_vertices, light_indices);
+    Mesh floor(floor_v, floor_indices, tex2, floor_spec);
 
     shader_program.activate();
     shader_program.set_uniform_float("ambient", 0.05f);
-    shader_program.set_uniform_float4("light_color", 1.0f, 0.94f, 0.56f, 1.0f);
+    shader_program.set_uniform_float4("light_color", 1.0f, 1.0f, 1.0f, 1.0f);
     shader_program.set_uniform_float3("light_pos", 0.0f, 0.0f, -1.0f);
 
     glEnable(GL_DEPTH_TEST);
@@ -287,6 +310,15 @@ void Window::main_loop()
         shader_program.set_uniform_int("is_light_color_set", 1);
 
         m1.draw(shader_program);
+
+        model = glm::mat4(1.0f);
+        model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));
+        model = glm::translate(model, glm::vec3(0.0f, -0.5f - 1.5f * fabs(sin(now) / 2), 0.0f));
+
+        shader_program.set_uniform_matrix4("model", model);
+        shader_program.set_uniform_int("is_light_color_set", 1);
+
+        floor.draw(shader_program);
 
         glfwSwapBuffers(window);
     }
