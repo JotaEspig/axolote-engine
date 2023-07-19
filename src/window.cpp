@@ -247,9 +247,9 @@ void Window::main_loop()
     Mesh m2(light_vertices, light_indices, {});
 
     shader_program.activate();
-    glUniform1f(glGetUniformLocation(shader_program.id, "ambient"), 0.03f);
-    glUniform4f(glGetUniformLocation(shader_program.id, "light_color"), 1.0f, 0.94f, 0.56f, 1.0f);
-    glUniform3f(glGetUniformLocation(shader_program.id, "light_pos"), 0.0f, 0.0f, -1.0f);
+    shader_program.set_uniform_float("ambient", 0.05f);
+    shader_program.set_uniform_float4("light_color", 1.0f, 0.94f, 0.56f, 1.0f);
+    shader_program.set_uniform_float3("light_pos", 0.0f, 0.0f, -1.0f);
 
     glEnable(GL_DEPTH_TEST);
     while (!glfwWindowShouldClose(window))
@@ -260,7 +260,7 @@ void Window::main_loop()
         glClearColor(_color.r, _color.g, _color.b, _color.opacity);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        glUniform3f(glGetUniformLocation(shader_program.id, "camera_pos"), camera.pos.x, camera.pos.y, camera.pos.z);
+        shader_program.set_uniform_float3("camera_pos", camera.pos.x, camera.pos.y, camera.pos.z);
 
         double now = glfwGetTime();
 
@@ -272,7 +272,7 @@ void Window::main_loop()
         shader_program.set_uniform_matrix4("camera", projection * view);
         shader_program.set_uniform_matrix4("model", model);
         // disable light normals for the light emissor
-        glUniform1i(glGetUniformLocation(shader_program.id, "is_light_color_set"), 0);
+        shader_program.set_uniform_int("is_light_color_set", 0);
 
         m2.draw(shader_program);
 
@@ -284,7 +284,7 @@ void Window::main_loop()
 
         shader_program.set_uniform_matrix4("model", model);
         // enable light normals for light receivers
-        glUniform1i(glGetUniformLocation(shader_program.id, "is_light_color_set"), 1);
+        shader_program.set_uniform_int("is_light_color_set", 1);
 
         m1.draw(shader_program);
 
