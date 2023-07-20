@@ -13,17 +13,16 @@ uniform vec4 light_color;
 uniform vec3 light_pos;
 uniform bool is_light_color_set;
 
-uniform sampler2D tex;
-uniform sampler2D tex_specular_map;
+uniform sampler2D diffuse0;
+uniform sampler2D specular0;
 uniform bool is_tex_set;
-uniform bool is_specular_map_set;
 
 void main()
 {
     vec4 temp_frag_color = vec4(color, 1.0f);
     if (is_tex_set)
     {
-        temp_frag_color = texture(tex, tex_coord);
+        temp_frag_color = texture(diffuse0, tex_coord);
     }
     if (is_light_color_set)
     {
@@ -37,14 +36,8 @@ void main()
         float spec_amount = pow(max(dot(view_direction, reflection_direction), 0.0f), 16);
         float specular = spec_amount * specular_light;
 
-        if (is_specular_map_set)
-        {
-            temp_frag_color *= light_color * (ambient + diffuse) + texture(tex_specular_map, tex_coord).r * specular;
-        }
-        else
-        {
-            temp_frag_color *= light_color * (ambient + diffuse + specular);
-        }
+        temp_frag_color = (texture(diffuse0, tex_coord) * (diffuse + ambient)
+                           + texture(specular0, tex_coord).r * specular) * light_color;
     }
 
     FragColor = temp_frag_color;
