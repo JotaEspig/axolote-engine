@@ -245,21 +245,24 @@ void Window::main_loop()
     Shader shader_program("./resources/shaders/vertex_shader.txt",
                           "./resources/shaders/fragment_shader.txt");
 
-    Texture tex0("./resources/textures/wall.jpg", "", 0);
+    Texture tex0("./resources/textures/wall.jpg", "diffuse", 0);
     if (!tex0.loaded)
         std::cerr << "Error when loading texture" << std::endl;
 
-    Texture tex1("./resources/textures/planks.png", "", 2);
+    Texture tex1("./resources/textures/planks.png", "diffuse", 2);
     if (!tex1.loaded)
         std::cerr << "Error when loading texture" << std::endl;
 
-    Texture floor_spec("./resources/textures/planksSpec.png", "", 3);
+    Texture floor_spec("./resources/textures/planksSpec.png", "specular", 3);
     if (!floor_spec.loaded)
         std::cerr << "Error when loading texture" << std::endl;
 
-    Mesh body(vertices, indices, tex0);
-    Mesh sun(light_vertices, light_indices);
-    Mesh floor(floor_v, floor_indices, tex1, floor_spec);
+    Mesh body(vertices, indices, {tex0});
+    Mesh sun(light_vertices, light_indices, {});
+    Mesh floor(floor_v, floor_indices, {tex1, floor_spec});
+    body.is_simple_mesh = true;
+    sun.is_simple_mesh = true;
+    floor.is_simple_mesh = true;
 
     shader_program.activate();
     shader_program.set_uniform_float("ambient", 0.05f);
@@ -286,11 +289,10 @@ void Window::main_loop()
         model = glm::scale(model, glm::vec3(0.25f, 0.25f, 0.25f));
 
         shader_program.set_uniform_matrix4("camera", projection * view);
-        shader_program.set_uniform_matrix4("model", model);
         // disable light normals for the light emissor
         shader_program.set_uniform_int("is_light_color_set", 0);
 
-        sun.draw(shader_program);
+        sun.draw(shader_program, model);
 
         model = glm::mat4(1.0f);
         model = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));
@@ -298,19 +300,17 @@ void Window::main_loop()
         model = glm::rotate(model, glm::radians(23.5f), glm::vec3(0.0f, 0.0f, 1.0f));
         model = glm::rotate(model, (float)now / 2, glm::vec3(0.0f, 1.0f, 0.0f));
 
-        shader_program.set_uniform_matrix4("model", model);
         // enable light normals for light receivers
         shader_program.set_uniform_int("is_light_color_set", 1);
 
-        body.draw(shader_program);
+        body.draw(shader_program, model);
 
         model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(0.0f, -0.5f, 0.0f));
 
-        shader_program.set_uniform_matrix4("model", model);
         shader_program.set_uniform_int("is_light_color_set", 1);
 
-        floor.draw(shader_program);
+        floor.draw(shader_program, model);
 
         glfwSwapBuffers(window);
     }
