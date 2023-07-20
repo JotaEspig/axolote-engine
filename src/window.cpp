@@ -249,21 +249,17 @@ void Window::main_loop()
     if (!tex0.loaded)
         std::cerr << "Error when loading texture" << std::endl;
 
-    Texture tex1("./resources/textures/mano.jpg", "", 1);
+    Texture tex1("./resources/textures/planks.png", "", 2);
     if (!tex1.loaded)
-        std::cerr << "Error when loading texture" << std::endl;
-
-    Texture tex2("./resources/textures/planks.png", "", 2);
-    if (!tex2.loaded)
         std::cerr << "Error when loading texture" << std::endl;
 
     Texture floor_spec("./resources/textures/planksSpec.png", "", 3);
     if (!floor_spec.loaded)
         std::cerr << "Error when loading texture" << std::endl;
 
-    Mesh m1(vertices, indices, tex0);
-    Mesh m2(light_vertices, light_indices);
-    Mesh floor(floor_v, floor_indices, tex2, floor_spec);
+    Mesh body(vertices, indices, tex0);
+    Mesh sun(light_vertices, light_indices);
+    Mesh floor(floor_v, floor_indices, tex1, floor_spec);
 
     shader_program.activate();
     shader_program.set_uniform_float("ambient", 0.05f);
@@ -294,7 +290,7 @@ void Window::main_loop()
         // disable light normals for the light emissor
         shader_program.set_uniform_int("is_light_color_set", 0);
 
-        m2.draw(shader_program);
+        sun.draw(shader_program);
 
         model = glm::mat4(1.0f);
         model = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));
@@ -306,7 +302,7 @@ void Window::main_loop()
         // enable light normals for light receivers
         shader_program.set_uniform_int("is_light_color_set", 1);
 
-        m1.draw(shader_program);
+        body.draw(shader_program);
 
         model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(0.0f, -0.5f, 0.0f));
