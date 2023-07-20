@@ -1,4 +1,10 @@
 #include <string>
+#include <vector>
+
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/gtx/quaternion.hpp>
 
 #include <axolote/mesh.hpp>
 #include <axolote/vao.hpp>
@@ -9,12 +15,11 @@
 using namespace axolote;
 
 Mesh::Mesh(std::vector<Vertex> _vertices, std::vector<GLuint> _indices,
-     Texture _texture, Texture _specular_map)
+     std::vector<Texture> _textures)
 {
     vertices = _vertices;
     indices = _indices;
-    texture = _texture;
-    specular_map = _specular_map;
+    textures = _textures;
 
     vao.bind();
     vbo = VBO(vertices);
@@ -34,30 +39,46 @@ Mesh::~Mesh()
     destroy();
 }
 
-void Mesh::draw(Shader &shader)
+void Mesh::draw(Shader &shader, glm::mat4 matrix, glm::vec3 translation,
+                glm::quat rotation, glm::vec3 scale)
 {
     shader.activate();
     vao.bind();
 
-    if (texture.loaded)
-    {
+    shader.set_uniform_int("is_simple_mesh", is_simple_mesh);
+
+    if (textures.size() > 0)
         shader.set_uniform_int("is_tex_set", 1);
-        shader.set_uniform_int("tex", texture.unit);
-        texture.activate();
-        texture.bind();
-    }
     else
         shader.set_uniform_int("is_tex_set", 0);
 
-    if (specular_map.loaded)
+    unsigned int num_diffuse = 0;
+    unsigned int num_specular = 0;
+
+    for (size_t i = 0; i < textures.size(); i++)
     {
-        shader.set_uniform_int("is_specular_map_set", 1);
-        shader.set_uniform_int("tex_specular_map", specular_map.unit);
-        specular_map.activate();
-        specular_map.bind();
+        std::string num;
+        std::string type = textures[i].type;
+        if (type == "diffuse")
+            num = std::to_string(num_diffuse++);
+        else if (type == "specular")
+            num = std::to_string(num_specular++);
+
+        shader.set_uniform_int((type + num).c_str(), textures[i].unit);
+        textures[i].activate();
+        textures[i].bind();
     }
-    else
-        shader.set_uniform_int("is_specular_map_set", 0);
+
+    glm::mat4 trans = glm::mat4(1.0f);
+    glm::mat4 rot = glm::mat4(1.0f);
+    glm::mat4 sca = glm::mat4(1.0f);
+    trans = glm::translate(trans, translation);
+    rot = glm::mat4_cast(rotation);
+    sca = glm::scale(sca, scale);
+    shader.set_uniform_matrix4("translation", trans);
+    shader.set_uniform_matrix4("rotation", rot);
+    shader.set_uniform_matrix4("scale", sca);
+    shader.set_uniform_matrix4("model", matrix);
 
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 
