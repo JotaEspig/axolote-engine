@@ -16,7 +16,6 @@ Mesh::Mesh(std::vector<Vertex> _vertices, std::vector<GLuint> _indices,
     texture = _texture;
     specular_map = _specular_map;
 
-
     vao.bind();
     vbo = VBO(vertices);
     ebo = EBO(indices);
@@ -44,6 +43,8 @@ void Mesh::draw(Shader &shader)
     {
         shader.set_uniform_int("is_tex_set", 1);
         shader.set_uniform_int("tex", texture.unit);
+        texture.activate();
+        texture.bind();
     }
     else
         shader.set_uniform_int("is_tex_set", 0);
@@ -52,14 +53,11 @@ void Mesh::draw(Shader &shader)
     {
         shader.set_uniform_int("is_specular_map_set", 1);
         shader.set_uniform_int("tex_specular_map", specular_map.unit);
+        specular_map.activate();
+        specular_map.bind();
     }
     else
         shader.set_uniform_int("is_specular_map_set", 0);
-
-    texture.activate();
-    texture.bind();
-    specular_map.activate();
-    specular_map.bind();
 
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 

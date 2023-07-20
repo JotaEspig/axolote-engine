@@ -1,3 +1,5 @@
+#include <stdexcept>
+
 #include <glad/glad.h>
 #include <stb/stb_image.h>
 
@@ -19,7 +21,7 @@ Texture::Texture(const char *texture_filename, const char *tex_type, GLuint _uni
 
     stbi_set_flip_vertically_on_load(true);
     int width_img, height_img, num_channels_img;
-    unsigned char *data = stbi_load(texture_file, &width_img, &height_img,
+    unsigned char *data = stbi_load(texture_filename, &width_img, &height_img,
                                     &num_channels_img, 0);
     if (!data)
         return;
@@ -36,10 +38,10 @@ Texture::Texture(const char *texture_filename, const char *tex_type, GLuint _uni
     if (num_channels_img == 4)
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width_img, height_img, 0,
                      GL_RGBA, GL_UNSIGNED_BYTE, data);
-    if (num_channels_img == 3)
+    else if (num_channels_img == 3)
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width_img, height_img, 0,
                      GL_RGB, GL_UNSIGNED_BYTE, data);
-    if (num_channels_img == 1)
+    else if (num_channels_img == 1)
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width_img, height_img, 0,
                      GL_RED, GL_UNSIGNED_BYTE, data);
     else
