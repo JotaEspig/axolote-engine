@@ -14,6 +14,7 @@
 #include <axolote/structs.hpp>
 #include <axolote/shader.hpp>
 #include <axolote/texture.hpp>
+#include <axolote/model.hpp>
 #include <axolote/mesh.hpp>
 #include <axolote/vbo.hpp>
 
@@ -120,6 +121,7 @@ void Window::main_loop()
 
     glfwSwapInterval(1);
 
+    /*
     std::vector<Vertex> vertices =
     {
         // front
@@ -242,9 +244,6 @@ void Window::main_loop()
         20, 22, 23
     };
 
-    Shader shader_program("./resources/shaders/vertex_shader.txt",
-                          "./resources/shaders/fragment_shader.txt");
-
     Texture tex0("./resources/textures/wall.jpg", "diffuse", 0);
     if (!tex0.loaded)
         std::cerr << "Error when loading texture" << std::endl;
@@ -263,6 +262,12 @@ void Window::main_loop()
     body.is_simple_mesh = true;
     sun.is_simple_mesh = true;
     floor.is_simple_mesh = true;
+    */
+
+    Model model("./resources/models/sword/scene.gltf");
+
+    Shader shader_program("./resources/shaders/vertex_shader.txt",
+                          "./resources/shaders/fragment_shader.txt");
 
     shader_program.activate();
     shader_program.set_uniform_float("ambient", 0.05f);
@@ -285,10 +290,12 @@ void Window::main_loop()
         glm::mat4 view = glm::lookAt(camera.pos, camera.pos + camera.orientation, camera.up);
         glm::mat4 projection = glm::perspective(glm::radians(camera.fov), (float)width() / height(), 0.1f, 100.0f);
 
+        shader_program.set_uniform_matrix4("camera", projection * view);
+
+        /*
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::scale(model, glm::vec3(0.25f, 0.25f, 0.25f));
 
-        shader_program.set_uniform_matrix4("camera", projection * view);
         // disable light normals for the light emissor
         shader_program.set_uniform_int("is_light_color_set", 0);
 
@@ -311,6 +318,9 @@ void Window::main_loop()
         shader_program.set_uniform_int("is_light_color_set", 1);
 
         floor.draw(shader_program, model);
+        */
+
+        model.draw(shader_program);
 
         glfwSwapBuffers(window);
     }
@@ -318,8 +328,8 @@ void Window::main_loop()
     glDisable(GL_DEPTH_TEST);
 
     shader_program.destroy();
-    tex0.destroy();
-    tex1.destroy();
+    //tex0.destroy();
+    //tex1.destroy();
 }
 
 // GETTERS AND SETTERS

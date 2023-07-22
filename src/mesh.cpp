@@ -1,3 +1,4 @@
+#include <iostream>
 #include <string>
 #include <vector>
 
@@ -80,6 +81,7 @@ void Mesh::draw(Shader &shader, glm::mat4 matrix, glm::vec3 translation,
     shader.set_uniform_matrix4("scale", sca);
     shader.set_uniform_matrix4("model", matrix);
 
+    ebo.bind();
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 
     vao.unbind();
