@@ -19,6 +19,8 @@ TEST_SRC = $(shell find ./$(TEST_DIR) -name "*.cpp")
 TEST_OBJ = $(patsubst ./$(TEST_DIR)/%.cpp, ./$(OBJ_DIR)/%.o, $(TEST_SRC))
 TEST_TARGET_DIR = $(TEST_DIR)/bin
 
+DEBUG_TOOL = gdb
+
 $(TARGET): dir $(OBJ) $(OBJ_EXTERNAL)
 	@printf "\e[1;33m==== Compiling library ====\e[0m\n"
 	$(CC) -shared -o ./$(TARGET_DIR)/$(TARGET) $(OBJ) $(OBJ_EXTERNAL) $(CC_FLAGS)
@@ -26,7 +28,17 @@ $(TARGET): dir $(OBJ) $(OBJ_EXTERNAL)
 
 debug: CC_FLAGS += -g3 -fsanitize=address,undefined
 debug: CC_TEST_FLAGS += -g3 -fsanitize=address,undefined
-debug: test
+debug: clean $(TARGET)
+	@printf "\e[1;33m==== Compiling tests ====\e[0m\n"
+	$(CC) -c $(TEST_SRC) $(CC_TEST_FLAGS)
+	@mv *.o ./obj/
+	$(CC) -o ./$(TEST_TARGET_DIR)/$(TEST_TARGET) $(TEST_OBJ) $(CC_TEST_FLAGS)
+	@printf "\e[1;31m==== Finished compiling tests ====\e[0m\n\n"
+	@printf "\e[1;33mRunning...\e[0m\n\n"
+
+	@LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:./lib" MESA_GL_VERSION_OVERRIDE=3.3 \
+	$(DEBUG_TOOL) ./$(TEST_TARGET_DIR)/$(TEST_TARGET)
+
 
 $(OBJ): $(OBJ_DIR)/%.o : $(SRC_DIR)/%.cpp
 	$(CC) $(CC_FLAGS) -c -o $@ $<
