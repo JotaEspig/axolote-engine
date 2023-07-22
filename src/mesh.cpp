@@ -44,7 +44,6 @@ void Mesh::draw(Shader &shader, glm::mat4 matrix, glm::vec3 translation,
                 glm::quat rotation, glm::vec3 scale)
 {
     shader.activate();
-    vao.bind();
 
     shader.set_uniform_int("is_simple_mesh", is_simple_mesh);
 
@@ -81,6 +80,8 @@ void Mesh::draw(Shader &shader, glm::mat4 matrix, glm::vec3 translation,
     shader.set_uniform_matrix4("scale", sca);
     shader.set_uniform_matrix4("model", matrix);
 
+    vao.bind();
+    vbo.bind();
     ebo.bind();
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 
