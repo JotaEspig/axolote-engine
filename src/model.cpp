@@ -68,9 +68,14 @@ Mesh Model::process_mesh(aiMesh *mesh, const aiScene *scene)
 
         vertex.color = glm::vec3(0.0f, 0.0f, 0.0f);
 
-        vertex.normal.x = mesh->mNormals[i].x;
-        vertex.normal.y = mesh->mNormals[i].y;
-        vertex.normal.z = mesh->mNormals[i].z;
+        if (mesh->mNormals != NULL)
+        {
+            vertex.normal.x = mesh->mNormals[i].x;
+            vertex.normal.y = mesh->mNormals[i].y;
+            vertex.normal.z = mesh->mNormals[i].z;
+        }
+        else
+            vertex.normal = glm::vec3(0.0f, 0.0f, 0.0f);
 
         if(mesh->mTextureCoords[0])
         {
