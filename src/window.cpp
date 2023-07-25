@@ -264,7 +264,7 @@ void Window::main_loop()
     floor.is_simple_mesh = true;
     */
 
-    Model m("./resources/models/rock/source/c5233a6c6cec48bcb40fcfc665521932.obj");
+    Model m("./resources/models/skeleton/skeleton.obj");
 
     Shader shader_program("./resources/shaders/vertex_shader.txt",
                           "./resources/shaders/fragment_shader.txt");
