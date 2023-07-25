@@ -28,7 +28,6 @@ namespace axolote
 
         Mesh(std::vector<Vertex> _vertices, std::vector<GLuint> _indices,
              std::vector<Texture> _textures);
-        ~Mesh();
 
         void draw(Shader &shader,
                   glm::mat4 matrix = glm::mat4(1.0f),

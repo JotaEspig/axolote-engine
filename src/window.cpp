@@ -320,6 +320,7 @@ void Window::main_loop()
         floor.draw(shader_program, model);
         */
 
+        shader_program.set_uniform_int("is_light_color_set", 1);
         model.draw(shader_program);
 
         glfwSwapBuffers(window);
