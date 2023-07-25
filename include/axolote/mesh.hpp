@@ -18,7 +18,6 @@ namespace axolote
     class Mesh
     {
     public:
-        bool is_simple_mesh = false;
         std::vector<Vertex> vertices;
         std::vector<GLuint> indices;
         std::vector<Texture> textures;
@@ -29,11 +28,7 @@ namespace axolote
         Mesh(std::vector<Vertex> _vertices, std::vector<GLuint> _indices,
              std::vector<Texture> _textures);
 
-        void draw(Shader &shader,
-                  glm::mat4 matrix = glm::mat4(1.0f),
-                  glm::vec3 translation = glm::vec3(0.0f, 0.0f, 0.0f),
-                  glm::quat rotation = glm::quat(1.0f, 0.0f, 0.0f, 0.0f),
-                  glm::vec3 scale = glm::vec3(1.0f, 1.0f, 1.0f));
+        void draw(Shader &shader, glm::mat4 matrix = glm::mat4(1.0f));
         void destroy();
     };
 }

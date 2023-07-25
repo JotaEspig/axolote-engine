@@ -19,16 +19,8 @@ uniform mat4 scale;
 
 void main()
 {
-    if (is_simple_mesh)
-    {
-        current_pos = vec3(model * vec4(aPos, 1.0f));
-        tex_coord = aTex;
-    }
-    else
-    {
-        current_pos = vec3(model * translation * -rotation * scale * vec4(aPos, 1.0f));
-        tex_coord = mat2(0.0, -1.0, 1.0, 0.0) * aTex;
-    }
+    current_pos = vec3(model * vec4(aPos, 1.0f));
+    tex_coord = aTex;
 
     gl_Position = camera * vec4(current_pos, 1.0f);
     color = aColor;

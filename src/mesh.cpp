@@ -35,13 +35,10 @@ Mesh::Mesh(std::vector<Vertex> _vertices, std::vector<GLuint> _indices,
     ebo.unbind();
 }
 
-void Mesh::draw(Shader &shader, glm::mat4 matrix, glm::vec3 translation,
-                glm::quat rotation, glm::vec3 scale)
+void Mesh::draw(Shader &shader, glm::mat4 matrix)
 {
     shader.activate();
     vao.bind();
-
-    shader.set_uniform_int("is_simple_mesh", is_simple_mesh);
 
     if (textures.size() > 0)
         shader.set_uniform_int("is_tex_set", 1);
@@ -65,15 +62,6 @@ void Mesh::draw(Shader &shader, glm::mat4 matrix, glm::vec3 translation,
         textures[i].bind();
     }
 
-    glm::mat4 trans = glm::mat4(1.0f);
-    glm::mat4 rot = glm::mat4(1.0f);
-    glm::mat4 sca = glm::mat4(1.0f);
-    trans = glm::translate(trans, translation);
-    rot = glm::mat4_cast(rotation);
-    sca = glm::scale(sca, scale);
-    shader.set_uniform_matrix4("translation", trans);
-    shader.set_uniform_matrix4("rotation", rot);
-    shader.set_uniform_matrix4("scale", sca);
     shader.set_uniform_matrix4("model", matrix);
 
     vao.bind();

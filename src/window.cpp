@@ -264,7 +264,7 @@ void Window::main_loop()
     floor.is_simple_mesh = true;
     */
 
-    Model model("./resources/models/sword/scene.gltf");
+    Model m("./resources/models/rock/source/c5233a6c6cec48bcb40fcfc665521932.obj");
 
     Shader shader_program("./resources/shaders/vertex_shader.txt",
                           "./resources/shaders/fragment_shader.txt");
@@ -320,8 +320,7 @@ void Window::main_loop()
         floor.draw(shader_program, model);
         */
 
-        shader_program.set_uniform_int("is_light_color_set", 1);
-        model.draw(shader_program);
+        m.draw(shader_program);
 
         glfwSwapBuffers(window);
     }

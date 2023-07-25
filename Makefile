@@ -1,6 +1,6 @@
 CC = g++
 CC_FLAGS = -I./include/ -I./external/include/ -lglfw -lGL -L./external/assimp -lassimp -fPIC -Wall
-CC_TEST_FLAGS = -I./include/ -I./external/include/ -L./lib -laxolote -Wall
+CC_TEST_FLAGS = -I./include/ -I./external/include/ -L./external/assimp -lassimp -L./lib -laxolote -Wall
 
 TARGET = libaxolote.so
 TARGET_DIR = lib
@@ -36,7 +36,7 @@ debug: clean $(TARGET)
 	@printf "\e[1;31m==== Finished compiling tests ====\e[0m\n\n"
 	@printf "\e[1;33mRunning...\e[0m\n\n"
 
-	@LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:./lib" MESA_GL_VERSION_OVERRIDE=3.3 \
+	@LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:./lib:./external/assimp/" MESA_GL_VERSION_OVERRIDE=3.3 \
 	$(DEBUG_TOOL) ./$(TEST_TARGET_DIR)/$(TEST_TARGET)
 
 
@@ -54,7 +54,7 @@ test: $(TARGET)
 	@printf "\e[1;31m==== Finished compiling tests ====\e[0m\n\n"
 	@printf "\e[1;33mRunning...\e[0m\n\n"
 
-	@LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:./lib" MESA_GL_VERSION_OVERRIDE=3.3 \
+	@LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:./lib:./external/assimp/" MESA_GL_VERSION_OVERRIDE=3.3 \
 	./$(TEST_TARGET_DIR)/$(TEST_TARGET)
 
 install:

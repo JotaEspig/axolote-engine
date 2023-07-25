@@ -9,7 +9,7 @@ int main(int argc, char **argv)
     w.set_title("Axolote Engine Test");
     w.set_width(600);
     w.set_height(600);
-    w.set_color(0x10, 0x10, 0x10);
+    w.set_color(0xf0, 0xf0, 0xf0);
     w.main_loop();
     return 0;
 }
