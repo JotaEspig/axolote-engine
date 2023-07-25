@@ -1,5 +1,5 @@
 CC = g++
-CC_FLAGS = -I./include/ -I./external/include/ -lglfw -lGL -fPIC -Wall
+CC_FLAGS = -I./include/ -I./external/include/ -lglfw -lGL -L./external/assimp -lassimp -fPIC -Wall
 CC_TEST_FLAGS = -I./include/ -I./external/include/ -L./lib -laxolote -Wall
 
 TARGET = libaxolote.so
