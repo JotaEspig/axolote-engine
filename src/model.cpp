@@ -80,7 +80,7 @@ Mesh Model::process_mesh(aiMesh *mesh, const aiScene *scene)
         if(mesh->mTextureCoords[0])
         {
             vertex.tex_UV.x = mesh->mTextureCoords[0][i].x; 
-            vertex.tex_UV.y = mesh->mTextureCoords[0][i].y;
+            vertex.tex_UV.y = 1-mesh->mTextureCoords[0][i].y;
         }
         else
             vertex.tex_UV = glm::vec2(0.0f, 0.0f);
@@ -89,7 +89,8 @@ Mesh Model::process_mesh(aiMesh *mesh, const aiScene *scene)
     }
 
     for (unsigned int i = 0; i < mesh->mNumFaces; i++)
-    { aiFace face = mesh->mFaces[i];
+    {
+        aiFace face = mesh->mFaces[i];
         for (unsigned int j = 0; j < face.mNumIndices; j++)
             indices.push_back(face.mIndices[j]);
     }
