@@ -259,12 +259,9 @@ void Window::main_loop()
     Mesh body(vertices, indices, {tex0});
     Mesh sun(light_vertices, light_indices, {});
     Mesh floor(floor_v, floor_indices, {tex1, floor_spec});
-    body.is_simple_mesh = true;
-    sun.is_simple_mesh = true;
-    floor.is_simple_mesh = true;
     */
 
-    Model m("./resources/models/skeleton/skeleton.obj");
+    Model m("./resources/models/dino/Triceratops.obj");
 
     Shader shader_program("./resources/shaders/vertex_shader.txt",
                           "./resources/shaders/fragment_shader.txt");
