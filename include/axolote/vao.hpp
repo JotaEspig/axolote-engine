@@ -10,6 +10,7 @@ namespace axolote
     {
     public:
         GLuint id;
+
         VAO();
 
         void link_attrib(VBO &vbo, GLuint layout, GLuint num_components,

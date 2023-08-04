@@ -20,6 +20,7 @@ namespace axolote
         Model(const char *path);
 
         void draw(Shader &shader, glm::mat4 matrix = glm::mat4(1.0f));
+
     private:
         std::vector<Mesh> meshes;
         std::vector<Texture> loaded_textures;

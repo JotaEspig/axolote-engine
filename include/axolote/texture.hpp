@@ -15,6 +15,7 @@ namespace axolote
         const char *type;
         GLuint unit;
         bool loaded;
+
         Texture();
         Texture(const char *texture_filename, const char *tex_type, GLuint _unit);
 

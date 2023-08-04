@@ -10,6 +10,7 @@ namespace axolote
     {
     public:
         GLuint id;
+
         EBO() = default;
         EBO(std::vector<GLuint> indices);
 

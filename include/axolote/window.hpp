@@ -30,6 +30,7 @@ namespace axolote
     public:
         Window();
         ~Window();
+
         void main_loop();
         std::string title();
         void set_title(std::string new_title);

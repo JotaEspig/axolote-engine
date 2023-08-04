@@ -13,6 +13,7 @@ namespace axolote
     {
     public:
         GLuint id;
+
         VBO() = default;
         VBO(std::vector<Vertex> vertices);
 
