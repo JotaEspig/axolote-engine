@@ -20,6 +20,16 @@
 
 using namespace axolote;
 
+static void framebuffer_size_callback(GLFWwindow *window, int width, int height)
+{
+    glViewport(0, 0, width, height);
+}
+
+static void error_callback(int error, const char *description)
+{
+    std::cerr << "Error: " << description << std::endl;
+}
+
 Window::Window()
 {
     init();
@@ -29,16 +39,6 @@ Window::~Window()
 {
     glfwDestroyWindow(window);
     glfwTerminate();
-}
-
-static void framebuffer_size_callback(GLFWwindow *window, int width, int height)
-{
-    glViewport(0, 0, width, height);
-}
-
-static void error_callback(int error, const char *description)
-{
-    std::cerr << "Error: " << description << std::endl;
 }
 
 void Window::init()
@@ -64,21 +64,24 @@ void Window::init()
         glfwTerminate();
         return;
     }
+
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    glfwSetErrorCallback(error_callback);
+
+    glfwMakeContextCurrent(window);
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+    {
+        std::cerr << "Failed to initialize GLAD" << std::endl;
+        return;
+    }
+
+    glfwSwapInterval(1);
 }
 
 void Window::process_input()
 {
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, true);
-
-    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        camera.forward();
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        camera.backward();
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        camera.leftward();
-    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        camera.rightward();
+    minimal_process_input();
+    // More keybinds
     if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
         camera.upward();
     if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
@@ -104,23 +107,29 @@ void Window::process_input()
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
         camera.first_click = true;
     }
+}
 
+void Window::minimal_process_input()
+{
+    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        glfwSetWindowShouldClose(window, true);
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+        camera.forward();
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+        camera.backward();
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+        camera.leftward();
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+        camera.rightward();
+}
+
+bool Window::should_close()
+{
+    return glfwWindowShouldClose(window);
 }
 
 void Window::main_loop()
 {
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-    glfwSetErrorCallback(error_callback);
-
-    glfwMakeContextCurrent(window);
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-    {
-        std::cerr << "Failed to initialize GLAD" << std::endl;
-        return;
-    }
-
-    glfwSwapInterval(1);
-
     /*
     std::vector<Vertex> vertices =
     {
@@ -272,7 +281,7 @@ void Window::main_loop()
     shader_program.set_uniform_float3("light_pos", 0.0f, 0.0f, 0.0f);
 
     glEnable(GL_DEPTH_TEST);
-    while (!glfwWindowShouldClose(window))
+    while (!should_close())
     {
         glfwPollEvents();
         process_input();
@@ -333,8 +342,8 @@ void Window::main_loop()
     glDisable(GL_DEPTH_TEST);
 
     shader_program.destroy();
-    //tex0.destroy();
-    //tex1.destroy();
+    // tex0.destroy();
+    // tex1.destroy();
 }
 
 // GETTERS AND SETTERS
