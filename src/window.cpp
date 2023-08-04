@@ -76,6 +76,9 @@ void Window::init()
     }
 
     glfwSwapInterval(1);
+
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
 }
 
 void Window::process_input()
@@ -279,8 +282,6 @@ void Window::main_loop()
     shader_program.set_uniform_float("ambient", 0.05f);
     shader_program.set_uniform_float4("light_color", 1.0f, 1.0f, 1.0f, 1.0f);
     shader_program.set_uniform_float3("light_pos", 0.0f, 0.0f, 0.0f);
-
-    glEnable(GL_DEPTH_TEST);
     while (!should_close())
     {
         glfwPollEvents();
@@ -338,8 +339,6 @@ void Window::main_loop()
 
         glfwSwapBuffers(window);
     }
-
-    glDisable(GL_DEPTH_TEST);
 
     shader_program.destroy();
     // tex0.destroy();
