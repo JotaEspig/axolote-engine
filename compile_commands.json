@@ -1,0 +1,194 @@
+[
+    {
+        "arguments": [
+            "clang-11",
+            "-c",
+            "-I./include/",
+            "-I./external/include/",
+            "-fPIC",
+            "-Wall",
+            "-o",
+            "obj/model.o",
+            "src/model.cpp"
+        ],
+        "directory": "/home/jotaespig/projects/axolote-engine",
+        "file": "src/model.cpp"
+    },
+    {
+        "arguments": [
+            "clang-11",
+            "-c",
+            "-I./include/",
+            "-I./external/include/",
+            "-fPIC",
+            "-Wall",
+            "-o",
+            "obj/mesh.o",
+            "src/mesh.cpp"
+        ],
+        "directory": "/home/jotaespig/projects/axolote-engine",
+        "file": "src/mesh.cpp"
+    },
+    {
+        "arguments": [
+            "clang-11",
+            "-c",
+            "-I./include/",
+            "-I./external/include/",
+            "-fPIC",
+            "-Wall",
+            "-o",
+            "obj/texture.o",
+            "src/texture.cpp"
+        ],
+        "directory": "/home/jotaespig/projects/axolote-engine",
+        "file": "src/texture.cpp"
+    },
+    {
+        "arguments": [
+            "clang-11",
+            "-c",
+            "-I./include/",
+            "-I./external/include/",
+            "-fPIC",
+            "-Wall",
+            "-o",
+            "obj/glad.o",
+            "external/glad/src/glad.c"
+        ],
+        "directory": "/home/jotaespig/projects/axolote-engine",
+        "file": "external/glad/src/glad.c"
+    },
+    {
+        "arguments": [
+            "clang-11",
+            "-c",
+            "-I./include/",
+            "-I./external/include/",
+            "-fPIC",
+            "-Wall",
+            "-o",
+            "obj/window.o",
+            "src/window.cpp"
+        ],
+        "directory": "/home/jotaespig/projects/axolote-engine",
+        "file": "src/window.cpp"
+    },
+    {
+        "arguments": [
+            "clang-11",
+            "-c",
+            "-I./include/",
+            "-I./external/include/",
+            "-fPIC",
+            "-Wall",
+            "-o",
+            "obj/vbo.o",
+            "src/vbo.cpp"
+        ],
+        "directory": "/home/jotaespig/projects/axolote-engine",
+        "file": "src/vbo.cpp"
+    },
+    {
+        "arguments": [
+            "clang-11",
+            "-c",
+            "-I./include/",
+            "-I./external/include/",
+            "-fPIC",
+            "-Wall",
+            "-o",
+            "obj/camera.o",
+            "src/camera.cpp"
+        ],
+        "directory": "/home/jotaespig/projects/axolote-engine",
+        "file": "src/camera.cpp"
+    },
+    {
+        "arguments": [
+            "clang-11",
+            "-c",
+            "-I./include/",
+            "-I./external/include/",
+            "-fPIC",
+            "-Wall",
+            "-o",
+            "obj/stb.o",
+            "src/stb.cpp"
+        ],
+        "directory": "/home/jotaespig/projects/axolote-engine",
+        "file": "src/stb.cpp"
+    },
+    {
+        "arguments": [
+            "clang-11",
+            "-c",
+            "-I./include/",
+            "-I./external/include/",
+            "-fPIC",
+            "-Wall",
+            "-o",
+            "obj/utils.o",
+            "src/utils.cpp"
+        ],
+        "directory": "/home/jotaespig/projects/axolote-engine",
+        "file": "src/utils.cpp"
+    },
+    {
+        "arguments": [
+            "clang-11",
+            "-c",
+            "-I./include/",
+            "-I./external/include/",
+            "-fPIC",
+            "-Wall",
+            "-o",
+            "obj/shader.o",
+            "src/shader.cpp"
+        ],
+        "directory": "/home/jotaespig/projects/axolote-engine",
+        "file": "src/shader.cpp"
+    },
+    {
+        "arguments": [
+            "clang-11",
+            "-c",
+            "-I./include/",
+            "-I./external/include/",
+            "-fPIC",
+            "-Wall",
+            "-o",
+            "obj/vao.o",
+            "src/vao.cpp"
+        ],
+        "directory": "/home/jotaespig/projects/axolote-engine",
+        "file": "src/vao.cpp"
+    },
+    {
+        "arguments": [
+            "clang-11",
+            "-c",
+            "-I./include/",
+            "-I./external/include/",
+            "-fPIC",
+            "-Wall",
+            "-o",
+            "obj/ebo.o",
+            "src/ebo.cpp"
+        ],
+        "directory": "/home/jotaespig/projects/axolote-engine",
+        "file": "src/ebo.cpp"
+    },
+    {
+        "arguments": [
+            "clang-11",
+            "-c",
+            "-I./include/",
+            "-I./external/include/",
+            "-Wall",
+            "tests/main.cpp"
+        ],
+        "directory": "/home/jotaespig/projects/axolote-engine",
+        "file": "tests/main.cpp"
+    }
+]
