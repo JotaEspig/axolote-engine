@@ -14,6 +14,7 @@
 #include <axolote/structs.hpp>
 #include <axolote/shader.hpp>
 #include <axolote/texture.hpp>
+#include <axolote/entity.hpp>
 #include <axolote/model.hpp>
 #include <axolote/mesh.hpp>
 #include <axolote/vbo.hpp>
@@ -273,7 +274,9 @@ void Window::main_loop()
     Mesh floor(floor_v, floor_indices, {tex1, floor_spec});
     */
 
-    Model m("./resources/models/mine_cube/cube.obj");
+    Model m("./resources/models/dino/Triceratops.obj");
+    Entity ent;
+    ent.set_model(m);
 
     Shader shader_program("./resources/shaders/vertex_shader.txt",
                           "./resources/shaders/fragment_shader.txt");
@@ -295,7 +298,7 @@ void Window::main_loop()
         double now = glfwGetTime();
 
         glm::mat4 view = glm::lookAt(camera.pos, camera.pos + camera.orientation, camera.up);
-        glm::mat4 projection = glm::perspective(glm::radians(camera.fov), (float)width() / height(), 0.1f, 100.0f);
+        glm::mat4 projection = glm::perspective(glm::radians(camera.fov), (float)width() / height(), 0.1f, 1000.0f);
 
         shader_program.set_uniform_matrix4("camera", projection * view);
 
@@ -327,15 +330,8 @@ void Window::main_loop()
         floor.draw(shader_program, model);
         */
 
-        for (int i = 0; i < 10; ++i)
-        {
-            for (int j = 0; j < 10; ++j)
-            {
-                glm::mat4 ma = glm::mat4(1.0f);
-                ma = glm::translate(ma, glm::vec3(j * 1.0f, 0.0f, i * 1.0f));
-                m.draw(shader_program, ma);
-            }
-        }
+        ent.set_matrix(glm::rotate(glm::mat4(1.0f), (float)now * sinf(now), glm::vec3(0.0f, 1.0f, 0.0f)));
+        ent.draw(shader_program);
 
         glfwSwapBuffers(window);
     }
