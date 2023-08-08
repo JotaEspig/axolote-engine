@@ -4,6 +4,7 @@ bin/
 obj/
 logs/
 .vscode/
+.clangd/
 
 # files
 *.so
