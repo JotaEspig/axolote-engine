@@ -1,6 +1,8 @@
-CC = g++
-CC_FLAGS = -I./include/ -I./external/include/ -lglfw -lGL -L./external/assimp -lassimp -fPIC -Wall
-CC_TEST_FLAGS = -I./include/ -I./external/include/ -L./external/assimp -lassimp -L./lib -laxolote -Wall
+CC = clang-11
+CC_FLAGS = -I./include/ -I./external/include/ -lglfw -lGL \
+		   -L./external/assimp -lassimp -lstdc++ -fPIC -Wall
+CC_TEST_FLAGS = -I./include/ -I./external/include/ -L./external/assimp -lassimp \
+				-L./lib -laxolote -lstdc++ -Wall
 
 TARGET = libaxolote.so
 TARGET_DIR = lib
