@@ -25,6 +25,7 @@ namespace axolote
         VBO vbo;
         EBO ebo;
 
+        Mesh() = default;
         Mesh(std::vector<Vertex> _vertices, std::vector<GLuint> _indices,
              std::vector<Texture> _textures);
 
