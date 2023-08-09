@@ -276,7 +276,7 @@ void Window::main_loop()
 
     Model m("./resources/models/dino/Triceratops.obj");
     Entity ent;
-    ent.set_model(m);
+    ent.add_model(m);
 
     Shader shader_program("./resources/shaders/vertex_shader.txt",
                           "./resources/shaders/fragment_shader.txt");
@@ -330,7 +330,7 @@ void Window::main_loop()
         floor.draw(shader_program, model);
         */
 
-        ent.set_matrix(glm::rotate(glm::mat4(1.0f), (float)now * sinf(now), glm::vec3(0.0f, 1.0f, 0.0f)));
+        ent.set_matrix(0, glm::rotate(glm::mat4(1.0f), (float)now * sinf(now), glm::vec3(0.0f, 1.0f, 0.0f)));
         ent.draw(shader_program);
 
         glfwSwapBuffers(window);

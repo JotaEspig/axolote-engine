@@ -1,3 +1,6 @@
+#include <iostream>
+#include <vector>
+
 #include <axolote/entity.hpp>
 #include <axolote/model.hpp>
 #include <axolote/mesh.hpp>
@@ -9,27 +12,37 @@ Entity::Entity()
 {
 }
 
-void Entity::set_matrix(glm::mat4 mat)
+void Entity::set_matrix(int idx, glm::mat4 mat)
 {
-    matrix = mat;
+    if (idx >= matrices.size())
+        std::cerr << "Entity: invalid index for matrix setting" << std::endl;
+    matrices[idx] = mat;
 }
 
 void Entity::draw(Shader shader)
 {
     if (type == EntityType::MODEL)
-        model.draw(shader, matrix);
+    {
+        for (int i = 0; i < models.size(); ++i)
+            models[i].draw(shader, matrices[i]);
+    }
     else if (type == EntityType::MESH)
-        mesh.draw(shader, matrix);
+    {
+        for (int i = 0; i < meshes.size(); ++i)
+            meshes[i].draw(shader, matrices[i]);
+    }
 }
 
-void Entity::set_model(Model m)
+void Entity::add_model(Model m, glm::mat4 mat)
 {
     type = EntityType::MODEL;
-    model = m;
+    models.push_back(m);
+    matrices.push_back(mat);
 }
 
-void Entity::set_mesh(Mesh m)
+void Entity::add_mesh(Mesh m, glm::mat4 mat)
 {
     type = EntityType::MESH;
-    mesh = m;
+    meshes.push_back(m);
+    matrices.push_back(mat);
 }
