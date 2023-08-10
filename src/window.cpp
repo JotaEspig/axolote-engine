@@ -406,7 +406,7 @@ void Window::main_loop()
             for (int j = 0; j < 30; ++j)
             {
                 glm::mat4 mat = glm::mat4(1.0f);
-                mat = glm::translate(mat, glm::vec3(i, sin(now + .2f * (i + j)) *3, j));
+                mat = glm::translate(mat, glm::vec3(i, sin(now + .2f * (i + j)) * 3, j));
                 mine_cubes.set_matrix(30 * i + j, mat);
             }
         }
