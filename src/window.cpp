@@ -80,11 +80,14 @@ void Window::init()
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 void Window::process_input()
 {
     minimal_process_input();
+
     // More keybinds
     if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
         camera.upward();
@@ -134,7 +137,6 @@ bool Window::should_close()
 
 void Window::main_loop()
 {
-    /*
     std::vector<Vertex> vertices =
     {
         // front
@@ -188,6 +190,40 @@ void Window::main_loop()
         // back face
         20, 21, 22,
         20, 22, 23
+    };
+
+    std::vector<Vertex> mine_vertices =
+    {
+        // front
+        Vertex{glm::vec3(0.5f,  0.5f, 0.5f), glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(0.5f, 2.0f / 3), glm::vec3(0.0f, 0.0f, 1.0f)},   // top right
+        Vertex{glm::vec3(0.5f, -0.5f, 0.5f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(0.5f, 1.0f / 3), glm::vec3(0.0f, 0.0f, 1.0f)},   // bottom right
+        Vertex{glm::vec3(-0.5f, -0.5f, 0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.25f, 1.0f / 3), glm::vec3(0.0f, 0.0f, 1.0f)}, // bottom left
+        Vertex{glm::vec3(-0.5f,  0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 0.0f), glm::vec2(0.25f, 2.0f / 3), glm::vec3(0.0f, 0.0f, 1.0f)}, // top left
+        // right
+        Vertex{glm::vec3(0.5f, -0.5f, 0.5f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(0.5f, 1.0f / 3), glm::vec3(1.0f, 0.0f, 0.0f)},   // bottom right
+        Vertex{glm::vec3(0.5f, -0.5f, -0.5f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(0.75f, 1.0f / 3), glm::vec3(1.0f, 0.0f, 0.0f)},  // back bottom right
+        Vertex{glm::vec3(0.5f,  0.5f, -0.5f), glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(0.75f, 2.0f / 3), glm::vec3(1.0f, 0.0f, 0.0f)},  // back top right
+        Vertex{glm::vec3(0.5f,  0.5f, 0.5f), glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(0.5f, 2.0f / 3), glm::vec3(1.0f, 0.0f, 0.0f)},   // top right
+        // left
+        Vertex{glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 1.0f / 3), glm::vec3(-1.0f, 0.0f, 0.0f)}, // back bottom left
+        Vertex{glm::vec3(-0.5f, -0.5f, 0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.25f, 1.0f / 3), glm::vec3(-1.0f, 0.0f, 0.0f)},  // bottom left
+        Vertex{glm::vec3(-0.5f,  0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 0.0f), glm::vec2(0.25f, 2.0f / 3), glm::vec3(-1.0f, 0.0f, 0.0f)},  // top left
+        Vertex{glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec3(1.0f, 1.0f, 0.0f), glm::vec2(0.0f, 2.0f / 3), glm::vec3(-1.0f, 0.0f, 0.0f)}, // back top left
+        // top
+        Vertex{glm::vec3(-0.5f,  0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 0.0f), glm::vec2(0.5f, 2.0f / 3), glm::vec3(0.0f, 1.0f, 0.0f)},  // top left
+        Vertex{glm::vec3(0.5f,  0.5f, 0.5f), glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(0.25f, 2.0f / 3), glm::vec3(0.0f, 1.0f, 0.0f)},   // top right
+        Vertex{glm::vec3(0.5f,  0.5f, -0.5f), glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(0.25f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f)},  // back top right
+        Vertex{glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec3(1.0f, 1.0f, 0.0f), glm::vec2(0.5f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f)}, // back top left
+        // bottom
+        Vertex{glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.25f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f)}, // back bottom left
+        Vertex{glm::vec3(0.5f, -0.5f, -0.5f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(0.5f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f)},  // back bottom right
+        Vertex{glm::vec3(0.5f, -0.5f, 0.5f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(0.5f, 1.0f / 3), glm::vec3(0.0f, -1.0f, 0.0f)},   // bottom right
+        Vertex{glm::vec3(-0.5f, -0.5f, 0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.25f, 1.0f / 3), glm::vec3(0.0f, -1.0f, 0.0f)},  // bottom left
+        // back
+        Vertex{glm::vec3(0.5f, -0.5f, -0.5f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(0.75f, 1.0f / 3), glm::vec3(0.0f, 0.0f, -1.0f)},  // back bottom right
+        Vertex{glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 1.0f / 3), glm::vec3(0.0f, 0.0f, -1.0f)}, // back bottom left
+        Vertex{glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec3(1.0f, 1.0f, 0.0f), glm::vec2(1.0f, 2.0f / 3), glm::vec3(0.0f, 0.0f, -1.0f)}, // back top left
+        Vertex{glm::vec3(0.5f,  0.5f, -0.5f), glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(0.75f, 2.0f / 3), glm::vec3(0.0f, 0.0f, -1.0f)}   // back top right
     };
 
     std::vector<Vertex> floor_v = {
@@ -257,11 +293,15 @@ void Window::main_loop()
         20, 22, 23
     };
 
-    Texture tex0("./resources/textures/wall.jpg", "diffuse", 0);
+    Texture tex0("./resources/textures/pedro.png", "diffuse", 0);
     if (!tex0.loaded)
         std::cerr << "Error when loading texture" << std::endl;
 
-    Texture tex1("./resources/textures/planks.png", "diffuse", 2);
+    Texture tex1("./resources/textures/planks.png", "diffuse", 1);
+    if (!tex1.loaded)
+        std::cerr << "Error when loading texture" << std::endl;
+
+    Texture tex2("./resources/textures/grass.png", "diffuse", 2);
     if (!tex1.loaded)
         std::cerr << "Error when loading texture" << std::endl;
 
@@ -269,14 +309,41 @@ void Window::main_loop()
     if (!floor_spec.loaded)
         std::cerr << "Error when loading texture" << std::endl;
 
-    Mesh body(vertices, indices, {tex0});
-    Mesh sun(light_vertices, light_indices, {});
-    Mesh floor(floor_v, floor_indices, {tex1, floor_spec});
-    */
+    Mesh b(vertices, indices, {tex0});
+    Mesh c(mine_vertices, indices, {tex2});
+    Mesh s(light_vertices, light_indices, {});
+    Mesh f(floor_v, floor_indices, {tex1, floor_spec});
+
+    Entity body, sun, floor, mine_cubes;
+    body.add_mesh(b);
+    sun.add_mesh(s);
+    floor.add_mesh(f);
+    for (int i = 0; i < 30; ++i)
+    {
+        for (int j = 0; j < 30; ++j)
+        {
+            glm::mat4 mat = glm::mat4(1.0f);
+            mat = glm::translate(mat, glm::vec3(i, 0.0f, j));
+            mine_cubes.add_mesh(c, mat);
+        }
+    }
 
     Model m("./resources/models/dino/Triceratops.obj");
-    Entity ent;
-    ent.add_model(m);
+    Entity dino;
+    glm::mat4 mat = glm::translate(glm::mat4(1.0f), glm::vec3(15.0f, 0.5f, 15.0f));
+    dino.add_model(m, mat);
+
+    m = Model("./resources/models/mine_cube/cube.obj");
+    Entity cubes;
+    for (int i = 0; i < 30; ++i)
+    {
+        for (int j = 0; j < 30; ++j)
+        {
+            glm::mat4 mat = glm::mat4(1.0f);
+            mat = glm::translate(mat, glm::vec3(i, 0.0f, j));
+            cubes.add_model(m, mat);
+        }
+    }
 
     Shader shader_program("./resources/shaders/vertex_shader.txt",
                           "./resources/shaders/fragment_shader.txt");
@@ -309,7 +376,8 @@ void Window::main_loop()
         // disable light normals for the light emissor
         shader_program.set_uniform_int("is_light_color_set", 0);
 
-        sun.draw(shader_program, model);
+        sun.set_matrix(0, model);
+        sun.draw(shader_program);
 
         model = glm::mat4(1.0f);
         model = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));
@@ -320,18 +388,34 @@ void Window::main_loop()
         // enable light normals for light receivers
         shader_program.set_uniform_int("is_light_color_set", 1);
 
-        body.draw(shader_program, model);
+        body.set_matrix(0, model);
+        body.draw(shader_program);
 
         model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(0.0f, -0.5f, 0.0f));
 
         shader_program.set_uniform_int("is_light_color_set", 1);
 
-        floor.draw(shader_program, model);
+        floor.set_matrix(0, model);
+        floor.draw(shader_program);
+        shader_program.set_uniform_int("is_light_color_set", 0);
         */
 
-        ent.set_matrix(0, glm::rotate(glm::mat4(1.0f), (float)now * sinf(now), glm::vec3(0.0f, 1.0f, 0.0f)));
-        ent.draw(shader_program);
+        for (int i = 0; i < 30; ++i)
+        {
+            for (int j = 0; j < 30; ++j)
+            {
+                glm::mat4 mat = glm::mat4(1.0f);
+                mat = glm::translate(mat, glm::vec3(i, sin(now + .2f * (i + j)) *3, j));
+                mine_cubes.set_matrix(30 * i + j, mat);
+            }
+        }
+        mine_cubes.draw(shader_program);
+
+        glm::mat4 mat1 = mat * glm::rotate(glm::mat4(1.0f), (float)now * sinf(now), glm::vec3(0.0f, 1.0f, 0.0f));
+        dino.set_matrix(0, mat1);
+        dino.draw(shader_program);
+        //cubes.draw(shader_program);
 
         glfwSwapBuffers(window);
     }

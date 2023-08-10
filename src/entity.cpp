@@ -28,8 +28,11 @@ void Entity::draw(Shader shader)
     }
     else if (type == EntityType::MESH)
     {
+        glDisable(GL_CULL_FACE);
         for (int i = 0; i < meshes.size(); ++i)
             meshes[i].draw(shader, matrices[i]);
+
+        glEnable(GL_CULL_FACE);
     }
 }
 

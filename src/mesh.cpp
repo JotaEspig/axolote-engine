@@ -47,6 +47,12 @@ void Mesh::draw(Shader &shader, glm::mat4 matrix)
 
     unsigned int num_diffuse = 0;
     unsigned int num_specular = 0;
+    // set default invalid values to textures to prevent a Mesh
+    // to use a texture from another Mesh
+    // TODO search if there's a better solution than this
+    // i.e. set to 99 (a unused texture id)
+    shader.set_uniform_int("diffuse0", 99);
+    shader.set_uniform_int("specular0", 99);
 
     for (size_t i = 0; i < textures.size(); i++)
     {
