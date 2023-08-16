@@ -54,18 +54,18 @@ void Mesh::draw(Shader &shader, glm::mat4 matrix)
     shader.set_uniform_int("diffuse0", 99);
     shader.set_uniform_int("specular0", 99);
 
-    for (size_t i = 0; i < textures.size(); i++)
+    for (Texture t : textures)
     {
         std::string num;
-        std::string type = textures[i].type;
+        std::string type = t.type;
         if (type == "diffuse")
             num = std::to_string(num_diffuse++);
         else if (type == "specular")
             num = std::to_string(num_specular++);
 
-        shader.set_uniform_int((type + num).c_str(), textures[i].unit);
-        textures[i].activate();
-        textures[i].bind();
+        shader.set_uniform_int((type + num).c_str(), t.unit);
+        t.activate();
+        t.bind();
     }
 
     shader.set_uniform_matrix4("model", matrix);
@@ -73,6 +73,10 @@ void Mesh::draw(Shader &shader, glm::mat4 matrix)
     vao.bind();
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 
+    for (Texture t : textures)
+    {
+        t.unbind();
+    }
     vao.unbind();
 }
 
