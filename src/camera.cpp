@@ -58,7 +58,7 @@ void Camera::move_vision(float x, float y, float width, float height)
     glm::vec3 new_orientation = glm::rotate(orientation, glm::radians(-rot_x),
                                             glm::normalize(glm::cross(orientation, up)));
 
-    if (abs(glm::angle(new_orientation, up) - glm::radians(90.0f)) <= glm::radians(85.0f))
+    if (std::abs(glm::angle(new_orientation, up) - glm::radians(90.0f)) <= glm::radians(85.0f))
     {
         orientation = new_orientation;
     }
