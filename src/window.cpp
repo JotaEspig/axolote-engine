@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cmath>
+#include <sstream>
 #include <vector>
 
 #include <glad/glad.h>
@@ -352,6 +353,9 @@ void Window::main_loop()
     shader_program.set_uniform_float("ambient", 0.05f);
     shader_program.set_uniform_float4("light_color", 1.0f, 1.0f, 1.0f, 1.0f);
     shader_program.set_uniform_float3("light_pos", 0.0f, 0.0f, 0.0f);
+
+    std::string original_title = _title;
+    double before = glfwGetTime();
     while (!should_close())
     {
         glfwPollEvents();
@@ -363,6 +367,12 @@ void Window::main_loop()
         shader_program.set_uniform_float3("camera_pos", camera.pos.x, camera.pos.y, camera.pos.z);
 
         double now = glfwGetTime();
+        double dt = now - before;
+        before = now;
+
+        std::stringstream sstr;
+        sstr << original_title << " | " << (int)(1 / dt) << " fps";
+        set_title(sstr.str());
 
         glm::mat4 view = glm::lookAt(camera.pos, camera.pos + camera.orientation, camera.up);
         glm::mat4 projection = glm::perspective(glm::radians(camera.fov), (float)width() / height(), 0.1f, 1000.0f);
@@ -412,11 +422,10 @@ void Window::main_loop()
         }
         mine_cubes.draw(shader_program);
 
-        glm::mat4 mat1 = mat * glm::rotate(glm::mat4(1.0f), (float)now * sinf(now), glm::vec3(0.0f, 1.0f, 0.0f));
-        dino.set_matrix(0, mat1);
+        glDisable(GL_BLEND);
         dino.draw(shader_program);
-        // TODO found the error the texture type is not set when drawing
         //cubes.draw(shader_program);
+        glEnable(GL_BLEND);
 
         glfwSwapBuffers(window);
     }
