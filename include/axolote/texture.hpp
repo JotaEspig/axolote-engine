@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 #include <GL/gl.h>
 
 #include <axolote/shader.hpp>
@@ -12,12 +14,12 @@ namespace axolote
     {
     public:
         GLuint id;
-        const char *type;
+        std::string type;
         GLuint unit;
         bool loaded;
 
         Texture();
-        Texture(const char *texture_filename, const char *tex_type, GLuint _unit);
+        Texture(const char *texture_filename, std::string tex_type, GLuint _unit);
 
         void activate();
         void bind();

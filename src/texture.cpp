@@ -1,3 +1,4 @@
+#include <string>
 #include <stdexcept>
 
 #include <glad/glad.h>
@@ -13,7 +14,7 @@ Texture::Texture()
     loaded = false;
 }
 
-Texture::Texture(const char *texture_filename, const char *tex_type, GLuint _unit)
+Texture::Texture(const char *texture_filename, std::string tex_type, GLuint _unit)
 {
     loaded = false;
     type = tex_type;

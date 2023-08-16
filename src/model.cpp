@@ -132,7 +132,7 @@ std::vector<Texture> Model::load_material_textures(aiMaterial *mat,
         if (skip)
             continue;
 
-        Texture texture((directory + std::string(str.C_Str())).c_str(), type_name.c_str(), i);
+        Texture texture((directory + std::string(str.C_Str())).c_str(), type_name, i);
         loaded_textures.push_back(texture);
         loaded_textures_names.push_back(std::string(str.C_Str()));
         textures.push_back(texture);
