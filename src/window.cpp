@@ -415,6 +415,7 @@ void Window::main_loop()
         glm::mat4 mat1 = mat * glm::rotate(glm::mat4(1.0f), (float)now * sinf(now), glm::vec3(0.0f, 1.0f, 0.0f));
         dino.set_matrix(0, mat1);
         dino.draw(shader_program);
+        // TODO found the error the texture type is not set when drawing
         //cubes.draw(shader_program);
 
         glfwSwapBuffers(window);
