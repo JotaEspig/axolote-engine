@@ -14,5 +14,6 @@ logs/
 .clangd/
 
 # files
+compile_commands.json
 *.so
 !libassimp.so
