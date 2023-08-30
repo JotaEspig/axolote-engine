@@ -347,8 +347,8 @@ void Window::main_loop()
         }
     }
 
-    Shader shader_program("./resources/shaders/vertex_shader.txt",
-                          "./resources/shaders/fragment_shader.txt");
+    Shader shader_program("./resources/shaders/def_vertex_shader.glsl",
+                          "./resources/shaders/def_fragment_shader.glsl");
 
     shader_program.activate();
     shader_program.set_uniform_float("ambient", 0.05f);
