@@ -9,16 +9,18 @@
 
 namespace axolote
 {
-    class VBO
-    {
-    public:
-        GLuint id;
 
-        VBO() = default;
-        VBO(std::vector<Vertex> vertices);
+class VBO
+{
+public:
+    GLuint id;
 
-        void bind();
-        void unbind();
-        void destroy();
-    };
-}
+    VBO() = default;
+    VBO(std::vector<Vertex> vertices);
+
+    void bind();
+    void unbind();
+    void destroy();
+};
+
+} // namespace axolote

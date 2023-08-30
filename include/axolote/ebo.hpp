@@ -6,16 +6,18 @@
 
 namespace axolote
 {
-    class EBO
-    {
+
+class EBO
+{
     public:
-        GLuint id;
+    GLuint id;
 
-        EBO() = default;
-        EBO(std::vector<GLuint> indices);
+    EBO() = default;
+    EBO(std::vector<GLuint> indices);
 
-        void bind();
-        void unbind();
-        void destroy();
-    };
-}
+    void bind();
+    void unbind();
+    void destroy();
+};
+
+} // namespace axolote

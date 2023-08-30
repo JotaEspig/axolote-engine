@@ -6,17 +6,19 @@
 
 namespace axolote
 {
-    class VAO
-    {
-    public:
-        GLuint id;
 
-        VAO();
+class VAO
+{
+public:
+    GLuint id;
 
-        void link_attrib(VBO &vbo, GLuint layout, GLuint num_components,
-                         GLenum type, GLsizeiptr stribe, void *offset);
-        void bind();
-        void unbind();
-        void destroy();
-    };
-}
+    VAO();
+
+    void link_attrib(VBO &vbo, GLuint layout, GLuint num_components,
+                     GLenum type, GLsizeiptr stribe, void *offset);
+    void bind();
+    void unbind();
+    void destroy();
+};
+
+} // namespace axolote

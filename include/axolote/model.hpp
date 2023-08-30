@@ -14,25 +14,27 @@
 
 namespace axolote
 {
-    class Model
-    {
-    public:
-        Model() = default;
-        Model(const char *path);
 
-        void draw(Shader &shader, glm::mat4 matrix = glm::mat4(1.0f));
+class Model
+{
+public:
+    Model() = default;
+    Model(const char *path);
 
-    private:
-        std::vector<Mesh> meshes;
-        std::vector<Texture> loaded_textures;
-        std::vector<std::string> loaded_textures_names;
-        std::string directory;
+    void draw(Shader &shader, glm::mat4 matrix = glm::mat4(1.0f));
 
-        void load_model(std::string path);
-        void process_node(aiNode *node, const aiScene *scene);
-        Mesh process_mesh(aiMesh *mesh, const aiScene *scene);
-        std::vector<Texture> load_material_textures(aiMaterial *mat,
-                                                    aiTextureType type,
-                                                    std::string type_name);
-    };
-}
+private:
+    std::vector<Mesh> meshes;
+    std::vector<Texture> loaded_textures;
+    std::vector<std::string> loaded_textures_names;
+    std::string directory;
+
+    void load_model(std::string path);
+    void process_node(aiNode *node, const aiScene *scene);
+    Mesh process_mesh(aiMesh *mesh, const aiScene *scene);
+    std::vector<Texture> load_material_textures(aiMaterial *mat,
+                                                aiTextureType type,
+                                                std::string type_name);
+};
+
+} // namespace axolote
