@@ -76,14 +76,12 @@ target_link_directories(
     tests
     PRIVATE
     ./lib
-    ${CMAKE_SOURCE_DIR}/external/assimp
-    ${OPENGL_INCLUDE_DIRS}
 )
 target_link_libraries(
     tests
     PRIVATE
     axolote
-    ${OPENGL_LIBRARIES} glfw assimp stdc++
+    ${OPENGL_LIBRARIES} glfw stdc++
 )
 
 # Header files
@@ -91,5 +89,4 @@ target_include_directories(
     tests
     PRIVATE
     ${CMAKE_SOURCE_DIR}/include
-    ${CMAKE_SOURCE_DIR}/external/include
 )
