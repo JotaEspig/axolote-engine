@@ -5,7 +5,8 @@
 
 #include <axolote/ebo.hpp>
 
-using namespace axolote;
+namespace axolote
+{
 
 EBO::EBO(std::vector<GLuint> indices)
 {
@@ -28,3 +29,5 @@ void EBO::destroy()
 {
     glDeleteBuffers(1, &id);
 }
+
+} // namespace axolote

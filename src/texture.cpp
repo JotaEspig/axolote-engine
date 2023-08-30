@@ -7,7 +7,8 @@
 #include <axolote/texture.hpp>
 #include <axolote/shader.hpp>
 
-using namespace axolote;
+namespace axolote
+{
 
 Texture::Texture()
 {
@@ -74,3 +75,5 @@ void Texture::destroy()
 {
     glDeleteTextures(1, &id);
 }
+
+} // namespace axolote

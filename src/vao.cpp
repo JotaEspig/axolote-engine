@@ -3,7 +3,8 @@
 #include <axolote/vao.hpp>
 #include <axolote/vbo.hpp>
 
-using namespace axolote;
+namespace axolote
+{
 
 VAO::VAO()
 {
@@ -33,3 +34,5 @@ void VAO::destroy()
 {
     glDeleteVertexArrays(1, &id);
 }
+
+} // namespace axolote

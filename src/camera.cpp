@@ -6,7 +6,8 @@
 
 #include <axolote/camera.hpp>
 
-using namespace axolote;
+namespace axolote
+{
 
 Camera::Camera()
 {
@@ -65,3 +66,5 @@ void Camera::move_vision(float x, float y, float width, float height)
 
     orientation = glm::rotate(orientation, glm::radians(-rot_y), up);
 }
+
+} // namespace axolote

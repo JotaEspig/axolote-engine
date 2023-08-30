@@ -6,7 +6,8 @@
 #include <axolote/mesh.hpp>
 #include <axolote/shader.hpp>
 
-using namespace axolote;
+namespace axolote
+{
 
 Entity::Entity()
 {
@@ -49,3 +50,5 @@ void Entity::add_mesh(Mesh m, glm::mat4 mat)
     meshes.push_back(m);
     matrices.push_back(mat);
 }
+
+} // namespace axolote

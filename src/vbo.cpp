@@ -5,7 +5,8 @@
 #include <axolote/vbo.hpp>
 #include <axolote/structs.hpp>
 
-using namespace axolote;
+namespace axolote
+{
 
 VBO::VBO(std::vector<Vertex> vertices)
 {
@@ -28,3 +29,5 @@ void VBO::destroy()
 {
     glDeleteBuffers(1, &id);
 }
+
+} // namespace axolote

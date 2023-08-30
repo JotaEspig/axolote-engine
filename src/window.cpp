@@ -20,7 +20,8 @@
 #include <axolote/mesh.hpp>
 #include <axolote/vbo.hpp>
 
-using namespace axolote;
+namespace axolote
+{
 
 static void framebuffer_size_callback(GLFWwindow *window, int width, int height)
 {
@@ -481,3 +482,5 @@ void Window::set_color(uint8_t r, uint8_t g, uint8_t b, float opacity)
 {
     _color = {(float)r / 255, (float)g / 255, (float)b / 255, opacity};
 }
+
+} // namespace axolote

@@ -9,8 +9,6 @@
 #include <axolote/shader.hpp>
 #include <axolote/utils.hpp>
 
-using namespace axolote;
-
 static GLint check_shader_compilation(GLuint shader_id, char *log, size_t size)
 {
     GLint success;
@@ -20,6 +18,9 @@ static GLint check_shader_compilation(GLuint shader_id, char *log, size_t size)
 
     return success;
 }
+
+namespace axolote
+{
 
 Shader::Shader(const char *vertex_file, const char *fragment_file)
 {
@@ -97,3 +98,5 @@ void Shader::destroy()
 {
     glDeleteProgram(id);
 }
+
+} // namespace axolote

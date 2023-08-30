@@ -13,7 +13,8 @@
 #include <axolote/ebo.hpp>
 #include <axolote/structs.hpp>
 
-using namespace axolote;
+namespace axolote
+{
 
 Mesh::Mesh(std::vector<Vertex> _vertices, std::vector<GLuint> _indices,
      std::vector<Texture> _textures)
@@ -86,3 +87,5 @@ void Mesh::destroy()
     vbo.destroy();
     ebo.destroy();
 }
+
+} // namespace axolote

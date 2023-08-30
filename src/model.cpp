@@ -13,7 +13,8 @@
 #include <axolote/mesh.hpp>
 #include <axolote/texture.hpp>
 
-using namespace axolote;
+namespace axolote
+{
 
 Model::Model(const char *path)
 {
@@ -139,3 +140,5 @@ std::vector<Texture> Model::load_material_textures(aiMaterial *mat,
     }
     return textures;
 }
+
+} // namespace axolote
