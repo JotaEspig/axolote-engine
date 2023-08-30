@@ -29,8 +29,8 @@ set(
     ${SOURCE_DIR}/entity.cpp
     ${SOURCE_DIR}/model.cpp
     ${SOURCE_DIR}/utils.cpp
-    ${SOURCE_DIR}/stb.cpp
 
+    ${CMAKE_SOURCE_DIR}/external/stb/stb.cpp
     ${CMAKE_SOURCE_DIR}/external/glad/src/glad.c
 )
 
