@@ -425,15 +425,17 @@ void Window::main_loop()
 
         glDisable(GL_BLEND);
         dino.draw(shader_program);
-        //cubes.draw(shader_program);
+        // cubes.draw(shader_program);
         glEnable(GL_BLEND);
 
         glfwSwapBuffers(window);
     }
 
     shader_program.destroy();
-    // tex0.destroy();
-    // tex1.destroy();
+    tex0.destroy();
+    tex1.destroy();
+    tex2.destroy();
+    floor_spec.destroy();
 }
 
 // GETTERS AND SETTERS
