@@ -10,6 +10,5 @@ To install and use Axolote Engine, you will need to have <a href="https://github
 bla
 
 ## Usage
-When compiling your application with axolote engine. you have to specify a include path to where your <b><i>glm</i></b> headers are stored.
-
-e.g. `$ g++ main.cpp -o ./bin/main -I<path_to_glm>`
+If when you run the tests a white square appears in the window, run with
+MESA_GL_VERSION_OVERRIDE=3.3. e.g.: ```MESA_GL_VERSION_OVERRIDE=3.3 ./tests/bin/tests```
