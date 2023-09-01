@@ -9,6 +9,7 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall")
 set(OpenGL_GL_PREFERENCE GLVND)
 find_package(OpenGL REQUIRED)
 find_package(glfw3 REQUIRED)
+find_package(glm REQUIRED)
 
 
 # =-=-=-=-=-=-= LIBRARY =-=-=-=-=-=-=
@@ -28,6 +29,7 @@ set(
     ${SOURCE_DIR}/window.cpp
     ${SOURCE_DIR}/entity.cpp
     ${SOURCE_DIR}/model.cpp
+    ${SOURCE_DIR}/object2d.cpp
     ${SOURCE_DIR}/utils.cpp
 
     ${CMAKE_SOURCE_DIR}/external/stb/stb.cpp
@@ -47,7 +49,7 @@ target_link_directories(
 target_link_libraries(
     axolote
     PRIVATE
-    ${OPENGL_LIBRARIES} glfw assimp stdc++
+    ${OPENGL_LIBRARIES} glfw glm::glm assimp stdc++
 )
 
 # Header files
