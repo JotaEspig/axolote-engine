@@ -20,7 +20,7 @@ void Entity::set_matrix(size_t idx, glm::mat4 mat)
     matrices[idx] = mat;
 }
 
-void Entity::draw(Shader shader)
+void Entity::draw(Shader &shader)
 {
     if (type == EntityType::MODEL)
     {
