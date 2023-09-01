@@ -15,6 +15,7 @@
 #include <axolote/structs.hpp>
 #include <axolote/shader.hpp>
 #include <axolote/texture.hpp>
+#include <axolote/object2d.hpp>
 #include <axolote/entity.hpp>
 #include <axolote/model.hpp>
 #include <axolote/mesh.hpp>
@@ -319,10 +320,10 @@ void Window::main_loop()
     Mesh s(light_vertices, light_indices, {});
     Mesh f(floor_v, floor_indices, {tex1, floor_spec});
 
-    Entity body, sun, floor, mine_cubes;
-    body.add_mesh(b);
-    sun.add_mesh(s);
-    floor.add_mesh(f);
+    Object2D body(b);
+    Object2D sun(s);
+    Object2D floor(f);
+    Entity mine_cubes;
     for (int i = 0; i < 30; ++i)
     {
         for (int j = 0; j < 30; ++j)
