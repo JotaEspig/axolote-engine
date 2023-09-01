@@ -20,6 +20,8 @@
 #include <axolote/mesh.hpp>
 #include <axolote/vbo.hpp>
 
+#define INITIAL_SIZE 800
+
 namespace axolote
 {
 
@@ -56,11 +58,12 @@ void Window::init()
     if (!glfwInit())
     {
         std::cerr << "Error initializing glfw" << std::endl;
+        return;
     }
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
-    window = glfwCreateWindow(800, 700, _title.c_str(), NULL, NULL);
+    window = glfwCreateWindow(INITIAL_SIZE, INITIAL_SIZE, _title.c_str(), NULL, NULL);
     if (!window)
     {
         std::cerr << "Error initialing window" << std::endl;
