@@ -16,8 +16,9 @@
 namespace axolote
 {
 
-Model::Model(const char *path)
+Model::Model(const char *path, glm::vec3 _color)
 {
+    color = _color;
     load_model(path);
 }
 
@@ -67,7 +68,7 @@ Mesh Model::process_mesh(aiMesh *mesh, const aiScene *scene)
         vertex.position.y = mesh->mVertices[i].y;
         vertex.position.z = mesh->mVertices[i].z; 
 
-        vertex.color = glm::vec3(0.0f, 0.0f, 0.0f);
+        vertex.color = color;
 
         if (mesh->mNormals != NULL)
         {
