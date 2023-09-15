@@ -36,7 +36,7 @@ void main()
         float spec_amount = pow(max(dot(view_direction, reflection_direction), 0.0f), 16);
         float specular = spec_amount * specular_light;
 
-        temp_frag_color = (texture(diffuse0, tex_coord) * (diffuse + ambient)
+        temp_frag_color = (temp_frag_color * (diffuse + ambient)
                            + texture(specular0, tex_coord).r * specular) * light_color;
     }
 
