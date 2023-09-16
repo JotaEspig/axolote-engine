@@ -30,7 +30,6 @@ public:
     Window();
     ~Window();
 
-    virtual void main_loop();
     std::string title();
     void set_title(std::string new_title);
     int width();

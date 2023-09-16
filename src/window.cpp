@@ -129,10 +129,6 @@ bool Window::should_close()
     return glfwWindowShouldClose(window);
 }
 
-void Window::main_loop()
-{
-}
-
 // GETTERS AND SETTERS
 
 std::string Window::title()
