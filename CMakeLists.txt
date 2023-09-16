@@ -20,20 +20,20 @@ set(SOURCE_DIR ${CMAKE_SOURCE_DIR}/src)
 set(
     SOURCE_FILES
     ${SOURCE_DIR}/camera.cpp
-    ${SOURCE_DIR}/mesh.cpp
-    ${SOURCE_DIR}/shader.cpp
-    ${SOURCE_DIR}/texture.cpp
-    ${SOURCE_DIR}/vao.cpp
-    ${SOURCE_DIR}/vbo.cpp
     ${SOURCE_DIR}/ebo.cpp
-    ${SOURCE_DIR}/window.cpp
     ${SOURCE_DIR}/entity.cpp
+    ${SOURCE_DIR}/mesh.cpp
     ${SOURCE_DIR}/model.cpp
     ${SOURCE_DIR}/object2d.cpp
+    ${SOURCE_DIR}/shader.cpp
+    ${SOURCE_DIR}/texture.cpp
     ${SOURCE_DIR}/utils.cpp
+    ${SOURCE_DIR}/vao.cpp
+    ${SOURCE_DIR}/vbo.cpp
+    ${SOURCE_DIR}/window.cpp
 
-    ${CMAKE_SOURCE_DIR}/external/stb/stb.cpp
     ${CMAKE_SOURCE_DIR}/external/glad/src/glad.c
+    ${CMAKE_SOURCE_DIR}/external/stb/stb.cpp
 )
 
 # Adding axolote shared library
