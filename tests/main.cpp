@@ -224,7 +224,7 @@ void App::main_loop()
     }
 
     m = axolote::Model("./resources/models/sphere/sphere.obj",
-              glm::vec3(0.79f, 0.79f, 0.79f));
+                       glm::vec3(0.79f, 0.79f, 0.79f));
     axolote::Entity sphere;
     sphere.add_model(m);
 
@@ -267,7 +267,6 @@ void App::main_loop()
         // disable light normals for the light emissor
         shader_program.set_uniform_int("is_light_color_set", 0);
 
-        sun.draw(shader_program);
         sun.draw(shader_program);
 
         /*
@@ -316,11 +315,11 @@ void App::main_loop()
         sphere.set_matrix(0, m);
 
         //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-        //glDisable(GL_CULL_FACE);
+        // glDisable(GL_CULL_FACE);
 
         sphere.draw(shader_program);
 
-        glEnable(GL_CULL_FACE);
+        // glEnable(GL_CULL_FACE);
         //glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
         glfwSwapBuffers(window);
