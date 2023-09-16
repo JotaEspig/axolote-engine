@@ -15,15 +15,13 @@ namespace axolote
 
 class Window
 {
-private:
+protected:
     std::string _title;
     Color _color;
     Camera camera;
     GLFWwindow *window;
 
     void init();
-
-protected:
     void process_input();
     void minimal_process_input();
     bool should_close();
@@ -32,7 +30,7 @@ public:
     Window();
     ~Window();
 
-    void main_loop();
+    virtual void main_loop();
     std::string title();
     void set_title(std::string new_title);
     int width();
