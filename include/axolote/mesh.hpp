@@ -16,13 +16,6 @@ namespace axolote
 
 class Mesh
 {
-    std::vector<Vertex> vertices;
-    std::vector<GLuint> indices;
-    std::vector<Texture> textures;
-    VAO vao;
-    VBO vbo;
-    EBO ebo;
-
 public:
     Mesh() = default;
     Mesh(std::vector<Vertex> _vertices, std::vector<GLuint> _indices,
@@ -30,6 +23,14 @@ public:
 
     void draw(Shader &shader, glm::mat4 matrix = glm::mat4(1.0f));
     void destroy();
+
+private:
+    std::vector<Vertex> vertices;
+    std::vector<GLuint> indices;
+    std::vector<Texture> textures;
+    VAO vao;
+    VBO vbo;
+    EBO ebo;
 };
 
 } // namespace axolote

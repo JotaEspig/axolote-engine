@@ -15,17 +15,6 @@ namespace axolote
 
 class Window
 {
-protected:
-    std::string _title;
-    Color _color;
-    Camera camera;
-    GLFWwindow *window;
-
-    void init();
-    void process_input();
-    void minimal_process_input();
-    bool should_close();
-
 public:
     Window();
     ~Window();
@@ -39,6 +28,17 @@ public:
     Color color();
     void set_color(Color color);
     void set_color(uint8_t r, uint8_t g, uint8_t b, float opacity = 1.0f);
+
+protected:
+    std::string _title;
+    Color _color;
+    Camera camera;
+    GLFWwindow *window;
+
+    void init();
+    void process_input();
+    void minimal_process_input();
+    bool should_close();
 };
 
 } // namespace axolote

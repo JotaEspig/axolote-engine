@@ -19,17 +19,18 @@ enum class EntityType
 
 class Entity
 {
-    EntityType type;
-    std::vector<Model> models;
-    std::vector<Mesh> meshes;
-    std::vector<glm::mat4> matrices;
-
 public:
     Entity();
     void set_matrix(size_t idx, glm::mat4 mat = glm::mat4(1.0f));
     void draw(Shader &shader);
     void add_model(Model m, glm::mat4 mat = glm::mat4(1.0f));
     void add_mesh(Mesh m, glm::mat4 mat = glm::mat4(1.0f));
+
+private:
+    EntityType type;
+    std::vector<Model> models;
+    std::vector<Mesh> meshes;
+    std::vector<glm::mat4> matrices;
 };
 
 } // namespace axolote

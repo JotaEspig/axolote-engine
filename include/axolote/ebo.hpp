@@ -9,7 +9,7 @@ namespace axolote
 
 class EBO
 {
-    public:
+public:
     GLuint id;
 
     EBO() = default;
