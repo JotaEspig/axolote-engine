@@ -175,6 +175,11 @@ Color Window::color()
     return _color;
 }
 
+void Window::set_color(Color color)
+{
+    _color = color;
+}
+
 void Window::set_color(uint8_t r, uint8_t g, uint8_t b, float opacity)
 {
     _color = {(float)r / 255, (float)g / 255, (float)b / 255, opacity};

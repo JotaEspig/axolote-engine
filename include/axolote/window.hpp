@@ -38,6 +38,7 @@ public:
     int height();
     void set_height(int new_height);
     Color color();
+    void set_color(Color color);
     void set_color(uint8_t r, uint8_t g, uint8_t b, float opacity = 1.0f);
 };
 
