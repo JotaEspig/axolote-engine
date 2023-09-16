@@ -13,6 +13,7 @@ class Object2D
 public:
     Object2D();
     Object2D(Mesh _mesh, glm::mat4 mat = glm::mat4(1.0f));
+
     void draw(Shader &shader);
 
 private:
