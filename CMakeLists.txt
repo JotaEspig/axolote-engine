@@ -83,12 +83,13 @@ target_link_libraries(
     tests
     PRIVATE
     axolote
-    ${OPENGL_LIBRARIES} glfw stdc++
+    ${OPENGL_LIBRARIES} glfw glm::glm stdc++
 )
 
 # Header files
 target_include_directories(
     tests
     PRIVATE
+    ${CMAKE_SOURCE_DIR}/external/include
     ${CMAKE_SOURCE_DIR}/include
 )
