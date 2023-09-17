@@ -1,0 +1,226 @@
+@startuml
+!theme carbon-gray
+
+skin rose
+
+title Axolote Engine - Class Diagram
+
+hide struct methods
+hide enum methods
+
+class Window {
+-- public methods --
+  +Window()
+  +~Window()
+
+  +virtual void main_loop()
+  +string title()
+  +void set_title(string)
+  +int width()
+  +void set_width(int)
+  +Color color()
+  +void set_color(Color)
+  +void set_color(uint8, uint8, uint8, float)
+-- protected data --
+  #string _title
+  #Color _color
+  #Camera camera
+  #GLFWwindow *window
+-- protected methods --
+  #void init()
+  #void process_input()
+  #void minimal_process_input()
+  #bool should_close()
+}
+
+class EBO {
+-- public data --
+  +GLuint id
+-- public methods --
+  +EBO()
+  +EBO(vector<GLuint>)
+
+  +void bind()
+  +void unbind()
+  +void destroy()
+}
+
+class VAO {
+-- public data --
+  +GLuint id
+-- public methods --
+  +VAO()
+
+  +void link_attrib(VBO, GLuint, GLuint, GLenum, GLsizeiptr, void *)
+  +void bind()
+  +void unbind()
+  +void destroy()
+}
+
+class VBO {
+-- public data --
+  +GLuint id
+-- public methods --
+  +VBO()
+  +VBO(vector<Vertex>)
+
+  +void bind()
+  +void unbind()
+  +void destroy()
+}
+
+class Mesh {
+-- public methods --
+  +Mesh()
+  +Mesh(vector<Vertex>, vector<GLuint>, vector<Texture>)
+
+  +void draw(Shader &, glm::mat4)
+  +void destroy()
+-- private data --
+  -vector<Vertex> vertices
+  -vector<GLuint> indices
+  -vector<Texture> textures
+  -VAO vao
+  -VBO vbo
+  -EBO ebo
+}
+
+class Model {
+-- public methods --
+  +Model()
+  +Model(const char *, glm::vec3)
+
+  +draw(Shader &, glm::mat4)
+-- private data --
+  -glm::vec3 color
+  -vector<Mesh> meshes
+  -vector<Texture> loaded_textures
+  -vector<string> loaded_textures_names
+  -string directory
+-- private methods --
+  -void load_model(string)
+  -void process_node(aiNode, const aiScene)
+  -void process_mesh(aiMesh, const aiScene)
+  -vector<Texture> load_material_textures(aiMaterial, aiTextureType)
+}
+
+class Entity {
+-- public methods --
+  +Entity()
+
+  +void set_matrix(size_t, glm::mat4)
+  +void draw(Shader &)
+  +void add_model(Model, glm::mat4)
+  +void add_mesh(Mesh, glm::mat4)
+-- private data --
+  -EntityType type
+  -vector<Model> models
+  -vector<Mesh> meshes
+  -vector<glm::mat4> matrices
+}
+
+enum EntityType {
+  +MODEL
+  +MESH
+}
+
+class Object2D {
+  -- public methods --
+  +Object2D()
+  +Object2D(Mesh, glm::mat4)
+
+  +void draw(Shader &)
+-- private data --
+  -Mesh mesh
+  -glm::mat4 pos
+}
+
+class Texture {
+-- public data --
+  +GLuint id
+  +string type
+  +GLuint unit
+  +bool loaded
+-- public methods --
+  +Texture()
+  +Texture(const char *, string, GLuint)
+
+  +void activate()
+  +void bind()
+  +void unbind()
+  +void destroy()
+}
+
+class Camera {
+  -- public data --
+  +float speed
+  +float sensitivity
+  +float fov
+  +bool first_click
+  +glm::vec3 pos
+  +glm::vec3 orientation
+  +glm::vec3 uo
+  -- public methods --
+  +Camera()
+  +Camera(glm::vec3)
+
+  +void forward()
+  +void leftward()
+  +void rightward()
+  +void backward()
+  +void upward()
+  +void downward()
+  +void move_vision(float, float, float, float)
+}
+
+class Shader {
+  -- public data --
+  +GLuint id
+  -- public methods --
+  +Shader()
+
+  +void set_uniform_int(const char *, int)
+  +void set_uniform_matrix4(const char *, glm::mat4)
+  +void set_uniform_float(const char *, float)
+  +void set_uniform_float3(const char *, float, float, float)
+  +void set_uniform_float4(const char *, float, float, float, float)
+}
+
+struct Vertex {
+  +glm::vec3 position
+  +glm::vec3 color
+  +glm::vec2 tex_UV
+  +glm::vec3 normal
+}
+
+struct Color {
+  +float r
+  +float g
+  +float b
+  +float opacity
+}
+
+class App
+hide App methods
+hide App attributes
+
+Window <|-right- App: Inheritance
+Window *-- Camera
+Window *-- Color
+
+Mesh *-- EBO
+Mesh *-- VAO
+Mesh *-- VBO
+Mesh o-- Vertex
+Mesh o-- Texture
+
+Model o-- Mesh
+Model o-- Texture
+
+Entity *-right- EntityType
+Entity o-left- Model
+Entity o-- Mesh
+
+Object2D *-- Mesh
+
+@enduml
