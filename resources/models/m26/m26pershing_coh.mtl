@@ -1,0 +1,8 @@
+newmtl Model001_Material001
+map_Kd tex_al_m26_pershing_dif.png
+map_bump bumpmap_alt.png
+
+newmtl Model001_Material002
+map_Kd m26_pershing_tracks_dif.png
+map_bump bumpmap_alt.png
+
