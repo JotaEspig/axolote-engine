@@ -15,6 +15,7 @@ public:
 
 void App::main_loop()
 {
+    // TODO Fix the indices order (error when culling face)
     std::vector<axolote::Vertex> vertices =
     {
         // front
@@ -112,8 +113,8 @@ void App::main_loop()
     };
 
     std::vector<GLuint> floor_indices = {
-        0, 1, 2,
-        1, 2, 3
+        2, 0, 1,
+        2, 1, 3
     };
 
     std::vector<axolote::Vertex> light_vertices =
@@ -180,7 +181,7 @@ void App::main_loop()
         std::cerr << "Error when loading texture" << std::endl;
 
     axolote::Texture tex2("./resources/textures/grass.png", "diffuse", 2);
-    if (!tex1.loaded)
+    if (!tex2.loaded)
         std::cerr << "Error when loading texture" << std::endl;
 
     axolote::Texture floor_spec("./resources/textures/planksSpec.png", "specular", 3);
@@ -194,7 +195,7 @@ void App::main_loop()
 
     axolote::Object2D body(b, glm::translate(glm::mat4(1.0f), glm::vec3(5.0f, 1.0f, 0.0f)));
     axolote::Object2D sun(s);
-    axolote::Object2D floor(f);
+    axolote::Object2D floor(f, glm::translate(glm::mat4(1.0f), glm::vec3(-5.0f, -2.0f, 0.0f)));
     axolote::Entity mine_cubes;
     for (int i = 0; i < 30; ++i)
     {
@@ -261,14 +262,6 @@ void App::main_loop()
 
         shader_program.set_uniform_matrix4("camera", projection * view);
 
-        glm::mat4 model = glm::mat4(1.0f);
-        model = glm::scale(model, glm::vec3(0.25f, 0.25f, 0.25f));
-
-        // disable light normals for the light emissor
-        shader_program.set_uniform_int("is_light_color_set", 0);
-
-        sun.draw(shader_program);
-
         /*
         model = glm::mat4(1.0f);
         model = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));
@@ -316,9 +309,15 @@ void App::main_loop()
 
         //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
         // glDisable(GL_CULL_FACE);
-
-        sphere.draw(shader_program);
+        //
+        // disable light normals for the light emissor
+        shader_program.set_uniform_int("is_light_color_set", 0);
+        glDisable(GL_CULL_FACE);
+        sun.draw(shader_program);
         body.draw(shader_program);
+        glEnable(GL_CULL_FACE);
+        sphere.draw(shader_program);
+        floor.draw(shader_program);
 
         // glEnable(GL_CULL_FACE);
         //glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
