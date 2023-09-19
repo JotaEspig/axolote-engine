@@ -1,8 +1,5 @@
 #include <iostream>
-#include <string>
-#include <vector>
 
-#include <GL/gl.h>
 #include <glm/glm.hpp>
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
@@ -11,7 +8,6 @@
 #include <axolote/model.hpp>
 #include <axolote/shader.hpp>
 #include <axolote/mesh.hpp>
-#include <axolote/texture.hpp>
 #include <axolote/assimp.hpp>
 
 namespace axolote
@@ -25,7 +21,7 @@ Model::Model(const char *path, glm::vec3 _color)
 
 void Model::draw(Shader &shader, glm::mat4 matrix)
 {
-    for (auto e : meshes)
+    for (Mesh e : meshes)
         e.draw(shader, matrix);
 }
 
