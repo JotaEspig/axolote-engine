@@ -52,7 +52,7 @@ void main()
 
         vec3 temp_frag_light = (diffuse_light_color + specular_light_color) * light_color.rgb;
 
-        temp_frag_color = vec4(temp_frag_light, light_color.a);
+        temp_frag_color = vec4(temp_frag_light, temp_frag_color.a * light_color.a);
     }
 
     FragColor = temp_frag_color;
