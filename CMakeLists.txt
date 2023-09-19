@@ -90,6 +90,5 @@ target_link_libraries(
 target_include_directories(
     tests
     PRIVATE
-    ${CMAKE_SOURCE_DIR}/external/include
     ${CMAKE_SOURCE_DIR}/include
 )
