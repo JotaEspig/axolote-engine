@@ -4,9 +4,6 @@
 #include <vector>
 
 #include <glm/glm.hpp>
-#include <assimp/Importer.hpp>
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>
 
 #include <axolote/shader.hpp>
 #include <axolote/mesh.hpp>
@@ -31,11 +28,6 @@ private:
     std::string directory;
 
     void load_model(std::string path);
-    void process_node(aiNode *node, const aiScene *scene);
-    Mesh process_mesh(aiMesh *mesh, const aiScene *scene);
-    std::vector<Texture> load_material_textures(aiMaterial *mat,
-                                                aiTextureType type,
-                                                std::string type_name);
 };
 
 } // namespace axolote
