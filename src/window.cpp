@@ -96,12 +96,12 @@ void Window::process_input()
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
         if (camera.first_click)
-            glfwSetCursorPos(window, width() / 2, height() / 2);
+            glfwSetCursorPos(window, (double)width() / 2, (double)height() / 2);
 
         double mouse_x, mouse_y;
         glfwGetCursorPos(window, &mouse_x, &mouse_y);
         camera.move_vision((float)mouse_x, (float)mouse_y, (float)width(), (float)height());
-        glfwSetCursorPos(window, width() / 2, height() / 2);
+        glfwSetCursorPos(window, (double)width() / 2, (double)height() / 2);
     }
     if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_RELEASE)
     {
