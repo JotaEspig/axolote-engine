@@ -49,7 +49,7 @@ target_link_directories(
 target_link_libraries(
     axolote
     PRIVATE
-    ${OPENGL_LIBRARIES} glfw glm::glm assimp stdc++
+    ${OPENGL_LIBRARIES} glfw assimp stdc++
 )
 
 # Header files
@@ -83,7 +83,7 @@ target_link_libraries(
     tests
     PRIVATE
     axolote
-    ${OPENGL_LIBRARIES} glfw glm::glm stdc++
+    ${OPENGL_LIBRARIES} glfw stdc++
 )
 
 # Header files
