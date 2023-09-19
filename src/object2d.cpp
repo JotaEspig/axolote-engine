@@ -18,9 +18,7 @@ Object2D::Object2D(Mesh _mesh, glm::mat4 mat)
 
 void Object2D::draw(Shader &shader)
 {
-    glDisable(GL_CULL_FACE);
     mesh.draw(shader, pos);
-    glEnable(GL_CULL_FACE);
 }
 
 } // namespace axolote
