@@ -91,7 +91,7 @@ void App::main_loop()
     glm::mat4 mat = glm::translate(glm::mat4(1.0f), glm::vec3(15.0f, 0.5f, 15.0f));
     dino.add_model(m, mat);
 
-    axolote::Model m("./resources/models/mine_cube/cube.obj");
+    m = axolote::Model("./resources/models/mine_cube/cube.obj");
     axolote::Entity cubes;
     for (int i = 0; i < 30; ++i)
     {
@@ -152,10 +152,7 @@ void App::main_loop()
     }
 
     shader_program.destroy();
-    tex0.destroy();
-    tex1.destroy();
-    tex2.destroy();
-    floor_spec.destroy();
+    tex.destroy();
 }
 
 int main(int argc, char **argv)
