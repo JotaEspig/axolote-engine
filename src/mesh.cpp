@@ -41,6 +41,7 @@ void Mesh::draw(Shader &shader, glm::mat4 matrix)
     shader.activate();
     vao.bind();
 
+    shader.set_uniform_int("is_specular_map_set", 0);
     if (textures.size() > 0)
         shader.set_uniform_int("is_tex_set", 1);
     else
@@ -62,7 +63,10 @@ void Mesh::draw(Shader &shader, glm::mat4 matrix)
         if (type == "diffuse")
             num = std::to_string(num_diffuse++);
         else if (type == "specular")
+        {
             num = std::to_string(num_specular++);
+            shader.set_uniform_int("is_specular_map_set", 1);
+        }
 
         shader.set_uniform_int((type + num).c_str(), t.unit);
         t.activate();

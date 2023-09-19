@@ -16,6 +16,15 @@ uniform bool is_light_color_set;
 uniform sampler2D diffuse0;
 uniform sampler2D specular0;
 uniform bool is_tex_set;
+uniform bool is_specular_map_set;
+
+float get_specular_map()
+{
+    if (is_specular_map_set)
+        return texture(specular0, tex_coord).r;
+    else
+        return color.r;
+}
 
 void main()
 {
@@ -30,14 +39,20 @@ void main()
         vec3 light_direction = normalize(light_pos - current_pos);
         float diffuse = max(dot(normal, light_direction), 0.0f);
 
-        float specular_light = 0.75f;
+        float specular_light = 0.25f;
         vec3 view_direction = normalize(camera_pos - current_pos);
         vec3 reflection_direction = reflect(-light_direction, normal);
         float spec_amount = pow(max(dot(view_direction, reflection_direction), 0.0f), 16);
         float specular = spec_amount * specular_light;
 
-        temp_frag_color = (temp_frag_color * (diffuse + ambient)
-                           + texture(specular0, tex_coord).r * specular) * light_color;
+        vec3 diffuse_light_color = temp_frag_color.rgb * (diffuse + ambient);
+
+        float specular_map = get_specular_map();
+        float specular_light_color = specular_map * specular;
+
+        vec3 temp_frag_light = (diffuse_light_color + specular_light_color) * light_color.rgb;
+
+        temp_frag_color = vec4(temp_frag_light, light_color.a);
     }
 
     FragColor = temp_frag_color;
