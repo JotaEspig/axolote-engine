@@ -192,7 +192,7 @@ void App::main_loop()
     axolote::Mesh s(light_vertices, light_indices, {});
     axolote::Mesh f(floor_v, floor_indices, {tex1, floor_spec});
 
-    axolote::Object2D body(b);
+    axolote::Object2D body(b, glm::translate(glm::mat4(1.0f), glm::vec3(5.0f, 1.0f, 0.0f)));
     axolote::Object2D sun(s);
     axolote::Object2D floor(f);
     axolote::Entity mine_cubes;
@@ -318,6 +318,7 @@ void App::main_loop()
         // glDisable(GL_CULL_FACE);
 
         sphere.draw(shader_program);
+        body.draw(shader_program);
 
         // glEnable(GL_CULL_FACE);
         //glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
