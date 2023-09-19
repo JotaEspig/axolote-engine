@@ -1,3 +1,4 @@
+#include "axolote/entity.hpp"
 #include <iostream>
 #include <sstream>
 
@@ -229,6 +230,14 @@ void App::main_loop()
     axolote::Entity sphere;
     sphere.add_model(m);
 
+    m = axolote::Model("./resources/models/m26/m26pershing_coh.obj");
+    axolote::Entity indoali;
+    indoali.add_model(m, glm::translate(glm::mat4(1.0f), glm::vec3(-7.0f, 0.0f, 0.0f)));
+
+    m = axolote::Model("./resources/models/hand/hand.OBJ");
+    axolote::Entity hand;
+    hand.add_model(m, glm::translate(glm::mat4(1.0f), glm::vec3(-3.0f, -1.0f, 0.0f)));
+
     axolote::Shader shader_program("./resources/shaders/def_vertex_shader.glsl",
                                    "./resources/shaders/def_fragment_shader.glsl");
 
@@ -319,6 +328,8 @@ void App::main_loop()
         glEnable(GL_CULL_FACE);
         sphere.draw(shader_program);
         floor.draw(shader_program);
+        indoali.draw(shader_program);
+        hand.draw(shader_program);
 
         // glEnable(GL_CULL_FACE);
         //glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
