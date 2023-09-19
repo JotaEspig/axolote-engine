@@ -12,6 +12,7 @@ obj/
 logs/
 .vscode/
 .clangd/
+.cache/
 
 # files
 compile_commands.json
