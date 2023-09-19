@@ -260,7 +260,8 @@ void App::main_loop()
         glm::mat4 view = glm::lookAt(camera.pos, camera.pos + camera.orientation, camera.up);
         glm::mat4 projection = glm::perspective(glm::radians(camera.fov), (float)width() / height(), 0.1f, 1000.0f);
 
-        shader_program.set_uniform_matrix4("camera", projection * view);
+        shader_program.set_uniform_matrix4("projection", projection);
+        shader_program.set_uniform_matrix4("view",view);
 
         /*
         model = glm::mat4(1.0f);
