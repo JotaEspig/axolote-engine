@@ -19,43 +19,43 @@ Camera::Camera(glm::vec3 position)
     pos = position;
 }
 
-void Camera::forward()
+void Camera::forward(float delta_v)
 {
-    pos += speed * orientation;
+    pos += delta_v * speed * orientation;
 }
 
-void Camera::backward()
+void Camera::backward(float delta_v)
 {
-    pos += speed * -orientation;
+    pos += delta_v * speed * -orientation;
 }
 
-void Camera::leftward()
+void Camera::leftward(float delta_v)
 {
-    pos += speed * -glm::normalize(glm::cross(orientation, up));
+    pos += delta_v * speed * -glm::normalize(glm::cross(orientation, up));
 }
 
-void Camera::rightward()
+void Camera::rightward(float delta_v)
 {
-    pos += speed * glm::normalize(glm::cross(orientation, up));
+    pos += delta_v * speed * glm::normalize(glm::cross(orientation, up));
 }
 
-void Camera::upward()
+void Camera::upward(float delta_v)
 {
-    pos += speed * up;
+    pos += delta_v * speed * up;
 }
 
-void Camera::downward()
+void Camera::downward(float delta_v)
 {
-    pos += speed * -up;
+    pos += delta_v * speed * -up;
 }
 
-void Camera::move_vision(float x, float y, float width, float height)
+void Camera::move_vision(float x, float y, float width, float height, double delta_v)
 {
     if (first_click)
         first_click = false;
 
-    float rot_x = sensitivity * (y - (height / 2)) / height;
-    float rot_y = sensitivity * (x - (width / 2)) / width;
+    float rot_x = delta_v * sensitivity * (y - (height / 2)) / height;
+    float rot_y = delta_v * sensitivity * (x - (width / 2)) / width;
     glm::vec3 new_orientation = glm::rotate(orientation, glm::radians(-rot_x),
                                             glm::normalize(glm::cross(orientation, up)));
 
