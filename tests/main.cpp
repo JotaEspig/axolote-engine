@@ -196,7 +196,9 @@ void App::main_loop()
 
     axolote::Object2D body(b, glm::translate(glm::mat4(1.0f), glm::vec3(5.0f, 1.0f, 0.0f)));
     axolote::Object2D sun(s);
-    axolote::Object2D floor(f, glm::translate(glm::mat4(1.0f), glm::vec3(-5.0f, -2.0f, 0.0f)));
+    glm::mat4 floor_m = glm::scale(glm::mat4(1.0f), glm::vec3(3.0f, 3.0f, 3.0f));
+    floor_m = glm::translate(floor_m, glm::vec3(-2.0f, -2.0f, 0.0f));
+    axolote::Object2D floor(f, floor_m);
     axolote::Entity mine_cubes;
     for (int i = 0; i < 30; ++i)
     {
