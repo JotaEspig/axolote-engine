@@ -17,8 +17,8 @@ void App::main_loop()
 {
     std::vector<GLuint> indices = {
         //front face
-        0, 1, 2,
-        0, 2, 3,
+        0, 2, 1,
+        0, 3, 2,
         // right face
         4, 5, 6,
         4, 6, 7,
@@ -91,18 +91,6 @@ void App::main_loop()
     glm::mat4 mat = glm::translate(glm::mat4(1.0f), glm::vec3(15.0f, 0.5f, 15.0f));
     dino.add_model(m, mat);
 
-    m = axolote::Model("./resources/models/mine_cube/cube.obj");
-    axolote::Entity cubes;
-    for (int i = 0; i < 30; ++i)
-    {
-        for (int j = 0; j < 30; ++j)
-        {
-            glm::mat4 mat = glm::mat4(1.0f);
-            mat = glm::translate(mat, glm::vec3(i, 0.0f, j));
-            cubes.add_model(m, mat);
-        }
-    }
-
     axolote::Shader shader_program("./resources/shaders/def_vertex_shader.glsl",
                                    "./resources/shaders/def_fragment_shader.glsl");
 
@@ -146,7 +134,6 @@ void App::main_loop()
         mine_cubes.draw(shader_program);
         glDisable(GL_BLEND);
         dino.draw(shader_program);
-        cubes.draw(shader_program);
         glEnable(GL_BLEND);
 
         glfwSwapBuffers(window);

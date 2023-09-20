@@ -53,8 +53,8 @@ void App::main_loop()
 
     std::vector<GLuint> indices = {
         //front face
-        0, 1, 2,
-        0, 2, 3,
+        0, 2, 1,
+        0, 3, 2,
         // right face
         4, 5, 6,
         4, 6, 7,
@@ -152,27 +152,6 @@ void App::main_loop()
         axolote::Vertex{glm::vec3(0.5f,  0.5f, -0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)}   // back top right
     };
 
-    std::vector<GLuint> light_indices = {
-        //front face
-        0, 1, 2,
-        0, 2, 3,
-        // right face
-        4, 5, 6,
-        4, 6, 7,
-        // left face
-        8, 9, 10,
-        8, 10, 11,
-        // top face
-        12, 13, 14,
-        12, 14, 15,
-        // bottom face
-        16, 17, 18,
-        16, 18, 19,
-        // back face
-        20, 21, 22,
-        20, 22, 23
-    };
-
     axolote::Texture tex0("./resources/textures/pedro.png", "diffuse", 0);
     if (!tex0.loaded)
         std::cerr << "Error when loading texture" << std::endl;
@@ -191,7 +170,7 @@ void App::main_loop()
 
     axolote::Mesh b(vertices, indices, {tex0});
     axolote::Mesh c(mine_vertices, indices, {tex2});
-    axolote::Mesh s(light_vertices, light_indices, {});
+    axolote::Mesh s(light_vertices, indices, {});
     axolote::Mesh f(floor_v, floor_indices, {tex1, floor_spec});
 
     axolote::Object2D body(b, glm::translate(glm::mat4(1.0f), glm::vec3(5.0f, 1.0f, 0.0f)));
