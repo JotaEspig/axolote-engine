@@ -182,7 +182,7 @@ void App::main_loop()
     axolote::Entity body;
     body.add_mesh(b, glm::translate(glm::mat4(1.0f), glm::vec3(5.0f, 1.0f, 0.0f)));
     glm::mat4 floor_m = glm::scale(glm::mat4(1.0f), glm::vec3(3.0f, 3.0f, 3.0f));
-    floor_m = glm::translate(floor_m, glm::vec3(-2.0f, -2.0f, 0.0f));
+    floor_m = glm::translate(floor_m, glm::vec3(0.0f, -2.0f, 0.0f));
     axolote::Object2D floor(f, floor_m);
 
     axolote::Model m("./resources/models/sphere/sphere.obj",
@@ -229,7 +229,7 @@ void App::main_loop()
 
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));
-        model = glm::translate(model, glm::vec3(8.0f * sin(now / 3), 0.0f, -3.0f + 8.0f * cos(now / 3)));
+        model = glm::translate(model, glm::vec3(8.0f * cos(now / 3), 0.0f, 8.0f * sin(now / 3)));
         model = glm::rotate(model, glm::radians(23.5f), glm::vec3(0.0f, 0.0f, 1.0f));
         model = glm::rotate(model, (float)now / 2, glm::vec3(0.0f, 1.0f, 0.0f));
 
@@ -240,7 +240,7 @@ void App::main_loop()
         body.draw(shader_program);
 
         glm::mat4 m = glm::mat4(1.0f);
-        m = glm::translate(m, glm::vec3(5.0f, 5.0f, 0.0f));
+        m = glm::translate(m, glm::vec3(10.0f * sin(now / 3.5f), 0.0f, 10.0f * cos(now / 3.5f)));
         m = glm::rotate(m, (float)now / 3, glm::vec3(0.0f, 1.0f, 0.0f));
         sphere.set_matrix(0, m);
 
