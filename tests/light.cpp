@@ -248,7 +248,7 @@ void App::main_loop()
 
         floor.draw(shader_program);
 
-        glfwSwapBuffers(window);
+        glFlush();
     }
 
     shader_program.destroy();
