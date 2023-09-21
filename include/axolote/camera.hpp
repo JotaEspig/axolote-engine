@@ -19,12 +19,12 @@ public:
     Camera();
     Camera(glm::vec3 position);
 
-    void forward(float delta_v = 1.0f);
-    void leftward(float delta_v = 1.0f);
-    void rightward(float delta_v = 1.0f);
-    void backward(float delta_v = 1.0f);
-    void upward(float delta_v = 1.0f);
-    void downward(float delta_v = 1.0f);
+    void forward(float delta_t = 1.0f);
+    void leftward(float delta_t = 1.0f);
+    void rightward(float delta_t = 1.0f);
+    void backward(float delta_t = 1.0f);
+    void upward(float delta_t = 1.0f);
+    void downward(float delta_t = 1.0f);
     void move_vision(float x, float y, float width, float height, double delta_t = 1.0);
 };
 
