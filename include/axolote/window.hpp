@@ -1,3 +1,10 @@
+/**
+* \file window.hpp
+* \brief GLFWwindow operations handler
+* \author João Vitor Espig (JotaEspig)
+* \date October 04, 2023
+* \version October 04, 2023
+**/
 #pragma once
 
 #define GLFW_INCLUDE_NONE
@@ -13,31 +20,148 @@
 namespace axolote
 {
 
+/**
+* \brief Window handler
+* \author João Vitor Espig (JotaEspig)
+* \date October 04, 2023
+* \version October 04, 2023
+*
+* This class take care of GLFW window object and input process
+**/
 class Window
 {
 public:
+    /**
+    * \brief Constructor
+    * \author João Vitor Espig (JotaEspig)
+    * \date October 04, 2023
+    * \version October 04, 2023
+    **/
     Window();
+    /**
+    * \brief Destructor
+    * \author João Vitor Espig (JotaEspig)
+    * \date October 04, 2023
+    * \version October 04, 2023
+    **/
     ~Window();
 
+    /**
+    * \brief title getter
+    * \author João Vitor Espig (JotaEspig)
+    * \date October 04, 2023
+    * \version October 04, 2023
+    **/
     std::string title();
+    /**
+    * \brief title setter
+    * \author João Vitor Espig (JotaEspig)
+    * \date October 04, 2023
+    * \version October 04, 2023
+    * \param new_title - new window title
+    **/
     void set_title(std::string new_title);
+    /**
+    * \brief width getter
+    * \author João Vitor Espig (JotaEspig)
+    * \date October 04, 2023
+    * \version October 04, 2023
+    **/
     int width();
+    /**
+    * \brief width setter
+    * \author João Vitor Espig (JotaEspig)
+    * \date October 04, 2023
+    * \version October 04, 2023
+    * \param new_width - new window width
+    **/
     void set_width(int new_width);
+    /**
+    * \brief height getter
+    * \author João Vitor Espig (JotaEspig)
+    * \date October 04, 2023
+    * \version October 04, 2023
+    * \param new_title - new window title
+    **/
     int height();
+    /**
+    * \brief height setter
+    * \author João Vitor Espig (JotaEspig)
+    * \date October 04, 2023
+    * \version October 04, 2023
+    * \param new_height - new window height
+    **/
     void set_height(int new_height);
+    /**
+    * \brief color getter
+    * \author João Vitor Espig (JotaEspig)
+    * \date October 04, 2023
+    * \version October 04, 2023
+    **/
     Color color();
+    /**
+    * \brief color setter
+    * \author João Vitor Espig (JotaEspig)
+    * \date October 04, 2023
+    * \version October 04, 2023
+    * \param color - new window background color
+    **/
     void set_color(Color color);
+    /**
+    * \brief color setter
+    * \author João Vitor Espig (JotaEspig)
+    * \date October 04, 2023
+    * \version October 04, 2023
+    * \param r - Red in RGB
+    * \param g - Green in RGB
+    * \param b - Blue in RGB
+    * \param opacity - alpha param
+    **/
     void set_color(uint8_t r, uint8_t g, uint8_t b, float opacity = 1.0f);
 
 protected:
+    /** window title **/
     std::string _title;
+    /** window background color **/
     Color _color;
+    /** window camera object **/
     Camera camera;
+    /** GLFWwindow struct object **/
     GLFWwindow *window;
 
+    /**
+    * \brief initializes window
+    * \author João Vitor Espig (JotaEspig)
+    * \date October 04, 2023
+    * \version October 04, 2023
+    **/
     void init();
+    /**
+    * \brief process user input
+    * \author João Vitor Espig (JotaEspig)
+    * \date October 04, 2023
+    * \version October 04, 2023
+    *
+    * Preconfigured way to process SPACE, SHIFT, CTRL and mouse movement
+    * (this method can be overrided)
+    **/
     void process_input();
+    /**
+    * \brief process the simplest user input (AWSD)
+    * \author João Vitor Espig (JotaEspig)
+    * \date October 04, 2023
+    * \version October 04, 2023
+    *
+    * Preconfigured way to process A, W, S and D keys
+    * (this method can be overrided)
+    **/
     void minimal_process_input();
+    /**
+    * \brief checks if window should close
+    * \author João Vitor Espig (JotaEspig)
+    * \date October 04, 2023
+    * \version October 04, 2023
+    **/
     bool should_close();
 };
 

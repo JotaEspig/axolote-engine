@@ -1,3 +1,12 @@
+/**
+* \file engine.hpp
+* \brief all headers in one
+* \author João Vitor Espig (JotaEspig)
+* \date
+* \version
+*
+* this header includes all necessary headers for working
+**/
 #pragma once
 
 #define GLFW_INCLUDE_NONE
