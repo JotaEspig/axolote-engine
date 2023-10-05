@@ -10,6 +10,22 @@ set(OpenGL_GL_PREFERENCE GLVND)
 find_package(OpenGL REQUIRED)
 find_package(glfw3 REQUIRED)
 find_package(glm REQUIRED)
+find_package(Doxygen)
+
+
+# =-=-=-=-=-=-= DOCS =-=-=-=-=-=-=
+if (DOXYGEN_FOUND)
+    message("Doxygen found. You can use `make docs`")
+
+    add_custom_target(
+        docs
+        COMMAND ${DOXYGEN_EXECUTABLE}
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        VERBATIM
+    )
+else (DOXYGEN_FOUND)
+    message("Doxygen not found. You won't be able to use `make docs`")
+endif (DOXYGEN_FOUND)
 
 
 # =-=-=-=-=-=-= LIBRARY =-=-=-=-=-=-=
