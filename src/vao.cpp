@@ -12,10 +12,10 @@ VAO::VAO()
 }
 
 void VAO::link_attrib(VBO &vbo, GLuint layout, GLuint num_components,
-                      GLenum type, GLsizeiptr stribe, void *offset)
+                      GLenum type, GLsizeiptr size, void *offset)
 {
     vbo.bind();
-    glVertexAttribPointer(layout, num_components, type, GL_FALSE, stribe, offset);
+    glVertexAttribPointer(layout, num_components, type, GL_FALSE, size, offset);
     glEnableVertexAttribArray(layout);
     vbo.unbind();
 }
