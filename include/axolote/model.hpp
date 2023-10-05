@@ -1,3 +1,10 @@
+/**
+* \file model.hpp
+* \brief Mesh class
+* \author João Vitor Espig (JotaEspig)
+* \date October 04, 2023
+* \version October 04, 2023
+**/
 #pragma once
 
 #include <string>
@@ -12,21 +19,61 @@
 namespace axolote
 {
 
+/**
+* \brief defines a 3D model
+* \author João Vitor Espig (JotaEspig)
+* \date October 04, 2023
+* \version October 04, 2023
+**/
 class Model
 {
 public:
+    /**
+    * \brief Constructor
+    * \author João Vitor Espig (JotaEspig)
+    * \date October 04, 2023
+    * \version October 04, 2023
+    **/
     Model() = default;
+    /**
+    * \brief Constructor
+    * \author João Vitor Espig (JotaEspig)
+    * \date October 04, 2023
+    * \version October 04, 2023
+    * \param path - path to model file (.obj)
+    * \param _color - default Model color
+    **/
     Model(const char *path, glm::vec3 _color = glm::vec3(0.0f, 0.0f, 0.0f));
 
+    /**
+    * \brief draws
+    * \author João Vitor Espig (JotaEspig)
+    * \date October 04, 2023
+    * \version October 04, 2023
+    * \param shader - Shader object
+    * \param matrix - model transformation matrix
+    **/
     void draw(Shader &shader, glm::mat4 matrix = glm::mat4(1.0f));
 
 private:
+    /** default color **/
     glm::vec3 color;
+    /** Model meshes **/
     std::vector<Mesh> meshes;
+    /** loaded textures **/
     std::vector<Texture> loaded_textures;
+    /** loaded textures names **/
     std::vector<std::string> loaded_textures_names;
+    /** model file directory **/
     std::string directory;
 
+    /**
+    * \brief loads a model from file
+    * \author João Vitor Espig (JotaEspig)
+    * \date October 04, 2023
+    * \version October 04, 2023
+    * \param path - path to file
+    **/
     void load_model(std::string path);
 };
 

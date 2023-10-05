@@ -48,7 +48,7 @@ public:
     * \author João Vitor Espig (JotaEspig)
     * \date October 04, 2023
     * \version October 04, 2023
-    * \param position - camera position vector
+    * \param position - Camera position vector
     **/
     Camera(glm::vec3 position);
 
@@ -107,8 +107,8 @@ public:
     * \version October 04, 2023
     * \param x - mouse click point x value
     * \param y - mouse click point y value
-    * \param width - window width
-    * \param height - window height
+    * \param width - Window width
+    * \param height - Window height
     * \param delta_t - time difference from last frame
     **/
     void move_vision(float x, float y, float width, float height, double delta_t = 1.0);
