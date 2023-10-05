@@ -181,7 +181,7 @@ void App::main_loop()
         dino.draw(shader_program);
         glEnable(GL_BLEND);
 
-        glFlush();
+        glfwSwapBuffers(window);
     }
 
     shader_program.destroy();

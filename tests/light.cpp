@@ -1,3 +1,4 @@
+#include <GLFW/glfw3.h>
 #include <iostream>
 #include <sstream>
 
@@ -248,7 +249,7 @@ void App::main_loop()
 
         floor.draw(shader_program);
 
-        glFlush();
+        glfwSwapBuffers(window);
     }
 
     shader_program.destroy();

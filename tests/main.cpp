@@ -354,7 +354,7 @@ void App::main_loop()
         // glEnable(GL_CULL_FACE);
         //glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-        glFlush();
+        glfwSwapBuffers(window);
     }
 
     shader_program.destroy();

@@ -50,7 +50,6 @@ void Window::init()
         return;
     }
 
-    glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_FALSE);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
     window = glfwCreateWindow(INITIAL_SIZE, INITIAL_SIZE, _title.c_str(), NULL, NULL);
@@ -71,7 +70,7 @@ void Window::init()
         return;
     }
 
-    glfwSwapInterval(0);
+    glfwSwapInterval(1);
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
