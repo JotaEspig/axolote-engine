@@ -11,10 +11,55 @@ class App : public axolote::Window
 {
 public:
     void main_loop();
+    void process_input(double delta_t);
 };
+
+void App::process_input(double delta_t)
+{
+    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        glfwSetWindowShouldClose(window, true);
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+        camera.forward(delta_t);
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+        camera.backward(delta_t);
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+        camera.leftward(delta_t);
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+        camera.rightward(delta_t);
+
+    // More keybinds
+    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+        camera.upward(delta_t);
+    if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+        camera.downward(delta_t);
+    if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
+        camera.speed = 10.0f;
+    if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_RELEASE)
+        camera.speed = 2.0f;
+    if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
+    {
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+
+        if (camera.first_click)
+            glfwSetCursorPos(window, (double)width() / 2, (double)height() / 2);
+
+        double mouse_x, mouse_y;
+        glfwGetCursorPos(window, &mouse_x, &mouse_y);
+        camera.move_vision((float)mouse_x, (float)mouse_y, (float)width(), (float)height(), delta_t);
+        glfwSetCursorPos(window, (double)width() / 2, (double)height() / 2);
+    }
+    if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_RELEASE)
+    {
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        camera.first_click = true;
+    }
+}
 
 void App::main_loop()
 {
+    camera.speed = 2.0f;
+    camera.sensitivity = 40000.0f;
+
     // TODO Fix the indices order (error when culling face)
     std::vector<axolote::Vertex> vertices =
     {
@@ -48,27 +93,6 @@ void App::main_loop()
         axolote::Vertex{glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 0.0f), glm::vec3(0.0f, 0.0f, -1.0f)}, // back bottom left
         axolote::Vertex{glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec3(1.0f, 1.0f, 0.0f), glm::vec2(1.0f, 1.0f), glm::vec3(0.0f, 0.0f, -1.0f)}, // back top left
         axolote::Vertex{glm::vec3(0.5f,  0.5f, -0.5f), glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(0.0f, 1.0f), glm::vec3(0.0f, 0.0f, -1.0f)}   // back top right
-    };
-
-    std::vector<GLuint> indices = {
-        //front face
-        0, 1, 2,
-        0, 2, 3,
-        // right face
-        4, 5, 6,
-        4, 6, 7,
-        // left face
-        8, 9, 10,
-        8, 10, 11,
-        // top face
-        12, 13, 14,
-        12, 14, 15,
-        // bottom face
-        16, 17, 18,
-        16, 18, 19,
-        // back face
-        20, 21, 22,
-        20, 22, 23
     };
 
     std::vector<axolote::Vertex> floor_v = {
@@ -117,10 +141,10 @@ void App::main_loop()
         axolote::Vertex{glm::vec3(0.5f,  0.5f, -0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)}   // back top right
     };
 
-    std::vector<GLuint> light_indices = {
+    std::vector<GLuint> indices = {
         //front face
-        0, 1, 2,
-        0, 2, 3,
+        0, 2, 1,
+        0, 3, 2,
         // right face
         4, 5, 6,
         4, 6, 7,
@@ -151,13 +175,15 @@ void App::main_loop()
         std::cerr << "Error when loading texture" << std::endl;
 
     axolote::Mesh b(vertices, indices, {tex0});
-    axolote::Mesh s(light_vertices, light_indices, {});
+    axolote::Mesh s(light_vertices, indices, {});
     axolote::Mesh f(floor_v, floor_indices, {tex1, floor_spec});
 
     axolote::Object2D sun(s);
     axolote::Entity body;
     body.add_mesh(b, glm::translate(glm::mat4(1.0f), glm::vec3(5.0f, 1.0f, 0.0f)));
-    axolote::Object2D floor(f, glm::translate(glm::mat4(1.0f), glm::vec3(-5.0f, -2.0f, 0.0f)));
+    glm::mat4 floor_m = glm::scale(glm::mat4(1.0f), glm::vec3(3.0f, 3.0f, 3.0f));
+    floor_m = glm::translate(floor_m, glm::vec3(0.0f, -2.0f, 0.0f));
+    axolote::Object2D floor(f, floor_m);
 
     axolote::Model m("./resources/models/sphere/sphere.obj",
                      glm::vec3(0.53f, 0.81f, 0.93f));
@@ -177,16 +203,16 @@ void App::main_loop()
     while (!should_close())
     {
         glfwPollEvents();
-        process_input();
+
+        double now = glfwGetTime();
+        double dt = now - before;
+        before = now;
+        process_input(dt);
 
         glClearColor(_color.r, _color.g, _color.b, _color.opacity);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         shader_program.set_uniform_float3("camera_pos", camera.pos.x, camera.pos.y, camera.pos.z);
-
-        double now = glfwGetTime();
-        double dt = now - before;
-        before = now;
 
         std::stringstream sstr;
         sstr << original_title << " | " << (int)(1 / dt) << " fps";
@@ -198,13 +224,12 @@ void App::main_loop()
         shader_program.set_uniform_matrix4("projection", projection);
         shader_program.set_uniform_matrix4("view",view);
 
-        glDisable(GL_CULL_FACE);
         shader_program.set_uniform_int("is_light_color_set", 0);
         sun.draw(shader_program);
 
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));
-        model = glm::translate(model, glm::vec3(8.0f * sin(now / 3), 0.0f, -3.0f + 8.0f * cos(now / 3)));
+        model = glm::translate(model, glm::vec3(8.0f * cos(now / 3), 0.0f, 8.0f * sin(now / 3)));
         model = glm::rotate(model, glm::radians(23.5f), glm::vec3(0.0f, 0.0f, 1.0f));
         model = glm::rotate(model, (float)now / 2, glm::vec3(0.0f, 1.0f, 0.0f));
 
@@ -213,10 +238,9 @@ void App::main_loop()
 
         body.set_matrix(0, model);
         body.draw(shader_program);
-        glEnable(GL_CULL_FACE);
 
         glm::mat4 m = glm::mat4(1.0f);
-        m = glm::translate(m, glm::vec3(5.0f, 5.0f, 0.0f));
+        m = glm::translate(m, glm::vec3(10.0f * sin(now / 3.5f), 0.0f, 10.0f * cos(now / 3.5f)));
         m = glm::rotate(m, (float)now / 3, glm::vec3(0.0f, 1.0f, 0.0f));
         sphere.set_matrix(0, m);
 
@@ -224,7 +248,7 @@ void App::main_loop()
 
         floor.draw(shader_program);
 
-        glfwSwapBuffers(window);
+        glFlush();
     }
 
     shader_program.destroy();

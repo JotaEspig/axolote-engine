@@ -11,14 +11,59 @@ class App : public axolote::Window
 {
 public:
     void main_loop();
+    void process_input(double delta_t);
 };
+
+void App::process_input(double delta_t)
+{
+    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        glfwSetWindowShouldClose(window, true);
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+        camera.forward(delta_t);
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+        camera.backward(delta_t);
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+        camera.leftward(delta_t);
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+        camera.rightward(delta_t);
+
+    // More keybinds
+    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+        camera.upward(delta_t);
+    if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+        camera.downward(delta_t);
+    if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
+        camera.speed = 10.0f;
+    if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_RELEASE)
+        camera.speed = 2.0f;
+    if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
+    {
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+
+        if (camera.first_click)
+            glfwSetCursorPos(window, (double)width() / 2, (double)height() / 2);
+
+        double mouse_x, mouse_y;
+        glfwGetCursorPos(window, &mouse_x, &mouse_y);
+        camera.move_vision((float)mouse_x, (float)mouse_y, (float)width(), (float)height(), delta_t);
+        glfwSetCursorPos(window, (double)width() / 2, (double)height() / 2);
+    }
+    if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_RELEASE)
+    {
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        camera.first_click = true;
+    }
+}
 
 void App::main_loop()
 {
+    camera.speed = 2.0f;
+    camera.sensitivity = 40000.0f;
+
     std::vector<GLuint> indices = {
         //front face
-        0, 1, 2,
-        0, 2, 3,
+        0, 2, 1,
+        0, 3, 2,
         // right face
         4, 5, 6,
         4, 6, 7,
@@ -91,18 +136,6 @@ void App::main_loop()
     glm::mat4 mat = glm::translate(glm::mat4(1.0f), glm::vec3(15.0f, 0.5f, 15.0f));
     dino.add_model(m, mat);
 
-    m = axolote::Model("./resources/models/mine_cube/cube.obj");
-    axolote::Entity cubes;
-    for (int i = 0; i < 30; ++i)
-    {
-        for (int j = 0; j < 30; ++j)
-        {
-            glm::mat4 mat = glm::mat4(1.0f);
-            mat = glm::translate(mat, glm::vec3(i, 0.0f, j));
-            cubes.add_model(m, mat);
-        }
-    }
-
     axolote::Shader shader_program("./resources/shaders/def_vertex_shader.glsl",
                                    "./resources/shaders/def_fragment_shader.glsl");
 
@@ -112,16 +145,16 @@ void App::main_loop()
     while (!should_close())
     {
         glfwPollEvents();
-        process_input();
+
+        double now = glfwGetTime();
+        double dt = now - before;
+        before = now;
+        process_input(dt);
 
         glClearColor(_color.r, _color.g, _color.b, _color.opacity);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         shader_program.set_uniform_float3("camera_pos", camera.pos.x, camera.pos.y, camera.pos.z);
-
-        double now = glfwGetTime();
-        double dt = now - before;
-        before = now;
 
         std::stringstream sstr;
         sstr << original_title << " | " << (int)(1 / dt) << " fps";
@@ -146,10 +179,9 @@ void App::main_loop()
         mine_cubes.draw(shader_program);
         glDisable(GL_BLEND);
         dino.draw(shader_program);
-        cubes.draw(shader_program);
         glEnable(GL_BLEND);
 
-        glfwSwapBuffers(window);
+        glFlush();
     }
 
     shader_program.destroy();

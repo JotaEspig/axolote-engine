@@ -8,8 +8,8 @@ namespace axolote
 class Camera
 {
 public:
-    float speed = 0.1f;
-    float sensitivity = 200.0f;
+    float speed = 1.0f;
+    float sensitivity = 1.0f;
     float fov = 45.0f;
     bool first_click = true;
     glm::vec3 pos;
@@ -19,13 +19,13 @@ public:
     Camera();
     Camera(glm::vec3 position);
 
-    void forward();
-    void leftward();
-    void rightward();
-    void backward();
-    void upward();
-    void downward();
-    void move_vision(float x, float y, float width, float height);
+    void forward(float delta_t = 1.0f);
+    void leftward(float delta_t = 1.0f);
+    void rightward(float delta_t = 1.0f);
+    void backward(float delta_t = 1.0f);
+    void upward(float delta_t = 1.0f);
+    void downward(float delta_t = 1.0f);
+    void move_vision(float x, float y, float width, float height, double delta_t = 1.0);
 };
 
 } // namespace axolote
