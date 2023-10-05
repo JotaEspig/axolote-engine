@@ -4,6 +4,8 @@ CMakeFiles
 CMakeCache.txt
 Makefile
 cmake_install.cmake
+CMakeDoxyfile.in
+CMakeDoxygenDefaults.cmake
 
 # folder
 docs/
