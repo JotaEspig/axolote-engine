@@ -26,13 +26,45 @@ namespace axolote
 class EBO
 {
 public:
+    /** OpenGL EBO id **/
     GLuint id;
 
+    /**
+    * \brief Constructor
+    * \author João Vitor Espig (JotaEspig)
+    * \date October 04, 2023
+    * \version October 04, 2023
+    **/
     EBO() = default;
+    /**
+    * \brief Constructor
+    * \author João Vitor Espig (JotaEspig)
+    * \date October 04, 2023
+    * \version October 04, 2023
+    * \param indices - array of indices
+    **/
     EBO(std::vector<GLuint> indices);
 
+    /**
+    * \brief binds
+    * \author João Vitor Espig (JotaEspig)
+    * \date October 04, 2023
+    * \version October 04, 2023
+    **/
     void bind();
+    /**
+    * \brief unbinds
+    * \author João Vitor Espig (JotaEspig)
+    * \date October 04, 2023
+    * \version October 04, 2023
+    **/
     void unbind();
+    /**
+    * \brief destroys
+    * \author João Vitor Espig (JotaEspig)
+    * \date October 04, 2023
+    * \version October 04, 2023
+    **/
     void destroy();
 };
 

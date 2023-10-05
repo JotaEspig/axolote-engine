@@ -81,7 +81,6 @@ public:
     * \author João Vitor Espig (JotaEspig)
     * \date October 04, 2023
     * \version October 04, 2023
-    * \param new_title - new window title
     **/
     int height();
     /**
@@ -104,7 +103,7 @@ public:
     * \author João Vitor Espig (JotaEspig)
     * \date October 04, 2023
     * \version October 04, 2023
-    * \param color - new window background color
+    * \param color - Color object
     **/
     void set_color(Color color);
     /**

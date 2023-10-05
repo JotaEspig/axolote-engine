@@ -30,6 +30,8 @@ public:
     * \author João Vitor Espig (JotaEspig)
     * \date October 04, 2023
     * \version October 04, 2023
+    * \param vertex_file - vertex glsl file
+    * \param fragment_file - fragment glsl file
     **/
     Shader(const char *vertex_file, const char *fragment_file);
 
@@ -38,6 +40,8 @@ public:
     * \author João Vitor Espig (JotaEspig)
     * \date October 04, 2023
     * \version October 04, 2023
+    * \param uniform_name - name of uniform variable
+    * \param value - integer value
     **/
     void set_uniform_int(const char *uniform_name, int value);
     /**
@@ -45,6 +49,8 @@ public:
     * \author João Vitor Espig (JotaEspig)
     * \date October 04, 2023
     * \version October 04, 2023
+    * \param uniform_name - name of uniform variable
+    * \param matrix - matrix 4x4 value
     **/
     void set_uniform_matrix4(const char *uniform_name, glm::mat4 matrix);
     /**
@@ -52,6 +58,8 @@ public:
     * \author João Vitor Espig (JotaEspig)
     * \date October 04, 2023
     * \version October 04, 2023
+    * \param uniform_name - name of uniform variable
+    * \param x - float value
     **/
     void set_uniform_float(const char *uniform_name, float x);
     /**
@@ -59,6 +67,10 @@ public:
     * \author João Vitor Espig (JotaEspig)
     * \date October 04, 2023
     * \version October 04, 2023
+    * \param uniform_name - name of uniform variable
+    * \param x - first float value
+    * \param y - second float value
+    * \param z - third float value
     **/
     void set_uniform_float3(const char *uniform_name,
                             float x, float y, float z);
@@ -67,6 +79,11 @@ public:
     * \author João Vitor Espig (JotaEspig)
     * \date October 04, 2023
     * \version October 04, 2023
+    * \param uniform_name - name of uniform variable
+    * \param x - first float value
+    * \param y - second float value
+    * \param z - third float value
+    * \param w - fourth float value
     **/
     void set_uniform_float4(const char *uniform_name,
                             float x, float y, float z, float w);

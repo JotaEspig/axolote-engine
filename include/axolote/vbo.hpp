@@ -29,13 +29,45 @@ namespace axolote
 class VBO
 {
 public:
+    /** OpenGL VBO id **/
     GLuint id;
 
+    /**
+    * \brief Constructor
+    * \author João Vitor Espig (JotaEspig)
+    * \date October 04, 2023
+    * \version October 04, 2023
+    **/
     VBO() = default;
+    /**
+    * \brief Constructor
+    * \author João Vitor Espig (JotaEspig)
+    * \date October 04, 2023
+    * \version October 04, 2023
+    * \param vertices - array of vertex
+    **/
     VBO(std::vector<Vertex> vertices);
 
+    /**
+    * \brief binds
+    * \author João Vitor Espig (JotaEspig)
+    * \date October 04, 2023
+    * \version October 04, 2023
+    **/
     void bind();
+    /**
+    * \brief unbinds
+    * \author João Vitor Espig (JotaEspig)
+    * \date October 04, 2023
+    * \version October 04, 2023
+    **/
     void unbind();
+    /**
+    * \brief destroys
+    * \author João Vitor Espig (JotaEspig)
+    * \date October 04, 2023
+    * \version October 04, 2023
+    **/
     void destroy();
 };
 

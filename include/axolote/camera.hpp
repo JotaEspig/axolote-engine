@@ -16,7 +16,7 @@ namespace axolote
 {
 
 /**
-* \brief class that represents a Camera in 3D/2D
+* \brief class that represents a Camera in 2D/3D
 * \author João Vitor Espig (JotaEspig)
 * \date October 04, 2023
 * \version October 04, 2023
@@ -24,8 +24,11 @@ namespace axolote
 class Camera
 {
 public:
+    /** movement speed **/
     float speed = 1.0f;
+    /** view sensitivity **/
     float sensitivity = 1.0f;
+    /** camera FOV **/
     float fov = 45.0f;
     /** first click in the window (used in view movement) **/
     bool first_click = true;
