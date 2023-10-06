@@ -12,7 +12,7 @@
 #include <axolote/shader.hpp>
 #include <glm/glm.hpp>
 
-#include <axolote/mesh.hpp>
+#include <axolote/gmesh.hpp>
 #include <axolote/texture.hpp>
 #include <axolote/structs.hpp>
 
@@ -25,7 +25,7 @@ namespace axolote
 * \date October 04, 2023
 * \version October 05, 2023
 **/
-class Object2D : public Mesh
+class Object2D : public GMesh
 {
 public:
     /**

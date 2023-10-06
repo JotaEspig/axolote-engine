@@ -7,7 +7,7 @@
 
 #include <axolote/model.hpp>
 #include <axolote/shader.hpp>
-#include <axolote/mesh.hpp>
+#include <axolote/gmesh.hpp>
 #include <axolote/assimp.hpp>
 
 namespace axolote
@@ -21,7 +21,7 @@ Model::Model(const char *path, glm::vec3 _color)
 
 void Model::draw(Shader &shader, glm::mat4 matrix)
 {
-    for (Mesh e : meshes)
+    for (GMesh e : meshes)
         e.draw(shader, matrix);
 }
 

@@ -13,7 +13,7 @@
 #include <glm/glm.hpp>
 
 #include <axolote/shader.hpp>
-#include <axolote/mesh.hpp>
+#include <axolote/gmesh.hpp>
 #include <axolote/texture.hpp>
 
 namespace axolote
@@ -59,7 +59,7 @@ private:
     /** default color **/
     glm::vec3 color;
     /** Model meshes **/
-    std::vector<Mesh> meshes;
+    std::vector<GMesh> meshes;
     /** loaded textures **/
     std::vector<Texture> loaded_textures;
     /** loaded textures names **/

@@ -212,7 +212,7 @@ void App::main_loop()
     if (!floor_spec.loaded)
         std::cerr << "Error when loading texture" << std::endl;
 
-    axolote::Mesh c(mine_vertices, indices, {tex2});
+    axolote::GMesh c(mine_vertices, indices, {tex2});
 
     axolote::Object2D body(vertices, indices, {tex0},
                            glm::translate(glm::mat4(1.0f),

@@ -3,7 +3,7 @@
 
 #include <axolote/entity.hpp>
 #include <axolote/model.hpp>
-#include <axolote/mesh.hpp>
+#include <axolote/gmesh.hpp>
 #include <axolote/shader.hpp>
 
 namespace axolote
@@ -41,7 +41,7 @@ void Entity::add_model(Model m, glm::mat4 mat)
     matrices.push_back(mat);
 }
 
-void Entity::add_mesh(Mesh m, glm::mat4 mat)
+void Entity::add_mesh(GMesh m, glm::mat4 mat)
 {
     type = EntityType::MESH;
     meshes.push_back(m);

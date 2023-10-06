@@ -12,7 +12,7 @@
 #include <glm/glm.hpp>
 
 #include <axolote/model.hpp>
-#include <axolote/mesh.hpp>
+#include <axolote/gmesh.hpp>
 #include <axolote/shader.hpp>
 
 namespace axolote
@@ -82,10 +82,10 @@ public:
     * \author João Vitor Espig (JotaEspig)
     * \date October 04, 2023
     * \version October 04, 2023
-    * \param m - Mesh object
+    * \param m - GMesh object
     * \param mat - model transformation matrix
     **/
-    void add_mesh(Mesh m, glm::mat4 mat = glm::mat4(1.0f));
+    void add_mesh(GMesh m, glm::mat4 mat = glm::mat4(1.0f));
 
 private:
     /** type of the Entity **/
@@ -93,7 +93,7 @@ private:
     /** vector of models **/
     std::vector<Model> models;
     /** vector of meshes **/
-    std::vector<Mesh> meshes;
+    std::vector<GMesh> meshes;
     /** vector of matrices **/
     std::vector<glm::mat4> matrices;
 };

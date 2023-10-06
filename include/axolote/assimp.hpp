@@ -22,7 +22,7 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
-#include <axolote/mesh.hpp>
+#include <axolote/gmesh.hpp>
 #include <axolote/texture.hpp>
 
 
@@ -34,7 +34,7 @@ namespace axolote
 * \date October 04, 2023
 * \version Octboer 04, 2023
 **/
-void process_node(aiNode *node, const aiScene *scene, std::vector<Mesh> &meshes,
+void process_node(aiNode *node, const aiScene *scene, std::vector<GMesh> &meshes,
                   glm::vec3 color, std::vector<Texture> &loaded_textures,
                   std::vector<std::string> &loaded_textures_names,
                   std::string directory);
@@ -44,7 +44,7 @@ void process_node(aiNode *node, const aiScene *scene, std::vector<Mesh> &meshes,
 * \date October 04, 2023
 * \version Octboer 04, 2023
 **/
-Mesh process_mesh(aiMesh *mesh, const aiScene *scene, glm::vec3 color,
+GMesh process_mesh(aiMesh *mesh, const aiScene *scene, glm::vec3 color,
                   std::vector<Texture> loaded_textures,
                   std::vector<std::string> &loaded_textures_names,
                   std::string directory);
@@ -61,7 +61,7 @@ std::vector<Texture> load_material_textures(aiMaterial *mat,
                                             std::vector<std::string> &loaded_textures_names,
                                             std::string directory);
 
-void process_node(aiNode *node, const aiScene *scene, std::vector<Mesh> &meshes,
+void process_node(aiNode *node, const aiScene *scene, std::vector<GMesh> &meshes,
                   glm::vec3 color, std::vector<Texture> &loaded_textures,
                   std::vector<std::string> &loaded_textures_names,
                   std::string directory)
@@ -78,7 +78,7 @@ void process_node(aiNode *node, const aiScene *scene, std::vector<Mesh> &meshes,
                      loaded_textures_names, directory);
 }
 
-Mesh process_mesh(aiMesh *mesh, const aiScene *scene, glm::vec3 color,
+GMesh process_mesh(aiMesh *mesh, const aiScene *scene, glm::vec3 color,
                   std::vector<Texture> loaded_textures,
                   std::vector<std::string> &loaded_textures_names,
                   std::string directory)
@@ -136,7 +136,7 @@ Mesh process_mesh(aiMesh *mesh, const aiScene *scene, glm::vec3 color,
         textures.insert(textures.end(), specular_texs.begin(), specular_texs.end());
     }
 
-    return Mesh(vertices, indices, textures);
+    return GMesh(vertices, indices, textures);
 }
 
 std::vector<Texture> load_material_textures(aiMaterial *mat,
