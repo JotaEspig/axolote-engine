@@ -38,6 +38,7 @@ set(
     ${SOURCE_DIR}/camera.cpp
     ${SOURCE_DIR}/ebo.cpp
     ${SOURCE_DIR}/entity.cpp
+    ${SOURCE_DIR}/gmesh.cpp
     ${SOURCE_DIR}/mesh.cpp
     ${SOURCE_DIR}/model.cpp
     ${SOURCE_DIR}/object2d.cpp
