@@ -13,6 +13,7 @@
 #include <glm/glm.hpp>
 
 #include <axolote/gmesh.hpp>
+#include <axolote/object.hpp>
 #include <axolote/texture.hpp>
 #include <axolote/structs.hpp>
 
@@ -25,7 +26,7 @@ namespace axolote
 * \date October 04, 2023
 * \version October 05, 2023
 **/
-class Object2D : public GMesh
+class Object2D : public Object, public GMesh
 {
 public:
     /**
@@ -55,11 +56,7 @@ public:
     * \version October 05, 2023
     * \param shader - Shader object
     **/
-    void draw(Shader &shader);
-
-private:
-    /** model transformation matrix **/
-    glm::mat4 pos = glm::mat4(1.0f);
+    void draw(Shader &shader) override;
 };
 
 } // namespace axolote
