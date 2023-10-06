@@ -13,10 +13,8 @@
 #include <glm/glm.hpp>
 
 #include <axolote/shader.hpp>
-#include <axolote/vao.hpp>
-#include <axolote/vbo.hpp>
-#include <axolote/ebo.hpp>
 #include <axolote/texture.hpp>
+#include <axolote/structs.hpp>
 
 namespace axolote
 {
@@ -49,36 +47,13 @@ public:
     Mesh(std::vector<Vertex> _vertices, std::vector<GLuint> _indices,
          std::vector<Texture> _textures);
 
-    /**
-    * \brief Constructor
-    * \author João Vitor Espig (JotaEspig)
-    * \date October 04, 2023
-    * \version October 04, 2023
-    * \param shader - Shader object
-    * \param matrix - model transformation matrix
-    **/
-    void draw(Shader &shader, glm::mat4 matrix = glm::mat4(1.0f));
-    /**
-    * \brief Destroys OpenGL objects created
-    * \author João Vitor Espig (JotaEspig)
-    * \date October 04, 2023
-    * \version October 04, 2023
-    **/
-    void destroy();
-
-private:
+protected:
     /** polygon mesh vertices **/
     std::vector<Vertex> vertices;
     /** polygon mesh indices **/
     std::vector<GLuint> indices;
     /** textures to be rendered **/
     std::vector<Texture> textures;
-    /** VAO **/
-    VAO vao;
-    /** VBO **/
-    VBO vbo;
-    /** EBO **/
-    EBO ebo;
 };
 
 } // namespace axolote
