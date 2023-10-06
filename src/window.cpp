@@ -37,6 +37,8 @@ Window::~Window()
 
 void Window::init()
 {
+    glfwSetErrorCallback(error_callback);
+
     _title = "Axolote Engine";
     window = NULL;
     _color.r = 0x00;
@@ -46,7 +48,7 @@ void Window::init()
 
     if (!glfwInit())
     {
-        std::cerr << "Error initializing glfw" << std::endl;
+        std::cerr << "Error initializing GLFW" << std::endl;
         return;
     }
 
@@ -61,7 +63,6 @@ void Window::init()
     }
 
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-    glfwSetErrorCallback(error_callback);
 
     glfwMakeContextCurrent(window);
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
