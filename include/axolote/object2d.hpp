@@ -8,7 +8,6 @@
 #pragma once
 
 #include <GL/gl.h>
-
 #include <glm/glm.hpp>
 
 #include <axolote/shader.hpp>

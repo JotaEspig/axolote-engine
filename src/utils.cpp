@@ -1,6 +1,7 @@
-#include <axolote/utils.hpp>
 #include <fstream>
 #include <sstream>
+
+#include <axolote/utils.hpp>
 
 std::string get_file_content(const char *filename)
 {

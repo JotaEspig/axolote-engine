@@ -1,5 +1,4 @@
 #include <GL/gl.h>
-
 #include <glm/glm.hpp>
 
 #include <axolote/object2d.hpp>

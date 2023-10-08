@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 
 #include <glm/glm.hpp>
 #include <assimp/Importer.hpp>
