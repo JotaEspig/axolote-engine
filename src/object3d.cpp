@@ -11,6 +11,7 @@ namespace axolote
 
 Object3D::Object3D()
 {
+    pos = glm::mat4(1.0f);
 }
 
 Object3D::Object3D(glm::mat4 mat)

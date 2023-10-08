@@ -40,7 +40,7 @@ public:
     * \version October 08, 2023
     * \param mat - model transformation matrix
     **/
-    Object3D(glm::mat4 mat = glm::mat4(1.0f));
+    Object3D(glm::mat4 mat);
 
     /**
     * \brief loads a model from file
