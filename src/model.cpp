@@ -14,7 +14,7 @@
 namespace axolote
 {
 
-Model::Model(const char *path, glm::vec3 _color) :
+Model::Model(std::string path, glm::vec3 _color) :
     color{_color}
 {
     load_model(path);
