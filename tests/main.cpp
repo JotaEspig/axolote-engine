@@ -212,8 +212,6 @@ void App::main_loop()
     if (!floor_spec.loaded)
         std::cerr << "Error when loading texture" << std::endl;
 
-    axolote::GMesh c(mine_vertices, indices, {tex2});
-
     axolote::Object2D body(vertices, indices, {tex0},
                            glm::translate(glm::mat4(1.0f),
                                           glm::vec3(5.0f, 1.0f, 0.0f)));
@@ -222,6 +220,7 @@ void App::main_loop()
     floor_m = glm::translate(floor_m, glm::vec3(-2.0f, -2.0f, 0.0f));
     axolote::Object2D floor(floor_v, floor_indices, {tex1, floor_spec}, floor_m);
 
+    axolote::Object *c = new axolote::Object2D(mine_vertices, indices, {tex2});
     axolote::Entity mine_cubes;
     for (int i = 0; i < 30; ++i)
     {
@@ -229,35 +228,20 @@ void App::main_loop()
         {
             glm::mat4 mat = glm::mat4(1.0f);
             mat = glm::translate(mat, glm::vec3(i, 0.0f, j));
-            mine_cubes.add_mesh(c, mat);
+            mine_cubes.add_object(c, mat);
         }
     }
 
-    axolote::Model m("./resources/models/dino/Triceratops.obj");
+    axolote::Object3D din;
+    din.load_model("./resources/models/dino/Triceratops.obj");
     axolote::Entity dino;
     glm::mat4 mat = glm::translate(glm::mat4(1.0f), glm::vec3(15.0f, 0.5f, 15.0f));
-    dino.add_model(m, mat);
+    dino.add_object(&din, mat);
 
-    m = axolote::Model("./resources/models/mine_cube/cube.obj");
-    axolote::Entity cubes;
-    for (int i = 0; i < 30; ++i)
-    {
-        for (int j = 0; j < 30; ++j)
-        {
-            glm::mat4 mat = glm::mat4(1.0f);
-            mat = glm::translate(mat, glm::vec3(i, 0.0f, j));
-            cubes.add_model(m, mat);
-        }
-    }
-
-    m = axolote::Model("./resources/models/sphere/sphere.obj",
-                       glm::vec3(0.79f, 0.79f, 0.79f));
-    axolote::Entity sphere;
-    sphere.add_model(m);
-
-    m = axolote::Model("./resources/models/m26/m26pershing_coh.obj");
+    axolote::Object3D m;
+    m.load_model("./resources/models/m26/m26pershing_coh.obj");
     axolote::Entity m26;
-    m26.add_model(m, glm::translate(glm::mat4(1.0f), glm::vec3(-7.0f, 0.0f, 0.0f)));
+    m26.add_object(&m, glm::translate(glm::mat4(1.0f), glm::vec3(-7.0f, 0.0f, 0.0f)));
 
     axolote::Shader shader_program("./resources/shaders/def_vertex_shader.glsl",
                                    "./resources/shaders/def_fragment_shader.glsl");
@@ -333,11 +317,6 @@ void App::main_loop()
         */
         shader_program.set_uniform_int("is_light_color_set", 1);
 
-        glm::mat4 m = glm::mat4(1.0f);
-        m = glm::translate(m, glm::vec3(5.0f, 5.0f, 0.0f));
-        m = glm::rotate(m, (float)now / 3, glm::vec3(0.0f, 1.0f, 0.0f));
-        sphere.set_matrix(0, m);
-
         //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
         // glDisable(GL_CULL_FACE);
         //
@@ -347,7 +326,6 @@ void App::main_loop()
         sun.draw(shader_program);
         body.draw(shader_program);
         glEnable(GL_CULL_FACE);
-        sphere.draw(shader_program);
         floor.draw(shader_program);
         m26.draw(shader_program);
 
