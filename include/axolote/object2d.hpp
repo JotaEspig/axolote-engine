@@ -9,9 +9,9 @@
 
 #include <GL/gl.h>
 
-#include <axolote/shader.hpp>
 #include <glm/glm.hpp>
 
+#include <axolote/shader.hpp>
 #include <axolote/gmesh.hpp>
 #include <axolote/object.hpp>
 #include <axolote/texture.hpp>
