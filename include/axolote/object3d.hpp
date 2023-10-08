@@ -1,0 +1,66 @@
+/**
+* \file object3d.hpp
+* \brief Object3D class
+* \author João Vitor Espig (JotaEspig)
+* \date October 08, 2023
+* \version October 08, 2023
+**/
+#pragma once
+
+#include <GL/gl.h>
+#include <glm/glm.hpp>
+
+#include <axolote/shader.hpp>
+#include <axolote/model.hpp>
+#include <axolote/object.hpp>
+
+namespace axolote
+{
+
+/**
+* \brief defines a 3D Object
+* \author João Vitor Espig (JotaEspig)
+* \date October 08, 2023
+* \version October 08, 2023
+**/
+class Object3D : public Object, public Model
+{
+public:
+    /**
+    * \brief Constructor
+    * \author João Vitor Espig (JotaEspig)
+    * \date October 08, 2023
+    * \version October 08, 2023
+    **/
+    Object3D();
+    /**
+    * \brief Constructor
+    * \author João Vitor Espig (JotaEspig)
+    * \date October 08, 2023
+    * \version October 08, 2023
+    * \param mat - model transformation matrix
+    **/
+    Object3D(glm::mat4 mat = glm::mat4(1.0f));
+
+    /**
+    * \brief loads a model from file
+    * \author João Vitor Espig (JotaEspig)
+    * \date October 08, 2023
+    * \version October 08, 2023
+    * \param path - path to file
+    * \param color - default color for the model if there's no texture
+    *
+    * It uses constructor from Model
+    **/
+    void load_model(std::string path, glm::vec3 color = glm::vec3(0.0f, 0.0f, 0.0f));
+    /**
+    * \brief draws
+    * \author João Vitor Espig (JotaEspig)
+    * \date October 08, 2023
+    * \version October 08, 2023
+    * \param shader - Shader object
+    **/
+    void draw(Shader &shader) override;
+};
+
+} // namespace axolote
