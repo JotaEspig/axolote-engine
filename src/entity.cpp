@@ -13,39 +13,22 @@ Entity::Entity()
 {
 }
 
+void Entity::add_object(Object *o, glm::mat4 mat)
+{
+    objects.push_back(o);
+    o->pos = mat;
+}
+
 void Entity::set_matrix(size_t idx, glm::mat4 mat)
 {
-    if (idx >= matrices.size())
-        std::cerr << "Entity: invalid index for matrix setting" << std::endl;
-    matrices[idx] = mat;
+    assert (idx >= objects.size());
+    objects[idx]->pos = mat;
 }
 
 void Entity::draw(Shader &shader)
 {
-    if (type == EntityType::MODEL)
-    {
-        for (size_t i = 0; i < models.size(); ++i)
-            models[i].draw(shader, matrices[i]);
-    }
-    else if (type == EntityType::MESH)
-    {
-        for (size_t i = 0; i < meshes.size(); ++i)
-            meshes[i].draw(shader, matrices[i]);
-    }
-}
-
-void Entity::add_model(Model m, glm::mat4 mat)
-{
-    type = EntityType::MODEL;
-    models.push_back(m);
-    matrices.push_back(mat);
-}
-
-void Entity::add_mesh(GMesh m, glm::mat4 mat)
-{
-    type = EntityType::MESH;
-    meshes.push_back(m);
-    matrices.push_back(mat);
+    for (size_t i = 0; i < objects.size(); ++i)
+        objects[i]->draw(shader);
 }
 
 } // namespace axolote
