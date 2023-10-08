@@ -3,7 +3,7 @@
 * \brief Mesh class
 * \author João Vitor Espig (JotaEspig)
 * \date October 04, 2023
-* \version October 04, 2023
+* \version October 08, 2023
 **/
 #pragma once
 
@@ -23,7 +23,7 @@ namespace axolote
 * \brief defines a 3D model
 * \author João Vitor Espig (JotaEspig)
 * \date October 04, 2023
-* \version October 04, 2023
+* \version October 08, 2023
 **/
 class Model
 {
@@ -39,7 +39,7 @@ public:
     * \brief Constructor
     * \author João Vitor Espig (JotaEspig)
     * \date October 04, 2023
-    * \version October 04, 2023
+    * \version October 08, 2023
     * \param path - path to model file (.obj)
     * \param _color - default Model color
     **/

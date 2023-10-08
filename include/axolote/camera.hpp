@@ -3,7 +3,7 @@
 * \brief camera operations
 * \author João Vitor Espig (JotaEspig)
 * \date October 04, 2023
-* \version October 04, 2023
+* \version October 08, 2023
 *
 * This file contains Camera class that handles operations like movement in 3D
 * and view movement
@@ -19,7 +19,7 @@ namespace axolote
 * \brief class that represents a Camera in 2D/3D
 * \author João Vitor Espig (JotaEspig)
 * \date October 04, 2023
-* \version October 04, 2023
+* \version October 08, 2023
 **/
 class Camera
 {
@@ -43,14 +43,14 @@ public:
     * \brief Constructor
     * \author João Vitor Espig (JotaEspig)
     * \date October 04, 2023
-    * \version October 04, 2023
+    * \version October 08, 2023
     **/
     Camera();
     /**
     * \brief Constructor
     * \author João Vitor Espig (JotaEspig)
     * \date October 04, 2023
-    * \version October 04, 2023
+    * \version October 08, 2023
     * \param position - Camera position vector
     **/
     Camera(glm::vec3 position);

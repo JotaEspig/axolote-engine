@@ -10,17 +10,16 @@
 namespace axolote
 {
 
-Texture::Texture()
+Texture::Texture() :
+    loaded{false}
 {
-    loaded = false;
 }
 
-Texture::Texture(const char *texture_filename, std::string tex_type, GLuint _unit)
+Texture::Texture(const char *texture_filename, std::string tex_type, GLuint _unit) :
+    type{tex_type},
+    unit{_unit},
+    loaded{false}
 {
-    loaded = false;
-    type = tex_type;
-    unit = _unit;
-
     stbi_set_flip_vertically_on_load(true);
     int width_img, height_img, num_channels_img;
     unsigned char *data = stbi_load(texture_filename, &width_img, &height_img,

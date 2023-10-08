@@ -9,14 +9,14 @@
 namespace axolote
 {
 
-Camera::Camera()
+Camera::Camera() :
+    pos{0.0f, 0.0f, 0.0f}
 {
-    pos = glm::vec3(0.0f, 0.0f, 0.0f);
 }
 
-Camera::Camera(glm::vec3 position)
+Camera::Camera(glm::vec3 position) :
+    pos{position}
 {
-    pos = position;
 }
 
 void Camera::forward(float delta_t)
