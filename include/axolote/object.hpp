@@ -31,6 +31,7 @@ public:
     * \param shader - Shader object
     **/
     virtual void draw(Shader &shader) = 0;
+    friend class Entity;
 
 protected:
     /** model transformation matrix **/
