@@ -43,6 +43,20 @@ public:
     Object3D(glm::mat4 mat);
 
     /**
+    * \brief initializes an Object3D from model file
+    * \author João Vitor Espig (JotaEspig)
+    * \date October 09, 2023
+    * \version October 09, 2023
+    * \param mat - model transformation matrix
+    * \param path - path to file
+    * \param color - default color for the model if there's no texture
+    *
+    * It calls load_model method
+    **/
+    static Object3D from_model_file(glm::mat4 mat, std::string path,
+                                    glm::vec3 color = glm::vec3(0.0f, 0.0f, 0.0f));
+
+    /**
     * \brief loads a model from file
     * \author João Vitor Espig (JotaEspig)
     * \date October 08, 2023
