@@ -177,15 +177,14 @@ void App::main_loop()
     floor_m = glm::translate(floor_m, glm::vec3(-2.0f, -2.0f, 0.0f));
     axolote::Object2D floor(floor_m, floor_v, floor_indices, {tex1, floor_spec});
 
-    axolote::Object2D c(glm::mat4(1.0f), mine_vertices, indices, {tex2});
     axolote::Entity mine_cubes;
     for (int i = 0; i < 30; ++i)
     {
         for (int j = 0; j < 30; ++j)
         {
+            axolote::Object2D *c = new axolote::Object2D(glm::mat4(1.0f), mine_vertices, indices, {tex2});
             glm::mat4 mat = glm::mat4(1.0f);
-            mat = glm::translate(mat, glm::vec3(i, 0.0f, j));
-            mine_cubes.add_object(&c, mat);
+            mine_cubes.add_object(c, mat);
         }
     }
 
@@ -256,6 +255,7 @@ void App::main_loop()
         floor.draw(shader_program);
         shader_program.set_uniform_int("is_light_color_set", 0);
 
+        */
         for (int i = 0; i < 30; ++i)
         {
             for (int j = 0; j < 30; ++j)
@@ -267,6 +267,7 @@ void App::main_loop()
         }
         mine_cubes.draw(shader_program);
 
+        /*
         glDisable(GL_BLEND);
         dino.draw(shader_program);
         // cubes.draw(shader_program);
