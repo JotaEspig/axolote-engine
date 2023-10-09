@@ -20,7 +20,7 @@ namespace axolote
 { 
 
 /**
-* \brief defines a Object that can move
+* \brief defines a Object (or multiple objects) that can move
 * \author João Vitor Espig (JotaEspig)
 * \date October 04, 2023
 * \version October 08, 2023

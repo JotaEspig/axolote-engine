@@ -1,6 +1,8 @@
 #include <iostream>
 #include <vector>
 
+#include <glm/glm.hpp>
+
 #include <axolote/entity.hpp>
 #include <axolote/model.hpp>
 #include <axolote/gmesh.hpp>
@@ -21,7 +23,7 @@ void Entity::add_object(Object *o, glm::mat4 mat)
 
 void Entity::set_matrix(size_t idx, glm::mat4 mat)
 {
-    assert (idx >= objects.size());
+    assert (idx < objects.size());
     objects[idx]->pos = mat;
 }
 
