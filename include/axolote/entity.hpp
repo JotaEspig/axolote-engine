@@ -43,7 +43,7 @@ public:
     * \author João Vitor Espig (JotaEspig)
     * \date October 08, 2023
     * \version October 08, 2023
-    * \param m - Object object pointer
+    * \param o - Object object pointer
     * \param mat - model transformation matrix
     **/
     void add_object(Object *o, glm::mat4 mat = glm::mat4(1.0f));
