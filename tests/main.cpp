@@ -170,15 +170,14 @@ void App::main_loop()
     if (!floor_spec.loaded)
         std::cerr << "Error when loading texture" << std::endl;
 
-    axolote::Object2D body(vertices, indices, {tex0},
-                           glm::translate(glm::mat4(1.0f),
-                                          glm::vec3(5.0f, 1.0f, 0.0f)));
-    axolote::Object2D sun(light_vertices, indices, {});
+    axolote::Object2D body(glm::translate(glm::mat4(1.0f), glm::vec3(5.0f, 1.0f, 0.0f)),
+                                          vertices, indices, {tex0});
+    axolote::Object2D sun(glm::mat4(1.0f), light_vertices, indices, {});
     glm::mat4 floor_m = glm::scale(glm::mat4(1.0f), glm::vec3(3.0f, 3.0f, 3.0f));
     floor_m = glm::translate(floor_m, glm::vec3(-2.0f, -2.0f, 0.0f));
-    axolote::Object2D floor(floor_v, floor_indices, {tex1, floor_spec}, floor_m);
+    axolote::Object2D floor(floor_m, floor_v, floor_indices, {tex1, floor_spec});
 
-    axolote::Object *c = new axolote::Object2D(mine_vertices, indices, {tex2});
+    axolote::Object2D c(glm::mat4(1.0f), mine_vertices, indices, {tex2});
     axolote::Entity mine_cubes;
     for (int i = 0; i < 30; ++i)
     {
@@ -186,7 +185,7 @@ void App::main_loop()
         {
             glm::mat4 mat = glm::mat4(1.0f);
             mat = glm::translate(mat, glm::vec3(i, 0.0f, j));
-            mine_cubes.add_object(c, mat);
+            mine_cubes.add_object(&c, mat);
         }
     }
 
