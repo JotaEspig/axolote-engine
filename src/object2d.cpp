@@ -13,8 +13,10 @@ Object2D::Object2D()
 {
 }
 
-Object2D::Object2D(std::vector<Vertex> vertices, std::vector<GLuint> indices,
-                   std::vector<Texture> textures, glm::mat4 mat) :
+Object2D::Object2D(glm::mat4 mat,
+                   std::vector<Vertex> vertices,
+                   std::vector<GLuint> indices,
+                   std::vector<Texture> textures) :
     GMesh::GMesh(vertices, indices, textures)
 {
     pos = mat;

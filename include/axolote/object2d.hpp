@@ -40,13 +40,13 @@ public:
     * \author João Vitor Espig (JotaEspig)
     * \date October 04, 2023
     * \version October 05, 2023
+    * \param mat - model transformation matrix
     * \param vertices - Mesh vertices
     * \param indices - Mesh indices
     * \param textures - Mesh textures
-    * \param mat - model transformation matrix
     **/
-    Object2D(std::vector<Vertex> vertices, std::vector<GLuint>,
-             std::vector<Texture> textures, glm::mat4 mat = glm::mat4(1.0f));
+    Object2D(glm::mat4 mat, std::vector<Vertex> vertices,
+             std::vector<GLuint> indices, std::vector<Texture> textures);
 
     /**
     * \brief draws
