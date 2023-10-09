@@ -11,54 +11,12 @@ class App : public axolote::Window
 {
 public:
     void main_loop();
-    void process_input(double delta_t);
 };
-
-void App::process_input(double delta_t)
-{
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, true);
-    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        camera.forward(delta_t);
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        camera.backward(delta_t);
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        camera.leftward(delta_t);
-    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        camera.rightward(delta_t);
-
-    // More keybinds
-    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
-        camera.upward(delta_t);
-    if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-        camera.downward(delta_t);
-    if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
-        camera.speed = 10.0f;
-    if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_RELEASE)
-        camera.speed = 2.0f;
-    if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
-    {
-        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
-
-        if (camera.first_click)
-            glfwSetCursorPos(window, (double)width() / 2, (double)height() / 2);
-
-        double mouse_x, mouse_y;
-        glfwGetCursorPos(window, &mouse_x, &mouse_y);
-        camera.move_vision((float)mouse_x, (float)mouse_y, (float)width(), (float)height(), delta_t);
-        glfwSetCursorPos(window, (double)width() / 2, (double)height() / 2);
-    }
-    if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_RELEASE)
-    {
-        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-        camera.first_click = true;
-    }
-}
 
 void App::main_loop()
 {
-    camera.speed = 2.0f;
-    camera.sensitivity = 40000.0f;
+    camera.speed = 0.3f;
+    camera.sensitivity = 10000.0f;
 
     // TODO Fix the indices order (error when culling face)
     std::vector<axolote::Vertex> vertices =
