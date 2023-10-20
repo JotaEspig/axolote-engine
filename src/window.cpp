@@ -10,18 +10,21 @@
 #include <axolote/structs.hpp>
 
 #define INITIAL_SIZE 800
+#define UNUSED(x) (void)(x)
 
 namespace axolote
 {
 
 static void framebuffer_size_callback(GLFWwindow *window, int width, int height)
 {
+    UNUSED(window);
     glViewport(0, 0, width, height);
 }
 
 static void error_callback(int error, const char *description)
 {
-    std::cerr << "Error: " << description << std::endl;
+    std::cerr << "Error: " << error << std::endl;
+    std::cerr << "Description: " << description << std::endl;
 }
 
 Window::Window()

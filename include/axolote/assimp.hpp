@@ -123,18 +123,15 @@ GMesh process_mesh(aiMesh *mesh, const aiScene *scene, glm::vec3 color,
             indices.push_back(face.mIndices[j]);
     }
 
-    if (mesh->mMaterialIndex >= 0)
-    {
-        aiMaterial *mat = scene->mMaterials[mesh->mMaterialIndex];
-        std::vector<Texture> diffuse_texs =
-            load_material_textures(mat, aiTextureType_DIFFUSE, "diffuse",
-                                   loaded_textures, loaded_textures_names, directory);
-        textures.insert(textures.end(), diffuse_texs.begin(), diffuse_texs.end());
-        std::vector<Texture> specular_texs =
-            load_material_textures(mat, aiTextureType_SPECULAR, "specular",
-                                   loaded_textures, loaded_textures_names, directory);
-        textures.insert(textures.end(), specular_texs.begin(), specular_texs.end());
-    }
+    aiMaterial *mat = scene->mMaterials[mesh->mMaterialIndex];
+    std::vector<Texture> diffuse_texs =
+        load_material_textures(mat, aiTextureType_DIFFUSE, "diffuse",
+                               loaded_textures, loaded_textures_names, directory);
+    textures.insert(textures.end(), diffuse_texs.begin(), diffuse_texs.end());
+    std::vector<Texture> specular_texs =
+        load_material_textures(mat, aiTextureType_SPECULAR, "specular",
+                               loaded_textures, loaded_textures_names, directory);
+    textures.insert(textures.end(), specular_texs.begin(), specular_texs.end());
 
     return GMesh(vertices, indices, textures);
 }
