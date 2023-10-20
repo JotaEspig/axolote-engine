@@ -1,6 +1,6 @@
 /**
 * \file entity.hpp
-* \brief entity class and entity type enum
+* \brief entity class
 * \author João Vitor Espig (JotaEspig)
 * \date October 04, 2023
 * \version October 08, 2023
@@ -25,7 +25,8 @@ namespace axolote
 * \date October 04, 2023
 * \version October 08, 2023
 *
-* The entity can be based on meshes or models.
+* An Entity can be multiples Object3D or Object2D, it uses polymorphism to
+* handle both at the same time
 **/
 class Entity
 {
@@ -66,7 +67,7 @@ public:
     void draw(Shader &shader);
 
 private:
-    /** vector of objects **/
+    /** vector of objects (Object3D or Object2D) **/
     std::vector<Object*> objects;
 };
 

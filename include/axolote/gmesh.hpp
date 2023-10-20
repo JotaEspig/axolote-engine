@@ -27,6 +27,8 @@ namespace axolote
 * \author João Vitor Espig (JotaEspig)
 * \date October 06, 2023
 * \version October 06, 2023
+*
+* The difference between GMesh and Mesh is that GMesh you can draw
 **/
 class GMesh : public Mesh
 {
