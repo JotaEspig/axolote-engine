@@ -28,6 +28,13 @@ public:
     /**
     * \brief Constructor
     * \author João Vitor Espig (JotaEspig)
+    * \date October 25, 2023
+    * \version October 25, 2023
+    **/
+    Shader();
+    /**
+    * \brief Constructor
+    * \author João Vitor Espig (JotaEspig)
     * \date October 04, 2023
     * \version October 04, 2023
     * \param vertex_file - vertex glsl file

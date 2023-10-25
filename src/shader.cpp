@@ -22,6 +22,10 @@ static GLint check_shader_compilation(GLuint shader_id, char *log, size_t size)
 namespace axolote
 {
 
+Shader::Shader()
+{
+}
+
 Shader::Shader(const char *vertex_file, const char *fragment_file)
 {
     std::string vertex_code = get_file_content(vertex_file);
