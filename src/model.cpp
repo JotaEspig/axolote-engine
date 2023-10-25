@@ -14,13 +14,17 @@
 namespace axolote
 {
 
-Model::Model(std::string path, glm::vec3 _color) :
+Model::Model()
+{
+}
+
+Model::Model(std::string path, const glm::vec3 &_color) :
     color{_color}
 {
     load_model(path);
 }
 
-void Model::draw(Shader &shader, glm::mat4 matrix)
+void Model::draw(Shader &shader, const glm::mat4 &matrix)
 {
     for (GMesh e : meshes)
         e.draw(shader, matrix);

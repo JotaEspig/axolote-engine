@@ -34,7 +34,7 @@ public:
     * \date October 04, 2023
     * \version October 04, 2023
     **/
-    Mesh() = default;
+    Mesh();
     /**
     * \brief Constructor
     * \author João Vitor Espig (JotaEspig)
@@ -44,8 +44,8 @@ public:
     * \param _indices - polygon mesh indices
     * \param _textures - textures to be rendered with polygon mesh
     **/
-    Mesh(std::vector<Vertex> _vertices, std::vector<GLuint> _indices,
-         std::vector<Texture> _textures);
+    Mesh(const std::vector<Vertex> &_vertices, const std::vector<GLuint> &_indices,
+         const std::vector<Texture> &_textures);
 
 protected:
     /** polygon mesh vertices **/

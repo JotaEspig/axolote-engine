@@ -135,7 +135,7 @@ bool Window::should_close()
 
 // GETTERS AND SETTERS
 
-std::string Window::title()
+std::string Window::title() const
 {
     return _title;
 }
@@ -146,7 +146,7 @@ void Window::set_title(std::string new_title)
     _title = new_title;
 }
 
-int Window::width()
+int Window::width() const
 {
     int width, height;
     glfwGetWindowSize(window, &width, &height);
@@ -158,7 +158,7 @@ void Window::set_width(int new_width)
     glfwSetWindowSize(window, new_width, height());
 }
 
-int Window::height()
+int Window::height() const
 {
     int width, height;
     glfwGetWindowSize(window, &width, &height);
@@ -170,12 +170,12 @@ void Window::set_height(int new_height)
     glfwSetWindowSize(window, width(), new_height);
 }
 
-Color Window::color()
+Color Window::color() const
 {
     return _color;
 }
 
-void Window::set_color(Color color)
+void Window::set_color(const Color &color)
 {
     _color = color;
 }

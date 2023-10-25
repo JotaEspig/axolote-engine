@@ -49,8 +49,8 @@ public:
     * \param indices - polygon mesh indices
     * \param textures - textures to be rendered with polygon mesh
     **/
-    GMesh(std::vector<Vertex> vertices, std::vector<GLuint> indices,
-          std::vector<Texture> textures);
+    GMesh(const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices,
+          const std::vector<Texture> &textures);
 
     /**
     * \brief draws
@@ -60,7 +60,7 @@ public:
     * \param shader - Shader object
     * \param matrix - model transformation matrix
     **/
-    void draw(Shader &shader, glm::mat4 matrix = glm::mat4(1.0f));
+    void draw(Shader &shader, const glm::mat4 &matrix = glm::mat4(1.0f));
     /**
     * \brief Destroys OpenGL objects created
     * \author João Vitor Espig (JotaEspig)

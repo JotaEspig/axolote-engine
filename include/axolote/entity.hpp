@@ -47,7 +47,7 @@ public:
     * \param o - Object object pointer
     * \param mat - model transformation matrix
     **/
-    void add_object(Object *o, glm::mat4 mat = glm::mat4(1.0f));
+    void add_object(Object *o, const glm::mat4 &mat = glm::mat4(1.0f));
     /**
     * \brief set a model matrix at index
     * \author João Vitor Espig (JotaEspig)
@@ -56,7 +56,7 @@ public:
     * \param idx - the index of the matrix you want to update
     * \param mat - the updated transformation matrix
     **/
-    void set_matrix(size_t idx, glm::mat4 mat);
+    void set_matrix(size_t idx, const glm::mat4 &mat);
     /**
     * \brief draws using a shader
     * \author João Vitor Espig (JotaEspig)

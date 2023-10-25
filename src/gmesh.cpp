@@ -21,8 +21,8 @@ GMesh::GMesh()
 {
 }
 
-GMesh::GMesh(std::vector<Vertex> vertices, std::vector<GLuint> indices,
-             std::vector<Texture> textures) :
+GMesh::GMesh(const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices,
+             const std::vector<Texture> &textures) :
     Mesh(vertices, indices, textures)
 {
     vao.bind();
@@ -38,7 +38,7 @@ GMesh::GMesh(std::vector<Vertex> vertices, std::vector<GLuint> indices,
     ebo.unbind();
 }
 
-void GMesh::draw(Shader &shader, glm::mat4 matrix)
+void GMesh::draw(Shader &shader, const glm::mat4 &matrix)
 {
     shader.activate();
     vao.bind();

@@ -52,7 +52,7 @@ public:
     * \param uniform_name - name of uniform variable
     * \param matrix - matrix 4x4 value
     **/
-    void set_uniform_matrix4(const char *uniform_name, glm::mat4 matrix);
+    void set_uniform_matrix4(const char *uniform_name, const glm::mat4 &matrix);
     /**
     * \brief sets a value in a matrix 4x4 uniform
     * \author João Vitor Espig (JotaEspig)

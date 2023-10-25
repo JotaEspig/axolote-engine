@@ -52,7 +52,7 @@ public:
     * \date October 04, 2023
     * \version October 04, 2023
     **/
-    std::string title();
+    std::string title() const;
     /**
     * \brief title setter
     * \author João Vitor Espig (JotaEspig)
@@ -67,7 +67,7 @@ public:
     * \date October 04, 2023
     * \version October 04, 2023
     **/
-    int width();
+    int width() const;
     /**
     * \brief width setter
     * \author João Vitor Espig (JotaEspig)
@@ -82,7 +82,7 @@ public:
     * \date October 04, 2023
     * \version October 04, 2023
     **/
-    int height();
+    int height() const;
     /**
     * \brief height setter
     * \author João Vitor Espig (JotaEspig)
@@ -97,7 +97,7 @@ public:
     * \date October 04, 2023
     * \version October 04, 2023
     **/
-    Color color();
+    Color color() const;
     /**
     * \brief color setter
     * \author João Vitor Espig (JotaEspig)
@@ -105,7 +105,7 @@ public:
     * \version October 04, 2023
     * \param color - Color object
     **/
-    void set_color(Color color);
+    void set_color(const Color &color);
     /**
     * \brief color setter
     * \author João Vitor Espig (JotaEspig)

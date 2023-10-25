@@ -40,7 +40,7 @@ public:
     * \version October 08, 2023
     * \param mat - model transformation matrix
     **/
-    Object3D(glm::mat4 mat);
+    Object3D(const glm::mat4 &mat);
 
     /**
     * \brief initializes an Object3D from model file
@@ -53,8 +53,8 @@ public:
     *
     * It calls load_model method
     **/
-    static Object3D from_model_file(glm::mat4 mat, std::string path,
-                                    glm::vec3 color = glm::vec3(0.0f, 0.0f, 0.0f));
+    static Object3D from_model_file(const glm::mat4 &mat, std::string path,
+                                    const glm::vec3 &color = glm::vec3(0.0f, 0.0f, 0.0f));
 
     /**
     * \brief loads a model from file
@@ -66,7 +66,8 @@ public:
     *
     * It uses constructor from Model
     **/
-    void load_model(std::string path, glm::vec3 color = glm::vec3(0.0f, 0.0f, 0.0f));
+    void load_model(std::string path,
+                    const glm::vec3 &color = glm::vec3(0.0f, 0.0f, 0.0f));
     /**
     * \brief draws
     * \author João Vitor Espig (JotaEspig)

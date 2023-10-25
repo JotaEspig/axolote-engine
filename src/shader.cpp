@@ -61,7 +61,7 @@ void Shader::set_uniform_int(const char *uniform_name, int value)
     glUniform1i(uniform_location, value);
 }
 
-void Shader::set_uniform_matrix4(const char *uniform_name, glm::mat4 matrix)
+void Shader::set_uniform_matrix4(const char *uniform_name, const glm::mat4 &matrix)
 {
     activate();
     GLuint uniform_location = glGetUniformLocation(id, uniform_name);

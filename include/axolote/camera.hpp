@@ -53,7 +53,7 @@ public:
     * \version October 08, 2023
     * \param position - Camera position vector
     **/
-    Camera(glm::vec3 position);
+    Camera(const glm::vec3 &position);
 
     /**
     * \brief moves camera position forward

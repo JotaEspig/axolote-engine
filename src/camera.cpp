@@ -14,7 +14,7 @@ Camera::Camera() :
 {
 }
 
-Camera::Camera(glm::vec3 position) :
+Camera::Camera(const glm::vec3 &position) :
     pos{position}
 {
 }

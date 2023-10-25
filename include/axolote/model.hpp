@@ -34,7 +34,7 @@ public:
     * \date October 04, 2023
     * \version October 04, 2023
     **/
-    Model() = default;
+    Model();
     /**
     * \brief Constructor
     * \author João Vitor Espig (JotaEspig)
@@ -43,7 +43,7 @@ public:
     * \param path - path to model file (.obj)
     * \param _color - default Model color
     **/
-    Model(std::string path, glm::vec3 _color = glm::vec3(0.0f, 0.0f, 0.0f));
+    Model(std::string path, const glm::vec3 &_color = glm::vec3(0.0f, 0.0f, 0.0f));
 
     /**
     * \brief draws
@@ -53,7 +53,7 @@ public:
     * \param shader - Shader object
     * \param matrix - model transformation matrix
     **/
-    void draw(Shader &shader, glm::mat4 matrix = glm::mat4(1.0f));
+    void draw(Shader &shader, const glm::mat4 &matrix = glm::mat4(1.0f));
 
 protected:
     /** default color **/

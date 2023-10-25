@@ -38,7 +38,7 @@ public:
     * \date October 04, 2023
     * \version October 04, 2023
     **/
-    VBO() = default;
+    VBO();
     /**
     * \brief Constructor
     * \author João Vitor Espig (JotaEspig)
@@ -46,7 +46,7 @@ public:
     * \version October 04, 2023
     * \param vertices - array of vertex
     **/
-    VBO(std::vector<Vertex> vertices);
+    VBO(const std::vector<Vertex> &vertices);
 
     /**
     * \brief binds

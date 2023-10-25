@@ -8,7 +8,11 @@
 namespace axolote
 {
 
-VBO::VBO(std::vector<Vertex> vertices)
+VBO::VBO()
+{
+}
+
+VBO::VBO(const std::vector<Vertex> &vertices)
 {
     glGenBuffers(1, &id);
     glBindBuffer(GL_ARRAY_BUFFER, id);

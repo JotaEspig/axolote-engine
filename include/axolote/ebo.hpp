@@ -35,7 +35,7 @@ public:
     * \date October 04, 2023
     * \version October 04, 2023
     **/
-    EBO() = default;
+    EBO();
     /**
     * \brief Constructor
     * \author João Vitor Espig (JotaEspig)
@@ -43,7 +43,7 @@ public:
     * \version October 04, 2023
     * \param indices - array of indices
     **/
-    EBO(std::vector<GLuint> indices);
+    EBO(const std::vector<GLuint> &indices);
 
     /**
     * \brief binds

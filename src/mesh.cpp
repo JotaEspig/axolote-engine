@@ -6,8 +6,12 @@
 namespace axolote
 {
 
-Mesh::Mesh(std::vector<Vertex> _vertices, std::vector<GLuint> _indices,
-           std::vector<Texture> _textures) :
+Mesh::Mesh()
+{
+}
+
+Mesh::Mesh(const std::vector<Vertex> &_vertices, const std::vector<GLuint> &_indices,
+           const std::vector<Texture> &_textures) :
     vertices{_vertices},
     indices{_indices},
     textures{_textures}
