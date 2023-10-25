@@ -12,6 +12,7 @@
 #include <GL/gl.h>
 #include <glm/glm.hpp>
 
+#include <axolote/idrawable.hpp>
 #include <axolote/mesh.hpp>
 #include <axolote/shader.hpp>
 #include <axolote/vao.hpp>
@@ -30,7 +31,7 @@ namespace axolote
 *
 * The difference between GMesh and Mesh is that GMesh you can draw
 **/
-class GMesh : public Mesh
+class GMesh : public Mesh, public IDrawable
 {
 public:
     /**
@@ -55,12 +56,22 @@ public:
     /**
     * \brief draws
     * \author João Vitor Espig (JotaEspig)
+    * \date October 25, 2023
+    * \version October 25, 2023
+    * \param shader - Shader object
+    *
+    * It calls draw(Shader, glm::mat4(1.0f))
+    **/
+    void draw(Shader &shader) override;
+    /**
+    * \brief draws
+    * \author João Vitor Espig (JotaEspig)
     * \date October 06, 2023
     * \version October 06, 2023
     * \param shader - Shader object
     * \param matrix - model transformation matrix
     **/
-    void draw(Shader &shader, const glm::mat4 &matrix = glm::mat4(1.0f));
+    void draw(Shader &shader, const glm::mat4 &mat) override;
     /**
     * \brief Destroys OpenGL objects created
     * \author João Vitor Espig (JotaEspig)

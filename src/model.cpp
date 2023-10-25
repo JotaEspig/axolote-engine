@@ -24,10 +24,15 @@ Model::Model(std::string path, const glm::vec3 &_color) :
     load_model(path);
 }
 
-void Model::draw(Shader &shader, const glm::mat4 &matrix)
+void Model::draw(Shader &shader)
+{
+    draw(shader, glm::mat4(1.0f));
+}
+
+void Model::draw(Shader &shader, const glm::mat4 &mat)
 {
     for (GMesh e : meshes)
-        e.draw(shader, matrix);
+        e.draw(shader, mat);
 }
 
 void Model::load_model(std::string path)

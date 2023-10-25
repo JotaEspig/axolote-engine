@@ -56,6 +56,17 @@ public:
     * \param shader - Shader object
     **/
     void draw(Shader &shader) override;
+    /**
+    * \brief draws
+    * \author João Vitor Espig (JotaEspig)
+    * \date October 25, 2023
+    * \version October 25, 2023
+    * \param shader - Shader object
+    * \param mat - matrix transformation model
+    *
+    * It just calls draw(shader)
+    **/
+    void draw(Shader &shader, const glm::mat4 &mat) override;
 };
 
 } // namespace axolote

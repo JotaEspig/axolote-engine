@@ -11,6 +11,7 @@
 
 #include <glm/glm.hpp>
 
+#include <axolote/idrawable.hpp>
 #include <axolote/object.hpp>
 #include <axolote/model.hpp>
 #include <axolote/gmesh.hpp>
@@ -28,7 +29,7 @@ namespace axolote
 * An Entity can be multiples Object3D or Object2D, it uses polymorphism to
 * handle both at the same time
 **/
-class Entity
+class Entity : public IDrawable
 {
 public:
     /**
@@ -64,7 +65,18 @@ public:
     * \version October 08, 2023
     * \param shader - Shader object
     **/
-    void draw(Shader &shader);
+    void draw(Shader &shader) override;
+    /**
+    * \brief function to override virtual function
+    * \author João Vitor Espig (JotaEspig)
+    * \date October 25, 2023
+    * \version October 25, 2023
+    * \param shader - Shader object
+    * \param mat - matrix transformation model
+    *
+    * It just calls draw(Shader)
+    **/
+    void draw(Shader &shader, const glm::mat4 &mat) override;
 
 private:
     /** vector of objects (Object3D or Object2D) **/

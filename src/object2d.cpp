@@ -6,6 +6,8 @@
 #include <axolote/texture.hpp>
 #include <axolote/structs.hpp>
 
+#define UNUSED(x) (void)(x)
+
 namespace axolote
 {
 
@@ -25,6 +27,12 @@ Object2D::Object2D(const glm::mat4 &mat,
 void Object2D::draw(Shader &shader)
 {
     GMesh::draw(shader, pos);
+}
+
+void Object2D::draw(Shader &shader, const glm::mat4 &mat)
+{
+    UNUSED(mat);
+    draw(shader);
 }
 
 } // namespace axolote

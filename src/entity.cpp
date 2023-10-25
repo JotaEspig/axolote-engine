@@ -1,4 +1,3 @@
-#include <iostream>
 #include <vector>
 
 #include <glm/glm.hpp>
@@ -7,6 +6,8 @@
 #include <axolote/model.hpp>
 #include <axolote/gmesh.hpp>
 #include <axolote/shader.hpp>
+
+#define UNUSED(x) (void)(x)
 
 namespace axolote
 {
@@ -31,6 +32,12 @@ void Entity::draw(Shader &shader)
 {
     for (size_t i = 0; i < objects.size(); ++i)
         objects[i]->draw(shader);
+}
+
+void Entity::draw(Shader &shader, const glm::mat4 &mat)
+{
+    UNUSED(mat);
+    draw(shader);
 }
 
 } // namespace axolote

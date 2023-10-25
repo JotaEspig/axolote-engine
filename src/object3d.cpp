@@ -6,6 +6,8 @@
 #include <axolote/object3d.hpp>
 #include <axolote/model.hpp>
 
+#define UNUSED(x) (void)(x)
+
 namespace axolote
 {
 
@@ -37,5 +39,12 @@ void Object3D::draw(Shader &shader)
 {
     Model::draw(shader, pos);
 }
+
+void Object3D::draw(Shader &shader, const glm::mat4 &mat)
+{
+    UNUSED(mat);
+    draw(shader);
+}
+
 
 } // namespace axolote

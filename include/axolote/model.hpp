@@ -12,6 +12,7 @@
 
 #include <glm/glm.hpp>
 
+#include <axolote/idrawable.hpp>
 #include <axolote/shader.hpp>
 #include <axolote/gmesh.hpp>
 #include <axolote/texture.hpp>
@@ -25,7 +26,7 @@ namespace axolote
 * \date October 04, 2023
 * \version October 08, 2023
 **/
-class Model
+class Model : public IDrawable
 {
 public:
     /**
@@ -48,12 +49,22 @@ public:
     /**
     * \brief draws
     * \author João Vitor Espig (JotaEspig)
+    * \date October 25, 2023
+    * \version October 25, 2023
+    * \param shader - Shader object
+    *
+    * It calls draw(Shader, glm::mat4(1.0f))
+    **/
+    void draw(Shader &shader) override;
+    /**
+    * \brief draws
+    * \author João Vitor Espig (JotaEspig)
     * \date October 04, 2023
     * \version October 04, 2023
     * \param shader - Shader object
     * \param matrix - model transformation matrix
     **/
-    void draw(Shader &shader, const glm::mat4 &matrix = glm::mat4(1.0f));
+    void draw(Shader &shader, const glm::mat4 &mat) override;
 
 protected:
     /** default color **/

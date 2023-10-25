@@ -1,4 +1,3 @@
-#include <iostream>
 #include <string>
 #include <vector>
 
@@ -38,7 +37,12 @@ GMesh::GMesh(const std::vector<Vertex> &vertices, const std::vector<GLuint> &ind
     ebo.unbind();
 }
 
-void GMesh::draw(Shader &shader, const glm::mat4 &matrix)
+void GMesh::draw(Shader &shader)
+{
+    draw(shader, glm::mat4(1.0f));
+}
+
+void GMesh::draw(Shader &shader, const glm::mat4 &mat)
 {
     shader.activate();
     vao.bind();
@@ -75,7 +79,7 @@ void GMesh::draw(Shader &shader, const glm::mat4 &matrix)
         t.bind();
     }
 
-    shader.set_uniform_matrix4("model", matrix);
+    shader.set_uniform_matrix4("model", mat);
 
     vao.bind();
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
