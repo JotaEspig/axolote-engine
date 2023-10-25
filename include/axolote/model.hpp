@@ -26,7 +26,7 @@ namespace axolote
 * \date October 04, 2023
 * \version October 08, 2023
 **/
-class Model : public IDrawable
+class Model : public Drawable
 {
 public:
     /**

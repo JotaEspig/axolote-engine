@@ -18,7 +18,7 @@ namespace axolote
 * \date October 25, 2023
 * \version October 25, 2023
 **/
-class IDrawable
+class Drawable
 {
 public:
     virtual void draw(Shader &shader) = 0;

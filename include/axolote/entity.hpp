@@ -29,7 +29,7 @@ namespace axolote
 * An Entity can be multiples Object3D or Object2D, it uses polymorphism to
 * handle both at the same time
 **/
-class Entity : public IDrawable
+class Entity : public Drawable
 {
 public:
     /**

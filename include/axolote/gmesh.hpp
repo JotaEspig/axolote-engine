@@ -31,7 +31,7 @@ namespace axolote
 *
 * The difference between GMesh and Mesh is that GMesh you can draw
 **/
-class GMesh : public Mesh, public IDrawable
+class GMesh : public Mesh, public Drawable
 {
 public:
     /**
