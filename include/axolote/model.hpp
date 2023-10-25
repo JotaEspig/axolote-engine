@@ -12,7 +12,7 @@
 
 #include <glm/glm.hpp>
 
-#include <axolote/idrawable.hpp>
+#include <axolote/drawable.hpp>
 #include <axolote/shader.hpp>
 #include <axolote/gmesh.hpp>
 #include <axolote/texture.hpp>

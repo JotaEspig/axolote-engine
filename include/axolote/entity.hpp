@@ -11,7 +11,7 @@
 
 #include <glm/glm.hpp>
 
-#include <axolote/idrawable.hpp>
+#include <axolote/drawable.hpp>
 #include <axolote/object.hpp>
 #include <axolote/model.hpp>
 #include <axolote/gmesh.hpp>
