@@ -7,6 +7,11 @@
 **/
 #pragma once
 
+#include <vector>
+
+#include <axolote/drawable.hpp>
+#include <axolote/camera.hpp>
+
 namespace axolote
 {
 
@@ -19,11 +24,19 @@ namespace axolote
 class Scene
 {
 public:
+    /** Camera in the scene **/
+    Camera camera;
+    /** vector of drawable objects **/
+    std::vector<Drawable> drawable_objects;
+
     Scene();
     ~Scene();
 
-private:
-    
+    /** updates the camera and objects position **/
+    void update();
+    /** draws in the window **/
+    void render();
+
 };
 
 } // namespace axolote

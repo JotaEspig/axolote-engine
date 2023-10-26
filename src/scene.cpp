@@ -11,4 +11,12 @@ Scene::~Scene()
 {
 }
 
+void Scene::update()
+{
+}
+
+void Scene::render()
+{
+}
+
 } // namespace axolote
