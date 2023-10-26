@@ -10,6 +10,7 @@
 #include <glm/glm.hpp>
 
 #include <axolote/shader.hpp>
+#include <axolote/drawable.hpp>
 
 namespace axolote
 {
@@ -20,17 +21,9 @@ namespace axolote
 * \date October 06, 2023
 * \version October 06, 2023
 **/
-class Object
+class Object : public Drawable
 {
 public:
-    /**
-    * \brief draws
-    * \author João Vitor Espig (JotaEspig)
-    * \date October 06, 2023
-    * \version October 06, 2023
-    * \param shader - Shader object
-    **/
-    virtual void draw(Shader &shader) = 0;
     friend class Entity;
 
 protected:
