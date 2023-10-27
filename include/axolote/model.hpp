@@ -82,6 +82,8 @@ public:
     **/
     void draw(const glm::mat4 &mat) override;
 
+    friend class Scene;
+
 protected:
     /** default color **/
     glm::vec3 color;

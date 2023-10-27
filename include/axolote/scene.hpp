@@ -10,6 +10,9 @@
 #include <vector>
 
 #include <axolote/drawable.hpp>
+#include <axolote/entity.hpp>
+#include <axolote/object3d.hpp>
+#include <axolote/gmesh.hpp>
 #include <axolote/camera.hpp>
 
 namespace axolote
@@ -26,17 +29,25 @@ class Scene
 public:
     /** Camera in the scene **/
     Camera camera;
-    /** vector of drawable objects **/
-    std::vector<Drawable> drawable_objects;
 
     Scene();
     ~Scene();
 
-    /** updates the camera and objects position **/
-    void update();
+    void add_drawable(Entity *e);
+    void add_drawable(const Object3D &m);
+    void update_camera(float aspect_ratio);
+    /** updates the objects position **/
+    void update(double time);
     /** draws in the window **/
     void render();
 
+private:
+    /** vector of Entity objects **/
+    std::vector<Entity*> entity_objects;
+    /** vector of Entity objects **/
+    std::vector<Object3D> object3d_objects;
+    /** vector of shaders from drawable objects **/
+    std::vector<Shader> shaders;
 };
 
 } // namespace axolote

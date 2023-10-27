@@ -35,6 +35,11 @@ void Entity::bind_shader_at(size_t idx, const Shader &shader)
     objects[idx].bind_shader(shader);
 }
 
+void Entity::update(double time)
+{
+    UNUSED(time);
+}
+
 void Entity::draw()
 {
     for (size_t i = 0; i < objects.size(); ++i)

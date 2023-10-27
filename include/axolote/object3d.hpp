@@ -95,6 +95,7 @@ public:
     void draw(const glm::mat4 &mat) override;
 
     friend class Entity;
+    friend class Scene;
 
 protected:
     /** position **/

@@ -7,6 +7,25 @@
 
 #include <axolote/engine.hpp>
 
+class MineCubes : public axolote::Entity
+{
+public:
+    void update(double time) override;
+};
+
+void MineCubes::update(double time)
+{
+    for (int i = 0; i < 30; ++i)
+    {
+        for (int j = 0; j < 30; ++j)
+        {
+            glm::mat4 mat = glm::mat4(1.0f);
+            mat = glm::translate(mat, glm::vec3(i, sin(time + .2f * (i + j)) * 3, j));
+            set_matrix(30 * i + j, mat);
+        }
+    }
+}
+
 class App : public axolote::Window
 {
 public:
@@ -179,7 +198,7 @@ void App::main_loop()
     floor_m = glm::translate(floor_m, glm::vec3(-2.0f, -2.0f, 0.0f));
     axolote::Object3D floor{floor_v, floor_indices, {tex1, floor_spec}, floor_m};
 
-    axolote::Entity mine_cubes;
+    MineCubes mine_cubes;
     for (int i = 0; i < 30; ++i)
     {
         for (int j = 0; j < 30; ++j)
@@ -189,16 +208,12 @@ void App::main_loop()
         }
     }
 
-    axolote::Object3D din;
-    din.load_model("./resources/models/dino/Triceratops.obj");
-    axolote::Entity dino;
     glm::mat4 mat = glm::translate(glm::mat4(1.0f), glm::vec3(15.0f, 0.5f, 15.0f));
-    dino.add_object(din, mat);
+    axolote::Object3D dino{mat};
+    dino.load_model("./resources/models/dino/Triceratops.obj");
 
-    axolote::Object3D m;
-    m.load_model("./resources/models/m26/m26pershing_coh.obj");
-    axolote::Entity m26;
-    m26.add_object(m, glm::translate(glm::mat4(1.0f), glm::vec3(-7.0f, 0.0f, 0.0f)));
+    axolote::Object3D m26{glm::translate(glm::mat4(1.0f), glm::vec3(-7.0f, 0.0f, 0.0f))};
+    m26.load_model("./resources/models/m26/m26pershing_coh.obj");
 
     axolote::Shader shader_program("./resources/shaders/def_vertex_shader.glsl",
                                    "./resources/shaders/def_fragment_shader.glsl");
@@ -214,9 +229,16 @@ void App::main_loop()
     for (int i = 0; i < 30; ++i)
         for (int j = 0; j < 30; ++j)
             mine_cubes.bind_shader_at(30 * i + j, shader_program);
-    dino.bind_shader_at(0, shader_program);
-    m26.bind_shader_at(0, shader_program);
+    dino.bind_shader(shader_program);
+    m26.bind_shader(shader_program);
 
+    axolote::Scene ctx{};
+    ctx.add_drawable(sun);
+    ctx.add_drawable(body);
+    ctx.add_drawable(floor);
+    ctx.add_drawable(&mine_cubes);
+    ctx.add_drawable(dino);
+    ctx.add_drawable(m26);
     std::string original_title = _title;
     double before = glfwGetTime();
     while (!should_close())
@@ -231,17 +253,13 @@ void App::main_loop()
         glClearColor(_color.r, _color.g, _color.b, _color.opacity);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        shader_program.set_uniform_float3("camera_pos", camera.pos.x, camera.pos.y, camera.pos.z);
+        ctx.camera = camera;
+        ctx.update_camera((float)width() / height());
+        ctx.update(now);
 
         std::stringstream sstr;
         sstr << original_title << " | " << (int)(1 / dt) << " fps";
         set_title(sstr.str());
-
-        glm::mat4 view = glm::lookAt(camera.pos, camera.pos + camera.orientation, camera.up);
-        glm::mat4 projection = glm::perspective(glm::radians(camera.fov), (float)width() / height(), 0.1f, 1000.0f);
-
-        shader_program.set_uniform_matrix4("projection", projection);
-        shader_program.set_uniform_matrix4("view",view);
 
         /*
         model = glm::mat4(1.0f);
@@ -266,16 +284,6 @@ void App::main_loop()
         shader_program.set_uniform_int("is_light_color_set", 0);
 
         */
-        for (int i = 0; i < 30; ++i)
-        {
-            for (int j = 0; j < 30; ++j)
-            {
-                glm::mat4 mat = glm::mat4(1.0f);
-                mat = glm::translate(mat, glm::vec3(i, sin(now + .2f * (i + j)) * 3, j));
-                mine_cubes.set_matrix(30 * i + j, mat);
-            }
-        }
-        mine_cubes.draw();
 
         /*
         glDisable(GL_BLEND);
@@ -290,12 +298,7 @@ void App::main_loop()
         //
         // disable light normals for the light emissor
         shader_program.set_uniform_int("is_light_color_set", 0);
-        glDisable(GL_CULL_FACE);
-        sun.draw();
-        body.draw();
-        glEnable(GL_CULL_FACE);
-        floor.draw();
-        m26.draw();
+        ctx.render();
 
         // glEnable(GL_CULL_FACE);
         //glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);

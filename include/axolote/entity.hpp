@@ -25,6 +25,9 @@ namespace axolote
 * \author João Vitor Espig (JotaEspig)
 * \date October 04, 2023
 * \version October 27, 2023
+*
+* You should inherit from this class to be able to create an Entity.
+* That's because each Entity has its own update pattern. See update() method.
 **/
 class Entity : public Drawable
 {
@@ -63,6 +66,13 @@ public:
     **/
     void bind_shader_at(size_t idx, const Shader &shader);
     /**
+    * \brief virtual function that describes how entity updates its objects
+    * \author João Vitor Espig (JotaEspig)
+    * \date October 27, 2023
+    * \version October 27, 2023
+    **/
+    virtual void update(double time);
+    /**
     * \brief draws using a shader
     * \author João Vitor Espig (JotaEspig)
     * \date October 04, 2023
@@ -80,7 +90,9 @@ public:
     **/
     void draw(const glm::mat4 &mat) override;
 
-private:
+    friend class Scene;
+
+protected:
     /** vector of objects (Object3D) **/
     std::vector<Object3D> objects;
 };

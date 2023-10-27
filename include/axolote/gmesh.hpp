@@ -85,6 +85,8 @@ public:
     **/
     void destroy();
 
+    friend class Scene;
+
 private:
     /** VAO **/
     VAO vao;
