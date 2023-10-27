@@ -208,6 +208,15 @@ void App::main_loop()
     shader_program.set_uniform_float4("light_color", 1.0f, 1.0f, 1.0f, 1.0f);
     shader_program.set_uniform_float3("light_pos", 0.0f, 0.0f, 0.0f);
 
+    body.bind_shader(shader_program);
+    sun.bind_shader(shader_program);
+    floor.bind_shader(shader_program);
+    for (int i = 0; i < 30; ++i)
+        for (int j = 0; j < 30; ++j)
+            mine_cubes.bind_shader_at(30 * i + j, shader_program);
+    dino.bind_shader_at(0, shader_program);
+    m26.bind_shader_at(0, shader_program);
+
     std::string original_title = _title;
     double before = glfwGetTime();
     while (!should_close())
@@ -266,7 +275,7 @@ void App::main_loop()
                 mine_cubes.set_matrix(30 * i + j, mat);
             }
         }
-        mine_cubes.draw(shader_program);
+        mine_cubes.draw();
 
         /*
         glDisable(GL_BLEND);
@@ -282,11 +291,11 @@ void App::main_loop()
         // disable light normals for the light emissor
         shader_program.set_uniform_int("is_light_color_set", 0);
         glDisable(GL_CULL_FACE);
-        sun.draw(shader_program);
-        body.draw(shader_program);
+        sun.draw();
+        body.draw();
         glEnable(GL_CULL_FACE);
-        floor.draw(shader_program);
-        m26.draw(shader_program);
+        floor.draw();
+        m26.draw();
 
         // glEnable(GL_CULL_FACE);
         //glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
