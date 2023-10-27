@@ -12,7 +12,6 @@
 
 #include <axolote/shader.hpp>
 #include <axolote/model.hpp>
-#include <axolote/object.hpp>
 
 namespace axolote
 {
@@ -21,9 +20,9 @@ namespace axolote
 * \brief defines a 3D Object
 * \author João Vitor Espig (JotaEspig)
 * \date October 08, 2023
-* \version October 08, 2023
+* \version October 27, 2023
 **/
-class Object3D : public Object, public Model
+class Object3D : public Model
 {
 public:
     /**
@@ -41,20 +40,30 @@ public:
     * \param mat - model transformation matrix
     **/
     Object3D(const glm::mat4 &mat);
-
+    /**
+    * \brief Constructor
+    * \author João Vitor Espig (JotaEspig)
+    * \date October 27, 2023
+    * \version October 27, 2023
+    * \param vertices - polygon mesh vertices
+    * \param indices - polygon mesh indices
+    * \param textures - textures to be rendered with polygon mesh
+    * \param mat - model transformation matrix
+    **/
+    Object3D(const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices,
+             const std::vector<Texture> &textures, const glm::mat4 &mat);
     /**
     * \brief initializes an Object3D from model file
     * \author João Vitor Espig (JotaEspig)
-    * \date October 09, 2023
-    * \version October 09, 2023
-    * \param mat - model transformation matrix
+    * \date October 27, 2023
+    * \version October 27 2023
     * \param path - path to file
     * \param color - default color for the model if there's no texture
+    * \param mat - model transformation matrix
     *
     * It calls load_model method
     **/
-    static Object3D from_model_file(const glm::mat4 &mat, std::string path,
-                                    const glm::vec3 &color = glm::vec3(0.0f, 0.0f, 0.0f));
+    Object3D(std::string path, const glm::vec3 &color, const glm::mat4 &mat);
 
     /**
     * \brief loads a model from file
@@ -66,8 +75,7 @@ public:
     *
     * It uses constructor from Model
     **/
-    void load_model(std::string path,
-                    const glm::vec3 &color = glm::vec3(0.0f, 0.0f, 0.0f));
+    void load_model(std::string path, const glm::vec3 &color = glm::vec3(0.0f, 0.0f, 0.0f));
     /**
     * \brief draws
     * \author João Vitor Espig (JotaEspig)
@@ -87,6 +95,12 @@ public:
     * It just calls draw(shader)
     **/
     void draw(Shader &shader, const glm::mat4 &mat) override;
+
+    friend class Entity;
+
+protected:
+    /** position **/
+    glm::mat4 pos;
 };
 
 } // namespace axolote

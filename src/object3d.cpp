@@ -11,27 +11,33 @@
 namespace axolote
 {
 
-Object3D::Object3D()
+Object3D::Object3D() :
+    pos{1.0f}
 {
-    pos = glm::mat4(1.0f);
 }
 
-Object3D::Object3D(const glm::mat4 &mat)
+Object3D::Object3D(const glm::mat4 &mat) :
+    pos{mat}
 {
-    pos = mat;
 }
 
-Object3D Object3D::from_model_file(const glm::mat4 &mat, std::string path,
-                                   const glm::vec3 &color)
+Object3D::Object3D(const std::vector<Vertex> &vertices,
+                   const std::vector<GLuint> &indices,
+                   const std::vector<Texture> &textures, const glm::mat4 &mat) :
+    Model{vertices, indices, textures},
+    pos{mat}
 {
-    Object3D o(mat);
-    o.load_model(path, color);
-    return o;
+}
+
+Object3D::Object3D(std::string path, const glm::vec3 &color, const glm::mat4 &mat) :
+    Object3D{mat}
+{
+    load_model(path, color);
 }
 
 void Object3D::load_model(std::string path, const glm::vec3 &color)
 {
-    Object3D::color = color;
+    Model::color = color;
     Model::load_model(path);
 }
 
@@ -45,6 +51,5 @@ void Object3D::draw(Shader &shader, const glm::mat4 &mat)
     UNUSED(mat);
     draw(shader);
 }
-
 
 } // namespace axolote
