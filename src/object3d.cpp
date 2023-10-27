@@ -41,15 +41,15 @@ void Object3D::load_model(std::string path, const glm::vec3 &color)
     Model::load_model(path);
 }
 
-void Object3D::draw(Shader &shader)
+void Object3D::draw()
 {
-    Model::draw(shader, pos);
+    Model::draw(pos);
 }
 
-void Object3D::draw(Shader &shader, const glm::mat4 &mat)
+void Object3D::draw(const glm::mat4 &mat)
 {
     UNUSED(mat);
-    draw(shader);
+    draw();
 }
 
 } // namespace axolote

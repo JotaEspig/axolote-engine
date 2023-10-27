@@ -3,7 +3,7 @@
 * \brief Mesh class
 * \author João Vitor Espig (JotaEspig)
 * \date October 04, 2023
-* \version October 08, 2023
+* \version October 27, 2023
 **/
 #pragma once
 
@@ -61,21 +61,19 @@ public:
     * \brief draws
     * \author João Vitor Espig (JotaEspig)
     * \date October 25, 2023
-    * \version October 25, 2023
-    * \param shader - Shader object
+    * \version October 27, 2023
     *
-    * It calls draw(Shader, glm::mat4(1.0f))
+    * It calls draw(glm::mat4(1.0f))
     **/
-    void draw(Shader &shader) override;
+    void draw() override;
     /**
     * \brief draws
     * \author João Vitor Espig (JotaEspig)
     * \date October 04, 2023
-    * \version October 04, 2023
-    * \param shader - Shader object
+    * \version October 07, 2023
     * \param matrix - model transformation matrix
     **/
-    void draw(Shader &shader, const glm::mat4 &mat) override;
+    void draw(const glm::mat4 &mat) override;
 
 protected:
     /** default color **/

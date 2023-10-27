@@ -30,15 +30,15 @@ Model::Model(std::string path, const glm::vec3 &_color) :
     load_model(path);
 }
 
-void Model::draw(Shader &shader)
+void Model::draw()
 {
-    draw(shader, glm::mat4(1.0f));
+    draw(glm::mat4(1.0f));
 }
 
-void Model::draw(Shader &shader, const glm::mat4 &mat)
+void Model::draw(const glm::mat4 &mat)
 {
     for (GMesh e : meshes)
-        e.draw(shader, mat);
+        e.draw(mat);
 }
 
 void Model::load_model(std::string path)

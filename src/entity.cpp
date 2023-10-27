@@ -29,16 +29,16 @@ void Entity::set_matrix(size_t idx, const glm::mat4 &mat)
     objects[idx].pos = mat;
 }
 
-void Entity::draw(Shader &shader)
+void Entity::draw()
 {
     for (size_t i = 0; i < objects.size(); ++i)
-        objects[i].draw(shader);
+        objects[i].draw();
 }
 
-void Entity::draw(Shader &shader, const glm::mat4 &mat)
+void Entity::draw(const glm::mat4 &mat)
 {
     UNUSED(mat);
-    draw(shader);
+    draw();
 }
 
 } // namespace axolote

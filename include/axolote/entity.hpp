@@ -59,21 +59,19 @@ public:
     * \brief draws using a shader
     * \author João Vitor Espig (JotaEspig)
     * \date October 04, 2023
-    * \version October 08, 2023
-    * \param shader - Shader object
+    * \version October 27, 2023
     **/
-    void draw(Shader &shader) override;
+    void draw() override;
     /**
     * \brief function to override virtual function
     * \author João Vitor Espig (JotaEspig)
     * \date October 25, 2023
-    * \version October 25, 2023
-    * \param shader - Shader object
+    * \version October 27, 2023
     * \param mat - matrix transformation model
     *
-    * It just calls draw(Shader)
+    * It just calls draw()
     **/
-    void draw(Shader &shader, const glm::mat4 &mat) override;
+    void draw(const glm::mat4 &mat) override;
 
 private:
     /** vector of objects (Object3D) **/

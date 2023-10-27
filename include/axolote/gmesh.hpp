@@ -3,7 +3,7 @@
 * \brief Graphic Mesh class
 * \author João Vitor Espig (JotaEspig)
 * \date October 06, 2023
-* \version October 06, 2023
+* \version October 27, 2023
 **/
 #pragma once
 
@@ -27,7 +27,7 @@ namespace axolote
 * \brief defines a graphic polygon mesh
 * \author João Vitor Espig (JotaEspig)
 * \date October 06, 2023
-* \version October 06, 2023
+* \version October 27, 2023
 *
 * The difference between GMesh and Mesh is that GMesh you can draw
 **/
@@ -57,21 +57,19 @@ public:
     * \brief draws
     * \author João Vitor Espig (JotaEspig)
     * \date October 25, 2023
-    * \version October 25, 2023
-    * \param shader - Shader object
+    * \version October 27, 2023
     *
-    * It calls draw(Shader, glm::mat4(1.0f))
+    * It calls draw(glm::mat4(1.0f))
     **/
-    void draw(Shader &shader) override;
+    void draw() override;
     /**
     * \brief draws
     * \author João Vitor Espig (JotaEspig)
     * \date October 06, 2023
-    * \version October 06, 2023
-    * \param shader - Shader object
+    * \version October 27, 2023
     * \param matrix - model transformation matrix
     **/
-    void draw(Shader &shader, const glm::mat4 &mat) override;
+    void draw(const glm::mat4 &mat) override;
     /**
     * \brief Destroys OpenGL objects created
     * \author João Vitor Espig (JotaEspig)
@@ -87,6 +85,8 @@ private:
     VBO vbo;
     /** EBO **/
     EBO ebo;
+    /** Shader **/
+    Shader shader;
 };
 
 } // namespace axolote
