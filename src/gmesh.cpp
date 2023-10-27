@@ -37,6 +37,11 @@ GMesh::GMesh(const std::vector<Vertex> &vertices, const std::vector<GLuint> &ind
     ebo.unbind();
 }
 
+void GMesh::bind_shader(const Shader &shader)
+{
+    GMesh::shader = shader;
+}
+
 void GMesh::draw()
 {
     draw(glm::mat4(1.0f));

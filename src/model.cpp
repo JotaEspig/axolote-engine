@@ -30,6 +30,12 @@ Model::Model(std::string path, const glm::vec3 &_color) :
     load_model(path);
 }
 
+void Model::bind_shader(const Shader &shader)
+{
+    for (GMesh &e : meshes)
+        e.bind_shader(shader);
+};
+
 void Model::draw()
 {
     draw(glm::mat4(1.0f));

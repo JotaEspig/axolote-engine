@@ -58,6 +58,13 @@ public:
     Model(std::string path, const glm::vec3 &_color = glm::vec3(0.0f, 0.0f, 0.0f));
 
     /**
+    * \brief binds a shader into the meshes
+    * \author João Vitor Espig (JotaEspig)
+    * \date October 27, 2023
+    * \version October 27, 2023
+    **/
+    void bind_shader(const Shader &shader);
+    /**
     * \brief draws
     * \author João Vitor Espig (JotaEspig)
     * \date October 25, 2023

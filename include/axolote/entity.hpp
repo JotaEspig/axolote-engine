@@ -56,6 +56,13 @@ public:
     **/
     void set_matrix(size_t idx, const glm::mat4 &mat);
     /**
+    * \brief binds a shader into object3D at idx
+    * \author João Vitor Espig (JotaEspig)
+    * \date October 27, 2023
+    * \version October 27, 2023
+    **/
+    void bind_shader_at(size_t idx, const Shader &shader);
+    /**
     * \brief draws using a shader
     * \author João Vitor Espig (JotaEspig)
     * \date October 04, 2023
