@@ -170,21 +170,22 @@ void App::main_loop()
     if (!floor_spec.loaded)
         std::cerr << "Error when loading texture" << std::endl;
 
-    axolote::Object2D body(glm::translate(glm::mat4(1.0f), glm::vec3(5.0f, 1.0f, 0.0f)),
-                                          vertices, indices, {tex0});
-    axolote::Object2D sun(glm::mat4(1.0f), light_vertices, indices, {});
-    glm::mat4 floor_m = glm::scale(glm::mat4(1.0f), glm::vec3(3.0f, 3.0f, 3.0f));
+    axolote::Object3D body{vertices, indices, {tex0},
+                           glm::translate(glm::mat4{1.0f},
+                                          glm::vec3{5.0f, 1.0f, 0.0f})};
+    axolote::Object3D sun{light_vertices, indices, {}, glm::mat4{1.0f}};
+
+    glm::mat4 floor_m = glm::scale(glm::mat4{1.0f}, glm::vec3{3.0f, 3.0f, 3.0f});
     floor_m = glm::translate(floor_m, glm::vec3(-2.0f, -2.0f, 0.0f));
-    axolote::Object2D floor(floor_m, floor_v, floor_indices, {tex1, floor_spec});
+    axolote::Object3D floor{floor_v, floor_indices, {tex1, floor_spec}, floor_m};
 
     axolote::Entity mine_cubes;
     for (int i = 0; i < 30; ++i)
     {
         for (int j = 0; j < 30; ++j)
         {
-            axolote::Object2D *c = new axolote::Object2D(glm::mat4(1.0f), mine_vertices, indices, {tex2});
-            glm::mat4 mat = glm::mat4(1.0f);
-            mine_cubes.add_object(c, mat);
+            axolote::Object3D c{mine_vertices, indices, {tex2}, glm::mat4{1.0f}};
+            mine_cubes.add_object(c, glm::mat4{1.0f});
         }
     }
 
@@ -192,12 +193,12 @@ void App::main_loop()
     din.load_model("./resources/models/dino/Triceratops.obj");
     axolote::Entity dino;
     glm::mat4 mat = glm::translate(glm::mat4(1.0f), glm::vec3(15.0f, 0.5f, 15.0f));
-    dino.add_object(&din, mat);
+    dino.add_object(din, mat);
 
     axolote::Object3D m;
     m.load_model("./resources/models/m26/m26pershing_coh.obj");
     axolote::Entity m26;
-    m26.add_object(&m, glm::translate(glm::mat4(1.0f), glm::vec3(-7.0f, 0.0f, 0.0f)));
+    m26.add_object(m, glm::translate(glm::mat4(1.0f), glm::vec3(-7.0f, 0.0f, 0.0f)));
 
     axolote::Shader shader_program("./resources/shaders/def_vertex_shader.glsl",
                                    "./resources/shaders/def_fragment_shader.glsl");
