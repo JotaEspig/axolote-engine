@@ -3,7 +3,7 @@
 * \brief entity class
 * \author João Vitor Espig (JotaEspig)
 * \date October 04, 2023
-* \version October 08, 2023
+* \version October 27, 2023
 **/
 #pragma once
 
@@ -12,7 +12,7 @@
 #include <glm/glm.hpp>
 
 #include <axolote/drawable.hpp>
-#include <axolote/object.hpp>
+#include <axolote/object3d.hpp>
 #include <axolote/model.hpp>
 #include <axolote/gmesh.hpp>
 #include <axolote/shader.hpp>
@@ -24,10 +24,7 @@ namespace axolote
 * \brief defines a Object (or multiple objects) that can move
 * \author João Vitor Espig (JotaEspig)
 * \date October 04, 2023
-* \version October 08, 2023
-*
-* An Entity can be multiples Object3D or Object2D, it uses polymorphism to
-* handle both at the same time
+* \version October 27, 2023
 **/
 class Entity : public Drawable
 {
@@ -44,11 +41,11 @@ public:
     * \brief adds an object to entity
     * \author João Vitor Espig (JotaEspig)
     * \date October 08, 2023
-    * \version October 08, 2023
-    * \param o - Object object pointer
+    * \version October 27, 2023
+    * \param o - Object3D object
     * \param mat - model transformation matrix
     **/
-    void add_object(Object *o, const glm::mat4 &mat = glm::mat4(1.0f));
+    void add_object(const Object3D &o, const glm::mat4 &mat = glm::mat4(1.0f));
     /**
     * \brief set a model matrix at index
     * \author João Vitor Espig (JotaEspig)
@@ -79,8 +76,8 @@ public:
     void draw(Shader &shader, const glm::mat4 &mat) override;
 
 private:
-    /** vector of objects (Object3D or Object2D) **/
-    std::vector<Object*> objects;
+    /** vector of objects (Object3D) **/
+    std::vector<Object3D> objects;
 };
 
 } // namespace axolote

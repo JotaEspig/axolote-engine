@@ -16,22 +16,23 @@ Entity::Entity()
 {
 }
 
-void Entity::add_object(Object *o, const glm::mat4 &mat)
+void Entity::add_object(const Object3D &o, const glm::mat4 &mat)
 {
+    size_t idx = objects.size();
     objects.push_back(o);
-    o->pos = mat;
+    set_matrix(idx, mat);
 }
 
 void Entity::set_matrix(size_t idx, const glm::mat4 &mat)
 {
     assert (idx < objects.size());
-    objects[idx]->pos = mat;
+    objects[idx].pos = mat;
 }
 
 void Entity::draw(Shader &shader)
 {
     for (size_t i = 0; i < objects.size(); ++i)
-        objects[i]->draw(shader);
+        objects[i].draw(shader);
 }
 
 void Entity::draw(Shader &shader, const glm::mat4 &mat)
