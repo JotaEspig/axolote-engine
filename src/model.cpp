@@ -18,6 +18,12 @@ Model::Model()
 {
 }
 
+Model::Model(const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices,
+             const std::vector<Texture> &textures)
+{
+    meshes.push_back(GMesh{vertices, indices, textures});
+}
+
 Model::Model(std::string path, const glm::vec3 &_color) :
     color{_color}
 {

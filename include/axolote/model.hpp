@@ -24,7 +24,7 @@ namespace axolote
 * \brief defines a 3D model
 * \author João Vitor Espig (JotaEspig)
 * \date October 04, 2023
-* \version October 08, 2023
+* \version October 27, 2023
 **/
 class Model : public Drawable
 {
@@ -36,6 +36,17 @@ public:
     * \version October 04, 2023
     **/
     Model();
+    /**
+    * \brief Constructor
+    * \author João Vitor Espig (JotaEspig)
+    * \date October 27, 2023
+    * \version October 27, 2023
+    * \param vertices - polygon mesh vertices
+    * \param indices - polygon mesh indices
+    * \param textures - textures to be rendered with polygon mesh
+    **/
+    Model(const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices,
+          const std::vector<Texture> &textures);
     /**
     * \brief Constructor
     * \author João Vitor Espig (JotaEspig)
