@@ -7,6 +7,33 @@
 
 #include <axolote/engine.hpp>
 
+class Dino : public axolote::Entity
+{
+public:
+    Dino(const axolote::Object3D &obj);
+    void draw() override;
+    void draw(const glm::mat4 &mat) override;
+};
+
+Dino::Dino(const axolote::Object3D &obj)
+{
+    add_object(obj);
+}
+
+void Dino::draw()
+{
+    glDisable(GL_BLEND);
+    Entity::draw();
+    glEnable(GL_BLEND);
+}
+
+void Dino::draw(const glm::mat4 &mat)
+{
+    glDisable(GL_BLEND);
+    Entity::draw(mat);
+    glEnable(GL_BLEND);
+}
+
 class MineCubes : public axolote::Entity
 {
 public:
@@ -209,8 +236,9 @@ void App::main_loop()
     }
 
     glm::mat4 mat = glm::translate(glm::mat4(1.0f), glm::vec3(15.0f, 0.5f, 15.0f));
-    axolote::Object3D dino{mat};
-    dino.load_model("./resources/models/dino/Triceratops.obj");
+    axolote::Object3D dino_obj_3D{mat};
+    dino_obj_3D.load_model("./resources/models/dino/Triceratops.obj");
+    Dino dino{dino_obj_3D};
 
     axolote::Object3D m26{glm::translate(glm::mat4(1.0f), glm::vec3(-7.0f, 0.0f, 0.0f))};
     m26.load_model("./resources/models/m26/m26pershing_coh.obj");
@@ -229,7 +257,7 @@ void App::main_loop()
     for (int i = 0; i < 30; ++i)
         for (int j = 0; j < 30; ++j)
             mine_cubes.bind_shader_at(30 * i + j, shader_program);
-    dino.bind_shader(shader_program);
+    dino.bind_shader_at(0, shader_program);
     m26.bind_shader(shader_program);
 
     axolote::Scene ctx{};
@@ -237,7 +265,7 @@ void App::main_loop()
     ctx.add_drawable(body);
     ctx.add_drawable(floor);
     ctx.add_drawable(&mine_cubes);
-    ctx.add_drawable(dino);
+    ctx.add_drawable(&dino);
     ctx.add_drawable(m26);
     std::string original_title = _title;
     double before = glfwGetTime();
