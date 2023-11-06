@@ -46,4 +46,15 @@ void VAO::destroy()
     glDeleteVertexArrays(1, &id);
 }
 
+void VAO::operator=(const VAO &vao)
+{
+    id = vao.id;
+}
+
+void VAO::operator=(VAO &&vao)
+{
+    id = vao.id;
+    vao.id = 0;
+}
+
 } // namespace axolote
