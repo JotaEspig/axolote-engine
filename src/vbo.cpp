@@ -12,6 +12,17 @@ VBO::VBO()
 {
 }
 
+VBO::VBO(const VBO &vbo) :
+    id{vbo.id}
+{
+}
+
+VBO::VBO(VBO &&vbo) :
+    id{vbo.id}
+{
+    vbo.id = 0;
+}
+
 VBO::VBO(const std::vector<Vertex> &vertices)
 {
     glGenBuffers(1, &id);
@@ -32,6 +43,17 @@ void VBO::unbind()
 void VBO::destroy()
 {
     glDeleteBuffers(1, &id);
+}
+
+void VBO::operator=(const VBO &vbo)
+{
+    id = vbo.id;
+}
+
+void VBO::operator=(VBO &&vbo)
+{
+    id = vbo.id;
+    vbo.id = 0;
 }
 
 } // namespace axolote
