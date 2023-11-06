@@ -16,6 +16,11 @@ Entity::Entity()
 {
 }
 
+void Entity::add_object(const Object3D &o)
+{
+    objects.push_back(o);
+}
+
 void Entity::add_object(const Object3D &o, const glm::mat4 &mat)
 {
     size_t idx = objects.size();

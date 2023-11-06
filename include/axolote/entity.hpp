@@ -24,7 +24,7 @@ namespace axolote
 * \brief defines a Object (or multiple objects) that can move
 * \author João Vitor Espig (JotaEspig)
 * \date October 04, 2023
-* \version October 27, 2023
+* \version November 05, 2023
 *
 * You should inherit from this class to be able to create an Entity.
 * That's because each Entity has its own update pattern. See update() method.
@@ -43,12 +43,20 @@ public:
     /**
     * \brief adds an object to entity
     * \author João Vitor Espig (JotaEspig)
+    * \date November 05, 2023
+    * \version November 05, 2023
+    * \param o - Object3D object
+    **/
+    void add_object(const Object3D &o);
+    /**
+    * \brief adds an object to entity
+    * \author João Vitor Espig (JotaEspig)
     * \date October 08, 2023
     * \version October 27, 2023
     * \param o - Object3D object
     * \param mat - model transformation matrix
     **/
-    void add_object(const Object3D &o, const glm::mat4 &mat = glm::mat4(1.0f));
+    void add_object(const Object3D &o, const glm::mat4 &mat);
     /**
     * \brief set a model matrix at index
     * \author João Vitor Espig (JotaEspig)
