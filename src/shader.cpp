@@ -26,6 +26,17 @@ Shader::Shader()
 {
 }
 
+Shader::Shader(const Shader &shader) :
+    id{shader.id}
+{
+}
+
+Shader::Shader(Shader &&shader) :
+    id{shader.id}
+{
+    shader.id = 0;
+}
+
 Shader::Shader(const char *vertex_file, const char *fragment_file)
 {
     std::string vertex_code = get_file_content(vertex_file);
@@ -101,6 +112,17 @@ void Shader::activate()
 void Shader::destroy()
 {
     glDeleteProgram(id);
+}
+
+void Shader::operator=(const Shader &shader)
+{
+    id = shader.id;
+}
+
+void Shader::operator=(Shader &&shader)
+{
+    id = shader.id;
+    shader.id = 0;
 }
 
 } // namespace axolote
