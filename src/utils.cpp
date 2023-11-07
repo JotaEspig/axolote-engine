@@ -3,6 +3,9 @@
 
 #include <axolote/utils.hpp>
 
+namespace axolote
+{
+
 std::string get_file_content(const char *filename)
 {
     std::ifstream in(filename, std::ios::binary);
@@ -17,3 +20,5 @@ std::string get_file_content(const char *filename)
     in.close();
     return content;
 }
+
+} // namespace axolote
