@@ -3,7 +3,7 @@
 * \brief Mesh class
 * \author João Vitor Espig (JotaEspig)
 * \date October 04, 2023
-* \version October 08, 2023
+* \version November 06, 2023
 **/
 #pragma once
 
@@ -23,7 +23,7 @@ namespace axolote
 * \brief defines a polygon mesh
 * \author João Vitor Espig (JotaEspig)
 * \date October 04, 2023
-* \version October 08, 2023
+* \version November 06, 2023
 **/
 class Mesh
 {
