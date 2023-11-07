@@ -3,7 +3,7 @@
 * \brief Graphic Mesh class
 * \author João Vitor Espig (JotaEspig)
 * \date October 06, 2023
-* \version October 27, 2023
+* \version November 07, 2023
 **/
 #pragma once
 
@@ -27,7 +27,7 @@ namespace axolote
 * \brief defines a graphic polygon mesh
 * \author João Vitor Espig (JotaEspig)
 * \date October 06, 2023
-* \version October 27, 2023
+* \version November 07, 2023
 *
 * The difference between GMesh and Mesh is that GMesh you can draw
 **/
@@ -41,6 +41,22 @@ public:
     * \version October 06, 2023
     **/
     GMesh();
+    /**
+    * \brief Copy constructor
+    * \author João Vitor Espig (JotaEspig)
+    * \date November 07, 2023
+    * \version November 07, 2023
+    * \param gmesh - GMesh object
+    **/
+    GMesh(const GMesh &gmesh);
+    /**
+    * \brief Move constructor
+    * \author João Vitor Espig (JotaEspig)
+    * \date November 07, 2023
+    * \version November 07, 2023
+    * \param gmesh - GMesh object
+    **/
+    GMesh(GMesh &&gmesh);
     /**
     * \brief Constructor
     * \author João Vitor Espig (JotaEspig)
@@ -84,6 +100,22 @@ public:
     * \version October 06, 2023
     **/
     void destroy();
+    /**
+    * \brief operator = overload (copy)
+    * \author João Vitor Espig (JotaEspig)
+    * \date November 07, 2023
+    * \version November 07, 2023
+    * \param gmesh - GMesh object
+    **/
+    void operator=(const GMesh &gmesh);
+    /**
+    * \brief operator = overload (move)
+    * \author João Vitor Espig (JotaEspig)
+    * \date November 07, 2023
+    * \version November 07, 2023
+    * \param gmesh - GMesh object
+    **/
+    void operator=(GMesh &&gmesh);
 
     friend class Scene;
 
