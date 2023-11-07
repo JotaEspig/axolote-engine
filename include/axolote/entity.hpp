@@ -3,7 +3,7 @@
 * \brief entity class
 * \author João Vitor Espig (JotaEspig)
 * \date October 04, 2023
-* \version October 27, 2023
+* \version November 07, 2023
 **/
 #pragma once
 
@@ -24,7 +24,7 @@ namespace axolote
 * \brief defines a Object (or multiple objects) that can move
 * \author João Vitor Espig (JotaEspig)
 * \date October 04, 2023
-* \version November 05, 2023
+* \version November 07, 2023
 *
 * You should inherit from this class to be able to create an Entity.
 * That's because each Entity has its own update pattern. See update() method.
@@ -39,6 +39,22 @@ public:
     * \version October 04, 2023
     **/
     Entity();
+    /**
+    * \brief Copy constructor
+    * \author João Vitor Espig (JotaEspig)
+    * \date November 07, 2023
+    * \version November 07, 2023
+    * \param ent - Entity object
+    **/
+    Entity(const Entity &ent);
+    /**
+    * \brief Move constructor
+    * \author João Vitor Espig (JotaEspig)
+    * \date November 07, 2023
+    * \version November 07, 2023
+    * \param ent - Entity object
+    **/
+    Entity(Entity &&ent);
 
     /**
     * \brief adds an object to entity
@@ -97,6 +113,22 @@ public:
     * It just calls draw()
     **/
     void draw(const glm::mat4 &mat) override;
+    /**
+    * \brief operator = overload (copy)
+    * \author João Vitor Espig (JotaEspig)
+    * \date November 07, 2023
+    * \version November 07, 2023
+    * \param ent - Entity object
+    **/
+    void operator=(const Entity &ent);
+    /**
+    * \brief operator = overload (move)
+    * \author João Vitor Espig (JotaEspig)
+    * \date November 07, 2023
+    * \version November 07, 2023
+    * \param ent - Entity object
+    **/
+    void operator=(Entity &&ent);
 
     friend class Scene;
 

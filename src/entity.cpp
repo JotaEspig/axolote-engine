@@ -3,6 +3,7 @@
 #include <glm/glm.hpp>
 
 #include <axolote/entity.hpp>
+#include <axolote/object3d.hpp>
 #include <axolote/model.hpp>
 #include <axolote/gmesh.hpp>
 #include <axolote/shader.hpp>
@@ -14,6 +15,17 @@ namespace axolote
 
 Entity::Entity()
 {
+}
+
+Entity::Entity(const Entity &ent) :
+    objects{ent.objects}
+{
+}
+
+Entity::Entity(Entity &&ent) :
+    objects{ent.objects}
+{
+    ent.objects = std::vector<Object3D>{};
 }
 
 void Entity::add_object(const Object3D &o)
@@ -55,6 +67,17 @@ void Entity::draw(const glm::mat4 &mat)
 {
     UNUSED(mat);
     draw();
+}
+
+void Entity::operator=(const Entity &ent)
+{
+    objects = ent.objects;
+}
+
+void Entity::operator=(Entity &&ent)
+{
+    objects = ent.objects;
+    ent.objects = std::vector<Object3D>{};
 }
 
 } // namespace axolote
