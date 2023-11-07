@@ -3,7 +3,7 @@
 * \brief Mesh class
 * \author João Vitor Espig (JotaEspig)
 * \date October 04, 2023
-* \version October 27, 2023
+* \version November 07, 2023
 **/
 #pragma once
 
@@ -24,7 +24,7 @@ namespace axolote
 * \brief defines a 3D model
 * \author João Vitor Espig (JotaEspig)
 * \date October 04, 2023
-* \version October 27, 2023
+* \version Novemeber 07, 2023
 **/
 class Model : public Drawable
 {
@@ -36,6 +36,22 @@ public:
     * \version October 04, 2023
     **/
     Model();
+    /**
+    * \brief Copy constructor
+    * \author João Vitor Espig (JotaEspig)
+    * \date November 07, 2023
+    * \version November 07, 2023
+    * \param model - Model object
+    **/
+    Model(const Model &model);
+    /**
+    * \brief Move constructor
+    * \author João Vitor Espig (JotaEspig)
+    * \date November 07, 2023
+    * \version November 07, 2023
+    * \param model - Model object
+    **/
+    Model(Model &&model);
     /**
     * \brief Constructor
     * \author João Vitor Espig (JotaEspig)
@@ -81,6 +97,22 @@ public:
     * \param matrix - model transformation matrix
     **/
     void draw(const glm::mat4 &mat) override;
+    /**
+    * \brief operator = overload (copy)
+    * \author João Vitor Espig (JotaEspig)
+    * \date November 07, 2023
+    * \version November 07, 2023
+    * \param model - Model object
+    **/
+    void operator=(const Model &model);
+    /**
+    * \brief operator = overload (move)
+    * \author João Vitor Espig (JotaEspig)
+    * \date November 07, 2023
+    * \version November 07, 2023
+    * \param model - Model object
+    **/
+    void operator=(Model &&model);
 
     friend class Scene;
 

@@ -9,6 +9,7 @@
 #include <axolote/model.hpp>
 #include <axolote/shader.hpp>
 #include <axolote/gmesh.hpp>
+#include <axolote/texture.hpp>
 #include <axolote/assimp.hpp>
 
 namespace axolote
@@ -16,6 +17,29 @@ namespace axolote
 
 Model::Model()
 {
+}
+
+Model::Model(const Model &model) :
+    color{model.color},
+    meshes{model.meshes},
+    loaded_textures{model.loaded_textures},
+    loaded_textures_names{model.loaded_textures_names},
+    directory{model.directory}
+{
+}
+
+Model::Model(Model &&model) :
+    color{model.color},
+    meshes{model.meshes},
+    loaded_textures{model.loaded_textures},
+    loaded_textures_names{model.loaded_textures_names},
+    directory{model.directory}
+{
+    model.color = glm::vec3(0.0f, 0.0f, 0.0f);
+    model.meshes = std::vector<GMesh>{};
+    model.loaded_textures = std::vector<Texture>{};
+    model.loaded_textures_names = std::vector<std::string>{};
+    model.directory = "";
 }
 
 Model::Model(const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices,
@@ -61,6 +85,29 @@ void Model::load_model(std::string path)
     directory = path.substr(0, path.find_last_of('/') + 1);
     process_node(scene->mRootNode, scene, meshes, color, loaded_textures,
                  loaded_textures_names, directory);
+}
+
+void Model::operator=(const Model &model)
+{
+    color = model.color;
+    meshes = model.meshes;
+    loaded_textures = model.loaded_textures;
+    loaded_textures_names = model.loaded_textures_names;
+    directory = model.directory;
+}
+
+void Model::operator=(Model &&model)
+{
+    color = model.color;
+    meshes = model.meshes;
+    loaded_textures = model.loaded_textures;
+    loaded_textures_names = model.loaded_textures_names;
+    directory = model.directory;
+    model.color = glm::vec3(0.0f, 0.0f, 0.0f);
+    model.meshes = std::vector<GMesh>{};
+    model.loaded_textures = std::vector<Texture>{};
+    model.loaded_textures_names = std::vector<std::string>{};
+    model.directory = "";
 }
 
 } // namespace axolote
