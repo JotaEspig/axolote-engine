@@ -27,13 +27,22 @@ namespace axolote
 * \brief defines a graphic polygon mesh
 * \author João Vitor Espig (JotaEspig)
 * \date October 06, 2023
-* \version October 27, 2023
+* \version November 08, 2023
 *
 * The difference between GMesh and Mesh is that GMesh you can draw
 **/
 class GMesh : public Mesh, public Drawable
 {
 public:
+    /** VAO **/
+    VAO vao;
+    /** VBO **/
+    VBO vbo;
+    /** EBO **/
+    EBO ebo;
+    /** Shader **/
+    Shader shader;
+
     /**
     * \brief Constructor
     * \author João Vitor Espig (JotaEspig)
@@ -86,16 +95,7 @@ public:
     void destroy();
 
     friend class Scene;
-
-private:
-    /** VAO **/
-    VAO vao;
-    /** VBO **/
-    VBO vbo;
-    /** EBO **/
-    EBO ebo;
-    /** Shader **/
-    Shader shader;
+    friend class Entity;
 };
 
 } // namespace axolote
