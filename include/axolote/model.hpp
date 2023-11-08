@@ -3,7 +3,7 @@
 * \brief Mesh class
 * \author João Vitor Espig (JotaEspig)
 * \date October 04, 2023
-* \version October 27, 2023
+* \version November 08, 2023
 **/
 #pragma once
 
@@ -24,11 +24,14 @@ namespace axolote
 * \brief defines a 3D model
 * \author João Vitor Espig (JotaEspig)
 * \date October 04, 2023
-* \version October 27, 2023
+* \version November 08, 2023
 **/
 class Model : public Drawable
 {
 public:
+    /** Model meshes **/
+    std::vector<GMesh> meshes;
+
     /**
     * \brief Constructor
     * \author João Vitor Espig (JotaEspig)
@@ -83,6 +86,7 @@ public:
     void draw(const glm::mat4 &mat) override;
 
     friend class Scene;
+    friend class Entity;
 
 protected:
     /** default color **/
@@ -98,8 +102,6 @@ protected:
     void load_model(std::string path);
 
 private:
-    /** Model meshes **/
-    std::vector<GMesh> meshes;
     /** loaded textures **/
     std::vector<Texture> loaded_textures;
     /** loaded textures names **/
