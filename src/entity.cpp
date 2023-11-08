@@ -31,7 +31,7 @@ void Entity::add_object(const Object3D &o, const glm::mat4 &mat)
 void Entity::set_matrix(size_t idx, const glm::mat4 &mat)
 {
     assert(idx < objects.size());
-    objects[idx].pos = mat;
+    objects[idx].model_mat = mat;
 }
 
 void Entity::bind_shader_at(size_t idx, const Shader &shader)

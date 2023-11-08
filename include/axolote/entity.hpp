@@ -3,7 +3,7 @@
 * \brief entity class
 * \author João Vitor Espig (JotaEspig)
 * \date October 04, 2023
-* \version October 27, 2023
+* \version November 08, 2023
 **/
 #pragma once
 
@@ -24,7 +24,7 @@ namespace axolote
 * \brief defines a Object (or multiple objects) that can move
 * \author João Vitor Espig (JotaEspig)
 * \date October 04, 2023
-* \version November 05, 2023
+* \version November 08, 2023
 *
 * You should inherit from this class to be able to create an Entity.
 * That's because each Entity has its own update pattern. See update() method.
@@ -61,7 +61,7 @@ public:
     * \brief set a model matrix at index
     * \author João Vitor Espig (JotaEspig)
     * \date October 04, 2023
-    * \version October 08, 2023
+    * \version November 08, 2023
     * \param idx - the index of the matrix you want to update
     * \param mat - the updated transformation matrix
     **/
