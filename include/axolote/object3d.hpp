@@ -79,8 +79,8 @@ public:
     /**
     * \brief gets model matrix
     * \author João Vitor Espig
-    * \date November 08
-    * \version November 08
+    * \date November 08, 2023
+    * \version November 08, 2023
     **/
     glm::mat4 get_matrix() const;
     /**
