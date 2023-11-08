@@ -32,6 +32,24 @@ Window::Window()
     init();
 }
 
+Window::Window(const Window &window) :
+    _title{window._title},
+    camera{window.camera}
+{
+    _color = window._color;
+    Window::window = window.window;
+}
+
+Window::Window(Window &&window) :
+    _title{window._title},
+    camera{window.camera}
+{
+    _color = window._color;
+    Window::window = window.window;
+    window._color = Color{};
+    window.window = nullptr;
+}
+
 Window::~Window()
 {
     glfwDestroyWindow(window);
@@ -133,8 +151,6 @@ bool Window::should_close()
     return glfwWindowShouldClose(window);
 }
 
-// GETTERS AND SETTERS
-
 std::string Window::title() const
 {
     return _title;
@@ -183,6 +199,26 @@ void Window::set_color(const Color &color)
 void Window::set_color(uint8_t r, uint8_t g, uint8_t b, float opacity)
 {
     _color = {(float)r / 255, (float)g / 255, (float)b / 255, opacity};
+}
+
+void Window::operator=(const Window &window)
+{
+    _title = window._title;
+    _color = window._color;
+    camera = window.camera;
+    Window::window = window.window;
+}
+
+void Window::operator=(Window &&window)
+{
+    _title = window._title;
+    _color = window._color;
+    camera = window.camera;
+    Window::window = window.window;
+    window._title = "";
+    window._color = Color{};
+    window.camera = Camera{};
+    window.window = nullptr;
 }
 
 } // namespace axolote
