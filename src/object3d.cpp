@@ -12,12 +12,12 @@ namespace axolote
 {
 
 Object3D::Object3D() :
-    pos{1.0f}
+    model_mat{1.0f}
 {
 }
 
 Object3D::Object3D(const glm::mat4 &mat) :
-    pos{mat}
+    model_mat{mat}
 {
 }
 
@@ -25,7 +25,7 @@ Object3D::Object3D(const std::vector<Vertex> &vertices,
                    const std::vector<GLuint> &indices,
                    const std::vector<Texture> &textures, const glm::mat4 &mat) :
     Model{vertices, indices, textures},
-    pos{mat}
+    model_mat{mat}
 {
 }
 
@@ -41,9 +41,14 @@ void Object3D::load_model(std::string path, const glm::vec3 &color)
     Model::load_model(path);
 }
 
+glm::mat4 Object3D::get_matrix() const
+{
+    return model_mat;
+}
+
 void Object3D::draw()
 {
-    Model::draw(pos);
+    Model::draw(model_mat);
 }
 
 void Object3D::draw(const glm::mat4 &mat)

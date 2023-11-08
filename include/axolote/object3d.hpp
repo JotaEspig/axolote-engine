@@ -77,6 +77,13 @@ public:
     **/
     void load_model(std::string path, const glm::vec3 &color = glm::vec3(0.0f, 0.0f, 0.0f));
     /**
+    * \brief gets model matrix
+    * \author João Vitor Espig
+    * \date November 08
+    * \version November 08
+    **/
+    glm::mat4 get_matrix() const;
+    /**
     * \brief draws
     * \author João Vitor Espig (JotaEspig)
     * \date October 08, 2023
@@ -98,8 +105,8 @@ public:
     friend class Scene;
 
 protected:
-    /** position **/
-    glm::mat4 pos;
+    /** model_matition **/
+    glm::mat4 model_mat;
 };
 
 } // namespace axolote
