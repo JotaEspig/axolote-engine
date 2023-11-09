@@ -20,8 +20,8 @@ Model::Model()
 }
 
 Model::Model(const Model &model) :
-    color{model.color},
     meshes{model.meshes},
+    color{model.color},
     loaded_textures{model.loaded_textures},
     loaded_textures_names{model.loaded_textures_names},
     directory{model.directory}
@@ -29,8 +29,8 @@ Model::Model(const Model &model) :
 }
 
 Model::Model(Model &&model) :
-    color{model.color},
     meshes{model.meshes},
+    color{model.color},
     loaded_textures{model.loaded_textures},
     loaded_textures_names{model.loaded_textures_names},
     directory{model.directory}
