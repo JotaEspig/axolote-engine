@@ -36,8 +36,6 @@ glm::vec3 CelestialBody::calculate_acceleration(const CelestialBody &other)
     glm::vec3 direction = glm::normalize(pos - other.pos);
     double r = glm::distance(pos, other.pos);
     float gravitational_acceleration = (G * mass) / (r * r);
-    std::cout << "dir: " << glm::to_string(direction) << std::endl
-              << "grav: " << gravitational_acceleration << std::endl;
     return direction * gravitational_acceleration;
 }
 
@@ -45,7 +43,6 @@ void CelestialBody::update(double dt)
 {
     pos += velocity * (float)dt * 10.0f;
     glm::mat4 mat = glm::translate(objects[0].get_matrix(), velocity * (float)dt * 10.0f);
-    std::cout << "pos: " << glm::to_string(mat) << std::endl;
     set_matrix(0, mat);
 }
 
@@ -97,7 +94,7 @@ void App::main_loop()
     glm::mat4 mat{1.0f};
     mat = glm::translate(mat, glm::vec3(0.0f, 0.0f, 20.0f));
 
-    CelestialBody earth{1, glm::vec3(0.0f, 0.0f, 0.0f)}; //29.78e3
+    CelestialBody earth{1, glm::vec3(0.0003f, 0.0f, 0.0f)}; //29.78e3
     axolote::Object3D earthobj{"./resources/models/sphere/sphere.obj", glm::vec3(0.0f, 0.0f, 1.0f), mat};
     earth.pos = glm::vec3{0.0f, 0.0f, 20.0f};
     earth.add_object(earthobj);
@@ -128,21 +125,19 @@ void App::main_loop()
         double dt = now - before;
         before = now;
         process_input(dt);
-        dt *= 100;
-
-        glm::vec3 res = sun.calculate_acceleration(earth);
-        earth.velocity += res * (float)dt;
-        std::cout << "res: " << glm::to_string(res) << std::endl;
-        std::cout << "velo: " << glm::to_string(earth.velocity) << std::endl;
-
-        scene.camera = camera;
-        scene.update_camera((float)width() / height());
-        scene.update(dt);
-        scene.render();
 
         std::stringstream sstr;
         sstr << original_title << " | " << (int)(1 / dt) << " fps";
         set_title(sstr.str());
+
+        dt *= 100;
+
+        glm::vec3 res = sun.calculate_acceleration(earth);
+        ((CelestialBody*)scene.entity_objects[0])->velocity += res * (float)dt;
+        scene.camera = camera;
+        scene.update_camera((float)width() / height());
+        scene.update(dt);
+        scene.render();
 
         glfwSwapBuffers(window);
     }
