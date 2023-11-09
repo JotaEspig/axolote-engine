@@ -3,7 +3,7 @@
 * \brief provides class Scene
 * \author João Vitor Espig (JotaEspig)
 * \date October 25, 2023
-* \version November 08, 2023
+* \version November 09, 2023
 **/
 #pragma once
 
@@ -22,7 +22,7 @@ namespace axolote
 * \brief Describes a scene
 * \author João Vitor Espig (JotaEspig)
 * \date October 25, 2023
-* \version November 08, 2023
+* \version November 09, 2023
 **/
 class Scene
 {
@@ -34,7 +34,35 @@ public:
     /** Camera in the scene **/
     Camera camera;
 
+    /**
+     * \brief Constructor
+     * \author João Vitor Espig (JotaEspig)
+     * \date November 08, 2023
+     * \version November 08, 2023
+    **/
     Scene();
+    /**
+    * \brief Copy constructor
+    * \author João Vitor Espig (JotaEspig)
+    * \date November 09, 2023
+    * \version November 09, 2023
+    * \param scene - Scene object
+    **/
+    Scene(const Scene &scene);
+    /**
+    * \brief Move constructor
+    * \author João Vitor Espig (JotaEspig)
+    * \date November 09, 2023
+    * \version November 09, 2023
+    * \param scene - Scene object
+    **/
+    Scene(Scene &&scene);
+    /**
+     * \brief Destructor
+     * \author João Vitor Espig (JotaEspig)
+     * \date November 08, 2023
+     * \version November 08, 2023
+    **/
     ~Scene();
 
     /**
@@ -72,6 +100,22 @@ public:
      * \version November 08, 2023
     **/
     void render();
+    /**
+    * \brief operator = overload (copy)
+    * \author João Vitor Espig (JotaEspig)
+    * \date November 09, 2023
+    * \version November 09, 2023
+    * \param scene - Scene object
+    **/
+    void operator=(const Scene &scene);
+    /**
+    * \brief operator = overload (move)
+    * \author João Vitor Espig (JotaEspig)
+    * \date November 09, 2023
+    * \version November 09, 2023
+    * \param scene - Scene object
+    **/
+    void operator=(Scene &&scene);
 
 private:
     /** vector of shaders from drawable objects **/

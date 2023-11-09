@@ -13,6 +13,22 @@ Scene::Scene()
 {
 }
 
+Scene::Scene(const Scene &scene) :
+    entity_objects{scene.entity_objects},
+    object3d_objects{scene.object3d_objects},
+    camera{scene.camera},
+    shaders{scene.shaders}
+{
+}
+
+Scene::Scene(Scene &&scene) :
+    entity_objects{scene.entity_objects},
+    object3d_objects{scene.object3d_objects},
+    camera{scene.camera},
+    shaders{scene.shaders}
+{
+}
+
 Scene::~Scene()
 {
 }
@@ -83,6 +99,26 @@ void Scene::render()
         e->draw();
     for (Object3D &o : object3d_objects)
         o.draw();
+}
+
+void Scene::operator=(const Scene &scene)
+{
+    entity_objects = scene.entity_objects;
+    object3d_objects = scene.object3d_objects;
+    camera = scene.camera;
+    shaders = scene.shaders;
+}
+
+void Scene::operator=(Scene &&scene)
+{
+    entity_objects = scene.entity_objects;
+    object3d_objects = scene.object3d_objects;
+    camera = scene.camera;
+    shaders = scene.shaders;
+    scene.entity_objects = std::vector<Entity*>{};
+    scene.object3d_objects = std::vector<Object3D>{};
+    scene.camera = Camera{};
+    scene.shaders = std::vector<Shader>{};
 }
 
 } // namespace axolote
