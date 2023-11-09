@@ -24,11 +24,7 @@ namespace axolote
 * \brief defines a Object (or multiple objects) that can move
 * \author João Vitor Espig (JotaEspig)
 * \date October 04, 2023
-<<<<<<< HEAD
 * \version November 08, 2023
-=======
-* \version November 07, 2023
->>>>>>> oop-improvement
 *
 * You should inherit from this class to be able to create an Entity.
 * That's because each Entity has its own update pattern. See update() method.
