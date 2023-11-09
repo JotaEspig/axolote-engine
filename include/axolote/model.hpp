@@ -40,6 +40,22 @@ public:
     **/
     Model();
     /**
+    * \brief Copy constructor
+    * \author João Vitor Espig (JotaEspig)
+    * \date November 07, 2023
+    * \version November 07, 2023
+    * \param model - Model object
+    **/
+    Model(const Model &model);
+    /**
+    * \brief Move constructor
+    * \author João Vitor Espig (JotaEspig)
+    * \date November 07, 2023
+    * \version November 07, 2023
+    * \param model - Model object
+    **/
+    Model(Model &&model);
+    /**
     * \brief Constructor
     * \author João Vitor Espig (JotaEspig)
     * \date October 27, 2023
@@ -84,6 +100,22 @@ public:
     * \param matrix - model transformation matrix
     **/
     void draw(const glm::mat4 &mat) override;
+    /**
+    * \brief operator = overload (copy)
+    * \author João Vitor Espig (JotaEspig)
+    * \date November 07, 2023
+    * \version November 07, 2023
+    * \param model - Model object
+    **/
+    void operator=(const Model &model);
+    /**
+    * \brief operator = overload (move)
+    * \author João Vitor Espig (JotaEspig)
+    * \date November 07, 2023
+    * \version November 07, 2023
+    * \param model - Model object
+    **/
+    void operator=(Model &&model);
 
     friend class Scene;
     friend class Entity;

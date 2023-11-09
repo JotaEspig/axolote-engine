@@ -3,7 +3,7 @@
 * \brief camera operations
 * \author João Vitor Espig (JotaEspig)
 * \date October 04, 2023
-* \version October 08, 2023
+* \version November 06, 2023
 *
 * This file contains Camera class that handles operations like movement in 3D
 * and view movement
@@ -19,7 +19,7 @@ namespace axolote
 * \brief class that represents a Camera in 2D/3D
 * \author João Vitor Espig (JotaEspig)
 * \date October 04, 2023
-* \version October 08, 2023
+* \version November 06, 2023
 **/
 class Camera
 {
@@ -46,6 +46,22 @@ public:
     * \version October 08, 2023
     **/
     Camera();
+    /**
+    * \brief Copy constructor
+    * \author João Vitor Espig (JotaEspig)
+    * \date November 06, 2023
+    * \version November 06, 2023
+    * \param camera - Camera object
+    **/
+    Camera(const Camera &camera);
+    /**
+    * \brief Move constructor
+    * \author João Vitor Espig (JotaEspig)
+    * \date November 06, 2023
+    * \version November 06, 2023
+    * \param camera - Camera object
+    **/
+    Camera(Camera &&camera);
     /**
     * \brief Constructor
     * \author João Vitor Espig (JotaEspig)
@@ -115,6 +131,22 @@ public:
     * \param delta_t - time difference from last frame
     **/
     void move_vision(float x, float y, float width, float height, double delta_t = 1.0);
+    /**
+    * \brief operator = overload (copy)
+    * \author João Vitor Espig (JotaEspig)
+    * \date November 06, 2023
+    * \version November 06, 2023
+    * \param camera - Camera object
+    **/
+    void operator=(const Camera &camera);
+    /**
+    * \brief operator = overload (move)
+    * \author João Vitor Espig (JotaEspig)
+    * \date November 06, 2023
+    * \version November 06, 2023
+    * \param camera - Camera object
+    **/
+    void operator=(Camera &&camera);
 };
 
 } // namespace axolote

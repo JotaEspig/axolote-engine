@@ -16,6 +16,19 @@ Object3D::Object3D() :
 {
 }
 
+Object3D::Object3D(const Object3D &obj) :
+    Model{obj},
+    pos{obj.pos}
+{
+}
+
+Object3D::Object3D(Object3D &&obj) :
+    Model{obj},
+    pos{obj.pos}
+{
+    obj.pos = glm::mat4(0.0f);
+}
+
 Object3D::Object3D(const glm::mat4 &mat) :
     model_mat{mat}
 {
@@ -55,6 +68,19 @@ void Object3D::draw(const glm::mat4 &mat)
 {
     UNUSED(mat);
     draw();
+}
+
+void Object3D::operator=(const Object3D &obj)
+{
+    Model::operator=(obj);
+    pos = obj.pos;
+}
+
+void Object3D::operator=(Object3D &&obj)
+{
+    Model::operator=(obj);
+    pos = obj.pos;
+    obj.pos = glm::mat4(0.0f);
 }
 
 } // namespace axolote

@@ -15,6 +15,26 @@ Texture::Texture() :
 {
 }
 
+Texture::Texture(const Texture &texture) :
+    id{texture.id},
+    type{texture.type},
+    unit{texture.unit},
+    loaded{texture.loaded}
+{
+}
+
+Texture::Texture(Texture &&texture) :
+    id{texture.id},
+    type{texture.type},
+    unit{texture.unit},
+    loaded{texture.loaded}
+{
+    texture.id = 0;
+    texture.type = "";
+    texture.unit = 0;
+    texture.loaded = false;
+}
+
 Texture::Texture(const char *texture_filename, std::string tex_type, GLuint _unit) :
     type{tex_type},
     unit{_unit},
@@ -73,6 +93,26 @@ void Texture::unbind()
 void Texture::destroy()
 {
     glDeleteTextures(1, &id);
+}
+
+void Texture::operator=(const Texture &texture)
+{
+    id = texture.id;
+    type = texture.type;
+    unit = texture.unit;
+    loaded = texture.loaded;
+}
+
+void Texture::operator=(Texture &&texture)
+{
+    id = texture.id;
+    type = texture.type;
+    unit = texture.unit;
+    loaded = texture.loaded;
+    texture.id = 0;
+    texture.type = "";
+    texture.unit = 0;
+    texture.loaded = false;
 }
 
 } // namespace axolote
