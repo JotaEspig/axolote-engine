@@ -3,7 +3,7 @@
 * \brief Graphic Mesh class
 * \author João Vitor Espig (JotaEspig)
 * \date October 06, 2023
-* \version October 06, 2023
+* \version November 08, 2023
 **/
 #pragma once
 
@@ -12,6 +12,7 @@
 #include <GL/gl.h>
 #include <glm/glm.hpp>
 
+#include <axolote/drawable.hpp>
 #include <axolote/mesh.hpp>
 #include <axolote/shader.hpp>
 #include <axolote/vao.hpp>
@@ -26,13 +27,22 @@ namespace axolote
 * \brief defines a graphic polygon mesh
 * \author João Vitor Espig (JotaEspig)
 * \date October 06, 2023
-* \version October 06, 2023
+* \version November 08, 2023
 *
 * The difference between GMesh and Mesh is that GMesh you can draw
 **/
-class GMesh : public Mesh
+class GMesh : public Mesh, public Drawable
 {
 public:
+    /** VAO **/
+    VAO vao;
+    /** VBO **/
+    VBO vbo;
+    /** EBO **/
+    EBO ebo;
+    /** Shader **/
+    Shader shader;
+
     /**
     * \brief Constructor
     * \author João Vitor Espig (JotaEspig)
@@ -40,6 +50,22 @@ public:
     * \version October 06, 2023
     **/
     GMesh();
+    /**
+    * \brief Copy constructor
+    * \author João Vitor Espig (JotaEspig)
+    * \date November 07, 2023
+    * \version November 07, 2023
+    * \param gmesh - GMesh object
+    **/
+    GMesh(const GMesh &gmesh);
+    /**
+    * \brief Move constructor
+    * \author João Vitor Espig (JotaEspig)
+    * \date November 07, 2023
+    * \version November 07, 2023
+    * \param gmesh - GMesh object
+    **/
+    GMesh(GMesh &&gmesh);
     /**
     * \brief Constructor
     * \author João Vitor Espig (JotaEspig)
@@ -53,14 +79,29 @@ public:
           const std::vector<Texture> &textures);
 
     /**
+    * \brief binds a shader into gmesh
+    * \author João Vitor Espig (JotaEspig)
+    * \date October 27, 2023
+    * \version October 27, 2023
+    **/
+    void bind_shader(const Shader &shader);
+    /**
+    * \brief draws
+    * \author João Vitor Espig (JotaEspig)
+    * \date October 25, 2023
+    * \version October 27, 2023
+    *
+    * It calls draw(glm::mat4(1.0f))
+    **/
+    void draw() override;
+    /**
     * \brief draws
     * \author João Vitor Espig (JotaEspig)
     * \date October 06, 2023
-    * \version October 06, 2023
-    * \param shader - Shader object
+    * \version October 27, 2023
     * \param matrix - model transformation matrix
     **/
-    void draw(Shader &shader, const glm::mat4 &matrix = glm::mat4(1.0f));
+    void draw(const glm::mat4 &mat) override;
     /**
     * \brief Destroys OpenGL objects created
     * \author João Vitor Espig (JotaEspig)
@@ -68,14 +109,25 @@ public:
     * \version October 06, 2023
     **/
     void destroy();
+    /**
+    * \brief operator = overload (copy)
+    * \author João Vitor Espig (JotaEspig)
+    * \date November 07, 2023
+    * \version November 07, 2023
+    * \param gmesh - GMesh object
+    **/
+    void operator=(const GMesh &gmesh);
+    /**
+    * \brief operator = overload (move)
+    * \author João Vitor Espig (JotaEspig)
+    * \date November 07, 2023
+    * \version November 07, 2023
+    * \param gmesh - GMesh object
+    **/
+    void operator=(GMesh &&gmesh);
 
-private:
-    /** VAO **/
-    VAO vao;
-    /** VBO **/
-    VBO vbo;
-    /** EBO **/
-    EBO ebo;
+    friend class Scene;
+    friend class Entity;
 };
 
 } // namespace axolote

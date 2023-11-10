@@ -1,4 +1,3 @@
-#include <iostream>
 #include <string>
 #include <vector>
 
@@ -21,6 +20,24 @@ GMesh::GMesh()
 {
 }
 
+GMesh::GMesh(const GMesh &gmesh) :
+    Mesh{gmesh},
+    vao{gmesh.vao},
+    vbo{gmesh.vbo},
+    ebo{gmesh.ebo},
+    shader{gmesh.shader}
+{
+}
+
+GMesh::GMesh(GMesh &&gmesh) :
+    Mesh{std::move(gmesh)},
+    vao{std::move(gmesh.vao)},
+    vbo{std::move(gmesh.vbo)},
+    ebo{std::move(gmesh.ebo)},
+    shader{std::move(gmesh.shader)}
+{
+}
+
 GMesh::GMesh(const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices,
              const std::vector<Texture> &textures) :
     Mesh(vertices, indices, textures)
@@ -38,7 +55,17 @@ GMesh::GMesh(const std::vector<Vertex> &vertices, const std::vector<GLuint> &ind
     ebo.unbind();
 }
 
-void GMesh::draw(Shader &shader, const glm::mat4 &matrix)
+void GMesh::bind_shader(const Shader &shader)
+{
+    GMesh::shader = shader;
+}
+
+void GMesh::draw()
+{
+    draw(glm::mat4(1.0f));
+}
+
+void GMesh::draw(const glm::mat4 &mat)
 {
     shader.activate();
     vao.bind();
@@ -75,7 +102,7 @@ void GMesh::draw(Shader &shader, const glm::mat4 &matrix)
         t.bind();
     }
 
-    shader.set_uniform_matrix4("model", matrix);
+    shader.set_uniform_matrix4("model", mat);
 
     vao.bind();
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
@@ -92,6 +119,24 @@ void GMesh::destroy()
     vao.destroy();
     vbo.destroy();
     ebo.destroy();
+}
+
+void GMesh::operator=(const GMesh &gmesh)
+{
+    Mesh::operator=(gmesh);
+    vao = gmesh.vao;
+    vbo = gmesh.vbo;
+    ebo = gmesh.ebo;
+    shader = gmesh.shader;
+}
+
+void GMesh::operator=(GMesh &&gmesh)
+{
+    Mesh::operator=(std::move(gmesh));
+    vao = std::move(gmesh.vao);
+    vbo = std::move(gmesh.vbo);
+    ebo = std::move(gmesh.ebo);
+    shader = std::move(gmesh.shader);
 }
 
 } // namespace axolote

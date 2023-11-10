@@ -11,6 +11,16 @@ VAO::VAO()
     glGenVertexArrays(1, &id);
 }
 
+VAO::VAO(const VAO &vao) :
+    id{vao.id}
+{
+}
+
+VAO::VAO(VAO &&vao) :
+    id{std::move(vao.id)}
+{
+}
+
 void VAO::link_attrib(VBO &vbo, GLuint layout, GLuint num_components,
                       GLenum type, GLsizeiptr size, void *offset)
 {
@@ -33,6 +43,16 @@ void VAO::unbind()
 void VAO::destroy()
 {
     glDeleteVertexArrays(1, &id);
+}
+
+void VAO::operator=(const VAO &vao)
+{
+    id = vao.id;
+}
+
+void VAO::operator=(VAO &&vao)
+{
+    id = std::move(vao.id);
 }
 
 } // namespace axolote

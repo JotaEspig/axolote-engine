@@ -1,4 +1,5 @@
 #include <iostream>
+#include <memory>
 
 #include <glad/glad.h>
 #include <GL/gl.h>
@@ -6,7 +7,7 @@
 #include <glm/glm.hpp>
 
 #include <axolote/window.hpp>
-#include <axolote/camera.hpp>
+#include <axolote/scene.hpp>
 #include <axolote/structs.hpp>
 
 #define INITIAL_SIZE 800
@@ -32,6 +33,23 @@ Window::Window()
     init();
 }
 
+Window::Window(const Window &window) :
+    _title{window._title},
+    _color{window._color},
+    current_scene{window.current_scene}
+{
+    Window::window = window.window;
+}
+
+Window::Window(Window &&window) :
+    _title{std::move(window._title)},
+    _color{std::move(window._color)},
+    current_scene{std::move(window.current_scene)}
+{
+    Window::window = window.window;
+    window.window = nullptr;
+}
+
 Window::~Window()
 {
     glfwDestroyWindow(window);
@@ -47,7 +65,6 @@ void Window::init()
     _color.r = 0x00;
     _color.g = 0x00;
     _color.b = 0x00;
-    camera = Camera(glm::vec3(0.0f, 0.0f, 3.0f));
 
     if (!glfwInit())
     {
@@ -88,29 +105,29 @@ void Window::process_input(float delta_t)
 
     // More keybinds
     if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
-        camera.upward(delta_t);
+        current_scene->camera.upward(delta_t);
     if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-        camera.downward(delta_t);
+        current_scene->camera.downward(delta_t);
     if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
-        camera.speed = 10.0f;
+        current_scene->camera.speed = 10.0f;
     if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_RELEASE)
-        camera.speed = 2.0f;
+        current_scene->camera.speed = 2.0f;
     if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
     {
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
-        if (camera.first_click)
+        if (current_scene->camera.first_click)
             glfwSetCursorPos(window, (double)width() / 2, (double)height() / 2);
 
         double mouse_x, mouse_y;
         glfwGetCursorPos(window, &mouse_x, &mouse_y);
-        camera.move_vision((float)mouse_x, (float)mouse_y, (float)width(), (float)height(), delta_t);
+        current_scene->camera.move_vision((float)mouse_x, (float)mouse_y, (float)width(), (float)height(), delta_t);
         glfwSetCursorPos(window, (double)width() / 2, (double)height() / 2);
     }
     if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_RELEASE)
     {
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-        camera.first_click = true;
+        current_scene->camera.first_click = true;
     }
 }
 
@@ -119,21 +136,19 @@ void Window::minimal_process_input(float delta_t)
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        camera.forward(delta_t);
+        current_scene->camera.forward(delta_t);
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        camera.backward(delta_t);
+        current_scene->camera.backward(delta_t);
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        camera.leftward(delta_t);
+        current_scene->camera.leftward(delta_t);
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        camera.rightward(delta_t);
+        current_scene->camera.rightward(delta_t);
 }
 
 bool Window::should_close()
 {
     return glfwWindowShouldClose(window);
 }
-
-// GETTERS AND SETTERS
 
 std::string Window::title() const
 {
@@ -183,6 +198,23 @@ void Window::set_color(const Color &color)
 void Window::set_color(uint8_t r, uint8_t g, uint8_t b, float opacity)
 {
     _color = {(float)r / 255, (float)g / 255, (float)b / 255, opacity};
+}
+
+void Window::operator=(const Window &window)
+{
+    _title = window._title;
+    _color = window._color;
+    current_scene = window.current_scene;
+    Window::window = window.window;
+}
+
+void Window::operator=(Window &&window)
+{
+    _title = std::move(window._title);
+    _color = std::move(window._color);
+    current_scene = std::move(window.current_scene);
+    Window::window = window.window;
+    window.window = nullptr;
 }
 
 } // namespace axolote

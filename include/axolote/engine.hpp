@@ -15,9 +15,8 @@
 #include <axolote/ebo.hpp>
 #include <axolote/entity.hpp>
 #include <axolote/mesh.hpp>
-#include <axolote/object.hpp>
-#include <axolote/object2d.hpp>
 #include <axolote/object3d.hpp>
+#include <axolote/scene.hpp>
 #include <axolote/shader.hpp>
 #include <axolote/structs.hpp>
 #include <axolote/texture.hpp>

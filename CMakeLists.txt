@@ -41,8 +41,8 @@ set(
     ${SOURCE_DIR}/gmesh.cpp
     ${SOURCE_DIR}/mesh.cpp
     ${SOURCE_DIR}/model.cpp
-    ${SOURCE_DIR}/object2d.cpp
     ${SOURCE_DIR}/object3d.cpp
+    ${SOURCE_DIR}/scene.cpp
     ${SOURCE_DIR}/shader.cpp
     ${SOURCE_DIR}/texture.cpp
     ${SOURCE_DIR}/utils.cpp

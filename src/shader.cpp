@@ -22,6 +22,20 @@ static GLint check_shader_compilation(GLuint shader_id, char *log, size_t size)
 namespace axolote
 {
 
+Shader::Shader()
+{
+}
+
+Shader::Shader(const Shader &shader) :
+    id{shader.id}
+{
+}
+
+Shader::Shader(Shader &&shader) :
+    id{std::move(shader.id)}
+{
+}
+
 Shader::Shader(const char *vertex_file, const char *fragment_file)
 {
     std::string vertex_code = get_file_content(vertex_file);
@@ -97,6 +111,16 @@ void Shader::activate()
 void Shader::destroy()
 {
     glDeleteProgram(id);
+}
+
+void Shader::operator=(const Shader &shader)
+{
+    id = shader.id;
+}
+
+void Shader::operator=(Shader &&shader)
+{
+    id = std::move(shader.id);
 }
 
 } // namespace axolote

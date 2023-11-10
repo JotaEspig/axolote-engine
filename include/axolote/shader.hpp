@@ -3,7 +3,7 @@
 * \brief Shader class
 * \author João Vitor Espig (JotaEspig)
 * \date October 04, 2023
-* \version October 04, 2023
+* \version November 06, 2023
 **/
 #pragma once
 
@@ -17,7 +17,7 @@ namespace axolote
 * \brief OpenGL shader handler
 * \author João Vitor Espig (JotaEspig)
 * \date October 04, 2023
-* \version October 04, 2023
+* \version November 06, 2023
 **/
 class Shader
 {
@@ -25,6 +25,29 @@ public:
     /** OpenGL shader id **/
     GLuint id;
 
+    /**
+    * \brief Constructor
+    * \author João Vitor Espig (JotaEspig)
+    * \date October 25, 2023
+    * \version October 25, 2023
+    **/
+    Shader();
+    /**
+    * \brief Copy constructor
+    * \author João Vitor Espig (JotaEspig)
+    * \date November 06, 2023
+    * \version November 06, 2023
+    * \param vao - Shader object
+    **/
+    Shader(const Shader &shader);
+    /**
+    * \brief Move constructor
+    * \author João Vitor Espig (JotaEspig)
+    * \date November 06, 2023
+    * \version November 06, 2023
+    * \param shader - Shader object
+    **/
+    Shader(Shader &&shader);
     /**
     * \brief Constructor
     * \author João Vitor Espig (JotaEspig)
@@ -101,6 +124,22 @@ public:
     * \version October 04, 2023
     **/
     void destroy();
+    /**
+    * \brief operator = overload (copy)
+    * \author João Vitor Espig (JotaEspig)
+    * \date November 06, 2023
+    * \version November 06, 2023
+    * \param shader - Shader object
+    **/
+    void operator=(const Shader &shader);
+    /**
+    * \brief operator = overload (move)
+    * \author João Vitor Espig (JotaEspig)
+    * \date November 06, 2023
+    * \version November 06, 2023
+    * \param shader - Shader object
+    **/
+    void operator=(Shader &&shader);
 };
 
 } // namespace axolote

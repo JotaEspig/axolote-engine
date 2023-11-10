@@ -9,6 +9,7 @@
 #include <axolote/model.hpp>
 #include <axolote/shader.hpp>
 #include <axolote/gmesh.hpp>
+#include <axolote/texture.hpp>
 #include <axolote/assimp.hpp>
 
 namespace axolote
@@ -18,16 +19,51 @@ Model::Model()
 {
 }
 
+Model::Model(const Model &model) :
+    meshes{model.meshes},
+    color{model.color},
+    loaded_textures{model.loaded_textures},
+    loaded_textures_names{model.loaded_textures_names},
+    directory{model.directory}
+{
+}
+
+Model::Model(Model &&model) :
+    meshes{std::move(model.meshes)},
+    color{std::move(model.color)},
+    loaded_textures{std::move(model.loaded_textures)},
+    loaded_textures_names{std::move(model.loaded_textures_names)},
+    directory{std::move(model.directory)}
+{
+}
+
+Model::Model(const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices,
+             const std::vector<Texture> &textures)
+{
+    meshes.push_back(GMesh{vertices, indices, textures});
+}
+
 Model::Model(std::string path, const glm::vec3 &_color) :
     color{_color}
 {
     load_model(path);
 }
 
-void Model::draw(Shader &shader, const glm::mat4 &matrix)
+void Model::bind_shader(const Shader &shader)
+{
+    for (GMesh &e : meshes)
+        e.bind_shader(shader);
+};
+
+void Model::draw()
+{
+    draw(glm::mat4(1.0f));
+}
+
+void Model::draw(const glm::mat4 &mat)
 {
     for (GMesh e : meshes)
-        e.draw(shader, matrix);
+        e.draw(mat);
 }
 
 void Model::load_model(std::string path)
@@ -44,6 +80,24 @@ void Model::load_model(std::string path)
     directory = path.substr(0, path.find_last_of('/') + 1);
     process_node(scene->mRootNode, scene, meshes, color, loaded_textures,
                  loaded_textures_names, directory);
+}
+
+void Model::operator=(const Model &model)
+{
+    color = model.color;
+    meshes = model.meshes;
+    loaded_textures = model.loaded_textures;
+    loaded_textures_names = model.loaded_textures_names;
+    directory = model.directory;
+}
+
+void Model::operator=(Model &&model)
+{
+    color = std::move(model.color);
+    meshes = std::move(model.meshes);
+    loaded_textures = std::move(model.loaded_textures);
+    loaded_textures_names = std::move(model.loaded_textures_names);
+    directory = std::move(model.directory);
 }
 
 } // namespace axolote

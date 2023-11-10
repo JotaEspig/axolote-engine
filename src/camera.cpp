@@ -14,6 +14,28 @@ Camera::Camera() :
 {
 }
 
+Camera::Camera(const Camera &camera) :
+    speed{camera.speed},
+    sensitivity{camera.sensitivity},
+    fov{camera.fov},
+    first_click{camera.first_click},
+    pos{camera.pos},
+    orientation{camera.orientation},
+    up{camera.up}
+{
+}
+
+Camera::Camera(Camera &&camera) :
+    speed{std::move(camera.speed)},
+    sensitivity{std::move(camera.sensitivity)},
+    fov{std::move(camera.fov)},
+    first_click{std::move(camera.first_click)},
+    pos{std::move(camera.pos)},
+    orientation{std::move(camera.orientation)},
+    up{std::move(camera.up)}
+{
+}
+
 Camera::Camera(const glm::vec3 &position) :
     pos{position}
 {
@@ -65,6 +87,28 @@ void Camera::move_vision(float x, float y, float width, float height, double del
     }
 
     orientation = glm::rotate(orientation, glm::radians(-rot_y), up);
+}
+
+void Camera::operator=(const Camera &camera)
+{
+    speed = camera.speed;
+    sensitivity = camera.sensitivity;
+    fov = camera.fov;
+    first_click = camera.first_click;
+    pos = camera.pos;
+    orientation = camera.orientation;
+    up = camera.up;
+}
+
+void Camera::operator=(Camera &&camera)
+{
+    speed = std::move(camera.speed);
+    sensitivity = std::move(camera.sensitivity);
+    fov = std::move(camera.fov);
+    first_click = std::move(camera.first_click);
+    pos = std::move(camera.pos);
+    orientation = std::move(camera.orientation);
+    up = std::move(camera.up);
 }
 
 } // namespace axolote

@@ -1,11 +1,74 @@
 #include <iostream>
 #include <sstream>
+#include <memory>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <glm/gtx/string_cast.hpp>
 
 #include <axolote/engine.hpp>
+
+#define G 6.67e-11
+
+class CelestialBody : public axolote::Entity
+{
+public:
+    bool is_light_emissor = false;
+    double mass;
+    glm::vec3 velocity;
+    glm::vec3 pos;
+
+    CelestialBody(double mass, const glm::vec3 &velocity);
+
+    glm::vec3 calculate_acceleration(const CelestialBody &other);
+    void update(double dt) override;
+    void draw() override;
+};
+
+CelestialBody::CelestialBody(double mass, const glm::vec3 &velocity) :
+    mass{mass},
+    velocity{velocity}
+{
+}
+
+glm::vec3 CelestialBody::calculate_acceleration(const CelestialBody &other)
+{
+    glm::vec3 direction = glm::normalize(pos - other.pos);
+    double r = glm::distance(pos, other.pos);
+    float gravitational_acceleration = (G * mass) / (r * r);
+    return direction * gravitational_acceleration;
+}
+
+void CelestialBody::update(double dt)
+{
+    pos += velocity * (float)dt * 10.0f;
+    glm::mat4 mat = glm::translate(objects[0].get_matrix(), velocity * (float)dt * 10.0f);
+    set_matrix(0, mat);
+}
+
+void CelestialBody::draw()
+{
+    for (auto &e : objects)
+    {
+        for (auto &e2 : e.meshes)
+        {
+            e2.shader.activate();
+            e2.shader.set_uniform_int("is_light_color_set", !is_light_emissor);
+        }
+    }
+
+    Entity::draw();
+
+    for (auto &e : objects)
+    {
+        for (auto &e2 : e.meshes)
+        {
+            e2.shader.activate();
+            e2.shader.set_uniform_int("is_light_color_set", 0);
+        }
+    }
+};
 
 class App : public axolote::Window
 {
@@ -15,189 +78,7 @@ public:
 
 void App::main_loop()
 {
-    camera.speed = 0.3f;
-    camera.sensitivity = 10000.0f;
-
-    // TODO Fix the indices order (error when culling face)
-    std::vector<axolote::Vertex> vertices =
-    {
-        // front
-        axolote::Vertex{glm::vec3(0.5f,  0.5f, 0.5f), glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(1.0f, 1.0f), glm::vec3(0.0f, 0.0f, 1.0f)},   // top right
-        axolote::Vertex{glm::vec3(0.5f, -0.5f, 0.5f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f)},   // bottom right
-        axolote::Vertex{glm::vec3(-0.5f, -0.5f, 0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f)}, // bottom left
-        axolote::Vertex{glm::vec3(-0.5f,  0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 0.0f), glm::vec2(0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 1.0f)}, // top left
-        // right
-        axolote::Vertex{glm::vec3(0.5f, -0.5f, 0.5f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(0.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f)},   // bottom right
-        axolote::Vertex{glm::vec3(0.5f, -0.5f, -0.5f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(1.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f)},  // back bottom right
-        axolote::Vertex{glm::vec3(0.5f,  0.5f, -0.5f), glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(1.0f, 1.0f), glm::vec3(1.0f, 0.0f, 0.0f)},  // back top right
-        axolote::Vertex{glm::vec3(0.5f,  0.5f, 0.5f), glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(0.0f, 1.0f), glm::vec3(1.0f, 0.0f, 0.0f)},   // top right
-        // left
-        axolote::Vertex{glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f), glm::vec3(-1.0f, 0.0f, 0.0f)}, // back bottom left
-        axolote::Vertex{glm::vec3(-0.5f, -0.5f, 0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 0.0f), glm::vec3(-1.0f, 0.0f, 0.0f)},  // bottom left
-        axolote::Vertex{glm::vec3(-0.5f,  0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 0.0f), glm::vec2(1.0f, 1.0f), glm::vec3(-1.0f, 0.0f, 0.0f)},  // top left
-        axolote::Vertex{glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec3(1.0f, 1.0f, 0.0f), glm::vec2(0.0f, 1.0f), glm::vec3(-1.0f, 0.0f, 0.0f)}, // back top left
-        // top
-        axolote::Vertex{glm::vec3(-0.5f,  0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 0.0f), glm::vec2(0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)},  // top left
-        axolote::Vertex{glm::vec3(0.5f,  0.5f, 0.5f), glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(1.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)},   // top right
-        axolote::Vertex{glm::vec3(0.5f,  0.5f, -0.5f), glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f)},  // back top right
-        axolote::Vertex{glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec3(1.0f, 1.0f, 0.0f), glm::vec2(0.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f)}, // back top left
-        // bottom
-        axolote::Vertex{glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f)}, // back bottom left
-        axolote::Vertex{glm::vec3(0.5f, -0.5f, -0.5f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(1.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f)},  // back bottom right
-        axolote::Vertex{glm::vec3(0.5f, -0.5f, 0.5f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(1.0f, 1.0f), glm::vec3(0.0f, -1.0f, 0.0f)},   // bottom right
-        axolote::Vertex{glm::vec3(-0.5f, -0.5f, 0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 1.0f), glm::vec3(0.0f, -1.0f, 0.0f)},  // bottom left
-        // back
-        axolote::Vertex{glm::vec3(0.5f, -0.5f, -0.5f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(0.0f, 0.0f), glm::vec3(0.0f, 0.0f, -1.0f)},  // back bottom right
-        axolote::Vertex{glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 0.0f), glm::vec3(0.0f, 0.0f, -1.0f)}, // back bottom left
-        axolote::Vertex{glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec3(1.0f, 1.0f, 0.0f), glm::vec2(1.0f, 1.0f), glm::vec3(0.0f, 0.0f, -1.0f)}, // back top left
-        axolote::Vertex{glm::vec3(0.5f,  0.5f, -0.5f), glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(0.0f, 1.0f), glm::vec3(0.0f, 0.0f, -1.0f)}   // back top right
-    };
-
-    std::vector<GLuint> indices = {
-        //front face
-        0, 2, 1,
-        0, 3, 2,
-        // right face
-        4, 5, 6,
-        4, 6, 7,
-        // left face
-        8, 9, 10,
-        8, 10, 11,
-        // top face
-        12, 13, 14,
-        12, 14, 15,
-        // bottom face
-        16, 17, 18,
-        16, 18, 19,
-        // back face
-        20, 21, 22,
-        20, 22, 23
-    };
-
-    std::vector<axolote::Vertex> mine_vertices =
-    {
-        // front
-        axolote::Vertex{glm::vec3(0.5f,  0.5f, 0.5f), glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(0.5f, 2.0f / 3), glm::vec3(0.0f, 0.0f, 1.0f)},   // top right
-        axolote::Vertex{glm::vec3(0.5f, -0.5f, 0.5f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(0.5f, 1.0f / 3), glm::vec3(0.0f, 0.0f, 1.0f)},   // bottom right
-        axolote::Vertex{glm::vec3(-0.5f, -0.5f, 0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.25f, 1.0f / 3), glm::vec3(0.0f, 0.0f, 1.0f)}, // bottom left
-        axolote::Vertex{glm::vec3(-0.5f,  0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 0.0f), glm::vec2(0.25f, 2.0f / 3), glm::vec3(0.0f, 0.0f, 1.0f)}, // top left
-        // right
-        axolote::Vertex{glm::vec3(0.5f, -0.5f, 0.5f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(0.5f, 1.0f / 3), glm::vec3(1.0f, 0.0f, 0.0f)},   // bottom right
-        axolote::Vertex{glm::vec3(0.5f, -0.5f, -0.5f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(0.75f, 1.0f / 3), glm::vec3(1.0f, 0.0f, 0.0f)},  // back bottom right
-        axolote::Vertex{glm::vec3(0.5f,  0.5f, -0.5f), glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(0.75f, 2.0f / 3), glm::vec3(1.0f, 0.0f, 0.0f)},  // back top right
-        axolote::Vertex{glm::vec3(0.5f,  0.5f, 0.5f), glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(0.5f, 2.0f / 3), glm::vec3(1.0f, 0.0f, 0.0f)},   // top right
-        // left
-        axolote::Vertex{glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 1.0f / 3), glm::vec3(-1.0f, 0.0f, 0.0f)}, // back bottom left
-        axolote::Vertex{glm::vec3(-0.5f, -0.5f, 0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.25f, 1.0f / 3), glm::vec3(-1.0f, 0.0f, 0.0f)},  // bottom left
-        axolote::Vertex{glm::vec3(-0.5f,  0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 0.0f), glm::vec2(0.25f, 2.0f / 3), glm::vec3(-1.0f, 0.0f, 0.0f)},  // top left
-        axolote::Vertex{glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec3(1.0f, 1.0f, 0.0f), glm::vec2(0.0f, 2.0f / 3), glm::vec3(-1.0f, 0.0f, 0.0f)}, // back top left
-        // top
-        axolote::Vertex{glm::vec3(-0.5f,  0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 0.0f), glm::vec2(0.5f, 2.0f / 3), glm::vec3(0.0f, 1.0f, 0.0f)},  // top left
-        axolote::Vertex{glm::vec3(0.5f,  0.5f, 0.5f), glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(0.25f, 2.0f / 3), glm::vec3(0.0f, 1.0f, 0.0f)},   // top right
-        axolote::Vertex{glm::vec3(0.5f,  0.5f, -0.5f), glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(0.25f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f)},  // back top right
-        axolote::Vertex{glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec3(1.0f, 1.0f, 0.0f), glm::vec2(0.5f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f)}, // back top left
-        // bottom
-        axolote::Vertex{glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.25f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f)}, // back bottom left
-        axolote::Vertex{glm::vec3(0.5f, -0.5f, -0.5f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(0.5f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f)},  // back bottom right
-        axolote::Vertex{glm::vec3(0.5f, -0.5f, 0.5f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(0.5f, 1.0f / 3), glm::vec3(0.0f, -1.0f, 0.0f)},   // bottom right
-        axolote::Vertex{glm::vec3(-0.5f, -0.5f, 0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.25f, 1.0f / 3), glm::vec3(0.0f, -1.0f, 0.0f)},  // bottom left
-        // back
-        axolote::Vertex{glm::vec3(0.5f, -0.5f, -0.5f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(0.75f, 1.0f / 3), glm::vec3(0.0f, 0.0f, -1.0f)},  // back bottom right
-        axolote::Vertex{glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 1.0f / 3), glm::vec3(0.0f, 0.0f, -1.0f)}, // back bottom left
-        axolote::Vertex{glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec3(1.0f, 1.0f, 0.0f), glm::vec2(1.0f, 2.0f / 3), glm::vec3(0.0f, 0.0f, -1.0f)}, // back top left
-        axolote::Vertex{glm::vec3(0.5f,  0.5f, -0.5f), glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(0.75f, 2.0f / 3), glm::vec3(0.0f, 0.0f, -1.0f)}   // back top right
-    };
-
-    std::vector<axolote::Vertex> floor_v = {
-        axolote::Vertex{glm::vec3(-1.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)},
-        axolote::Vertex{glm::vec3(1.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f)},
-        axolote::Vertex{glm::vec3(-1.0f, 0.0f, -1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(1.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)},
-        axolote::Vertex{glm::vec3(1.0f, 0.0f, -1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f)},
-    };
-
-    std::vector<GLuint> floor_indices = {
-        2, 0, 1,
-        2, 1, 3
-    };
-
-    std::vector<axolote::Vertex> light_vertices =
-    {
-        // front
-        axolote::Vertex{glm::vec3(0.5f,  0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f)},   // top right
-        axolote::Vertex{glm::vec3(0.5f, -0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f)},   // bottom right
-        axolote::Vertex{glm::vec3(-0.5f, -0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)},  // bottom left
-        axolote::Vertex{glm::vec3(-0.5f,  0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)},  // top left
-        // right
-        axolote::Vertex{glm::vec3(0.5f, -0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)},   // bottom right
-        axolote::Vertex{glm::vec3(0.5f, -0.5f, -0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f)},  // back bottom right
-        axolote::Vertex{glm::vec3(0.5f,  0.5f, -0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f)},  // back top right
-        axolote::Vertex{glm::vec3(0.5f,  0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)},   // top right
-        // left
-        axolote::Vertex{glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)}, // back bottom left
-        axolote::Vertex{glm::vec3(-0.5f, -0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f)},  // bottom left
-        axolote::Vertex{glm::vec3(-0.5f,  0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f)},  // top left
-        axolote::Vertex{glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)}, // back top left
-        // top
-        axolote::Vertex{glm::vec3(-0.5f,  0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)},  // top left
-        axolote::Vertex{glm::vec3(0.5f,  0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f)},   // top right
-        axolote::Vertex{glm::vec3(0.5f,  0.5f, -0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f)},  // back top right
-        axolote::Vertex{glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)}, // back top left
-        // bottom
-        axolote::Vertex{glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)}, // back bottom left
-        axolote::Vertex{glm::vec3(0.5f, -0.5f, -0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f)},  // back bottom right
-        axolote::Vertex{glm::vec3(0.5f, -0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f)},   // bottom right
-        axolote::Vertex{glm::vec3(-0.5f, -0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)},  // bottom left
-        // back
-        axolote::Vertex{glm::vec3(0.5f, -0.5f, -0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)},  // back bottom right
-        axolote::Vertex{glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f)}, // back bottom left
-        axolote::Vertex{glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f)}, // back top left
-        axolote::Vertex{glm::vec3(0.5f,  0.5f, -0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)}   // back top right
-    };
-
-    axolote::Texture tex0("./resources/textures/pedro.png", "diffuse", 0);
-    if (!tex0.loaded)
-        std::cerr << "Error when loading texture" << std::endl;
-
-    axolote::Texture tex1("./resources/textures/planks.png", "diffuse", 1);
-    if (!tex1.loaded)
-        std::cerr << "Error when loading texture" << std::endl;
-
-    axolote::Texture tex2("./resources/textures/grass.png", "diffuse", 2);
-    if (!tex2.loaded)
-        std::cerr << "Error when loading texture" << std::endl;
-
-    axolote::Texture floor_spec("./resources/textures/planksSpec.png", "specular", 3);
-    if (!floor_spec.loaded)
-        std::cerr << "Error when loading texture" << std::endl;
-
-    axolote::Object2D body(glm::translate(glm::mat4(1.0f), glm::vec3(5.0f, 1.0f, 0.0f)),
-                                          vertices, indices, {tex0});
-    axolote::Object2D sun(glm::mat4(1.0f), light_vertices, indices, {});
-    glm::mat4 floor_m = glm::scale(glm::mat4(1.0f), glm::vec3(3.0f, 3.0f, 3.0f));
-    floor_m = glm::translate(floor_m, glm::vec3(-2.0f, -2.0f, 0.0f));
-    axolote::Object2D floor(floor_m, floor_v, floor_indices, {tex1, floor_spec});
-
-    axolote::Entity mine_cubes;
-    for (int i = 0; i < 30; ++i)
-    {
-        for (int j = 0; j < 30; ++j)
-        {
-            axolote::Object2D *c = new axolote::Object2D(glm::mat4(1.0f), mine_vertices, indices, {tex2});
-            glm::mat4 mat = glm::mat4(1.0f);
-            mine_cubes.add_object(c, mat);
-        }
-    }
-
-    axolote::Object3D din;
-    din.load_model("./resources/models/dino/Triceratops.obj");
-    axolote::Entity dino;
-    glm::mat4 mat = glm::translate(glm::mat4(1.0f), glm::vec3(15.0f, 0.5f, 15.0f));
-    dino.add_object(&din, mat);
-
-    axolote::Object3D m;
-    m.load_model("./resources/models/m26/m26pershing_coh.obj");
-    axolote::Entity m26;
-    m26.add_object(&m, glm::translate(glm::mat4(1.0f), glm::vec3(-7.0f, 0.0f, 0.0f)));
+    std::string original_title = title();
 
     axolote::Shader shader_program("./resources/shaders/def_vertex_shader.glsl",
                                    "./resources/shaders/def_fragment_shader.glsl");
@@ -207,10 +88,39 @@ void App::main_loop()
     shader_program.set_uniform_float4("light_color", 1.0f, 1.0f, 1.0f, 1.0f);
     shader_program.set_uniform_float3("light_pos", 0.0f, 0.0f, 0.0f);
 
-    std::string original_title = _title;
+    // https://nssdc.gsfc.nasa.gov/planetary/factsheet/
+    glm::mat4 mat{1.0f};
+    mat = glm::translate(mat, glm::vec3(0.0f, 0.0f, 20.0f));
+
+    CelestialBody earth{1, glm::vec3(0.0003f, 0.0f, 0.0f)}; //29.78e3
+    axolote::Object3D earthobj{"./resources/models/sphere/sphere.obj", glm::vec3(0.0f, 0.0f, 1.0f), mat};
+    earth.pos = glm::vec3{0.0f, 0.0f, 20.0f};
+    earth.add_object(earthobj);
+    earth.bind_shader_at(0, shader_program);
+
+    mat = glm::mat4{1.0f};
+
+    CelestialBody sun{333000, glm::vec3{0.0f, 0.0f, 0.0f}};
+    axolote::Object3D sunobj{"./resources/models/sphere/sphere.obj", glm::vec3(1.0f, 1.0f, 0.5f), mat};
+    sun.pos = glm::vec3{0.0f, 0.0f, 0.0f};
+    sun.is_light_emissor = true;
+    sun.add_object(sunobj);
+    sun.bind_shader_at(0, shader_program);
+
+    std::shared_ptr<axolote::Scene> scene{new axolote::Scene{}};
+    scene->camera.speed = 0.3f;
+    scene->camera.sensitivity = 10000.0f;
+
+    scene->add_drawable(&earth);
+    scene->add_drawable(&sun);
+
+    current_scene = scene;
     double before = glfwGetTime();
     while (!should_close())
     {
+        glClearColor(_color.r, _color.g, _color.b, _color.opacity);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
         glfwPollEvents();
 
         double now = glfwGetTime();
@@ -218,96 +128,38 @@ void App::main_loop()
         before = now;
         process_input(dt);
 
-        glClearColor(_color.r, _color.g, _color.b, _color.opacity);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        shader_program.set_uniform_float3("camera_pos", camera.pos.x, camera.pos.y, camera.pos.z);
-
         std::stringstream sstr;
         sstr << original_title << " | " << (int)(1 / dt) << " fps";
         set_title(sstr.str());
 
-        glm::mat4 view = glm::lookAt(camera.pos, camera.pos + camera.orientation, camera.up);
-        glm::mat4 projection = glm::perspective(glm::radians(camera.fov), (float)width() / height(), 0.1f, 1000.0f);
+        dt *= 100;
 
-        shader_program.set_uniform_matrix4("projection", projection);
-        shader_program.set_uniform_matrix4("view",view);
-
-        /*
-        model = glm::mat4(1.0f);
-        model = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));
-        model = glm::translate(model, glm::vec3(8.0f * sin(now / 3), 0.0f, -3.0f + 8.0f * cos(now / 3)));
-        model = glm::rotate(model, glm::radians(23.5f), glm::vec3(0.0f, 0.0f, 1.0f));
-        model = glm::rotate(model, (float)now / 2, glm::vec3(0.0f, 1.0f, 0.0f));
-
-        // enable light normals for light receivers
-        shader_program.set_uniform_int("is_light_color_set", 1);
-
-        body.set_matrix(0, model);
-        body.draw(shader_program);
-
-        model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(0.0f, -0.5f, 0.0f));
-
-        shader_program.set_uniform_int("is_light_color_set", 1);
-
-        floor.set_matrix(0, model);
-        floor.draw(shader_program);
-        shader_program.set_uniform_int("is_light_color_set", 0);
-
-        */
-        for (int i = 0; i < 30; ++i)
-        {
-            for (int j = 0; j < 30; ++j)
-            {
-                glm::mat4 mat = glm::mat4(1.0f);
-                mat = glm::translate(mat, glm::vec3(i, sin(now + .2f * (i + j)) * 3, j));
-                mine_cubes.set_matrix(30 * i + j, mat);
-            }
-        }
-        mine_cubes.draw(shader_program);
-
-        /*
-        glDisable(GL_BLEND);
-        dino.draw(shader_program);
-        // cubes.draw(shader_program);
-        glEnable(GL_BLEND);
-        */
-        shader_program.set_uniform_int("is_light_color_set", 1);
-
-        //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-        // glDisable(GL_CULL_FACE);
-        //
-        // disable light normals for the light emissor
-        shader_program.set_uniform_int("is_light_color_set", 0);
-        glDisable(GL_CULL_FACE);
-        sun.draw(shader_program);
-        body.draw(shader_program);
-        glEnable(GL_CULL_FACE);
-        floor.draw(shader_program);
-        m26.draw(shader_program);
-
-        // glEnable(GL_CULL_FACE);
-        //glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+        glm::vec3 res = sun.calculate_acceleration(earth);
+        ((CelestialBody*)scene->entity_objects[0])->velocity += res * (float)dt;
+        scene->update_camera((float)width() / height());
+        scene->update(dt);
+        scene->render();
 
         glfwSwapBuffers(window);
     }
-
-    shader_program.destroy();
-    tex0.destroy();
-    tex1.destroy();
-    tex2.destroy();
-    floor_spec.destroy();
 }
 
-int main(int argc, char **argv)
+int main()
 {
-    std::cout << "hello world axolote engine!" << std::endl;
-    auto w = App();
-    w.set_title("Axolote Engine Test");
-    w.set_width(600);
-    w.set_height(600);
-    w.set_color(0x10, 0x10, 0x10);
-    w.main_loop();
+    std::cout << "Solar System 3D" << std::endl;
+    App app{};
+    app.set_title("Uepa");
+    app.set_color(0x10, 0x10, 0x10);
+    app.main_loop();
     return 0;
 }
+
+
+
+
+
+
+
+
+
+

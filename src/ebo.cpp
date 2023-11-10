@@ -12,6 +12,16 @@ EBO::EBO()
 {
 }
 
+EBO::EBO(const EBO &ebo) :
+    id{ebo.id}
+{
+}
+
+EBO::EBO(EBO &&ebo) :
+    id{std::move(ebo.id)}
+{
+}
+
 EBO::EBO(const std::vector<GLuint> &indices)
 {
     glGenBuffers(1, &id);
@@ -33,6 +43,16 @@ void EBO::unbind()
 void EBO::destroy()
 {
     glDeleteBuffers(1, &id);
+}
+
+void EBO::operator=(const EBO &ebo)
+{
+    id = ebo.id;
+}
+
+void EBO::operator=(EBO &&ebo)
+{
+    id = std::move(ebo.id);
 }
 
 } // namespace axolote
