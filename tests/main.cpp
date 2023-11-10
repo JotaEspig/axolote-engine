@@ -1,5 +1,6 @@
 #include <iostream>
 #include <sstream>
+#include <memory>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -77,9 +78,6 @@ public:
 
 void App::main_loop()
 {
-    camera.speed = 0.3f;
-    camera.sensitivity = 10000.0f;
-
     std::string original_title = title();
 
     axolote::Shader shader_program("./resources/shaders/def_vertex_shader.glsl",
@@ -109,10 +107,14 @@ void App::main_loop()
     sun.add_object(sunobj);
     sun.bind_shader_at(0, shader_program);
 
-    axolote::Scene scene{};
-    scene.add_drawable(&earth);
-    scene.add_drawable(&sun);
+    std::shared_ptr<axolote::Scene> scene{new axolote::Scene{}};
+    scene->camera.speed = 0.3f;
+    scene->camera.sensitivity = 10000.0f;
 
+    scene->add_drawable(&earth);
+    scene->add_drawable(&sun);
+
+    current_scene = scene;
     double before = glfwGetTime();
     while (!should_close())
     {
@@ -133,11 +135,10 @@ void App::main_loop()
         dt *= 100;
 
         glm::vec3 res = sun.calculate_acceleration(earth);
-        ((CelestialBody*)scene.entity_objects[0])->velocity += res * (float)dt;
-        scene.camera = camera;
-        scene.update_camera((float)width() / height());
-        scene.update(dt);
-        scene.render();
+        ((CelestialBody*)scene->entity_objects[0])->velocity += res * (float)dt;
+        scene->update_camera((float)width() / height());
+        scene->update(dt);
+        scene->render();
 
         glfwSwapBuffers(window);
     }

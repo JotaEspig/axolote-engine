@@ -3,7 +3,7 @@
 * \brief GLFWwindow operations handler
 * \author João Vitor Espig (JotaEspig)
 * \date October 04, 2023
-* \version November 07, 2023
+* \version November 09, 2023
 **/
 #pragma once
 
@@ -11,10 +11,12 @@
 
 #include <string>
 #include <cstdint>
+#include <memory>
 
 #include <GLFW/glfw3.h>
 
 #include <axolote/camera.hpp>
+#include <axolote/scene.hpp>
 #include <axolote/structs.hpp>
 
 namespace axolote
@@ -24,7 +26,7 @@ namespace axolote
 * \brief Window handler
 * \author João Vitor Espig (JotaEspig)
 * \date October 04, 2023
-* \version November 07, 2023
+* \version November 09, 2023
 *
 * This class take care of GLFW window object and input process
 **/
@@ -42,7 +44,7 @@ public:
     * \brief Copy constructor
     * \author João Vitor Espig (JotaEspig)
     * \date November 07, 2023
-    * \version November 07, 2023
+    * \version November 09, 2023
     * \param window - Window object
     **/
     Window(const Window &window);
@@ -50,7 +52,7 @@ public:
     * \brief Move constructor
     * \author João Vitor Espig (JotaEspig)
     * \date November 07, 2023
-    * \version November 07, 2023
+    * \version November 09, 2023
     * \param window - Window object
     **/
     Window(Window &&window);
@@ -137,7 +139,7 @@ public:
     * \brief operator = overload (copy)
     * \author João Vitor Espig (JotaEspig)
     * \date November 07, 2023
-    * \version November 07, 2023
+    * \version November 09, 2023
     * \param window - Window object
     **/
     void operator=(const Window &window);
@@ -145,7 +147,7 @@ public:
     * \brief operator = overload (move)
     * \author João Vitor Espig (JotaEspig)
     * \date November 07, 2023
-    * \version November 07, 2023
+    * \version November 09, 2023
     * \param window - Window object
     **/
     void operator=(Window &&window);
@@ -155,10 +157,10 @@ protected:
     std::string _title;
     /** window background color **/
     Color _color;
-    /** window camera object **/
-    Camera camera;
     /** GLFWwindow struct object **/
     GLFWwindow *window;
+    /** Current scene **/
+    std::shared_ptr<Scene> current_scene;
 
     /**
     * \brief initializes window
