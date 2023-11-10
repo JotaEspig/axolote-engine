@@ -1,3 +1,55 @@
+## v0.2.0 (2023-11-10)
+
+### Feat
+
+- **scene**: add copy move and assign constructors
+- **window**: add copy move and assign operator
+- **entity**: add copy move and assign operator
+- **object3d**: add copy move and assign operator
+- **model**: add copy move and assign operator
+- **gmesh**: add copy move and assign operator
+- **camera**: add copy move and assign operator
+- **ebo**: add copy move and assign operator
+- **shader**: add copy move and assign operator
+- **mesh**: add copy move and assign operator
+- **texture**: add copy move and assign operator
+- **vbo**: add copy move and assign operator
+- **vao**: add copy and move constructor
+- implemented scene
+- add bind_shader at drawable things
+- **model**: add constructor for simple mesh model
+- more steps in scene
+- **shader**: added default constructor
+- **scene**: add files
+- add file idrawable.hpp
+
+### Fix
+
+- **object3d**: pos -> model_mat
+- **vao**: add operator assign
+- **entity**: add_object function
+
+### Refactor
+
+- move constructors and assign operators
+- using current_scene in window
+- **model.cpp**: removed warnings
+- **utils**: declaring under namespace
+- **scene**: move to public
+- **entity**: using new model matrix in object3d
+- **object3d**: model matrix
+- **model**: moved to public some attributes
+- **gmesh**: moved to public some attributes
+- storing shader in gmesh
+- **entity**: using just Object3D
+- **object3d**: assemble object2d into object3d
+- removed object and object2d
+- **object.hpp**: now Object inherit from Drawable
+- **idrawable**: renamed file
+- renamed to Drawable
+- using idrawable
+- improved semantics of the code
+
 ## v0.1.0 (2023-10-20)
 
 ### Feat
