@@ -17,9 +17,8 @@ VAO::VAO(const VAO &vao) :
 }
 
 VAO::VAO(VAO &&vao) :
-    id{vao.id}
+    id{std::move(vao.id)}
 {
-    vao.id = 0;
 }
 
 void VAO::link_attrib(VBO &vbo, GLuint layout, GLuint num_components,
@@ -53,8 +52,7 @@ void VAO::operator=(const VAO &vao)
 
 void VAO::operator=(VAO &&vao)
 {
-    id = vao.id;
-    vao.id = 0;
+    id = std::move(vao.id);
 }
 
 } // namespace axolote

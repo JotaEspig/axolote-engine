@@ -18,9 +18,8 @@ EBO::EBO(const EBO &ebo) :
 }
 
 EBO::EBO(EBO &&ebo) :
-    id{ebo.id}
+    id{std::move(ebo.id)}
 {
-    ebo.id = 0;
 }
 
 EBO::EBO(const std::vector<GLuint> &indices)
@@ -53,8 +52,7 @@ void EBO::operator=(const EBO &ebo)
 
 void EBO::operator=(EBO &&ebo)
 {
-    id = ebo.id;
-    ebo.id = 0;
+    id = std::move(ebo.id);
 }
 
 } // namespace axolote

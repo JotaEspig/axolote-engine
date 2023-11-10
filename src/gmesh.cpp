@@ -31,15 +31,11 @@ GMesh::GMesh(const GMesh &gmesh) :
 
 GMesh::GMesh(GMesh &&gmesh) :
     Mesh{std::move(gmesh)},
-    vao{gmesh.vao},
-    vbo{gmesh.vbo},
-    ebo{gmesh.ebo},
-    shader{gmesh.shader}
+    vao{std::move(gmesh.vao)},
+    vbo{std::move(gmesh.vbo)},
+    ebo{std::move(gmesh.ebo)},
+    shader{std::move(gmesh.shader)}
 {
-    gmesh.vao = VAO{};
-    gmesh.vbo = VBO{};
-    gmesh.ebo = EBO{};
-    gmesh.shader = Shader{};
 }
 
 GMesh::GMesh(const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices,
@@ -136,15 +132,11 @@ void GMesh::operator=(const GMesh &gmesh)
 
 void GMesh::operator=(GMesh &&gmesh)
 {
-    Mesh::operator=(gmesh);
-    vao = gmesh.vao;
-    vbo = gmesh.vbo;
-    ebo = gmesh.ebo;
-    shader = gmesh.shader;
-    gmesh.vao = VAO{};
-    gmesh.vbo = VBO{};
-    gmesh.ebo = EBO{};
-    gmesh.shader = Shader{};
+    Mesh::operator=(std::move(gmesh));
+    vao = std::move(gmesh.vao);
+    vbo = std::move(gmesh.vbo);
+    ebo = std::move(gmesh.ebo);
+    shader = std::move(gmesh.shader);
 }
 
 } // namespace axolote

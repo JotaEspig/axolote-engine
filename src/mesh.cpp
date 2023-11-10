@@ -18,13 +18,10 @@ Mesh::Mesh(const Mesh &mesh) :
 }
 
 Mesh::Mesh(Mesh &&mesh) :
-    vertices{mesh.vertices},
-    indices{mesh.indices},
-    textures{mesh.textures}
+    vertices{std::move(mesh.vertices)},
+    indices{std::move(mesh.indices)},
+    textures{std::move(mesh.textures)}
 {
-    mesh.vertices = std::vector<Vertex>{};
-    mesh.indices = std::vector<GLuint>{};
-    mesh.textures = std::vector<Texture>{};
 }
 
 Mesh::Mesh(const std::vector<Vertex> &_vertices, const std::vector<GLuint> &_indices,
@@ -44,12 +41,9 @@ void Mesh::operator=(const Mesh &mesh)
 
 void Mesh::operator=(Mesh &&mesh)
 {
-    vertices = mesh.vertices;
-    indices = mesh.indices;
-    textures = mesh.textures;
-    mesh.vertices = std::vector<Vertex>{};
-    mesh.indices = std::vector<GLuint>{};
-    mesh.textures = std::vector<Texture>{};
+    vertices = std::move(mesh.vertices);
+    indices = std::move(mesh.indices);
+    textures = std::move(mesh.textures);
 }
 
 } // namespace axolote

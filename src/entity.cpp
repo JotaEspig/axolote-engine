@@ -23,9 +23,8 @@ Entity::Entity(const Entity &ent) :
 }
 
 Entity::Entity(Entity &&ent) :
-    objects{ent.objects}
+    objects{std::move(ent.objects)}
 {
-    ent.objects = std::vector<Object3D>{};
 }
 
 void Entity::add_object(const Object3D &o)
@@ -76,8 +75,7 @@ void Entity::operator=(const Entity &ent)
 
 void Entity::operator=(Entity &&ent)
 {
-    objects = ent.objects;
-    ent.objects = std::vector<Object3D>{};
+    objects = std::move(ent.objects);
 }
 
 } // namespace axolote

@@ -29,17 +29,12 @@ Model::Model(const Model &model) :
 }
 
 Model::Model(Model &&model) :
-    meshes{model.meshes},
-    color{model.color},
-    loaded_textures{model.loaded_textures},
-    loaded_textures_names{model.loaded_textures_names},
-    directory{model.directory}
+    meshes{std::move(model.meshes)},
+    color{std::move(model.color)},
+    loaded_textures{std::move(model.loaded_textures)},
+    loaded_textures_names{std::move(model.loaded_textures_names)},
+    directory{std::move(model.directory)}
 {
-    model.color = glm::vec3(0.0f, 0.0f, 0.0f);
-    model.meshes = std::vector<GMesh>{};
-    model.loaded_textures = std::vector<Texture>{};
-    model.loaded_textures_names = std::vector<std::string>{};
-    model.directory = "";
 }
 
 Model::Model(const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices,
@@ -98,16 +93,11 @@ void Model::operator=(const Model &model)
 
 void Model::operator=(Model &&model)
 {
-    color = model.color;
-    meshes = model.meshes;
-    loaded_textures = model.loaded_textures;
-    loaded_textures_names = model.loaded_textures_names;
-    directory = model.directory;
-    model.color = glm::vec3(0.0f, 0.0f, 0.0f);
-    model.meshes = std::vector<GMesh>{};
-    model.loaded_textures = std::vector<Texture>{};
-    model.loaded_textures_names = std::vector<std::string>{};
-    model.directory = "";
+    color = std::move(model.color);
+    meshes = std::move(model.meshes);
+    loaded_textures = std::move(model.loaded_textures);
+    loaded_textures_names = std::move(model.loaded_textures_names);
+    directory = std::move(model.directory);
 }
 
 } // namespace axolote

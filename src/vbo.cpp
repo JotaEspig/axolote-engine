@@ -18,9 +18,8 @@ VBO::VBO(const VBO &vbo) :
 }
 
 VBO::VBO(VBO &&vbo) :
-    id{vbo.id}
+    id{std::move(vbo.id)}
 {
-    vbo.id = 0;
 }
 
 VBO::VBO(const std::vector<Vertex> &vertices)
@@ -52,8 +51,7 @@ void VBO::operator=(const VBO &vbo)
 
 void VBO::operator=(VBO &&vbo)
 {
-    id = vbo.id;
-    vbo.id = 0;
+    id = std::move(vbo.id);
 }
 
 } // namespace axolote

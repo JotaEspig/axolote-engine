@@ -32,9 +32,8 @@ Shader::Shader(const Shader &shader) :
 }
 
 Shader::Shader(Shader &&shader) :
-    id{shader.id}
+    id{std::move(shader.id)}
 {
-    shader.id = 0;
 }
 
 Shader::Shader(const char *vertex_file, const char *fragment_file)
@@ -121,8 +120,7 @@ void Shader::operator=(const Shader &shader)
 
 void Shader::operator=(Shader &&shader)
 {
-    id = shader.id;
-    shader.id = 0;
+    id = std::move(shader.id);
 }
 
 } // namespace axolote

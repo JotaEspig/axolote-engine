@@ -24,15 +24,11 @@ Texture::Texture(const Texture &texture) :
 }
 
 Texture::Texture(Texture &&texture) :
-    id{texture.id},
-    type{texture.type},
-    unit{texture.unit},
-    loaded{texture.loaded}
+    id{std::move(texture.id)},
+    type{std::move(texture.type)},
+    unit{std::move(texture.unit)},
+    loaded{std::move(texture.loaded)}
 {
-    texture.id = 0;
-    texture.type = "";
-    texture.unit = 0;
-    texture.loaded = false;
 }
 
 Texture::Texture(const char *texture_filename, std::string tex_type, GLuint _unit) :
@@ -105,14 +101,10 @@ void Texture::operator=(const Texture &texture)
 
 void Texture::operator=(Texture &&texture)
 {
-    id = texture.id;
-    type = texture.type;
-    unit = texture.unit;
-    loaded = texture.loaded;
-    texture.id = 0;
-    texture.type = "";
-    texture.unit = 0;
-    texture.loaded = false;
+    id = std::move(texture.id);
+    type = std::move(texture.type);
+    unit = std::move(texture.unit);
+    loaded = std::move(texture.loaded);
 }
 
 } // namespace axolote

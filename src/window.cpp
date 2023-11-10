@@ -35,19 +35,18 @@ Window::Window()
 
 Window::Window(const Window &window) :
     _title{window._title},
+    _color{window._color},
     current_scene{window.current_scene}
 {
-    _color = window._color;
     Window::window = window.window;
 }
 
 Window::Window(Window &&window) :
-    _title{window._title},
-    current_scene{window.current_scene}
+    _title{std::move(window._title)},
+    _color{std::move(window._color)},
+    current_scene{std::move(window.current_scene)}
 {
-    _color = window._color;
     Window::window = window.window;
-    window._color = Color{};
     window.window = nullptr;
 }
 
@@ -211,12 +210,10 @@ void Window::operator=(const Window &window)
 
 void Window::operator=(Window &&window)
 {
-    _title = window._title;
-    _color = window._color;
-    current_scene = window.current_scene;
+    _title = std::move(window._title);
+    _color = std::move(window._color);
+    current_scene = std::move(window.current_scene);
     Window::window = window.window;
-    window._title = "";
-    window._color = Color{};
     window.window = nullptr;
 }
 
