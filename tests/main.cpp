@@ -42,8 +42,8 @@ glm::vec3 CelestialBody::calculate_acceleration(const CelestialBody &other)
 
 void CelestialBody::update(double dt)
 {
-    pos += velocity * (float)dt * 10.0f;
-    glm::mat4 mat = glm::translate(objects[0].get_matrix(), velocity * (float)dt * 10.0f);
+    pos += velocity * (float)dt;
+    glm::mat4 mat = glm::translate(objects[0].get_matrix(), velocity * (float)dt);
     set_matrix(0, mat);
 }
 
@@ -90,11 +90,14 @@ void App::main_loop()
 
     // https://nssdc.gsfc.nasa.gov/planetary/factsheet/
     glm::mat4 mat{1.0f};
-    mat = glm::translate(mat, glm::vec3(0.0f, 0.0f, 20.0f));
+    mat = glm::translate(mat, glm::vec3(0.0f, 0.0f, 25.0f));
 
-    CelestialBody earth{1, glm::vec3(0.0003f, 0.0f, 0.0f)}; //29.78e3
+    // website used for initial velocity calculation:
+    // https://pt.calcprofi.com/calculadora-formula-velocidade-orbital.html
+    // using: parâmetros -> km, kg and m/s
+    CelestialBody earth{1, glm::vec3(0.000943f, 0.0f, 0.0f)}; //29.78e3
     axolote::Object3D earthobj{"./resources/models/sphere/sphere.obj", glm::vec3(0.0f, 0.0f, 1.0f), mat};
-    earth.pos = glm::vec3{0.0f, 0.0f, 20.0f};
+    earth.pos = glm::vec3{0.0f, 0.0f, 25.0f};
     earth.add_object(earthobj);
     earth.bind_shader_at(0, shader_program);
 
@@ -108,6 +111,7 @@ void App::main_loop()
     sun.bind_shader_at(0, shader_program);
 
     std::shared_ptr<axolote::Scene> scene{new axolote::Scene{}};
+    scene->camera.pos = glm::vec3{0.0f, 20.0f, 0.0f};
     scene->camera.speed = 0.3f;
     scene->camera.sensitivity = 10000.0f;
 
@@ -132,10 +136,13 @@ void App::main_loop()
         sstr << original_title << " | " << (int)(1 / dt) << " fps";
         set_title(sstr.str());
 
-        dt *= 100;
+        dt *= 1000;
 
         glm::vec3 res = sun.calculate_acceleration(earth);
         ((CelestialBody*)scene->entity_objects[0])->velocity += res * (float)dt;
+        res = earth.calculate_acceleration(sun);
+        ((CelestialBody*)scene->entity_objects[1])->velocity += res * (float)dt;
+
         scene->update_camera((float)width() / height());
         scene->update(dt);
         scene->render();
@@ -149,6 +156,8 @@ int main()
     std::cout << "Solar System 3D" << std::endl;
     App app{};
     app.set_title("Uepa");
+    app.set_width(600);
+    app.set_height(600);
     app.set_color(0x10, 0x10, 0x10);
     app.main_loop();
     return 0;
