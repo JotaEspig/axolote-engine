@@ -27,7 +27,7 @@ float get_specular_map()
         return color.r;
 }
 
-vec3 calculate_light(vec3 light_emissor_pos)
+vec3 calculate_light(vec3 light_emissor_pos, vec4 temp_frag_color)
 {
     vec3 normal = normalize(normal);
     vec3 light_direction = normalize(light_emissor_pos - current_pos);
@@ -57,7 +57,12 @@ void main()
     if (is_light_color_set)
     {
 
-        vec3 temp_frag_light = calculate_light(light_pos);
+        vec3 temp_frag_light = calculate_light(vec3(light_pos.x + light_radius, light_pos.y, light_pos.z), temp_frag_color) / 6;
+        temp_frag_light += calculate_light(vec3(light_pos.x, light_pos.y + light_radius, light_pos.z), temp_frag_color) / 6;
+        temp_frag_light += calculate_light(vec3(light_pos.x, light_pos.y, light_pos.z + light_radius), temp_frag_color) / 6;
+        temp_frag_light += calculate_light(vec3(light_pos.x - light_radius, light_pos.y, light_pos.z), temp_frag_color) / 6;
+        temp_frag_light += calculate_light(vec3(light_pos.x, light_pos.y - light_radius, light_pos.z), temp_frag_color) / 6;
+        temp_frag_light += calculate_light(vec3(light_pos.x, light_pos.y, light_pos.z - light_radius), temp_frag_color) / 6;
 
         temp_frag_color = vec4(temp_frag_light, temp_frag_color.a * light_color.a);
     }
