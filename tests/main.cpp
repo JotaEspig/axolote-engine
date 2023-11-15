@@ -134,6 +134,7 @@ void App::main_loop()
     shader_program.set_uniform_float("ambient", 0.05f);
     shader_program.set_uniform_float4("light_color", 1.0f, 1.0f, 1.0f, 1.0f);
     shader_program.set_uniform_float3("light_pos", 0.0f, 0.0f, 0.0f);
+    shader_program.set_uniform_float("light_radius", 5.0f);
 
 
     // Table with planets data:
@@ -241,7 +242,7 @@ void App::main_loop()
 
     // Scene object
     std::shared_ptr<axolote::Scene> scene{new axolote::Scene{}};
-    scene->camera.pos = glm::vec3{0.0f, 400.0f, 0.0f};
+    scene->camera.pos = glm::vec3{0.0f, 150.0f, 0.0f};
     scene->camera.orientation = glm::normalize(glm::vec3{.1f, -1.0f, 0.0f});
     scene->camera.speed = 0.3f;
     scene->camera.sensitivity = 10000.0f;
@@ -277,11 +278,11 @@ void App::main_loop()
         sstr << original_title << " | " << (int)(1 / dt) << " fps";
         set_title(sstr.str());
 
-        dt *= 200000;
+        dt *= 2000;
 
         // Update celestial bodies
-        for (int i = 0; i < 100; i++)
-            solarSystem.update(dt / 100.0);
+        for (int i = 0; i < 10; i++)
+            solarSystem.update(dt / 10.0);
 
         scene->update_camera((float)width() / height());
         scene->update(dt);
