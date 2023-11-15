@@ -1,6 +1,7 @@
 #include <iostream>
 #include <sstream>
 #include <memory>
+#include <vector>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -70,10 +71,56 @@ void CelestialBody::draw()
     }
 };
 
+class SolarSystem
+{
+public:
+    SolarSystem() = default;
+    ~SolarSystem() = default;
+
+    CelestialBody* addCelestialBody(double mass, glm::vec3 pos, glm::vec3 vel, glm::vec3 color, axolote::Shader shader_program);
+    void update(double dt);
+private:
+    std::vector<CelestialBody*> celestialBodies;
+};
+
+CelestialBody* SolarSystem::addCelestialBody(double mass, glm::vec3 pos, glm::vec3 vel, glm::vec3 color, axolote::Shader shader_program)
+{
+    // Create object matrix
+    glm::mat4 mat{1.0f};
+    mat = glm::translate(mat, pos);
+
+    // Create body
+    CelestialBody* body = new CelestialBody{mass, vel};
+    axolote::Object3D bodyobj{"./resources/models/sphere/sphere.obj", color, mat};
+    body->pos = pos;
+    body->add_object(bodyobj);
+    body->bind_shader_at(0, shader_program);
+
+    // Add to list
+    celestialBodies.push_back(body);
+
+    return body;
+}
+
+void SolarSystem::update(double dt)
+{
+    for (auto body0 : celestialBodies)
+    {
+        for (auto body1 : celestialBodies)
+        {
+            if (body0 == body1) continue;
+
+            glm::vec3 acc = body0->calculate_acceleration(*body1);
+            body1->velocity += acc * (float)dt;
+        }
+    }
+}
+
 class App : public axolote::Window
 {
 public:
     void main_loop();
+    void line(float x0, float y0, float x1, float y1);
 };
 
 void App::main_loop()
@@ -88,35 +135,129 @@ void App::main_loop()
     shader_program.set_uniform_float4("light_color", 1.0f, 1.0f, 1.0f, 1.0f);
     shader_program.set_uniform_float3("light_pos", 0.0f, 0.0f, 0.0f);
 
+
+    // Table with planets data:
     // https://nssdc.gsfc.nasa.gov/planetary/factsheet/
-    glm::mat4 mat{1.0f};
-    mat = glm::translate(mat, glm::vec3(0.0f, 0.0f, 25.0f));
 
     // website used for initial velocity calculation:
     // https://pt.calcprofi.com/calculadora-formula-velocidade-orbital.html
     // using: parâmetros -> km, kg and m/s
-    CelestialBody earth{1, glm::vec3(0.000943f, 0.0f, 0.0f)}; //29.78e3
-    axolote::Object3D earthobj{"./resources/models/sphere/sphere.obj", glm::vec3(0.0f, 0.0f, 1.0f), mat};
-    earth.pos = glm::vec3{0.0f, 0.0f, 25.0f};
-    earth.add_object(earthobj);
-    earth.bind_shader_at(0, shader_program);
 
-    mat = glm::mat4{1.0f};
+    // --------------------------------------------------------------------
 
-    CelestialBody sun{333000, glm::vec3{0.0f, 0.0f, 0.0f}};
-    axolote::Object3D sunobj{"./resources/models/sphere/sphere.obj", glm::vec3(1.0f, 1.0f, 0.5f), mat};
-    sun.pos = glm::vec3{0.0f, 0.0f, 0.0f};
-    sun.is_light_emissor = true;
-    sun.add_object(sunobj);
-    sun.bind_shader_at(0, shader_program);
+    // Solar system
+    SolarSystem solarSystem;
 
+    // Sun
+    CelestialBody* sun = solarSystem.addCelestialBody(
+        333000.0,                     // mass (related to earth)
+        glm::vec3{0.0f, 0.0f, 0.0f},  // pos
+        glm::vec3{0.0, 0.0f, 0.0f},   // vel
+        glm::vec3{1.0f, 1.0f, 0.5f},  // color
+        shader_program                // shader
+    );
+    sun->is_light_emissor = true;
+
+    // Mercury
+    CelestialBody* mercury = solarSystem.addCelestialBody(
+        0.055,                              // mass (related to earth)
+        glm::vec3{0.0f, 0.0f, 60.0f},       // pos
+        glm::vec3{0.000609f, 0.0f, 0.0f},   // vel
+        glm::vec3{0.28f, 0.27f, 0.27f},     // color
+        shader_program                      // shader
+    );
+
+    // Venus
+    CelestialBody* venus = solarSystem.addCelestialBody(
+        0.81,                              // mass (related to earth)
+        glm::vec3{0.0f, 0.0f, 75.0f},      // pos
+        glm::vec3{0.000544f, 0.0f, 0.0f},  // vel
+        glm::vec3{0.35f, 0.51f, 0.89f},    // color
+        shader_program                     // shader
+    );
+
+    // Earth
+    CelestialBody* earth = solarSystem.addCelestialBody(
+        1.0,                                // mass (related to earth)
+        glm::vec3{0.0f, 0.0f, 90.0f},       // pos
+        glm::vec3{0.000497f, 0.0f, 0.0f},   // vel
+        glm::vec3{0.0f, 0.0f, 1.0f},        // color
+        shader_program                      // shader
+    );
+
+    // Mars
+    CelestialBody* mars = solarSystem.addCelestialBody(
+        0.11,                              // mass (related to earth)
+        glm::vec3{0.0f, 0.0f, 105.0f},      // pos
+        glm::vec3{0.00046f, 0.0f, 0.0f},  // vel
+        glm::vec3{0.75f, 0.25f, 0.05f},    // color
+        shader_program                     // shader
+    );
+
+    // Jupiter
+    CelestialBody* jupiter = solarSystem.addCelestialBody(
+        317.82,                            // mass (related to earth)
+        glm::vec3{0.0f, 0.0f, 150.0f},      // pos
+        glm::vec3{0.000385f, 0.0f, 0.0f},  // vel
+        glm::vec3{0.78f, 0.56f, 0.22f},    // color
+        shader_program                     // shader
+    );
+
+    // Saturn
+    CelestialBody* saturn = solarSystem.addCelestialBody(
+        95.2,                              // mass (related to earth)
+        glm::vec3{0.0f, 0.0f, 180.0f},     // pos
+        glm::vec3{0.000351f, 0.0f, 0.0f},  // vel
+        glm::vec3{0.07f, 0.14f, 0.32f},    // color
+        shader_program                     // shader
+    );
+
+    // Uranus
+    CelestialBody* uranus = solarSystem.addCelestialBody(
+        14.5,                              // mass (related to earth)
+        glm::vec3{0.0f, 0.0f, 205.0f},     // pos
+        glm::vec3{0.000329f, 0.0f, 0.0f},  // vel
+        glm::vec3{0.11f, 0.06f, 0.06f},    // color
+        shader_program                     // shader
+    );
+
+    // Neptune
+    CelestialBody* neptune = solarSystem.addCelestialBody(
+        17.1,                              // mass (related to earth)
+        glm::vec3{0.0f, 0.0f, 230.0f},     // pos
+        glm::vec3{0.000311f, 0.0f, 0.0f},  // vel
+        glm::vec3{0.64f, 0.63f, 0.12f},    // color
+        shader_program                     // shader
+    );
+
+    // Pluto
+    CelestialBody* pluto = solarSystem.addCelestialBody(
+        0.0022,                            // mass (related to earth)
+        glm::vec3{0.0f, 0.0f, 260.0f},     // pos
+        glm::vec3{0.000292f, 0.0f, 0.0f},  // vel
+        glm::vec3{0.0f, 0.05f, 0.16f},     // color
+        shader_program                     // shader
+    );
+
+    // Scene object
     std::shared_ptr<axolote::Scene> scene{new axolote::Scene{}};
-    scene->camera.pos = glm::vec3{0.0f, 20.0f, 0.0f};
+    scene->camera.pos = glm::vec3{0.0f, 400.0f, 0.0f};
+    scene->camera.orientation = glm::normalize(glm::vec3{.1f, -1.0f, 0.0f});
     scene->camera.speed = 0.3f;
     scene->camera.sensitivity = 10000.0f;
 
-    scene->add_drawable(&earth);
-    scene->add_drawable(&sun);
+    // Add celestial bodies as drawable to scene
+    scene->add_drawable(sun);
+    scene->add_drawable(mercury);
+    scene->add_drawable(venus);
+    scene->add_drawable(earth);
+    scene->add_drawable(mars);
+    scene->add_drawable(jupiter);
+    scene->add_drawable(saturn);
+    scene->add_drawable(uranus);
+    scene->add_drawable(neptune);
+    scene->add_drawable(pluto);
+
 
     current_scene = scene;
     double before = glfwGetTime();
@@ -136,12 +277,11 @@ void App::main_loop()
         sstr << original_title << " | " << (int)(1 / dt) << " fps";
         set_title(sstr.str());
 
-        dt *= 1000;
+        dt *= 200000;
 
-        glm::vec3 res = sun.calculate_acceleration(earth);
-        ((CelestialBody*)scene->entity_objects[0])->velocity += res * (float)dt;
-        res = earth.calculate_acceleration(sun);
-        ((CelestialBody*)scene->entity_objects[1])->velocity += res * (float)dt;
+        // Update celestial bodies
+        for (int i = 0; i < 100; i++)
+            solarSystem.update(dt / 100.0);
 
         scene->update_camera((float)width() / height());
         scene->update(dt);
