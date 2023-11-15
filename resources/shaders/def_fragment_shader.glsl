@@ -11,6 +11,7 @@ uniform vec3 camera_pos;
 
 uniform vec4 light_color;
 uniform vec3 light_pos;
+uniform float light_radius;
 uniform bool is_light_color_set;
 
 uniform sampler2D diffuse0;
@@ -26,6 +27,26 @@ float get_specular_map()
         return color.r;
 }
 
+vec3 calculate_light(vec3 light_emissor_pos)
+{
+    vec3 normal = normalize(normal);
+    vec3 light_direction = normalize(light_emissor_pos - current_pos);
+    float diffuse = max(dot(normal, light_direction), 0.0f);
+
+    float specular_light = 0.25f;
+    vec3 view_direction = normalize(camera_pos - current_pos);
+    vec3 reflection_direction = reflect(-light_direction, normal);
+    float spec_amount = pow(max(dot(view_direction, reflection_direction), 0.0f), 16);
+    float specular = spec_amount * specular_light;
+
+    vec3 diffuse_light_color = temp_frag_color.rgb * (diffuse + ambient);
+
+    float specular_map = get_specular_map();
+    float specular_light_color = specular_map * specular;
+
+    return (diffuse_light_color + specular_light_color) * light_color.rgb;
+}
+
 void main()
 {
     vec4 temp_frag_color = vec4(color, 1.0f);
@@ -35,22 +56,8 @@ void main()
     }
     if (is_light_color_set)
     {
-        vec3 normal = normalize(normal);
-        vec3 light_direction = normalize(light_pos - current_pos);
-        float diffuse = max(dot(normal, light_direction), 0.0f);
 
-        float specular_light = 0.25f;
-        vec3 view_direction = normalize(camera_pos - current_pos);
-        vec3 reflection_direction = reflect(-light_direction, normal);
-        float spec_amount = pow(max(dot(view_direction, reflection_direction), 0.0f), 16);
-        float specular = spec_amount * specular_light;
-
-        vec3 diffuse_light_color = temp_frag_color.rgb * (diffuse + ambient);
-
-        float specular_map = get_specular_map();
-        float specular_light_color = specular_map * specular;
-
-        vec3 temp_frag_light = (diffuse_light_color + specular_light_color) * light_color.rgb;
+        vec3 temp_frag_light = calculate_light(light_pos);
 
         temp_frag_color = vec4(temp_frag_light, temp_frag_color.a * light_color.a);
     }
