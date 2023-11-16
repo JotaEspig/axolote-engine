@@ -99,7 +99,7 @@ public:
     * \author João Vitor Espig (JotaEspig)
     * \date October 06, 2023
     * \version October 27, 2023
-    * \param matrix - model transformation matrix
+    * \param mat - model transformation matrix
     **/
     void draw(const glm::mat4 &mat) override;
     /**

@@ -37,7 +37,7 @@ public:
     * \author João Vitor Espig (JotaEspig)
     * \date November 06, 2023
     * \version November 06, 2023
-    * \param vao - Shader object
+    * \param shader - Shader object
     **/
     Shader(const Shader &shader);
     /**
