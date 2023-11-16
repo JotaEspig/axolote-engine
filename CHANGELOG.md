@@ -1,3 +1,10 @@
+## v0.2.1 (2023-11-15)
+
+### Refactor
+
+- **scene**: using smart pointers to store the objects
+- **fragment-shader**: simulating a light from a sphere
+
 ## v0.2.0 (2023-11-10)
 
 ### Feat
