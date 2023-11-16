@@ -2820,3 +2820,7 @@ MSCGEN_TOOL            =
 # command).
 
 MSCFILE_DIRS           =
+
+INPUT += README.md
+FILE_PATTERNS += *.md
+USE_MDFILE_AS_MAINPAGE = README.md
