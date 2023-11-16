@@ -1,3 +1,5 @@
+#include <memory>
+
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -33,7 +35,7 @@ Scene::~Scene()
 {
 }
 
-void Scene::add_drawable(Entity *e)
+void Scene::add_drawable(std::shared_ptr<Entity> e)
 {
     entity_objects.push_back(e);
     for (const Object3D &o : e->objects)
@@ -55,10 +57,10 @@ void Scene::add_drawable(Entity *e)
     }
 }
 
-void Scene::add_drawable(const Object3D &m)
+void Scene::add_drawable(std::shared_ptr<Object3D> o)
 {
-    object3d_objects.push_back(m);
-    for (const GMesh &g : m.meshes)
+    object3d_objects.push_back(o);
+    for (const GMesh &g : o->meshes)
     {
         bool already_included = false;
         for (const Shader &s : shaders)
@@ -89,16 +91,16 @@ void Scene::update_camera(float aspect_ratio)
 
 void Scene::update(double time)
 {
-    for (Entity *e : entity_objects)
+    for (std::shared_ptr<Entity> e : entity_objects)
         e->update(time);
 }
 
 void Scene::render()
 {
-    for (Entity *e : entity_objects)
+    for (std::shared_ptr<Entity> e : entity_objects)
         e->draw();
-    for (Object3D &o : object3d_objects)
-        o.draw();
+    for (std::shared_ptr<Object3D> o : object3d_objects)
+        o->draw();
 }
 
 void Scene::operator=(const Scene &scene)

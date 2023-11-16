@@ -3,11 +3,12 @@
 * \brief provides class Scene
 * \author João Vitor Espig (JotaEspig)
 * \date October 25, 2023
-* \version November 09, 2023
+* \version November 15, 2023
 **/
 #pragma once
 
 #include <vector>
+#include <memory>
 
 #include <axolote/drawable.hpp>
 #include <axolote/entity.hpp>
@@ -22,15 +23,15 @@ namespace axolote
 * \brief Describes a scene
 * \author João Vitor Espig (JotaEspig)
 * \date October 25, 2023
-* \version November 09, 2023
+* \version November 15, 2023
 **/
 class Scene
 {
 public:
     /** vector of Entity objects **/
-    std::vector<Entity*> entity_objects;
+    std::vector<std::shared_ptr<Entity>> entity_objects;
     /** vector of Entity objects **/
-    std::vector<Object3D> object3d_objects;
+    std::vector<std::shared_ptr<Object3D>> object3d_objects;
     /** Camera in the scene **/
     Camera camera;
 
@@ -69,16 +70,16 @@ public:
      * \brief add an Entity to the scene
      * \author João Vitor Espig (JotaEspig)
      * \date November 08, 2023
-     * \version November 08, 2023
+     * \version November 15, 2023
     **/
-    void add_drawable(Entity *e);
+    void add_drawable(std::shared_ptr<Entity> e);
     /**
      * \brief add an Object3D to the scene
      * \author João Vitor Espig (JotaEspig)
      * \date November 08, 2023
-     * \version November 08, 2023
+     * \version November 15, 2023
     **/
-    void add_drawable(const Object3D &m);
+    void add_drawable(std::shared_ptr<Object3D> o);
     /**
      * \brief updates the camera in the shaders
      * \author João Vitor Espig (JotaEspig)

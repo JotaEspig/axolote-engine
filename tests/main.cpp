@@ -77,24 +77,27 @@ public:
     SolarSystem() = default;
     ~SolarSystem() = default;
 
-    CelestialBody* add_celestial_body(double mass, glm::vec3 pos, glm::vec3 vel,
-                                      glm::vec3 color, axolote::Shader shader_program);
+    std::shared_ptr<CelestialBody>
+    add_celestial_body(double mass, glm::vec3 pos,
+                       glm::vec3 vel, glm::vec3 color,
+                       axolote::Shader shader_program);
     void update(double dt);
 
 private:
-    std::vector<CelestialBody*> celestialBodies;
+    std::vector<std::shared_ptr<CelestialBody>> celestialBodies;
 };
 
-CelestialBody* SolarSystem::add_celestial_body(double mass, glm::vec3 pos,
-                                               glm::vec3 vel, glm::vec3 color,
-                                               axolote::Shader shader_program)
+std::shared_ptr<CelestialBody>
+SolarSystem::add_celestial_body(double mass, glm::vec3 pos,
+                                glm::vec3 vel, glm::vec3 color,
+                                axolote::Shader shader_program)
 {
     // Create object matrix
     glm::mat4 mat{1.0f};
     mat = glm::translate(mat, pos);
 
     // Create body
-    CelestialBody* body = new CelestialBody{mass, vel};
+    std::shared_ptr<CelestialBody> body{new CelestialBody{mass, vel}};
     axolote::Object3D bodyobj{"./resources/models/sphere/sphere.obj", color, mat};
     body->pos = pos;
     body->add_object(bodyobj);
@@ -154,7 +157,7 @@ void App::main_loop()
     SolarSystem solarSystem;
 
     // Sun
-    CelestialBody* sun = solarSystem.add_celestial_body(
+    std::shared_ptr<CelestialBody> sun = solarSystem.add_celestial_body(
         333000.0,                     // mass (related to earth)
         glm::vec3{0.0f, 0.0f, 0.0f},  // pos
         glm::vec3{0.0, 0.0f, 0.0f},   // vel
@@ -164,7 +167,7 @@ void App::main_loop()
     sun->is_light_emissor = true;
 
     // Mercury
-    CelestialBody* mercury = solarSystem.add_celestial_body(
+    std::shared_ptr<CelestialBody> mercury = solarSystem.add_celestial_body(
         0.055,                              // mass (related to earth)
         glm::vec3{0.0f, 0.0f, 60.0f},       // pos
         glm::vec3{0.000609f, 0.0f, 0.0f},   // vel
@@ -173,7 +176,7 @@ void App::main_loop()
     );
 
     // Venus
-    CelestialBody* venus = solarSystem.add_celestial_body(
+    std::shared_ptr<CelestialBody> venus = solarSystem.add_celestial_body(
         0.81,                              // mass (related to earth)
         glm::vec3{0.0f, 0.0f, 75.0f},      // pos
         glm::vec3{0.000544f, 0.0f, 0.0f},  // vel
@@ -182,7 +185,7 @@ void App::main_loop()
     );
 
     // Earth
-    CelestialBody* earth = solarSystem.add_celestial_body(
+    std::shared_ptr<CelestialBody> earth = solarSystem.add_celestial_body(
         1.0,                                // mass (related to earth)
         glm::vec3{0.0f, 0.0f, 90.0f},       // pos
         glm::vec3{0.000497f, 0.0f, 0.0f},   // vel
@@ -191,7 +194,7 @@ void App::main_loop()
     );
 
     // Mars
-    CelestialBody* mars = solarSystem.add_celestial_body(
+    std::shared_ptr<CelestialBody> mars = solarSystem.add_celestial_body(
         0.11,                              // mass (related to earth)
         glm::vec3{0.0f, 0.0f, 105.0f},      // pos
         glm::vec3{0.00046f, 0.0f, 0.0f},  // vel
@@ -200,7 +203,7 @@ void App::main_loop()
     );
 
     // Jupiter
-    CelestialBody* jupiter = solarSystem.add_celestial_body(
+    std::shared_ptr<CelestialBody> jupiter = solarSystem.add_celestial_body(
         317.82,                            // mass (related to earth)
         glm::vec3{0.0f, 0.0f, 150.0f},      // pos
         glm::vec3{0.000385f, 0.0f, 0.0f},  // vel
@@ -209,7 +212,7 @@ void App::main_loop()
     );
 
     // Saturn
-    CelestialBody* saturn = solarSystem.add_celestial_body(
+    std::shared_ptr<CelestialBody> saturn = solarSystem.add_celestial_body(
         95.2,                              // mass (related to earth)
         glm::vec3{0.0f, 0.0f, 180.0f},     // pos
         glm::vec3{0.000351f, 0.0f, 0.0f},  // vel
@@ -218,7 +221,7 @@ void App::main_loop()
     );
 
     // Uranus
-    CelestialBody* uranus = solarSystem.add_celestial_body(
+    std::shared_ptr<CelestialBody> uranus = solarSystem.add_celestial_body(
         14.5,                              // mass (related to earth)
         glm::vec3{0.0f, 0.0f, 205.0f},     // pos
         glm::vec3{0.000329f, 0.0f, 0.0f},  // vel
@@ -227,7 +230,7 @@ void App::main_loop()
     );
 
     // Neptune
-    CelestialBody* neptune = solarSystem.add_celestial_body(
+    std::shared_ptr<CelestialBody> neptune = solarSystem.add_celestial_body(
         17.1,                              // mass (related to earth)
         glm::vec3{0.0f, 0.0f, 230.0f},     // pos
         glm::vec3{0.000311f, 0.0f, 0.0f},  // vel
@@ -236,7 +239,7 @@ void App::main_loop()
     );
 
     // Pluto
-    CelestialBody* pluto = solarSystem.add_celestial_body(
+    std::shared_ptr<CelestialBody> pluto = solarSystem.add_celestial_body(
         0.0022,                            // mass (related to earth)
         glm::vec3{0.0f, 0.0f, 260.0f},     // pos
         glm::vec3{0.000292f, 0.0f, 0.0f},  // vel
@@ -246,7 +249,7 @@ void App::main_loop()
 
     // Scene object
     std::shared_ptr<axolote::Scene> scene{new axolote::Scene{}};
-    scene->camera.pos = glm::vec3{0.0f, 150.0f, 0.0f};
+    scene->camera.pos = glm::vec3{0.0f, 400.0f, 0.0f};
     scene->camera.orientation = glm::normalize(glm::vec3{.1f, -1.0f, 0.0f});
     scene->camera.speed = 3.0f;
     scene->camera.sensitivity = 10000.0f;
