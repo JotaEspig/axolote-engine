@@ -1,10 +1,10 @@
 /**
-* \file texture.hpp
-* \brief Texture class
-* \author João Vitor Espig (JotaEspig)
-* \date October 04, 2023
-* \version November 06, 2023
-**/
+ * \file texture.hpp
+ * \brief Texture class
+ * \author João Vitor Espig (JotaEspig)
+ * \date October 04, 2023
+ * \version November 06, 2023
+ **/
 #pragma once
 
 #include <string>
@@ -15,11 +15,11 @@ namespace axolote
 {
 
 /**
-* \brief texture operations
-* \author João Vitor Espig (JotaEspig)
-* \date October 04, 2023
-* \version November 06, 2023
-**/
+ * \brief texture operations
+ * \author João Vitor Espig (JotaEspig)
+ * \date October 04, 2023
+ * \version November 06, 2023
+ **/
 class Texture
 {
 public:
@@ -33,82 +33,82 @@ public:
     bool loaded;
 
     /**
-    * \brief Constructor
-    * \author João Vitor Espig (JotaEspig)
-    * \date October 04, 2023
-    * \version October 08, 2023
-    **/
+     * \brief Constructor
+     * \author João Vitor Espig (JotaEspig)
+     * \date October 04, 2023
+     * \version October 08, 2023
+     **/
     Texture();
     /**
-    * \brief Copy constructor
-    * \author João Vitor Espig (JotaEspig)
-    * \date November 06, 2023
-    * \version November 06, 2023
-    * \param texture - Texture object
-    **/
+     * \brief Copy constructor
+     * \author João Vitor Espig (JotaEspig)
+     * \date November 06, 2023
+     * \version November 06, 2023
+     * \param texture - Texture object
+     **/
     Texture(const Texture &texture);
     /**
-    * \brief Move constructor
-    * \author João Vitor Espig (JotaEspig)
-    * \date November 06, 2023
-    * \version November 06, 2023
-    * \param texture - Texture object
-    **/
+     * \brief Move constructor
+     * \author João Vitor Espig (JotaEspig)
+     * \date November 06, 2023
+     * \version November 06, 2023
+     * \param texture - Texture object
+     **/
     Texture(Texture &&texture);
     /**
-    * \brief Constructor
-    * \author João Vitor Espig (JotaEspig)
-    * \date October 04, 2023
-    * \version October 08, 2023
-    * \param texture_filename - name of texture file
-    * \param tex_type - type of text ("diffuse" or "specular")
-    * \param _unit - texture unit (used inside OpenGL shaders)
-    **/
+     * \brief Constructor
+     * \author João Vitor Espig (JotaEspig)
+     * \date October 04, 2023
+     * \version October 08, 2023
+     * \param texture_filename - name of texture file
+     * \param tex_type - type of text ("diffuse" or "specular")
+     * \param _unit - texture unit (used inside OpenGL shaders)
+     **/
     Texture(const char *texture_filename, std::string tex_type, GLuint _unit);
 
     /**
-    * \brief activates texture
-    * \author João Vitor Espig (JotaEspig)
-    * \date October 04, 2023
-    * \version October 04, 2023
-    **/
+     * \brief activates texture
+     * \author João Vitor Espig (JotaEspig)
+     * \date October 04, 2023
+     * \version October 04, 2023
+     **/
     void activate();
     /**
-    * \brief binds texture
-    * \author João Vitor Espig (JotaEspig)
-    * \date October 04, 2023
-    * \version October 04, 2023
-    **/
+     * \brief binds texture
+     * \author João Vitor Espig (JotaEspig)
+     * \date October 04, 2023
+     * \version October 04, 2023
+     **/
     void bind();
     /**
-    * \brief unbinds texture
-    * \author João Vitor Espig (JotaEspig)
-    * \date October 04, 2023
-    * \version October 04, 2023
-    **/
+     * \brief unbinds texture
+     * \author João Vitor Espig (JotaEspig)
+     * \date October 04, 2023
+     * \version October 04, 2023
+     **/
     void unbind();
     /**
-    * \brief destroys texture
-    * \author João Vitor Espig (JotaEspig)
-    * \date October 04, 2023
-    * \version October 04, 2023
-    **/
+     * \brief destroys texture
+     * \author João Vitor Espig (JotaEspig)
+     * \date October 04, 2023
+     * \version October 04, 2023
+     **/
     void destroy();
     /**
-    * \brief operator = overload (copy)
-    * \author João Vitor Espig (JotaEspig)
-    * \date November 06, 2023
-    * \version November 06, 2023
-    * \param texture - Texture object
-    **/
+     * \brief operator = overload (copy)
+     * \author João Vitor Espig (JotaEspig)
+     * \date November 06, 2023
+     * \version November 06, 2023
+     * \param texture - Texture object
+     **/
     void operator=(const Texture &texture);
     /**
-    * \brief operator = overload (copy)
-    * \author João Vitor Espig (JotaEspig)
-    * \date November 06, 2023
-    * \version November 06, 2023
-    * \param texture - Texture object
-    **/
+     * \brief operator = overload (copy)
+     * \author João Vitor Espig (JotaEspig)
+     * \date November 06, 2023
+     * \version November 06, 2023
+     * \param texture - Texture object
+     **/
     void operator=(Texture &&texture);
 };
 

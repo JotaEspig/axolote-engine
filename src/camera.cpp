@@ -71,17 +71,22 @@ void Camera::downward(float delta_t)
     pos += delta_t * speed * -up;
 }
 
-void Camera::move_vision(float x, float y, float width, float height, double delta_t)
+void Camera::move_vision(
+    float x, float y, float width, float height, double delta_t
+)
 {
     if (first_click)
         first_click = false;
 
     float rot_x = delta_t * sensitivity * (y - (height / 2)) / height;
     float rot_y = delta_t * sensitivity * (x - (width / 2)) / width;
-    glm::vec3 new_orientation = glm::rotate(orientation, glm::radians(-rot_x),
-                                            glm::normalize(glm::cross(orientation, up)));
+    glm::vec3 new_orientation = glm::rotate(
+        orientation, glm::radians(-rot_x),
+        glm::normalize(glm::cross(orientation, up))
+    );
 
-    if (std::abs(glm::angle(new_orientation, up) - glm::radians(90.0f)) <= glm::radians(85.0f))
+    if (std::abs(glm::angle(new_orientation, up) - glm::radians(90.0f))
+        <= glm::radians(85.0f))
     {
         orientation = new_orientation;
     }

@@ -1,8 +1,9 @@
+#include <cerrno>
 #include <iostream>
 #include <string>
-#include <cerrno>
 
 #include <glad/glad.h>
+
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
@@ -75,7 +76,9 @@ void Shader::set_uniform_int(const char *uniform_name, int value)
     glUniform1i(uniform_location, value);
 }
 
-void Shader::set_uniform_matrix4(const char *uniform_name, const glm::mat4 &matrix)
+void Shader::set_uniform_matrix4(
+    const char *uniform_name, const glm::mat4 &matrix
+)
 {
     activate();
     GLuint uniform_location = glGetUniformLocation(id, uniform_name);
@@ -89,14 +92,18 @@ void Shader::set_uniform_float(const char *uniform_name, float x)
     glUniform1f(uniform_location, x);
 }
 
-void Shader::set_uniform_float3(const char *uniform_name, float x, float y, float z)
+void Shader::set_uniform_float3(
+    const char *uniform_name, float x, float y, float z
+)
 {
     activate();
     GLuint uniform_location = glGetUniformLocation(id, uniform_name);
     glUniform3f(uniform_location, x, y, z);
 }
 
-void Shader::set_uniform_float4(const char *uniform_name, float x, float y, float z, float w)
+void Shader::set_uniform_float4(
+    const char *uniform_name, float x, float y, float z, float w
+)
 {
     activate();
     GLuint uniform_location = glGetUniformLocation(id, uniform_name);

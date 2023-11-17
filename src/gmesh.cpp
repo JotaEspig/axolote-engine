@@ -6,12 +6,12 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/quaternion.hpp>
 
+#include <axolote/ebo.hpp>
 #include <axolote/gmesh.hpp>
 #include <axolote/mesh.hpp>
+#include <axolote/structs.hpp>
 #include <axolote/vao.hpp>
 #include <axolote/vbo.hpp>
-#include <axolote/ebo.hpp>
-#include <axolote/structs.hpp>
 
 namespace axolote
 {
@@ -38,8 +38,10 @@ GMesh::GMesh(GMesh &&gmesh) :
 {
 }
 
-GMesh::GMesh(const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices,
-             const std::vector<Texture> &textures) :
+GMesh::GMesh(
+    const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices,
+    const std::vector<Texture> &textures
+) :
     Mesh(vertices, indices, textures)
 {
     vao.bind();
@@ -47,9 +49,15 @@ GMesh::GMesh(const std::vector<Vertex> &vertices, const std::vector<GLuint> &ind
     ebo = EBO(indices);
 
     vao.link_attrib(vbo, 0, 3, GL_FLOAT, sizeof(Vertex), (void *)0);
-    vao.link_attrib(vbo, 1, 3, GL_FLOAT, sizeof(Vertex), (void *)(3 * sizeof(float)));
-    vao.link_attrib(vbo, 2, 2, GL_FLOAT, sizeof(Vertex), (void *)(6 * sizeof(float)));
-    vao.link_attrib(vbo, 3, 3, GL_FLOAT, sizeof(Vertex), (void *)(8 * sizeof(float)));
+    vao.link_attrib(
+        vbo, 1, 3, GL_FLOAT, sizeof(Vertex), (void *)(3 * sizeof(float))
+    );
+    vao.link_attrib(
+        vbo, 2, 2, GL_FLOAT, sizeof(Vertex), (void *)(6 * sizeof(float))
+    );
+    vao.link_attrib(
+        vbo, 3, 3, GL_FLOAT, sizeof(Vertex), (void *)(8 * sizeof(float))
+    );
     vao.unbind();
     vbo.unbind();
     ebo.unbind();

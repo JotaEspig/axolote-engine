@@ -3,10 +3,10 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include <axolote/scene.hpp>
 #include <axolote/entity.hpp>
-#include <axolote/object3d.hpp>
 #include <axolote/gmesh.hpp>
+#include <axolote/object3d.hpp>
+#include <axolote/scene.hpp>
 
 namespace axolote
 {
@@ -78,14 +78,19 @@ void Scene::add_drawable(std::shared_ptr<Object3D> o)
 
 void Scene::update_camera(float aspect_ratio)
 {
-    glm::mat4 view = glm::lookAt(camera.pos, camera.pos + camera.orientation, camera.up);
-    glm::mat4 projection = glm::perspective(glm::radians(camera.fov), aspect_ratio, 0.1f, 1000.0f);
+    glm::mat4 view
+        = glm::lookAt(camera.pos, camera.pos + camera.orientation, camera.up);
+    glm::mat4 projection = glm::perspective(
+        glm::radians(camera.fov), aspect_ratio, 0.1f, 1000.0f
+    );
     for (Shader &s : shaders)
     {
         s.activate();
-        s.set_uniform_float3("camera_pos", camera.pos.x, camera.pos.y, camera.pos.z);
+        s.set_uniform_float3(
+            "camera_pos", camera.pos.x, camera.pos.y, camera.pos.z
+        );
         s.set_uniform_matrix4("projection", projection);
-        s.set_uniform_matrix4("view",view);
+        s.set_uniform_matrix4("view", view);
     }
 }
 

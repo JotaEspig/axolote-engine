@@ -2,13 +2,14 @@
 #include <memory>
 
 #include <glad/glad.h>
+
 #include <GL/gl.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 
-#include <axolote/window.hpp>
 #include <axolote/scene.hpp>
 #include <axolote/structs.hpp>
+#include <axolote/window.hpp>
 
 #define INITIAL_SIZE 800
 #define __UNUSED(x) (void)(x)
@@ -74,7 +75,9 @@ void Window::init()
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
-    window = glfwCreateWindow(INITIAL_SIZE, INITIAL_SIZE, _title.c_str(), NULL, NULL);
+    window = glfwCreateWindow(
+        INITIAL_SIZE, INITIAL_SIZE, _title.c_str(), NULL, NULL
+    );
     if (!window)
     {
         std::cerr << "Error initialing window" << std::endl;
@@ -121,7 +124,10 @@ void Window::process_input(float delta_t)
 
         double mouse_x, mouse_y;
         glfwGetCursorPos(window, &mouse_x, &mouse_y);
-        current_scene->camera.move_vision((float)mouse_x, (float)mouse_y, (float)width(), (float)height(), delta_t);
+        current_scene->camera.move_vision(
+            (float)mouse_x, (float)mouse_y, (float)width(), (float)height(),
+            delta_t
+        );
         glfwSetCursorPos(window, (double)width() / 2, (double)height() / 2);
     }
     if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_RELEASE)

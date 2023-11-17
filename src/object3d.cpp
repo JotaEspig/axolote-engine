@@ -3,8 +3,8 @@
 #include <GL/gl.h>
 #include <glm/glm.hpp>
 
-#include <axolote/object3d.hpp>
 #include <axolote/model.hpp>
+#include <axolote/object3d.hpp>
 
 #define UNUSED(x) (void)(x)
 
@@ -33,15 +33,18 @@ Object3D::Object3D(const glm::mat4 &mat) :
 {
 }
 
-Object3D::Object3D(const std::vector<Vertex> &vertices,
-                   const std::vector<GLuint> &indices,
-                   const std::vector<Texture> &textures, const glm::mat4 &mat) :
+Object3D::Object3D(
+    const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices,
+    const std::vector<Texture> &textures, const glm::mat4 &mat
+) :
     Model{vertices, indices, textures},
     model_mat{mat}
 {
 }
 
-Object3D::Object3D(std::string path, const glm::vec3 &color, const glm::mat4 &mat) :
+Object3D::Object3D(
+    std::string path, const glm::vec3 &color, const glm::mat4 &mat
+) :
     Object3D{mat}
 {
     load_model(path, color);

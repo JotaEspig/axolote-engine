@@ -1,11 +1,12 @@
-#include <string>
 #include <stdexcept>
+#include <string>
 
 #include <glad/glad.h>
+
 #include <stb/stb_image.h>
 
-#include <axolote/texture.hpp>
 #include <axolote/shader.hpp>
+#include <axolote/texture.hpp>
 
 namespace axolote
 {
@@ -31,15 +32,18 @@ Texture::Texture(Texture &&texture) :
 {
 }
 
-Texture::Texture(const char *texture_filename, std::string tex_type, GLuint _unit) :
+Texture::Texture(
+    const char *texture_filename, std::string tex_type, GLuint _unit
+) :
     type{tex_type},
     unit{_unit},
     loaded{false}
 {
     stbi_set_flip_vertically_on_load(true);
     int width_img, height_img, num_channels_img;
-    unsigned char *data = stbi_load(texture_filename, &width_img, &height_img,
-                                    &num_channels_img, 0);
+    unsigned char *data = stbi_load(
+        texture_filename, &width_img, &height_img, &num_channels_img, 0
+    );
     if (!data)
         return;
 
@@ -53,14 +57,20 @@ Texture::Texture(const char *texture_filename, std::string tex_type, GLuint _uni
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
     if (num_channels_img == 4)
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width_img, height_img, 0,
-                     GL_RGBA, GL_UNSIGNED_BYTE, data);
+        glTexImage2D(
+            GL_TEXTURE_2D, 0, GL_RGBA, width_img, height_img, 0, GL_RGBA,
+            GL_UNSIGNED_BYTE, data
+        );
     else if (num_channels_img == 3)
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width_img, height_img, 0,
-                     GL_RGB, GL_UNSIGNED_BYTE, data);
+        glTexImage2D(
+            GL_TEXTURE_2D, 0, GL_RGBA, width_img, height_img, 0, GL_RGB,
+            GL_UNSIGNED_BYTE, data
+        );
     else if (num_channels_img == 1)
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width_img, height_img, 0,
-                     GL_RED, GL_UNSIGNED_BYTE, data);
+        glTexImage2D(
+            GL_TEXTURE_2D, 0, GL_RGBA, width_img, height_img, 0, GL_RED,
+            GL_UNSIGNED_BYTE, data
+        );
     else
         throw std::invalid_argument("Texture type recognition failed");
 
