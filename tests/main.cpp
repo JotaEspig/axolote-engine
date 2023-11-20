@@ -159,10 +159,10 @@ void App::main_loop()
     // --------------------------------------------------------------------
 
     // Solar system
-    SolarSystem solarSystem;
+    SolarSystem ss;
 
     // Sun
-    std::shared_ptr<CelestialBody> sun = solarSystem.add_celestial_body(
+    std::shared_ptr<CelestialBody> sun = ss.add_celestial_body(
         333000.0,                    // mass (related to earth)
         glm::vec3{0.0f, 0.0f, 0.0f}, // pos
         glm::vec3{0.0, 0.0f, 0.0f},  // vel
@@ -172,7 +172,7 @@ void App::main_loop()
     sun->is_light_emissor = true;
 
     // Mercury
-    std::shared_ptr<CelestialBody> mercury = solarSystem.add_celestial_body(
+    std::shared_ptr<CelestialBody> mercury = ss.add_celestial_body(
         0.055,                            // mass (related to earth)
         glm::vec3{0.0f, 0.0f, 60.0f},     // pos
         glm::vec3{0.000609f, 0.0f, 0.0f}, // vel
@@ -181,7 +181,7 @@ void App::main_loop()
     );
 
     // Venus
-    std::shared_ptr<CelestialBody> venus = solarSystem.add_celestial_body(
+    std::shared_ptr<CelestialBody> venus = ss.add_celestial_body(
         0.81,                             // mass (related to earth)
         glm::vec3{0.0f, 0.0f, 75.0f},     // pos
         glm::vec3{0.000544f, 0.0f, 0.0f}, // vel
@@ -190,7 +190,7 @@ void App::main_loop()
     );
 
     // Earth
-    std::shared_ptr<CelestialBody> earth = solarSystem.add_celestial_body(
+    std::shared_ptr<CelestialBody> earth = ss.add_celestial_body(
         1.0,                              // mass (related to earth)
         glm::vec3{0.0f, 0.0f, 90.0f},     // pos
         glm::vec3{0.000497f, 0.0f, 0.0f}, // vel
@@ -199,7 +199,7 @@ void App::main_loop()
     );
 
     // Mars
-    std::shared_ptr<CelestialBody> mars = solarSystem.add_celestial_body(
+    std::shared_ptr<CelestialBody> mars = ss.add_celestial_body(
         0.11,                            // mass (related to earth)
         glm::vec3{0.0f, 0.0f, 105.0f},   // pos
         glm::vec3{0.00046f, 0.0f, 0.0f}, // vel
@@ -208,7 +208,7 @@ void App::main_loop()
     );
 
     // Jupiter
-    std::shared_ptr<CelestialBody> jupiter = solarSystem.add_celestial_body(
+    std::shared_ptr<CelestialBody> jupiter = ss.add_celestial_body(
         317.82,                           // mass (related to earth)
         glm::vec3{0.0f, 0.0f, 150.0f},    // pos
         glm::vec3{0.000385f, 0.0f, 0.0f}, // vel
@@ -217,7 +217,7 @@ void App::main_loop()
     );
 
     // Saturn
-    std::shared_ptr<CelestialBody> saturn = solarSystem.add_celestial_body(
+    std::shared_ptr<CelestialBody> saturn = ss.add_celestial_body(
         95.2,                             // mass (related to earth)
         glm::vec3{0.0f, 0.0f, 180.0f},    // pos
         glm::vec3{0.000351f, 0.0f, 0.0f}, // vel
@@ -226,7 +226,7 @@ void App::main_loop()
     );
 
     // Uranus
-    std::shared_ptr<CelestialBody> uranus = solarSystem.add_celestial_body(
+    std::shared_ptr<CelestialBody> uranus = ss.add_celestial_body(
         14.5,                             // mass (related to earth)
         glm::vec3{0.0f, 0.0f, 205.0f},    // pos
         glm::vec3{0.000329f, 0.0f, 0.0f}, // vel
@@ -235,7 +235,7 @@ void App::main_loop()
     );
 
     // Neptune
-    std::shared_ptr<CelestialBody> neptune = solarSystem.add_celestial_body(
+    std::shared_ptr<CelestialBody> neptune = ss.add_celestial_body(
         17.1,                             // mass (related to earth)
         glm::vec3{0.0f, 0.0f, 230.0f},    // pos
         glm::vec3{0.000311f, 0.0f, 0.0f}, // vel
@@ -244,7 +244,7 @@ void App::main_loop()
     );
 
     // Pluto
-    std::shared_ptr<CelestialBody> pluto = solarSystem.add_celestial_body(
+    std::shared_ptr<CelestialBody> pluto = ss.add_celestial_body(
         0.0022,                           // mass (related to earth)
         glm::vec3{0.0f, 0.0f, 260.0f},    // pos
         glm::vec3{0.000292f, 0.0f, 0.0f}, // vel
@@ -293,7 +293,7 @@ void App::main_loop()
 
         // Update celestial bodies
         for (int i = 0; i < 10; i++)
-            solarSystem.update(dt / 10.0);
+            ss.update(dt / 10.0);
 
         scene->update_camera((float)width() / height());
         scene->update(dt);
