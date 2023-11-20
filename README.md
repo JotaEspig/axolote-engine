@@ -26,7 +26,7 @@ cmake .
 make docs
 ```
 
-### Installing
+### Compiling
 
 Clone the repository:
 ```bash
@@ -45,6 +45,10 @@ After compiling the project:
 ```bash
 ./tests/bin/tests
 ```
+
+### Installation
+
+see [install.md](https://github.com/JotaEspig/axolote-engine/blob/main/install.md).
 
 ## Help
 
