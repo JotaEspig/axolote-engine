@@ -11,6 +11,7 @@
 #include <axolote/engine.hpp>
 
 #define G 6.67e-11
+#define DT_MULTIPLIER 200000
 
 class CelestialBody : public axolote::Entity
 {
@@ -288,7 +289,7 @@ void App::main_loop()
         sstr << original_title << " | " << (int)(1 / dt) << " fps";
         set_title(sstr.str());
 
-        dt *= 2000;
+        dt *= DT_MULTIPLIER;
 
         // Update celestial bodies
         for (int i = 0; i < 10; i++)
