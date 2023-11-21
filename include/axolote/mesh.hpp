@@ -28,6 +28,13 @@ namespace axolote
 class Mesh
 {
 public:
+    /** polygon mesh vertices **/
+    std::vector<Vertex> vertices;
+    /** polygon mesh indices **/
+    std::vector<GLuint> indices;
+    /** textures to be rendered **/
+    std::vector<Texture> textures;
+
     /**
      * \brief Constructor
      * \author João Vitor Espig (JotaEspig)
@@ -82,14 +89,6 @@ public:
      * \param mesh - Mesh object
      **/
     void operator=(Mesh &&mesh);
-
-protected:
-    /** polygon mesh vertices **/
-    std::vector<Vertex> vertices;
-    /** polygon mesh indices **/
-    std::vector<GLuint> indices;
-    /** textures to be rendered **/
-    std::vector<Texture> textures;
 };
 
 } // namespace axolote
