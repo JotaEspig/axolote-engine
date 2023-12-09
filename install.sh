@@ -20,7 +20,7 @@ mkdir tmp/external/include -p
 
 echo "Moving content to temp folder"
 cp lib/* tmp/external/lib/axolote/
-cp external/assimp/* tmp/external/lib/
+cp external/assimp/* tmp/external/lib/axolote
 cp -r include/axolote tmp/external/include/
 
 echo "Checking existence of $path"
