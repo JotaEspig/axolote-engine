@@ -29,11 +29,15 @@ void App::main_loop()
     shader_program.set_uniform_int("light.is_set", 0);
     // Scene object
     std::shared_ptr<axolote::Scene> scene{new axolote::Scene{}};
+    scene->camera.pos = {0.0f, 0.0f, 5.0f};
     scene->camera.speed = 3.0f;
     scene->camera.sensitivity = 10000.0f;
 
     std::shared_ptr<axolote::Object3D> body{new axolote::Object3D{
-        "./resources/models/sphere.obj", {1.0f, 1.0f, 1.0f}, glm::mat4{1.0f}}};
+        "./resources/models/m26/m26pershing_coh.obj",
+        {1.0f, 1.0f, 1.0f},
+        glm::mat4{1.0f}}};
+    body->bind_shader(shader_program);
     scene->add_drawable(body);
 
     current_scene = scene;
