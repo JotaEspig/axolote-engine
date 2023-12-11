@@ -1,9 +1,8 @@
-if [ "$#" -ne 1 ]; then
-    echo
+if [ "$#" -ne 1 ]; then echo
     echo "This script copies the shared library needed to use Axolote Engine"
-    echo "and paste into a path of your choice. It creates the folder called"
+    echo "and paste into a path of your choice. It creates the folder"
+    echo "'resources' containing the shaders and creates the folder 'external'"
     echo "'external' that has subfolders 'lib' and 'include'. You should then"
-    echo "link the libraries and the header files when compiling"
     echo
     echo "Usage: ./install.sh <path-to-install>"
     exit
@@ -17,11 +16,13 @@ echo
 echo "Creating temporary folder"
 mkdir tmp/external/lib/axolote -p
 mkdir tmp/external/include -p
+mkdir tmp/resources/shaders -p
 
 echo "Moving content to temp folder"
 cp lib/* tmp/external/lib/axolote/
 cp external/assimp/* tmp/external/lib/axolote
 cp -r include/axolote tmp/external/include/
+cp -r resources/shaders tmp/resources/shaders
 
 echo "Checking existence of $path"
 if [ -d "$path" ]; then
