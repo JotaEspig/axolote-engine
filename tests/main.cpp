@@ -57,7 +57,7 @@ void CelestialBody::draw()
         for (auto &e2 : e.meshes)
         {
             e2.shader.activate();
-            e2.shader.set_uniform_int("is_light_color_set", !is_light_emissor);
+            e2.shader.set_uniform_int("light.is_set", !is_light_emissor);
         }
     }
 
@@ -68,7 +68,7 @@ void CelestialBody::draw()
         for (auto &e2 : e.meshes)
         {
             e2.shader.activate();
-            e2.shader.set_uniform_int("is_light_color_set", 0);
+            e2.shader.set_uniform_int("light.is_set", 0);
         }
     }
 };
@@ -143,11 +143,11 @@ void App::main_loop()
     );
 
     shader_program.activate();
-    shader_program.set_uniform_float("ambient", 0.05f);
-    shader_program.set_uniform_float4("light_color", 1.0f, 1.0f, 1.0f, 1.0f);
-    shader_program.set_uniform_float3("light_pos", 0.0f, 0.0f, 0.0f);
+    shader_program.set_uniform_float("light.ambient", 0.05f);
+    shader_program.set_uniform_float4("light.color", 1.0f, 1.0f, 1.0f, 1.0f);
+    shader_program.set_uniform_float3("light.pos", 0.0f, 0.0f, 0.0f);
     // Hardcoded Sun object radius
-    shader_program.set_uniform_float("light_radius", 5.0f);
+    shader_program.set_uniform_float("light.radius", 5.0f);
 
     // Table with planets data:
     // https://nssdc.gsfc.nasa.gov/planetary/factsheet/
