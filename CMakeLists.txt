@@ -49,6 +49,7 @@ set(
     ${SOURCE_DIR}/vao.cpp
     ${SOURCE_DIR}/vbo.cpp
     ${SOURCE_DIR}/window.cpp
+    ${SOURCE_DIR}/utils/line.cpp
 
     ${CMAKE_SOURCE_DIR}/external/glad/src/glad.c
     ${CMAKE_SOURCE_DIR}/external/stb/stb.cpp
