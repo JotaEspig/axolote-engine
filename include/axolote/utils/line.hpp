@@ -34,6 +34,8 @@ public:
     float length;
     /** line thickness **/
     float thickness;
+    /** line color **/
+    glm::vec3 color;
 
     /**
      * \brief Constructor
@@ -46,9 +48,17 @@ public:
      * \param thickness - line thickness
      **/
     Line(
-        glm::vec3 point, glm::vec3 direction_vector, float length,
-        float thickness
+        const glm::vec3 &point, const glm::vec3 &direction_vector, float length,
+        float thickness, const glm::vec3 &color
     );
+
+    /**
+     * \brief build the mesh for the line
+     * \author João Vitor Espig (JotaEspig)
+     * \date December 12, 2023
+     * \version December 12, 2023
+     **/
+    void build_mesh();
 };
 
 } // namespace axolote
