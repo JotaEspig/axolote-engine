@@ -3,7 +3,7 @@
  * \brief Line object
  * \author João Vitor Espig (JotaEspig)
  * \date December 12, 2023
- * \version December 12, 2023
+ * \version December 21, 2023
  **/
 #pragma once
 
@@ -18,7 +18,7 @@ namespace axolote
  * \brief Defines a drawable line
  * \author João Vitor Espig (JotaEspig)
  * \date December 12, 2023
- * \version December 12, 2023
+ * \version December 21, 2023
  *
  * Abstraction from the equation: r = a + λb
  * See: https://www.cuemath.com/algebra/vector-equation/
@@ -36,29 +36,36 @@ public:
     float thickness;
     /** line color **/
     glm::vec3 color;
+    /** quality of line **/
+    float line_quality;
 
     /**
      * \brief Constructor
      * \author João Vitor Espig (JotaEspig)
      * \date December 12, 2023
-     * \version December 12, 2023
+     * \version December 21, 2023
      * \param point - starting point
      * \param direction_vector - direction vector
      * \param length - line length
      * \param thickness - line thickness
+     * \param line_quality - line quality
      **/
     Line(
         const glm::vec3 &point, const glm::vec3 &direction_vector, float length,
-        float thickness, const glm::vec3 &color
+        float thickness, const glm::vec3 &color, float line_quality = 20.0f
     );
 
     /**
      * \brief build the mesh for the line
      * \author João Vitor Espig (JotaEspig)
      * \date December 12, 2023
-     * \version December 12, 2023
+     * \version December 21, 2023
      **/
     void build_mesh();
+
+protected:
+    /** original direction vector **/
+    glm::vec3 original_dir_vec{0.0f, 1.0f, 0.0f};
 };
 
 } // namespace axolote
