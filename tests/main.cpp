@@ -254,12 +254,11 @@ void App::main_loop()
 
     // Scene object
     std::shared_ptr<axolote::Scene> scene{new axolote::Scene{}};
-    scene->camera.pos = glm::vec3{0.0f, 400.0f, 0.0f};
-    scene->camera.orientation = glm::normalize(glm::vec3{.1f, -1.0f, 0.0f});
     scene->camera.speed = 3.0f;
     scene->camera.sensitivity = 10000.0f;
 
     // Add celestial bodies as drawable to scene
+    /*
     scene->add_drawable(sun);
     scene->add_drawable(mercury);
     scene->add_drawable(venus);
@@ -270,7 +269,16 @@ void App::main_loop()
     scene->add_drawable(uranus);
     scene->add_drawable(neptune);
     scene->add_drawable(pluto);
+    */
+    std::shared_ptr<axolote::Line> l{new axolote::Line{
+        {0.0f, 0.0f, 0.0f},
+        {-1.0f, 1.0f, 0.0f},
+        0.3f,
+        0.01f,
+        {1.0f, 0.0f, 0.0f}}};
+    l->bind_shader(shader_program);
 
+    scene->add_drawable(l);
     current_scene = scene;
     double before = glfwGetTime();
     while (!should_close())

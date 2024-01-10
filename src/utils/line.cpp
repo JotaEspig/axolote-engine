@@ -1,6 +1,8 @@
 #include <cmath>
+#include <iostream>
 
 #include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 #include <axolote/structs.hpp>
 #include <axolote/utils/line.hpp>
@@ -82,6 +84,49 @@ void Line::build_mesh()
     }
 
     meshes.push_back({vs, es, {}});
+}
+
+void Line::draw()
+{
+    set_matrix();
+    Object3D::draw();
+}
+
+void Line::set_matrix()
+{
+    glm::mat4 mat{1.0f};
+    float x_rot = get_x_rotation();
+    float z_rot = get_z_rotation();
+    mat = glm::rotate(mat, x_rot, {1.0f, 0.0f, 0.0f});
+    mat = glm::rotate(mat, z_rot, {0.0f, 0.0f, 1.0f});
+    mat = glm::translate(mat, a);
+    model_mat = mat;
+}
+
+float Line::get_x_rotation() const
+{
+    glm::vec3 orig_v = original_dir_vec;
+    orig_v.x = 0.0f;
+    glm::vec3 v = dir_vec;
+    v.x = 0.0f;
+
+    float x = glm::length(v) * glm::length(orig_v);
+    if (x == 0)
+        return 0;
+    return -std::acos(glm::dot(v, orig_v) / (x));
+}
+
+float Line::get_z_rotation() const
+{
+    glm::vec3 orig_v = original_dir_vec;
+    orig_v.z = 0.0f;
+    glm::vec3 v = dir_vec;
+    v.z = 0.0f;
+
+    float x = glm::length(v) * glm::length(orig_v);
+    if (x == 0)
+        return 0;
+    return -std::acos(glm::dot(v, orig_v) / (x));
 }
 
 } // namespace axolote

@@ -3,7 +3,7 @@
  * \brief Line object
  * \author João Vitor Espig (JotaEspig)
  * \date December 12, 2023
- * \version December 21, 2023
+ * \version December 26, 2023
  **/
 #pragma once
 
@@ -18,7 +18,7 @@ namespace axolote
  * \brief Defines a drawable line
  * \author João Vitor Espig (JotaEspig)
  * \date December 12, 2023
- * \version December 21, 2023
+ * \version December 26, 2023
  *
  * Abstraction from the equation: r = a + λb
  * See: https://www.cuemath.com/algebra/vector-equation/
@@ -63,9 +63,33 @@ public:
      **/
     void build_mesh();
 
+    /**
+     * \brief draws the line using set_matrix before
+     * \author João Vitor Espig (JotaEspig)
+     * \date December 26, 2023
+     * \version December 26, 2023
+     **/
+    void draw() override;
+
 protected:
     /** original direction vector **/
     glm::vec3 original_dir_vec{0.0f, 1.0f, 0.0f};
+
+    /**
+     * \brief get the transformation matrix
+     * \author João Vitor Espig (JotaEspig)
+     * \date December 26, 2023
+     * \version December 26, 2023
+     *
+     * it uses the point A and the direction vector
+     **/
+    void set_matrix();
+
+private:
+    // TODO these 2 functions is not working correctly, fix it
+    // it doesnt consider the if the rotation should be negative or not
+    float get_x_rotation() const;
+    float get_z_rotation() const;
 };
 
 } // namespace axolote
