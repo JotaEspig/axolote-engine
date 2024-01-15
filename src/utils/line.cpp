@@ -95,15 +95,15 @@ void Line::draw()
 void Line::set_matrix()
 {
     glm::mat4 mat{1.0f};
-    float x_rot = get_x_rotation();
-    float z_rot = get_z_rotation();
+    float x_rot = get_rotation_around_x();
+    float z_rot = get_rotation_around_z();
     mat = glm::rotate(mat, x_rot, {1.0f, 0.0f, 0.0f});
     mat = glm::rotate(mat, z_rot, {0.0f, 0.0f, 1.0f});
     mat = glm::translate(mat, a);
     model_mat = mat;
 }
 
-float Line::get_x_rotation() const
+float Line::get_rotation_around_x() const
 {
     glm::vec3 orig_v = original_dir_vec;
     orig_v.x = 0.0f;
@@ -113,10 +113,15 @@ float Line::get_x_rotation() const
     float x = glm::length(v) * glm::length(orig_v);
     if (x == 0)
         return 0;
-    return -std::acos(glm::dot(v, orig_v) / (x));
+
+    float angulation = -std::acos(glm::dot(v, orig_v) / (x));
+    std::cout << "x" << 180 * angulation * (1 / M_PI) << std::endl;
+    if (v.z < 0)
+        return -angulation;
+    return angulation;
 }
 
-float Line::get_z_rotation() const
+float Line::get_rotation_around_z() const
 {
     glm::vec3 orig_v = original_dir_vec;
     orig_v.z = 0.0f;
@@ -126,7 +131,12 @@ float Line::get_z_rotation() const
     float x = glm::length(v) * glm::length(orig_v);
     if (x == 0)
         return 0;
-    return -std::acos(glm::dot(v, orig_v) / (x));
+
+    float angulation = -std::acos(glm::dot(v, orig_v) / (x));
+    std::cout << "z" << 180 * angulation * (1 / M_PI) << std::endl;
+    if (v.x < 0)
+        return -angulation;
+    return angulation;
 }
 
 } // namespace axolote

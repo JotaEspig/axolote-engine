@@ -87,9 +87,10 @@ protected:
 
 private:
     // TODO these 2 functions is not working correctly, fix it
-    // it doesnt consider the if the rotation should be negative or not
-    float get_x_rotation() const;
-    float get_z_rotation() const;
+    // Maybe I should consider to try a different method instead of this
+    // Ask for help from a professor
+    float get_rotation_around_x() const;
+    float get_rotation_around_z() const;
 };
 
 } // namespace axolote
