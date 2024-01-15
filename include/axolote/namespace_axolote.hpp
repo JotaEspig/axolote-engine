@@ -15,4 +15,4 @@
  **/
 namespace axolote
 {
-};
+} // namespace axolote
