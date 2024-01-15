@@ -5,8 +5,8 @@
 
 #include <stb/stb_image.h>
 
-#include <axolote/shader.hpp>
-#include <axolote/texture.hpp>
+#include <axolote/gl/shader.hpp>
+#include <axolote/gl/texture.hpp>
 
 namespace axolote
 {

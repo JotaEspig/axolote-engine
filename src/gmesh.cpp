@@ -6,12 +6,12 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/quaternion.hpp>
 
-#include <axolote/ebo.hpp>
+#include <axolote/gl/ebo.hpp>
+#include <axolote/gl/vao.hpp>
+#include <axolote/gl/vbo.hpp>
 #include <axolote/gmesh.hpp>
 #include <axolote/mesh.hpp>
 #include <axolote/structs.hpp>
-#include <axolote/vao.hpp>
-#include <axolote/vbo.hpp>
 
 namespace axolote
 {

@@ -22,8 +22,8 @@
 #include <assimp/scene.h>
 #include <glm/glm.hpp>
 
+#include <axolote/gl/texture.hpp>
 #include <axolote/gmesh.hpp>
-#include <axolote/texture.hpp>
 
 namespace axolote
 {

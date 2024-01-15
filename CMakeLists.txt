@@ -36,18 +36,18 @@ set(SOURCE_DIR ${CMAKE_SOURCE_DIR}/src)
 set(
     SOURCE_FILES
     ${SOURCE_DIR}/camera.cpp
-    ${SOURCE_DIR}/ebo.cpp
+    ${SOURCE_DIR}/gl/ebo.cpp
     ${SOURCE_DIR}/entity.cpp
     ${SOURCE_DIR}/gmesh.cpp
     ${SOURCE_DIR}/mesh.cpp
     ${SOURCE_DIR}/model.cpp
     ${SOURCE_DIR}/object3d.cpp
     ${SOURCE_DIR}/scene.cpp
-    ${SOURCE_DIR}/shader.cpp
-    ${SOURCE_DIR}/texture.cpp
+    ${SOURCE_DIR}/gl/shader.cpp
+    ${SOURCE_DIR}/gl/texture.cpp
     ${SOURCE_DIR}/utils.cpp
-    ${SOURCE_DIR}/vao.cpp
-    ${SOURCE_DIR}/vbo.cpp
+    ${SOURCE_DIR}/gl/vao.cpp
+    ${SOURCE_DIR}/gl/vbo.cpp
     ${SOURCE_DIR}/window.cpp
     ${SOURCE_DIR}/utils/line.cpp
 

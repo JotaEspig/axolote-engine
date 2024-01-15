@@ -3,10 +3,10 @@
 #include <glm/glm.hpp>
 
 #include <axolote/entity.hpp>
+#include <axolote/gl/shader.hpp>
 #include <axolote/gmesh.hpp>
 #include <axolote/model.hpp>
 #include <axolote/object3d.hpp>
-#include <axolote/shader.hpp>
 
 #define UNUSED(x) (void)(x)
 

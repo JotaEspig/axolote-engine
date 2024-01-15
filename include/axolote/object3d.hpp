@@ -10,8 +10,8 @@
 #include <GL/gl.h>
 #include <glm/glm.hpp>
 
+#include <axolote/gl/shader.hpp>
 #include <axolote/model.hpp>
-#include <axolote/shader.hpp>
 
 namespace axolote
 {

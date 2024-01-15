@@ -12,7 +12,7 @@
 
 #include <GL/gl.h>
 
-#include <axolote/vbo.hpp>
+#include <axolote/gl/vbo.hpp>
 
 namespace axolote
 {

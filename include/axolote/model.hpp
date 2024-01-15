@@ -13,9 +13,9 @@
 #include <glm/glm.hpp>
 
 #include <axolote/drawable.hpp>
+#include <axolote/gl/shader.hpp>
+#include <axolote/gl/texture.hpp>
 #include <axolote/gmesh.hpp>
-#include <axolote/shader.hpp>
-#include <axolote/texture.hpp>
 
 namespace axolote
 {
