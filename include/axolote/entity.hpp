@@ -87,13 +87,16 @@ public:
      * \author João Vitor Espig (JotaEspig)
      * \date October 27, 2023
      * \version October 27, 2023
+     * \param idx - the index of the shader
+     * \param shader - shader itself
      **/
-    void bind_shader_at(size_t idx, const Shader &shader);
+    void bind_shader_at(size_t idx, const gl::Shader &shader);
     /**
      * \brief virtual function that describes how entity updates its objects
      * \author João Vitor Espig (JotaEspig)
      * \date October 27, 2023
      * \version October 27, 2023
+     * \param time - delta time
      **/
     virtual void update(double time);
     /**

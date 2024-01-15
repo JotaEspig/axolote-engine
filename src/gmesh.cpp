@@ -40,13 +40,13 @@ GMesh::GMesh(GMesh &&gmesh) :
 
 GMesh::GMesh(
     const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices,
-    const std::vector<Texture> &textures
+    const std::vector<gl::Texture> &textures
 ) :
     Mesh(vertices, indices, textures)
 {
     vao.bind();
-    vbo = VBO(vertices);
-    ebo = EBO(indices);
+    vbo = gl::VBO(vertices);
+    ebo = gl::EBO(indices);
 
     vao.link_attrib(vbo, 0, 3, GL_FLOAT, sizeof(Vertex), (void *)0);
     vao.link_attrib(
@@ -63,7 +63,7 @@ GMesh::GMesh(
     ebo.unbind();
 }
 
-void GMesh::bind_shader(const Shader &shader)
+void GMesh::bind_shader(const gl::Shader &shader)
 {
     GMesh::shader = shader;
 }
@@ -93,7 +93,7 @@ void GMesh::draw(const glm::mat4 &mat)
     shader.set_uniform_int("diffuse0", 99);
     shader.set_uniform_int("specular0", 99);
 
-    for (Texture t : textures)
+    for (gl::Texture t : textures)
     {
         std::string num;
         std::string type = t.type;
@@ -115,7 +115,7 @@ void GMesh::draw(const glm::mat4 &mat)
     vao.bind();
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 
-    for (Texture t : textures)
+    for (gl::Texture t : textures)
     {
         t.unbind();
     }

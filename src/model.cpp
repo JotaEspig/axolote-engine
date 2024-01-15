@@ -39,7 +39,7 @@ Model::Model(Model &&model) :
 
 Model::Model(
     const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices,
-    const std::vector<Texture> &textures
+    const std::vector<gl::Texture> &textures
 )
 {
     meshes.push_back(GMesh{vertices, indices, textures});
@@ -51,7 +51,7 @@ Model::Model(std::string path, const glm::vec3 &_color) :
     load_model(path);
 }
 
-void Model::bind_shader(const Shader &shader)
+void Model::bind_shader(const gl::Shader &shader)
 {
     for (GMesh &e : meshes)
         e.bind_shader(shader);

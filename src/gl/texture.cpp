@@ -11,6 +11,9 @@
 namespace axolote
 {
 
+namespace gl
+{
+
 Texture::Texture() :
     loaded{false}
 {
@@ -116,5 +119,7 @@ void Texture::operator=(Texture &&texture)
     unit = std::move(texture.unit);
     loaded = std::move(texture.loaded);
 }
+
+} // namespace gl
 
 } // namespace axolote

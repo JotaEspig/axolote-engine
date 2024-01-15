@@ -81,7 +81,7 @@ public:
 
     std::shared_ptr<CelestialBody> add_celestial_body(
         double mass, glm::vec3 pos, glm::vec3 vel, glm::vec3 color,
-        axolote::Shader shader_program
+        axolote::gl::Shader shader_program
     );
     void update(double dt);
 
@@ -91,7 +91,7 @@ private:
 
 std::shared_ptr<CelestialBody> SolarSystem::add_celestial_body(
     double mass, glm::vec3 pos, glm::vec3 vel, glm::vec3 color,
-    axolote::Shader shader_program
+    axolote::gl::Shader shader_program
 )
 {
     // Create object matrix
@@ -137,7 +137,7 @@ void App::main_loop()
 {
     std::string original_title = title();
 
-    axolote::Shader shader_program(
+    axolote::gl::Shader shader_program(
         "./resources/shaders/def_vertex_shader.glsl",
         "./resources/shaders/def_fragment_shader.glsl"
     );

@@ -6,6 +6,9 @@
 namespace axolote
 {
 
+namespace gl
+{
+
 VAO::VAO()
 {
     glGenVertexArrays(1, &id);
@@ -56,5 +59,7 @@ void VAO::operator=(VAO &&vao)
 {
     id = std::move(vao.id);
 }
+
+} // namespace gl
 
 } // namespace axolote

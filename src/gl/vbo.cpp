@@ -8,6 +8,9 @@
 namespace axolote
 {
 
+namespace gl
+{
+
 VBO::VBO()
 {
 }
@@ -56,5 +59,7 @@ void VBO::operator=(VBO &&vbo)
 {
     id = std::move(vbo.id);
 }
+
+} // namespace gl
 
 } // namespace axolote

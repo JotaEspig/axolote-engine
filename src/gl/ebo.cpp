@@ -9,6 +9,9 @@
 namespace axolote
 {
 
+namespace gl
+{
+
 EBO::EBO()
 {
 }
@@ -57,5 +60,7 @@ void EBO::operator=(EBO &&ebo)
 {
     id = std::move(ebo.id);
 }
+
+} // namespace gl
 
 } // namespace axolote

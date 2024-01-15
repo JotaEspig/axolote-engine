@@ -20,6 +20,9 @@
 namespace axolote
 {
 
+namespace gl
+{
+
 /**
  * \brief OpenGL VBO handler
  * \author João Vitor Espig (JotaEspig)
@@ -102,5 +105,7 @@ public:
      **/
     void operator=(VBO &&vbo);
 };
+
+} // namespace gl
 
 } // namespace axolote

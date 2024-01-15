@@ -120,7 +120,7 @@ public:
 
 private:
     /** vector of shaders from drawable objects **/
-    std::vector<Shader> shaders;
+    std::vector<gl::Shader> shaders;
 };
 
 } // namespace axolote

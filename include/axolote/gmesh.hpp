@@ -35,13 +35,13 @@ class GMesh : public Mesh, public Drawable
 {
 public:
     /** VAO **/
-    VAO vao;
+    gl::VAO vao;
     /** VBO **/
-    VBO vbo;
+    gl::VBO vbo;
     /** EBO **/
-    EBO ebo;
+    gl::EBO ebo;
     /** Shader **/
-    Shader shader;
+    gl::Shader shader;
 
     /**
      * \brief Constructor
@@ -77,7 +77,7 @@ public:
      **/
     GMesh(
         const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices,
-        const std::vector<Texture> &textures
+        const std::vector<gl::Texture> &textures
     );
 
     /**
@@ -86,7 +86,7 @@ public:
      * \date October 27, 2023
      * \version October 27, 2023
      **/
-    void bind_shader(const Shader &shader);
+    void bind_shader(const gl::Shader &shader);
     /**
      * \brief draws
      * \author João Vitor Espig (JotaEspig)

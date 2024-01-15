@@ -14,6 +14,9 @@
 namespace axolote
 {
 
+namespace gl
+{
+
 /**
  * \brief texture operations
  * \author João Vitor Espig (JotaEspig)
@@ -111,5 +114,7 @@ public:
      **/
     void operator=(Texture &&texture);
 };
+
+} // namespace gl
 
 } // namespace axolote

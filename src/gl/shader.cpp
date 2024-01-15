@@ -23,6 +23,9 @@ static GLint check_shader_compilation(GLuint shader_id, char *log, size_t size)
 namespace axolote
 {
 
+namespace gl
+{
+
 Shader::Shader()
 {
 }
@@ -129,5 +132,7 @@ void Shader::operator=(Shader &&shader)
 {
     id = std::move(shader.id);
 }
+
+} // namespace gl
 
 } // namespace axolote

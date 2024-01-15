@@ -33,7 +33,7 @@ public:
     /** polygon mesh indices **/
     std::vector<GLuint> indices;
     /** textures to be rendered **/
-    std::vector<Texture> textures;
+    std::vector<gl::Texture> textures;
 
     /**
      * \brief Constructor
@@ -70,7 +70,7 @@ public:
     Mesh(
         const std::vector<Vertex> &_vertices,
         const std::vector<GLuint> &_indices,
-        const std::vector<Texture> &_textures
+        const std::vector<gl::Texture> &_textures
     );
 
     /**

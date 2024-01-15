@@ -43,7 +43,7 @@ void Scene::add_drawable(std::shared_ptr<Entity> e)
         for (const GMesh &g : o.meshes)
         {
             bool already_included = false;
-            for (const Shader &s : shaders)
+            for (const gl::Shader &s : shaders)
             {
                 if (s.id == g.shader.id)
                 {
@@ -63,7 +63,7 @@ void Scene::add_drawable(std::shared_ptr<Object3D> o)
     for (const GMesh &g : o->meshes)
     {
         bool already_included = false;
-        for (const Shader &s : shaders)
+        for (const gl::Shader &s : shaders)
         {
             if (s.id == g.shader.id)
             {
@@ -83,7 +83,7 @@ void Scene::update_camera(float aspect_ratio)
     glm::mat4 projection = glm::perspective(
         glm::radians(camera.fov), aspect_ratio, 0.1f, 1000.0f
     );
-    for (Shader &s : shaders)
+    for (gl::Shader &s : shaders)
     {
         s.activate();
         s.set_uniform_float3(

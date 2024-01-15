@@ -13,6 +13,9 @@
 namespace axolote
 {
 
+namespace gl
+{
+
 /**
  * \brief OpenGL shader handler
  * \author João Vitor Espig (JotaEspig)
@@ -142,5 +145,7 @@ public:
      **/
     void operator=(Shader &&shader);
 };
+
+} // namespace gl
 
 } // namespace axolote

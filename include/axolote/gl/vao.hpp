@@ -17,6 +17,9 @@
 namespace axolote
 {
 
+namespace gl
+{
+
 /**
  * \brief OpenGL VAO handler
  * \author João Vitor Espig (JotaEspig)
@@ -107,5 +110,7 @@ public:
      **/
     void operator=(VAO &&vao);
 };
+
+} // namespace gl
 
 } // namespace axolote

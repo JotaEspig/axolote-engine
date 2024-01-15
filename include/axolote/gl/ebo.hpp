@@ -17,6 +17,9 @@
 namespace axolote
 {
 
+namespace gl
+{
+
 /**
  * \brief OpenGL EBO handler
  * \author João Vitor Espig (JotaEspig)
@@ -99,5 +102,7 @@ public:
      **/
     void operator=(EBO &&ebo);
 };
+
+} // namespace gl
 
 } // namespace axolote

@@ -68,7 +68,7 @@ public:
      **/
     Object3D(
         const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices,
-        const std::vector<Texture> &textures, const glm::mat4 &mat
+        const std::vector<gl::Texture> &textures, const glm::mat4 &mat
     );
     /**
      * \brief initializes an Object3D from model file
