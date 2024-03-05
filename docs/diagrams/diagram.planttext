@@ -1,0 +1,80 @@
+@startuml
+
+skin rose
+
+class Camera {
+  +float speed = 1.0f
+  +float sensitivity = 1.0f
+  +float fov = 45.0f
+  +bool first_click = true
+  +glm::vec3 pos
+  +glm::vec3 orientation
+  +glm::vec3 up
+
+  +Camera()
+  +Camera(const Camera &camera)
+  +Camera(Camera &&camera)
+  +Camera(const glm::vec &position)
+
+  +void foward(float delta_t = 1.0f)
+  +void leftward(float delta_t = 1.0f)
+  +void rightward(float delta_t = 1.0f)
+  +void backward(float delta_t = 1.0f)
+  +void upward(float delta_t = 1.0f)
+  +void downward(float delta_t = 1.0f)
+  +void move_vision(float x, float y, float width, float height, double delta_t = 1.0
+  +void operator=(const Camera &camera)
+  +void operator=(Camera &&camera)
+}
+
+struct Color {
+  +float r
+  +float g
+  +float b
+  +float opacity
+}
+
+interface Drawable {
+  +virtual void draw() = 0
+  +virtual void draw(const glm::mat4 &mat) = 0
+}
+
+class EBO {
+  +id
+
+  +EBO()
+  +EBO(const EBO &ebo)
+  +EBO(EBO &&ebo)
+  +EBO(const std::vector<GLuint> &indices)
+
+  +void bind()
+  +void unbind()
+  +void destroy()
+  +void operator=(const EBO &ebo)
+  +void operator=(EBO &&ebo)
+}
+
+class Entity {
+  #std::vector<Object3D> objects
+
+  +Entity()
+  +Entity(const Entity &entity)
+  +Entity(Entity &&entity)
+
+  +void add_object(const Object3D &o)
+  +void add_object(const Object3D &o, glm::mat4 &mat)
+  +void set_matrix(size_t idx, const glm::mat4 &mat)
+  +void bind_shader_at(size_t idx, const Shader &shader)
+  +virtual void update(double time)
+  +void draw() override
+  +void draw(const glm::mat4 &mat) override
+  +void operator=(Entity &&entity)
+  +void operator=(Entity &&entity)
+}
+
+class GMesh{}
+
+Drawable <|-- Entity
+Drawable <|-- GMesh
+
+@enduml
