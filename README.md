@@ -48,7 +48,7 @@ After compiling the project:
 
 ### Installation
 
-see [install.md](https://github.com/JotaEspig/axolote-engine/blob/main/install.md).
+see [install.md](install.md).
 
 ## Help
 
@@ -62,11 +62,11 @@ You can create an Issue or contact the mantainers (authors)
 
 ## Version History
 
-see [CHANGELOG.md](https://github.com/JotaEspig/axolote-engine/blob/main/CHANGELOG.md)
+see [CHANGELOG.md](CHANGELOG.md)
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](https://github.com/JotaEspig/axolote-engine/blob/main/LICENSE) file for details
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
 
 ## Acknowledgments
 
