@@ -2,6 +2,8 @@
 
 skin rose
 
+namespace axolote {
+
 class Camera {
   +float speed = 1.0f
   +float sensitivity = 1.0f
@@ -22,7 +24,7 @@ class Camera {
   +void backward(float delta_t = 1.0f)
   +void upward(float delta_t = 1.0f)
   +void downward(float delta_t = 1.0f)
-  +void move_vision(float x, float y, float width, float height, double delta_t = 1.0
+  +void move_vision(float x, float y, float width, float height, double delta_t = 1.0)
   +void operator=(const Camera &camera)
   +void operator=(Camera &&camera)
 }
@@ -72,9 +74,220 @@ class Entity {
   +void operator=(Entity &&entity)
 }
 
-class GMesh{}
+class GMesh {
+  +VAO vao
+  +VBO vbo
+  +EBO ebo
+  +Shader shader
+
+  +GMesh()
+  +GMesh(const GMesh &gmesh)
+  +GMesh(GMesh &&gmesh)
+  +GMesh(const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices, const std::vector<Texture> &textures)
+
+  +void bind_shader(const Shader &shader)
+  +void draw() override
+  +void draw(const glm::mat4 &mat) override
+  +void destroy()
+  +void operator=(const GMesh &gmesh)
+  +void operator=(GMesh &&gmesh)
+}
+
+class Mesh {
+  +std::vector<Vertex> vertices
+  +std::vector<GLuint> indices
+  +std::vector<Texture> textures
+
+  +Mesh()
+  +Mesh(const Mesh &mesh)
+  +Mesh(Mesh &&mesh)
+  +Mesh(const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices, const std::vector<Texture> &textures)
+  
+  +void operator=(const Mesh &mesh)
+  +void operator=(Mesh &&mesh)
+}
+
+class Model {
+  +std::vector<GMesh> meshes
+  #glm::vec3 color
+
+  +Model()
+  +Model(const Model &model)
+  +Model(Model &&model)
+  +Model(const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices, const std::vector<Texture> &textures)
+  +Model(std::string path, const glm::vec3 &_color=glm::vec3{0.0f, 0.0f, 0.0f})
+
+  +void bind_shader(const SHader &shader)
+  +void draw() override
+  +void draw(const glm::mat4 &mat) override
+  +void operator=(const Model &model)
+  +void operator=(Model &&model)
+  #void load_model(std::string path)
+}
+
+class Object3D {
+  #glm::mat4 model_mat
+
+  +Object3D()
+  +Object3D(const Object3D &obj)
+  +Object3D(Object3D &&obj)
+  +Object3D(const glm::mat4 &mat)
+  +Object3D(const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices, const std::vector<Texture> &textures, const glm::mat4 &mat)
+  +Object3D(std::string path, const glm::vec3 &color, const glm::mat4 &mat)
+
+  +void load_model(std::string path, const glm::vec3 &color=glm::vec3{0.0f, 0.0f, 0.0f})
+  +glm::mat4 get_matrix()
+  +void draw() override
+  +void draw(const glm::Mat4 &mat) override
+  +void operator=(const Object3D &obj)
+  +void operator=(Object3D &&obj)
+}
+
+class Scene {
+  +Camera camera
+  +std::vector<std::shared_ptr<Entity>> entity_objects
+  +std::vector<std::shared_ptr<Object3D>> object3d_objects
+  -std::vector<Shader> shaders
+  
+  +Scene()
+  +Scene(const Scene &scene)
+  +Scene(Scene &&scene)
+  +~Scene()
+
+  +void add_drawable(std::shared_ptr<Entity> e)
+  +void add_drawable(std::shared_ptr<Object3D> o)
+  +void render()
+  +void update(double time)
+  +void update_camera(float aspect_ratio)
+  +void operator=(const Scene &scene)
+  +void operator=(Scene &&scene)
+}
+
+class Shader {
+  +GLuint id
+
+  +Shader()
+  +Shader(const Shader &shader)
+  +Shader(Shader &&shader)
+  +Shader(const char *vertex_file, const char *fragment_file)
+
+  +void activate()
+  +void destroy()
+  +void set_uniform_float(const char *uniform_name, float x)
+  +void set_uniform_float3(const char *uniform_name, float x, float y, float z)
+  +void set_uniform_float4(const char *uniform_name, float x, float y, float z, float w)
+  +void set_uniform_int(const char *uniform_name, int value)
+  +void set_uniform_matrix4(const char *uniform_name, const glm::mat4 &matrix)
+  +void operator=(const Shader &shader)
+  +void operator=(Shader &&shader)
+}
+
+class Texture {
+  +GLuint id
+  +GLuint unit
+  +bool loaded
+  +std::string type
+
+  +Texture()
+  +Texture(const Texture &texture)
+  +Texture(Texture &&texture)
+  +Texture(const char *texture_filename, std::string tex_type, GLuint _unit)
+
+  +void bind()
+  +void unbind()
+  void +activate()
+  +void destroy()
+  +void operator=(const Texture &texture)
+  +void operator=(Texture &&texture)
+}
+
+class VAO {
+  +GLuint id
+
+  +VAO()
+  +VAO(const VAO &vao)
+  +VAO(VAO &&vao)
+
+  +void bind()
+  +void unbind()
+  +void link_attrib(VBO &vbo, GLuint layout, GLuint num_components, GLenum type, GLsizeiptr size, void *offset)
+  +void destroy()
+  +void operator=(const VAO &vao)
+  +void operator=(VAO &&vao)
+}
+
+class VBO {
+  +GLuint id
+
+  +VBO()
+  +VBO(const VBO &vao)
+  +VBO(VBO &&vbo)
+  +VBO(const std::vector<Vertex> &vertices)
+
+  +void bind()
+  +void unbind()
+  +void destroy()
+  +void operator=(const VAO &vao)
+  +void operator=(VAO &&vao)
+}
+
+struct Vertex {
+  +glm::vec3 position
+  +glm::vec3 color
+  +glm::vec3 tex_UV
+  +glm::vec3 normal
+}
+
+class Window {
+  #std::string _title
+  #Color _color
+  #GLFWwindow *window
+  #std::shared_ptr<Scene> current_scene
+
+  +Window()
+  +Window(const Window &window)
+  +Window(Window &&window)
+  +~Window()
+
+  #void init()
+  #bool should_close()
+  #void minimal_process_input(float delta_t)
+  #process_input(float delta_t) : void
+  +Color color()
+  +int height()
+  +int width()
+  +std::string title()
+  +void set_color(const Color &color)
+  +void set_color(uint8_t r, uint8_t g, uint8_t b, float opacity)
+  +void set_height(int new_height)
+  +void set_title(std::string new_title)
+  +void set_width(int new_width)
+  +void operator=(const Window &window)
+  +void operator=(Window &&window)
+}
 
 Drawable <|-- Entity
 Drawable <|-- GMesh
+Mesh <|-- GMesh
+Drawable <|-- Model
+Model <|-- Object3D
+
+GMesh *-- VAO
+GMesh *-- VBO
+GMesh *-- EBO
+GMesh *-- Shader
+Scene *-- Camera
+Window *-- Scene
+Window *-- Color
+
+Entity o-- Object3D
+Mesh o-- Vertex
+Mesh o-- Texture
+Model o-- GMesh
+Scene o-- Shader
+Scene o-- Entity
+Scene o-- Object3D
+
+}
 
 @enduml
