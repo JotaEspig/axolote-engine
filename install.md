@@ -5,7 +5,7 @@ Clone the repository:
 git clone https://github.com/JotaEspig/axolote-engine
 cd axolote-engine
 ```
-To install it in your project you can use the `install.sh` script;
+To install it in your project you can use the `install.sh` script
 ```bash
 ./install.sh <path-to-project>
 ```
