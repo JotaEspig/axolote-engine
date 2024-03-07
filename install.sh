@@ -1,11 +1,11 @@
 if [ "$#" -ne 1 ]; then echo
     echo "This script copies the shared library needed to use Axolote Engine"
     echo "and paste into a path of your choice. It creates the folder"
-    echo "'resources' containing the shaders and creates the folder 'external'"
-    echo "'external' that has subfolders 'lib' and 'include'. You should then"
+    echo "'resources' containing ONLY the shaders and creates the folder"
+    echo "'external' that has subfolders 'lib' and 'include'."
     echo
     echo "Usage: ./install.sh <path-to-install>"
-    exit
+    exit 1
 fi
 
 path=$1
@@ -35,3 +35,4 @@ cp tmp/external -r $path
 
 echo "Cleaning temp folder"
 rm -rf tmp
+exit 0

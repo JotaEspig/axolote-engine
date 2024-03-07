@@ -48,7 +48,7 @@ After compiling the project:
 
 ### Installation
 
-see [install.md](https://github.com/JotaEspig/axolote-engine/blob/main/install.md).
+see [install.md](install.md).
 
 ## Help
 
@@ -62,18 +62,14 @@ You can create an Issue or contact the mantainers (authors)
 
 ## Version History
 
-see [CHANGELOG.md](https://github.com/JotaEspig/axolote-engine/blob/main/CHANGELOG.md)
+see [CHANGELOG.md](CHANGELOG.md)
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](https://github.com/JotaEspig/axolote-engine/blob/main/LICENSE) file for details
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
 
 ## Acknowledgments
 
 * [Learn OpenGL](https://github.com/JoeyDeVries/LearnOpenGL)
 * [OpenGL course](https://www.youtube.com/watch?v=45MIykWJ-C4&ab_channel=freeCodeCamp.org) - By freeCodeCamp
 * [README-Template.md](https://gist.github.com/DomPizzie/7a5ff55ffa9081f2de27c315f5018afc)
-
-## TODO
-
-* See why it's now showing error when now finding a file (solar system 3d)
