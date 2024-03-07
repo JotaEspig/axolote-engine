@@ -6,6 +6,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/string_cast.hpp>
 
 #include <axolote/engine.hpp>
@@ -272,7 +273,7 @@ void App::main_loop()
     */
     std::shared_ptr<axolote::Line> l{new axolote::Line{
         {0.0f, 0.0f, 0.0f},
-        {-1.0f, 1.0f, 0.0f},
+        {0.0f, -1.0f, 0.0f},
         0.3f,
         0.01f,
         {1.0f, 0.0f, 0.0f}}};

@@ -8,7 +8,8 @@ CMakeDoxyfile.in
 CMakeDoxygenDefaults.cmake
 
 # folder
-docs/
+docs/html/
+docs/latex/
 lib/
 bin/
 obj/
