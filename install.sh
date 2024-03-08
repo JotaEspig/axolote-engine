@@ -9,7 +9,7 @@ if [ "$#" -ne 1 ]; then echo
 fi
 
 path=$1
-cmake .
+cmake . -DDEBUG=0
 make -j4
 
 echo
