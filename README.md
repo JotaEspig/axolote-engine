@@ -73,3 +73,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 * [Learn OpenGL](https://github.com/JoeyDeVries/LearnOpenGL)
 * [OpenGL course](https://www.youtube.com/watch?v=45MIykWJ-C4&ab_channel=freeCodeCamp.org) - By freeCodeCamp
 * [README-Template.md](https://gist.github.com/DomPizzie/7a5ff55ffa9081f2de27c315f5018afc)
+
+## TODO
+
+See [TODO.md](TODO.md)

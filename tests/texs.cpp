@@ -20,7 +20,7 @@ void App::main_loop()
 {
     std::string original_title = title();
 
-    axolote::Shader shader_program(
+    axolote::gl::Shader shader_program(
         "./resources/shaders/def_vertex_shader.glsl",
         "./resources/shaders/def_fragment_shader.glsl"
     );

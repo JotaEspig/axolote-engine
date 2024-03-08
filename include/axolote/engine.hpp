@@ -10,15 +10,15 @@
 #define GLFW_INCLUDE_NONE
 
 #include <axolote/camera.hpp>
-#include <axolote/ebo.hpp>
 #include <axolote/entity.hpp>
+#include <axolote/gl/ebo.hpp>
+#include <axolote/gl/shader.hpp>
+#include <axolote/gl/texture.hpp>
+#include <axolote/gl/vao.hpp>
+#include <axolote/gl/vbo.hpp>
 #include <axolote/mesh.hpp>
 #include <axolote/object3d.hpp>
 #include <axolote/scene.hpp>
-#include <axolote/shader.hpp>
 #include <axolote/structs.hpp>
-#include <axolote/texture.hpp>
 #include <axolote/utils/line.hpp>
-#include <axolote/vao.hpp>
-#include <axolote/vbo.hpp>
 #include <axolote/window.hpp>

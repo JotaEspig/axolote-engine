@@ -1,9 +1,17 @@
 cmake_minimum_required(VERSION 2.8.5...3.27.5)
 project(axolote-engine)
 
+# Debug mode
+set(FLAGS "-Wall -Wextra")
+if (DEBUG)
+    set(FLAGS "${FLAGS} -g3 -fsanitize=address,undefined")
+endif ()
+
+message("using flags: ${FLAGS}")
+
 # CMake settings
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${FLAGS}") 
 
 # Find packages
 set(OpenGL_GL_PREFERENCE GLVND)
@@ -36,18 +44,18 @@ set(SOURCE_DIR ${CMAKE_SOURCE_DIR}/src)
 set(
     SOURCE_FILES
     ${SOURCE_DIR}/camera.cpp
-    ${SOURCE_DIR}/ebo.cpp
+    ${SOURCE_DIR}/gl/ebo.cpp
     ${SOURCE_DIR}/entity.cpp
     ${SOURCE_DIR}/gmesh.cpp
     ${SOURCE_DIR}/mesh.cpp
     ${SOURCE_DIR}/model.cpp
     ${SOURCE_DIR}/object3d.cpp
     ${SOURCE_DIR}/scene.cpp
-    ${SOURCE_DIR}/shader.cpp
-    ${SOURCE_DIR}/texture.cpp
+    ${SOURCE_DIR}/gl/shader.cpp
+    ${SOURCE_DIR}/gl/texture.cpp
     ${SOURCE_DIR}/utils.cpp
-    ${SOURCE_DIR}/vao.cpp
-    ${SOURCE_DIR}/vbo.cpp
+    ${SOURCE_DIR}/gl/vao.cpp
+    ${SOURCE_DIR}/gl/vbo.cpp
     ${SOURCE_DIR}/window.cpp
     ${SOURCE_DIR}/utils/line.cpp
 

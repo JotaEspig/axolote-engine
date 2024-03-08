@@ -26,7 +26,7 @@ Mesh::Mesh(Mesh &&mesh) :
 
 Mesh::Mesh(
     const std::vector<Vertex> &_vertices, const std::vector<GLuint> &_indices,
-    const std::vector<Texture> &_textures
+    const std::vector<gl::Texture> &_textures
 ) :
     vertices{_vertices},
     indices{_indices},

@@ -1,9 +1,12 @@
 #include <glad/glad.h>
 
-#include <axolote/vao.hpp>
-#include <axolote/vbo.hpp>
+#include <axolote/gl/vao.hpp>
+#include <axolote/gl/vbo.hpp>
 
 namespace axolote
+{
+
+namespace gl
 {
 
 VAO::VAO()
@@ -56,5 +59,7 @@ void VAO::operator=(VAO &&vao)
 {
     id = std::move(vao.id);
 }
+
+} // namespace gl
 
 } // namespace axolote

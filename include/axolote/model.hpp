@@ -13,9 +13,9 @@
 #include <glm/glm.hpp>
 
 #include <axolote/drawable.hpp>
+#include <axolote/gl/shader.hpp>
+#include <axolote/gl/texture.hpp>
 #include <axolote/gmesh.hpp>
-#include <axolote/shader.hpp>
-#include <axolote/texture.hpp>
 
 namespace axolote
 {
@@ -66,7 +66,7 @@ public:
      **/
     Model(
         const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices,
-        const std::vector<Texture> &textures
+        const std::vector<gl::Texture> &textures
     );
     /**
      * \brief Constructor
@@ -86,7 +86,7 @@ public:
      * \date October 27, 2023
      * \version October 27, 2023
      **/
-    void bind_shader(const Shader &shader);
+    void bind_shader(const gl::Shader &shader);
     /**
      * \brief draws
      * \author João Vitor Espig (JotaEspig)
@@ -139,7 +139,7 @@ protected:
 
 private:
     /** loaded textures **/
-    std::vector<Texture> loaded_textures;
+    std::vector<gl::Texture> loaded_textures;
     /** loaded textures names **/
     std::vector<std::string> loaded_textures_names;
     /** model file directory **/

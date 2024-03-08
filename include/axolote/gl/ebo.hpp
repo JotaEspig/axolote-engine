@@ -1,11 +1,11 @@
 /**
- * \file vbo.hpp
- * \brief OpenGL VBO operations handler
+ * \file ebo.hpp
+ * \brief OpenGL EBO operations handler
  * \author João Vitor Espig (JotaEspig)
  * \date October 04, 2023
  * \version November 06, 2023
  *
- * this file contains a class called VBO that handles OpenGL VBO operations:
+ * this file contains a class called EBO that handles OpenGL EBO operations:
  * Bind, Unbind and destroy
  **/
 #pragma once
@@ -13,23 +13,23 @@
 #include <vector>
 
 #include <GL/gl.h>
-#include <glm/glm.hpp>
-
-#include <axolote/structs.hpp>
 
 namespace axolote
 {
 
+namespace gl
+{
+
 /**
- * \brief OpenGL VBO handler
+ * \brief OpenGL EBO handler
  * \author João Vitor Espig (JotaEspig)
  * \date October 04, 2023
  * \version November 06, 2023
  **/
-class VBO
+class EBO
 {
 public:
-    /** OpenGL VBO id **/
+    /** OpenGL EBO id **/
     GLuint id;
 
     /**
@@ -38,31 +38,31 @@ public:
      * \date October 04, 2023
      * \version October 04, 2023
      **/
-    VBO();
+    EBO();
     /**
      * \brief Copy constructor
      * \author João Vitor Espig (JotaEspig)
      * \date November 06, 2023
      * \version November 06, 2023
-     * \param vbo - VBO object
+     * \param ebo - EBO object
      **/
-    VBO(const VBO &vbo);
+    EBO(const EBO &ebo);
     /**
      * \brief Move constructor
      * \author João Vitor Espig (JotaEspig)
      * \date November 06, 2023
      * \version November 06, 2023
-     * \param vbo - VBO object
+     * \param ebo - EBO object
      **/
-    VBO(VBO &&vbo);
+    EBO(EBO &&ebo);
     /**
      * \brief Constructor
      * \author João Vitor Espig (JotaEspig)
      * \date October 04, 2023
      * \version October 04, 2023
-     * \param vertices - array of vertex
+     * \param indices - array of indices
      **/
-    VBO(const std::vector<Vertex> &vertices);
+    EBO(const std::vector<GLuint> &indices);
 
     /**
      * \brief binds
@@ -90,17 +90,19 @@ public:
      * \author João Vitor Espig (JotaEspig)
      * \date November 06, 2023
      * \version November 06, 2023
-     * \param vbo - VBO object
+     * \param ebo - EBO object
      **/
-    void operator=(const VBO &vbo);
+    void operator=(const EBO &ebo);
     /**
      * \brief operator = overload (move)
      * \author João Vitor Espig (JotaEspig)
      * \date November 06, 2023
      * \version November 06, 2023
-     * \param vbo - VBO object
+     * \param ebo - EBO object
      **/
-    void operator=(VBO &&vbo);
+    void operator=(EBO &&ebo);
 };
+
+} // namespace gl
 
 } // namespace axolote

@@ -12,9 +12,12 @@
 
 #include <GL/gl.h>
 
-#include <axolote/vbo.hpp>
+#include <axolote/gl/vbo.hpp>
 
 namespace axolote
+{
+
+namespace gl
 {
 
 /**
@@ -107,5 +110,7 @@ public:
      **/
     void operator=(VAO &&vao);
 };
+
+} // namespace gl
 
 } // namespace axolote

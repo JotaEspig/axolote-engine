@@ -2,10 +2,13 @@
 
 #include <glad/glad.h>
 
+#include <axolote/gl/vbo.hpp>
 #include <axolote/structs.hpp>
-#include <axolote/vbo.hpp>
 
 namespace axolote
+{
+
+namespace gl
 {
 
 VBO::VBO()
@@ -56,5 +59,7 @@ void VBO::operator=(VBO &&vbo)
 {
     id = std::move(vbo.id);
 }
+
+} // namespace gl
 
 } // namespace axolote

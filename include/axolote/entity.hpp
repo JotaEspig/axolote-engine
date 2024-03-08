@@ -3,19 +3,20 @@
  * \brief entity class
  * \author João Vitor Espig (JotaEspig)
  * \date October 04, 2023
- * \version November 08, 2023
+ * \version March 08, 2024
  **/
 #pragma once
 
+#include <memory>
 #include <vector>
 
 #include <glm/glm.hpp>
 
 #include <axolote/drawable.hpp>
+#include <axolote/gl/shader.hpp>
 #include <axolote/gmesh.hpp>
 #include <axolote/model.hpp>
 #include <axolote/object3d.hpp>
-#include <axolote/shader.hpp>
 
 namespace axolote
 {
@@ -24,7 +25,7 @@ namespace axolote
  * \brief defines a Object (or multiple objects) that can move
  * \author João Vitor Espig (JotaEspig)
  * \date October 04, 2023
- * \version November 08, 2023
+ * \version March 08, 2024
  *
  * You should inherit from this class to be able to create an Entity.
  * That's because each Entity has its own update pattern. See update() method.
@@ -60,19 +61,19 @@ public:
      * \brief adds an object to entity
      * \author João Vitor Espig (JotaEspig)
      * \date November 05, 2023
-     * \version November 05, 2023
-     * \param o - Object3D object
+     * \version March 08, 2024
+     * \param o - Object3D object pointer
      **/
-    void add_object(const Object3D &o);
+    void add_object(const std::shared_ptr<Object3D> &o);
     /**
      * \brief adds an object to entity
      * \author João Vitor Espig (JotaEspig)
      * \date October 08, 2023
      * \version October 27, 2023
-     * \param o - Object3D object
+     * \param o - Object3D object pointer
      * \param mat - model transformation matrix
      **/
-    void add_object(const Object3D &o, const glm::mat4 &mat);
+    void add_object(const std::shared_ptr<Object3D> &o, const glm::mat4 &mat);
     /**
      * \brief set a model matrix at index
      * \author João Vitor Espig (JotaEspig)
@@ -87,13 +88,16 @@ public:
      * \author João Vitor Espig (JotaEspig)
      * \date October 27, 2023
      * \version October 27, 2023
+     * \param idx - the index of the shader
+     * \param shader - shader itself
      **/
-    void bind_shader_at(size_t idx, const Shader &shader);
+    void bind_shader_at(size_t idx, const gl::Shader &shader);
     /**
      * \brief virtual function that describes how entity updates its objects
      * \author João Vitor Espig (JotaEspig)
      * \date October 27, 2023
      * \version October 27, 2023
+     * \param time - delta time
      **/
     virtual void update(double time);
     /**
@@ -134,7 +138,7 @@ public:
 
 protected:
     /** vector of objects (Object3D) **/
-    std::vector<Object3D> objects;
+    std::vector<std::shared_ptr<Object3D>> objects;
 };
 
 } // namespace axolote

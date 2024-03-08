@@ -22,8 +22,8 @@
 #include <assimp/scene.h>
 #include <glm/glm.hpp>
 
+#include <axolote/gl/texture.hpp>
 #include <axolote/gmesh.hpp>
-#include <axolote/texture.hpp>
 
 namespace axolote
 {
@@ -35,7 +35,7 @@ namespace axolote
  **/
 void process_node(
     aiNode *node, const aiScene *scene, std::vector<GMesh> &meshes,
-    glm::vec3 color, std::vector<Texture> &loaded_textures,
+    glm::vec3 color, std::vector<gl::Texture> &loaded_textures,
     std::vector<std::string> &loaded_textures_names, std::string directory
 );
 
@@ -46,7 +46,7 @@ void process_node(
  **/
 GMesh process_mesh(
     aiMesh *mesh, const aiScene *scene, glm::vec3 color,
-    std::vector<Texture> loaded_textures,
+    std::vector<gl::Texture> loaded_textures,
     std::vector<std::string> &loaded_textures_names, std::string directory
 );
 
@@ -55,15 +55,15 @@ GMesh process_mesh(
  * \date October 04, 2023
  * \version Octboer 04, 2023
  **/
-std::vector<Texture> load_material_textures(
+std::vector<gl::Texture> load_material_textures(
     aiMaterial *mat, aiTextureType type, std::string type_name,
-    std::vector<Texture> &loaded_textures,
+    std::vector<gl::Texture> &loaded_textures,
     std::vector<std::string> &loaded_textures_names, std::string directory
 );
 
 void process_node(
     aiNode *node, const aiScene *scene, std::vector<GMesh> &meshes,
-    glm::vec3 color, std::vector<Texture> &loaded_textures,
+    glm::vec3 color, std::vector<gl::Texture> &loaded_textures,
     std::vector<std::string> &loaded_textures_names, std::string directory
 )
 {
@@ -85,13 +85,13 @@ void process_node(
 
 GMesh process_mesh(
     aiMesh *mesh, const aiScene *scene, glm::vec3 color,
-    std::vector<Texture> loaded_textures,
+    std::vector<gl::Texture> loaded_textures,
     std::vector<std::string> &loaded_textures_names, std::string directory
 )
 {
     std::vector<Vertex> vertices;
     std::vector<GLuint> indices;
-    std::vector<Texture> textures;
+    std::vector<gl::Texture> textures;
 
     for (unsigned int i = 0; i < mesh->mNumVertices; i++)
     {
@@ -130,12 +130,12 @@ GMesh process_mesh(
     }
 
     aiMaterial *mat = scene->mMaterials[mesh->mMaterialIndex];
-    std::vector<Texture> diffuse_texs = load_material_textures(
+    std::vector<gl::Texture> diffuse_texs = load_material_textures(
         mat, aiTextureType_DIFFUSE, "diffuse", loaded_textures,
         loaded_textures_names, directory
     );
     textures.insert(textures.end(), diffuse_texs.begin(), diffuse_texs.end());
-    std::vector<Texture> specular_texs = load_material_textures(
+    std::vector<gl::Texture> specular_texs = load_material_textures(
         mat, aiTextureType_SPECULAR, "specular", loaded_textures,
         loaded_textures_names, directory
     );
@@ -144,13 +144,13 @@ GMesh process_mesh(
     return GMesh(vertices, indices, textures);
 }
 
-std::vector<Texture> load_material_textures(
+std::vector<gl::Texture> load_material_textures(
     aiMaterial *mat, aiTextureType type, std::string type_name,
-    std::vector<Texture> &loaded_textures,
+    std::vector<gl::Texture> &loaded_textures,
     std::vector<std::string> &loaded_textures_names, std::string directory
 )
 {
-    std::vector<Texture> textures;
+    std::vector<gl::Texture> textures;
     for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
     {
         aiString str;
@@ -169,7 +169,7 @@ std::vector<Texture> load_material_textures(
         if (skip)
             continue;
 
-        Texture texture(
+        gl::Texture texture(
             (directory + std::string(str.C_Str())).c_str(), type_name, i
         );
         loaded_textures.push_back(texture);

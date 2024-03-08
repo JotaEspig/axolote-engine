@@ -1,5 +1,5 @@
 /**
- * \file namespace.hpp
+ * \file namespace_axolote.hpp
  * \brief documentation of namespace
  * \author João Vitor Espig (JotaEspig)
  * \date October 04, 2023
@@ -15,4 +15,4 @@
  **/
 namespace axolote
 {
-};
+} // namespace axolote

@@ -5,10 +5,13 @@
 
 #include <stb/stb_image.h>
 
-#include <axolote/shader.hpp>
-#include <axolote/texture.hpp>
+#include <axolote/gl/shader.hpp>
+#include <axolote/gl/texture.hpp>
 
 namespace axolote
+{
+
+namespace gl
 {
 
 Texture::Texture() :
@@ -116,5 +119,7 @@ void Texture::operator=(Texture &&texture)
     unit = std::move(texture.unit);
     loaded = std::move(texture.loaded);
 }
+
+} // namespace gl
 
 } // namespace axolote

@@ -7,7 +7,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include <axolote/shader.hpp>
+#include <axolote/gl/shader.hpp>
 #include <axolote/utils.hpp>
 
 static GLint check_shader_compilation(GLuint shader_id, char *log, size_t size)
@@ -21,6 +21,9 @@ static GLint check_shader_compilation(GLuint shader_id, char *log, size_t size)
 }
 
 namespace axolote
+{
+
+namespace gl
 {
 
 Shader::Shader()
@@ -129,5 +132,7 @@ void Shader::operator=(Shader &&shader)
 {
     id = std::move(shader.id);
 }
+
+} // namespace gl
 
 } // namespace axolote

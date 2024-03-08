@@ -7,7 +7,7 @@
  **/
 #pragma once
 
-#include <axolote/shader.hpp>
+#include <glm/glm.hpp>
 
 namespace axolote
 {
