@@ -3,15 +3,15 @@ project(axolote-engine)
 
 # Debug mode
 set(FLAGS "-Wall -Wextra")
-if (DEBUG)
-    set(FLAGS "${FLAGS} -g3 -fsanitize=address,undefined")
+if (NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Release)
 endif ()
-
-message("using flags: ${FLAGS}")
 
 # CMake settings
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${FLAGS}") 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${FLAGS}")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} ${FLAGS} -g3 -fsanitize=address,undefined")
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} ${FLAGS} -O3")
 
 # Find packages
 set(OpenGL_GL_PREFERENCE GLVND)
