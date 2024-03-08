@@ -10,8 +10,10 @@
 #include <GL/gl.h>
 #include <glm/glm.hpp>
 
+#include <axolote/drawable.hpp>
 #include <axolote/gl/shader.hpp>
 #include <axolote/model.hpp>
+#include <memory>
 
 namespace axolote
 {
@@ -20,11 +22,13 @@ namespace axolote
  * \brief defines a 3D Object
  * \author João Vitor Espig (JotaEspig)
  * \date October 08, 2023
- * \version November 07, 2023
+ * \version March 09, 2024
  **/
-class Object3D : public Model
+class Object3D : public Drawable
 {
 public:
+    std::shared_ptr<Model> model{new Model{}};
+
     /**
      * \brief Constructor
      * \author João Vitor Espig (JotaEspig)

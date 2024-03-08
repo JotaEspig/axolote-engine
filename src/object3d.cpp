@@ -1,3 +1,4 @@
+#include <memory>
 #include <string>
 
 #include <GL/gl.h>
@@ -17,13 +18,13 @@ Object3D::Object3D() :
 }
 
 Object3D::Object3D(const Object3D &obj) :
-    Model{obj},
+    model{obj.model},
     model_mat{obj.model_mat}
 {
 }
 
 Object3D::Object3D(Object3D &&obj) :
-    Model{std::move(obj)},
+    model{std::move(obj.model)},
     model_mat{std::move(obj.model_mat)}
 {
 }
@@ -37,7 +38,7 @@ Object3D::Object3D(
     const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices,
     const std::vector<gl::Texture> &textures, const glm::mat4 &mat
 ) :
-    Model{vertices, indices, textures},
+    model{std::make_shared<Model>(vertices, indices, textures)},
     model_mat{mat}
 {
 }
@@ -45,15 +46,15 @@ Object3D::Object3D(
 Object3D::Object3D(
     std::string path, const glm::vec3 &color, const glm::mat4 &mat
 ) :
-    Object3D{mat}
+    model_mat{mat}
 {
     load_model(path, color);
 }
 
 void Object3D::load_model(std::string path, const glm::vec3 &color)
 {
-    Model::color = color;
-    Model::load_model(path);
+    model->color = color;
+    model->load_model(path);
 }
 
 glm::mat4 Object3D::get_matrix() const
@@ -63,7 +64,7 @@ glm::mat4 Object3D::get_matrix() const
 
 void Object3D::draw()
 {
-    Model::draw(model_mat);
+    model->draw(model_mat);
 }
 
 void Object3D::draw(const glm::mat4 &mat)
@@ -74,13 +75,13 @@ void Object3D::draw(const glm::mat4 &mat)
 
 void Object3D::operator=(const Object3D &obj)
 {
-    Model::operator=(obj);
+    model = obj.model;
     model_mat = obj.model_mat;
 }
 
 void Object3D::operator=(Object3D &&obj)
 {
-    Model::operator=(std::move(obj));
+    model = std::move(obj.model);
     model_mat = std::move(obj.model_mat);
 }
 

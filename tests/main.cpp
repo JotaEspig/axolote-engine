@@ -55,7 +55,7 @@ void CelestialBody::draw()
 {
     for (auto &e : objects)
     {
-        for (auto &e2 : e.meshes)
+        for (auto &e2 : e.model->meshes)
         {
             e2.shader.activate();
             e2.shader.set_uniform_int("light.is_set", !is_light_emissor);
@@ -66,7 +66,7 @@ void CelestialBody::draw()
 
     for (auto &e : objects)
     {
-        for (auto &e2 : e.meshes)
+        for (auto &e2 : e.model->meshes)
         {
             e2.shader.activate();
             e2.shader.set_uniform_int("light.is_set", 0);
@@ -274,7 +274,7 @@ void App::main_loop()
     std::shared_ptr<axolote::Line> l{new axolote::Line{
         {0.0f, 0.0f, 0.0f}, {0.0f, -1.0f, 0.0f}, 0.3f, 0.01f, {1.0f, 0.0f, 0.0f}
     }};
-    l->bind_shader(shader_program);
+    l->model->bind_shader(shader_program);
 
     scene->add_drawable(l);
     current_scene = scene;

@@ -48,7 +48,7 @@ void Entity::set_matrix(size_t idx, const glm::mat4 &mat)
 void Entity::bind_shader_at(size_t idx, const gl::Shader &shader)
 {
     assert(idx < objects.size());
-    objects[idx].bind_shader(shader);
+    objects[idx].model->bind_shader(shader);
 }
 
 void Entity::update(double time)

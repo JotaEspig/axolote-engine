@@ -39,10 +39,12 @@ void Line::build_mesh()
         // bottom base face
         glm::vec3 bottom_p1{
             std::cos(i) * thickness, bottom_base_center.y,
-            std::sin(i) * thickness};
+            std::sin(i) * thickness
+        };
         glm::vec3 bottom_p2{
             std::cos(i + step / 2) * thickness, bottom_base_center.y,
-            std::sin(i + step / 2) * thickness};
+            std::sin(i + step / 2) * thickness
+        };
         vs.push_back(Vertex{bottom_base_center, color, {}, {}});
         vs.push_back(Vertex{bottom_p1, color, {}, {}});
         vs.push_back(Vertex{bottom_p2, color, {}, {}});
@@ -53,11 +55,12 @@ void Line::build_mesh()
 
         // top base face
         glm::vec3 top_p1{
-            std::cos(i) * thickness, top_base_center.y,
-            std::sin(i) * thickness};
+            std::cos(i) * thickness, top_base_center.y, std::sin(i) * thickness
+        };
         glm::vec3 top_p2{
             std::cos(i + step / 2) * thickness, top_base_center.y,
-            std::sin(i + step / 2) * thickness};
+            std::sin(i + step / 2) * thickness
+        };
         vs.push_back(Vertex{top_p1, color, {}, {}});
         vs.push_back(Vertex{top_base_center, color, {}, {}});
         vs.push_back(Vertex{top_p2, color, {}, {}});
@@ -83,7 +86,7 @@ void Line::build_mesh()
         ++counter;
     }
 
-    meshes.push_back({vs, es, {}});
+    model->meshes.push_back({vs, es, {}});
 }
 
 void Line::draw()
