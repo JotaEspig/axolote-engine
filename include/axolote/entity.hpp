@@ -7,7 +7,6 @@
  **/
 #pragma once
 
-#include <memory>
 #include <vector>
 
 #include <glm/glm.hpp>
@@ -62,18 +61,18 @@ public:
      * \author João Vitor Espig (JotaEspig)
      * \date November 05, 2023
      * \version March 08, 2024
-     * \param o - Object3D object pointer
+     * \param o - Object3D object
      **/
-    void add_object(const std::shared_ptr<Object3D> &o);
+    void add_object(const Object3D &o);
     /**
      * \brief adds an object to entity
      * \author João Vitor Espig (JotaEspig)
      * \date October 08, 2023
      * \version October 27, 2023
-     * \param o - Object3D object pointer
+     * \param o - Object3D object
      * \param mat - model transformation matrix
      **/
-    void add_object(const std::shared_ptr<Object3D> &o, const glm::mat4 &mat);
+    void add_object(const Object3D &o, const glm::mat4 &mat);
     /**
      * \brief set a model matrix at index
      * \author João Vitor Espig (JotaEspig)
@@ -138,7 +137,7 @@ public:
 
 protected:
     /** vector of objects (Object3D) **/
-    std::vector<std::shared_ptr<Object3D>> objects;
+    std::vector<Object3D> objects;
 };
 
 } // namespace axolote

@@ -47,7 +47,7 @@ void CelestialBody::update(double dt)
 {
     pos += velocity * (float)dt;
     glm::mat4 mat
-        = glm::translate(objects[0]->get_matrix(), velocity * (float)dt);
+        = glm::translate(objects[0].get_matrix(), velocity * (float)dt);
     set_matrix(0, mat);
 }
 
@@ -55,7 +55,7 @@ void CelestialBody::draw()
 {
     for (auto &e : objects)
     {
-        for (auto &e2 : e->meshes)
+        for (auto &e2 : e.meshes)
         {
             e2.shader.activate();
             e2.shader.set_uniform_int("light.is_set", !is_light_emissor);
@@ -66,7 +66,7 @@ void CelestialBody::draw()
 
     for (auto &e : objects)
     {
-        for (auto &e2 : e->meshes)
+        for (auto &e2 : e.meshes)
         {
             e2.shader.activate();
             e2.shader.set_uniform_int("light.is_set", 0);
@@ -101,9 +101,8 @@ std::shared_ptr<CelestialBody> SolarSystem::add_celestial_body(
 
     // Create body
     std::shared_ptr<CelestialBody> body{new CelestialBody{mass, vel}};
-    auto bodyobj = std::make_shared<axolote::Object3D>(
-        "./resources/models/sphere/sphere.obj", color, mat
-    );
+    auto bodyobj
+        = axolote::Object3D("./resources/models/sphere/sphere.obj", color, mat);
     body->pos = pos;
     body->add_object(bodyobj);
     body->bind_shader_at(0, shader_program);
