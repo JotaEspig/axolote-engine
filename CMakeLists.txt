@@ -1,9 +1,17 @@
 cmake_minimum_required(VERSION 2.8.5...3.27.5)
 project(axolote-engine)
 
+# Debug mode
+set(FLAGS "-Wall -Wextra")
+if (DEBUG)
+    set(FLAGS "${FLAGS} -g3 -fsanitize=address,undefined")
+endif ()
+
+message("using flags: ${FLAGS}")
+
 # CMake settings
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${FLAGS}") 
 
 # Find packages
 set(OpenGL_GL_PREFERENCE GLVND)
