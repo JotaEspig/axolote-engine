@@ -29,10 +29,10 @@ void Line::build_mesh()
     std::vector<Vertex> vs;
     std::vector<GLuint> es;
 
-    float step = 2 * M_PI / 20;
+    float step = 2 * M_PI / line_quality;
 
-    glm::vec3 bottom_base_center = a;
-    glm::vec3 top_base_center = a + (glm::vec3{0.0f, 1.0f, 0.0f} * length);
+    glm::vec3 bottom_base_center = glm::vec3{0.0f};
+    glm::vec3 top_base_center = glm::vec3{0.0f, 1.0f, 0.0f};
     int counter = 0;
     for (float i = 0; i < 2 * M_PI; i += step / 2)
     {
@@ -89,6 +89,18 @@ void Line::build_mesh()
     model->meshes.push_back({vs, es, {}});
 }
 
+void Line::set_end(const glm::vec3 &end)
+{
+    // Calculate new direction
+    glm::vec3 direction = end - a;
+    float distance = glm::length(direction);
+    assert((distance > 0.0f));
+
+    // Set new direction and length
+    dir_vec = glm::normalize(direction);
+    length = distance;
+}
+
 void Line::draw()
 {
     set_matrix();
@@ -99,47 +111,24 @@ void Line::set_matrix()
 {
     glm::mat4 mat{1.0f};
     float x_rot = get_rotation_around_x();
-    float z_rot = get_rotation_around_z();
-    mat = glm::rotate(mat, x_rot, {1.0f, 0.0f, 0.0f});
-    mat = glm::rotate(mat, z_rot, {0.0f, 0.0f, 1.0f});
+    float y_rot = get_rotation_around_y();
     mat = glm::translate(mat, a);
+    mat = glm::rotate(mat, y_rot, {0.0f, 1.0f, 0.0f});
+    mat = glm::rotate(mat, x_rot, {1.0f, 0.0f, 0.0f});
+    mat = glm::scale(mat, {1.0f, length, 1.0f});
     model_mat = mat;
 }
 
 float Line::get_rotation_around_x() const
 {
-    glm::vec3 orig_v = original_dir_vec;
-    orig_v.x = 0.0f;
-    glm::vec3 v = dir_vec;
-    v.x = 0.0f;
-
-    float x = glm::length(v) * glm::length(orig_v);
-    if (x == 0)
-        return 0;
-
-    float angulation = -std::acos(glm::dot(v, orig_v) / (x));
-    std::cout << "x" << 180 * angulation * (1 / M_PI) << std::endl;
-    if (v.z < 0)
-        return -angulation;
-    return angulation;
+    return std::atan2(
+        std::sqrt(dir_vec.z * dir_vec.z + dir_vec.x * dir_vec.x), dir_vec.y
+    );
 }
 
-float Line::get_rotation_around_z() const
+float Line::get_rotation_around_y() const
 {
-    glm::vec3 orig_v = original_dir_vec;
-    orig_v.z = 0.0f;
-    glm::vec3 v = dir_vec;
-    v.z = 0.0f;
-
-    float x = glm::length(v) * glm::length(orig_v);
-    if (x == 0)
-        return 0;
-
-    float angulation = -std::acos(glm::dot(v, orig_v) / (x));
-    std::cout << "z" << 180 * angulation * (1 / M_PI) << std::endl;
-    if (v.x < 0)
-        return -angulation;
-    return angulation;
+    return std::atan2(dir_vec.x, dir_vec.z);
 }
 
 } // namespace axolote

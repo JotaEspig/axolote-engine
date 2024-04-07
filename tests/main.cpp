@@ -255,7 +255,8 @@ void App::main_loop()
 
     // Scene object
     std::shared_ptr<axolote::Scene> scene{new axolote::Scene{}};
-    scene->camera.speed = 3.0f;
+    scene->camera.pos = {0.0f, 0.0f, 1.0f};
+    scene->camera.speed = 1.0f;
     scene->camera.sensitivity = 10000.0f;
 
     // Add celestial bodies as drawable to scene
@@ -271,12 +272,62 @@ void App::main_loop()
     scene->add_drawable(neptune);
     scene->add_drawable(pluto);
     */
-    std::shared_ptr<axolote::Line> l{new axolote::Line{
-        {0.0f, 0.0f, 0.0f}, {0.0f, -1.0f, 0.0f}, 0.3f, 0.01f, {1.0f, 0.0f, 0.0f}
-    }};
-    l->model->bind_shader(shader_program);
 
-    scene->add_drawable(l);
+    // x-axis line
+    std::shared_ptr<axolote::Line> l_x{new axolote::Line{
+        {0.0f, 0.0f, 0.0f}, {1.0f, 0.0f, 0.0f}, 0.3f, 0.01f, {1.0f, 0.0f, 0.0f}
+    }};
+    l_x->model->bind_shader(shader_program);
+    scene->add_drawable(l_x);
+
+    // y-axis line
+    std::shared_ptr<axolote::Line> l_y{new axolote::Line{
+        {0.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}, 0.3f, 0.01f, {0.0f, 1.0f, 0.0f}
+    }};
+    l_y->model->bind_shader(shader_program);
+    scene->add_drawable(l_y);
+
+    // z-axis line
+    std::shared_ptr<axolote::Line> l_z{new axolote::Line{
+        {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 1.0f}, 0.3f, 0.01f, {0.0f, 0.0f, 1.0f}
+    }};
+    l_z->model->bind_shader(shader_program);
+    scene->add_drawable(l_z);
+
+    // xy-axis line
+    std::shared_ptr<axolote::Line> l_xy{new axolote::Line{
+        {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 0.0f}, 0.3f, 0.01f, {1.0f, 1.0f, 0.0f}
+    }};
+    l_xy->model->bind_shader(shader_program);
+    scene->add_drawable(l_xy);
+
+    // xz-axis line
+    std::shared_ptr<axolote::Line> l_xz{new axolote::Line{
+        {0.0f, 0.0f, 0.0f}, {1.0f, 0.0f, 1.0f}, 0.3f, 0.01f, {1.0f, 0.0f, 1.0f}
+    }};
+    l_xz->model->bind_shader(shader_program);
+    scene->add_drawable(l_xz);
+
+    // yz-axis line
+    std::shared_ptr<axolote::Line> l_yz{new axolote::Line{
+        {0.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 1.0f}, 0.3f, 0.01f, {0.0f, 1.0f, 1.0f}
+    }};
+    l_yz->model->bind_shader(shader_program);
+    scene->add_drawable(l_yz);
+
+    // xyz-axis line
+    std::shared_ptr<axolote::Line> l_xyz{new axolote::Line{
+        {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0.3f, 0.01f, {1.0f, 1.0f, 1.0f}
+    }};
+    l_xyz->model->bind_shader(shader_program);
+    scene->add_drawable(l_xyz);
+
+    std::shared_ptr<axolote::Line> l_test{new axolote::Line{
+        {-0.4f, 0.0f, 0.0f}, {1.0f, 0.0f, 1.0f}, 0.3f, 0.01f, {1.0f, 0.5f, 0.0f}
+    }};
+    l_test->model->bind_shader(shader_program);
+    scene->add_drawable(l_test);
+
     current_scene = scene;
     double before = glfwGetTime();
     while (!should_close())
@@ -300,6 +351,11 @@ void App::main_loop()
         // Update celestial bodies
         for (int i = 0; i < 10; i++)
             ss.update(dt / 10.0);
+
+        l_xyz->set_end(glm::vec3{
+            std::cos((float)now) * .2f, std::sin((float)now) * .3f,
+            std::cos((float)now * 0.2f) * .15f
+        });
 
         scene->update_camera((float)width() / height());
         scene->update(dt);
