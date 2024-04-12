@@ -38,9 +38,9 @@ Scene::~Scene()
 void Scene::add_drawable(std::shared_ptr<Entity> e)
 {
     entity_objects.push_back(e);
-    for (const std::shared_ptr<Object3D> &o : e->objects)
+    for (const Object3D &o : e->objects)
     {
-        for (const GMesh &g : o->meshes)
+        for (const GMesh &g : o.model->meshes)
         {
             bool already_included = false;
             for (const gl::Shader &s : shaders)
@@ -60,7 +60,7 @@ void Scene::add_drawable(std::shared_ptr<Entity> e)
 void Scene::add_drawable(std::shared_ptr<Object3D> o)
 {
     object3d_objects.push_back(o);
-    for (const GMesh &g : o->meshes)
+    for (const GMesh &g : o->model->meshes)
     {
         bool already_included = false;
         for (const gl::Shader &s : shaders)

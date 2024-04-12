@@ -1,4 +1,3 @@
-#include <memory>
 #include <vector>
 
 #include <glm/glm.hpp>
@@ -28,14 +27,12 @@ Entity::Entity(Entity &&ent) :
 {
 }
 
-void Entity::add_object(const std::shared_ptr<Object3D> &o)
+void Entity::add_object(const Object3D &o)
 {
     objects.push_back(o);
 }
 
-void Entity::add_object(
-    const std::shared_ptr<Object3D> &o, const glm::mat4 &mat
-)
+void Entity::add_object(const Object3D &o, const glm::mat4 &mat)
 {
     size_t idx = objects.size();
     objects.push_back(o);
@@ -45,13 +42,13 @@ void Entity::add_object(
 void Entity::set_matrix(size_t idx, const glm::mat4 &mat)
 {
     assert(idx < objects.size());
-    objects[idx]->model_mat = mat;
+    objects[idx].model_mat = mat;
 }
 
 void Entity::bind_shader_at(size_t idx, const gl::Shader &shader)
 {
     assert(idx < objects.size());
-    objects[idx]->bind_shader(shader);
+    objects[idx].model->bind_shader(shader);
 }
 
 void Entity::update(double time)
@@ -62,7 +59,7 @@ void Entity::update(double time)
 void Entity::draw()
 {
     for (size_t i = 0; i < objects.size(); ++i)
-        objects[i]->draw();
+        objects[i].draw();
 }
 
 void Entity::draw(const glm::mat4 &mat)

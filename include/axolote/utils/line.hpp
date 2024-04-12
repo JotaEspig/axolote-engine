@@ -64,6 +64,15 @@ public:
     void build_mesh();
 
     /**
+     * \brief set line end point
+     * \author Mickael Reichert (mickaelrei)
+     * \date April 06, 2024
+     * \version April 06, 2024
+     * \param end - end point
+     **/
+    void set_end(const glm::vec3 &end);
+
+    /**
      * \brief draws the line using set_matrix before
      * \author João Vitor Espig (JotaEspig)
      * \date December 26, 2023
@@ -72,9 +81,6 @@ public:
     void draw() override;
 
 protected:
-    /** original direction vector **/
-    glm::vec3 original_dir_vec{0.0f, 1.0f, 0.0f};
-
     /**
      * \brief get the transformation matrix
      * \author João Vitor Espig (JotaEspig)
@@ -90,7 +96,7 @@ private:
     // Maybe I should consider to try a different method instead of this
     // Ask for help from a professor
     float get_rotation_around_x() const;
-    float get_rotation_around_z() const;
+    float get_rotation_around_y() const;
 };
 
 } // namespace axolote

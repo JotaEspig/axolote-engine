@@ -9,7 +9,31 @@ if [ "$#" -ne 1 ]; then echo
 fi
 
 path=$1
-cmake . -DDEBUG=0
+
+# prompt to choose your build type
+type=""
+while true; do
+    echo "Choose your build type"
+    echo "Release [1]"
+    echo "Debug [2]"
+    echo "Exit script [3]"
+    read -p "" option
+
+    case $option in
+        1 | 2 | 3) break ;;
+        *) echo -e "Invalid option \n" && sleep 1 ;;
+    esac
+done
+
+if [ $option = 1 ]; then
+    type="Release"
+elif [ $option = 2 ]; then
+    type="Debug"
+else
+    exit
+fi
+
+cmake . -DCMAKE_BUILD_TYPE=$type
 make -j4
 
 echo

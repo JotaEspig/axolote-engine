@@ -121,6 +121,7 @@ public:
      **/
     void operator=(Model &&model);
 
+    friend class Object3D;
     friend class Scene;
     friend class Entity;
 
