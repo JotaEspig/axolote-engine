@@ -275,21 +275,21 @@ void App::main_loop()
 
     // x-axis line
     std::shared_ptr<axolote::Line> l_x{new axolote::Line{
-        {0.0f, 0.0f, 0.0f}, {1.0f, 0.0f, 0.0f}, 0.3f, 0.01f, {1.0f, 0.0f, 0.0f}
+        {0.0f, 0.0f, 0.0f}, {1.0f, 0.0f, 0.0f}, 1.0f, 0.01f, {1.0f, 0.0f, 0.0f}
     }};
     l_x->model->bind_shader(shader_program);
     scene->add_drawable(l_x);
 
     // y-axis line
     std::shared_ptr<axolote::Line> l_y{new axolote::Line{
-        {0.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}, 0.3f, 0.01f, {0.0f, 1.0f, 0.0f}
+        {0.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}, 1.0f, 0.01f, {0.0f, 1.0f, 0.0f}
     }};
     l_y->model->bind_shader(shader_program);
     scene->add_drawable(l_y);
 
     // z-axis line
     std::shared_ptr<axolote::Line> l_z{new axolote::Line{
-        {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 1.0f}, 0.3f, 0.01f, {0.0f, 0.0f, 1.0f}
+        {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 1.0f}, 1.0f, 0.01f, {0.0f, 0.0f, 1.0f}
     }};
     l_z->model->bind_shader(shader_program);
     scene->add_drawable(l_z);
@@ -327,6 +327,13 @@ void App::main_loop()
     }};
     l_test->model->bind_shader(shader_program);
     scene->add_drawable(l_test);
+
+    auto sphere = std::make_shared<axolote::Object3D>(
+        "./resources/models/sphere/sphere.obj", glm::vec3{1.0f, 1.0f, 1.0f},
+        glm::mat4{1.0f}
+    );
+    sphere->model->bind_shader(shader_program);
+    scene->add_drawable(sphere);
 
     current_scene = scene;
     double before = glfwGetTime();
