@@ -1,3 +1,18 @@
+## v0.2.2 (2024-04-12)
+
+### Fix
+
+- sphere model
+- define GLM_ENABLE_EXPERIMENTAL in newer versions of GLM
+
+### Refactor
+
+- **window**: removed CTRL button
+- using Object3D without pointer
+- removed unused include
+- **Entity**: stores shared_ptr instead of a copy of the object
+- **shaders**: reduced redundancy and using better practices
+
 ## v0.2.1 (2023-11-15)
 
 ### Refactor
