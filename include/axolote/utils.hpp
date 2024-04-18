@@ -9,8 +9,7 @@
 
 #include <string>
 
-namespace axolote
-{
+namespace axolote {
 
 /**
  * \brief read file entirely

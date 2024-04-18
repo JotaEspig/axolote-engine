@@ -15,8 +15,7 @@
 #include <axolote/model.hpp>
 #include <memory>
 
-namespace axolote
-{
+namespace axolote {
 
 /**
  * \brief defines a 3D Object
@@ -24,8 +23,7 @@ namespace axolote
  * \date October 08, 2023
  * \version March 09, 2024
  **/
-class Object3D : public Drawable
-{
+class Object3D : public Drawable {
 public:
     std::shared_ptr<Model> model{new Model{}};
 

@@ -9,8 +9,7 @@
 
 #include <glm/glm.hpp>
 
-namespace axolote
-{
+namespace axolote {
 
 /**
  * \brief describes things that can draw
@@ -18,8 +17,7 @@ namespace axolote
  * \date October 25, 2023
  * \version October 27, 2023
  **/
-class Drawable
-{
+class Drawable {
 public:
     /**
      * \brief virtual function draw

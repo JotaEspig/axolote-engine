@@ -10,8 +10,8 @@
 #include <axolote/gl/shader.hpp>
 #include <axolote/utils.hpp>
 
-static GLint check_shader_compilation(GLuint shader_id, char *log, size_t size)
-{
+static GLint
+check_shader_compilation(GLuint shader_id, char *log, size_t size) {
     GLint success;
     glGetShaderiv(shader_id, GL_COMPILE_STATUS, &success);
     if (!success)
@@ -20,28 +20,22 @@ static GLint check_shader_compilation(GLuint shader_id, char *log, size_t size)
     return success;
 }
 
-namespace axolote
-{
+namespace axolote {
 
-namespace gl
-{
+namespace gl {
 
-Shader::Shader()
-{
+Shader::Shader() {
 }
 
 Shader::Shader(const Shader &shader) :
-    id{shader.id}
-{
+  id{shader.id} {
 }
 
 Shader::Shader(Shader &&shader) :
-    id{std::move(shader.id)}
-{
+  id{std::move(shader.id)} {
 }
 
-Shader::Shader(const char *vertex_file, const char *fragment_file)
-{
+Shader::Shader(const char *vertex_file, const char *fragment_file) {
     std::string vertex_code = get_file_content(vertex_file);
     std::string fragment_code = get_file_content(fragment_file);
     const char *vertex_src = vertex_code.c_str();
@@ -72,8 +66,7 @@ Shader::Shader(const char *vertex_file, const char *fragment_file)
     glDeleteShader(fragment_shader);
 }
 
-void Shader::set_uniform_int(const char *uniform_name, int value)
-{
+void Shader::set_uniform_int(const char *uniform_name, int value) {
     activate();
     GLuint uniform_location = glGetUniformLocation(id, uniform_name);
     glUniform1i(uniform_location, value);
@@ -81,15 +74,13 @@ void Shader::set_uniform_int(const char *uniform_name, int value)
 
 void Shader::set_uniform_matrix4(
     const char *uniform_name, const glm::mat4 &matrix
-)
-{
+) {
     activate();
     GLuint uniform_location = glGetUniformLocation(id, uniform_name);
     glUniformMatrix4fv(uniform_location, 1, GL_FALSE, glm::value_ptr(matrix));
 }
 
-void Shader::set_uniform_float(const char *uniform_name, float x)
-{
+void Shader::set_uniform_float(const char *uniform_name, float x) {
     activate();
     GLuint uniform_location = glGetUniformLocation(id, uniform_name);
     glUniform1f(uniform_location, x);
@@ -97,8 +88,7 @@ void Shader::set_uniform_float(const char *uniform_name, float x)
 
 void Shader::set_uniform_float3(
     const char *uniform_name, float x, float y, float z
-)
-{
+) {
     activate();
     GLuint uniform_location = glGetUniformLocation(id, uniform_name);
     glUniform3f(uniform_location, x, y, z);
@@ -106,30 +96,25 @@ void Shader::set_uniform_float3(
 
 void Shader::set_uniform_float4(
     const char *uniform_name, float x, float y, float z, float w
-)
-{
+) {
     activate();
     GLuint uniform_location = glGetUniformLocation(id, uniform_name);
     glUniform4f(uniform_location, x, y, z, w);
 }
 
-void Shader::activate()
-{
+void Shader::activate() {
     glUseProgram(id);
 }
 
-void Shader::destroy()
-{
+void Shader::destroy() {
     glDeleteProgram(id);
 }
 
-void Shader::operator=(const Shader &shader)
-{
+void Shader::operator=(const Shader &shader) {
     id = shader.id;
 }
 
-void Shader::operator=(Shader &&shader)
-{
+void Shader::operator=(Shader &&shader) {
     id = std::move(shader.id);
 }
 

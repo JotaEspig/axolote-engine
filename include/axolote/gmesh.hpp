@@ -20,8 +20,7 @@
 #include <axolote/gl/vbo.hpp>
 #include <axolote/mesh.hpp>
 
-namespace axolote
-{
+namespace axolote {
 
 /**
  * \brief defines a graphic polygon mesh
@@ -31,8 +30,7 @@ namespace axolote
  *
  * The difference between GMesh and Mesh is that GMesh you can draw
  **/
-class GMesh : public Mesh, public Drawable
-{
+class GMesh : public Mesh, public Drawable {
 public:
     /** VAO **/
     gl::VAO vao;

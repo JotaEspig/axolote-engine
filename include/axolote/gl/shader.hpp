@@ -10,11 +10,9 @@
 #include <GL/gl.h>
 #include <glm/glm.hpp>
 
-namespace axolote
-{
+namespace axolote {
 
-namespace gl
-{
+namespace gl {
 
 /**
  * \brief OpenGL shader handler
@@ -22,8 +20,7 @@ namespace gl
  * \date October 04, 2023
  * \version November 06, 2023
  **/
-class Shader
-{
+class Shader {
 public:
     /** OpenGL shader id **/
     GLuint id;

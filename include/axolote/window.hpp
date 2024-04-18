@@ -19,8 +19,7 @@
 #include <axolote/scene.hpp>
 #include <axolote/structs.hpp>
 
-namespace axolote
-{
+namespace axolote {
 
 /**
  * \brief Window handler
@@ -30,8 +29,7 @@ namespace axolote
  *
  * This class take care of GLFW window object and input process
  **/
-class Window
-{
+class Window {
 public:
     /**
      * \brief Constructor

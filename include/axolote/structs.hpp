@@ -9,8 +9,7 @@
 
 #include <glm/glm.hpp>
 
-namespace axolote
-{
+namespace axolote {
 
 /**
  * \brief defines a vertex
@@ -18,8 +17,7 @@ namespace axolote
  * \date October 04, 2023
  * \version October 04, 2023
  **/
-struct Vertex
-{
+struct Vertex {
     /** position vector **/
     glm::vec3 position;
     /** color vector **/
@@ -36,8 +34,7 @@ struct Vertex
  * \date October 04, 2023
  * \version October 04, 2023
  **/
-struct Color
-{
+struct Color {
     /** red **/
     float r;
     /** green **/

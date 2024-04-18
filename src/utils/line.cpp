@@ -7,25 +7,22 @@
 #include <axolote/structs.hpp>
 #include <axolote/utils/line.hpp>
 
-namespace axolote
-{
+namespace axolote {
 
 Line::Line(
     const glm::vec3 &point, const glm::vec3 &direction_vector, float length,
     float thickness, const glm::vec3 &color, float line_quality
 ) :
-    a{point},
-    dir_vec{glm::normalize(direction_vector)},
-    length{length},
-    thickness{thickness},
-    color{color},
-    line_quality{line_quality}
-{
+  a{point},
+  dir_vec{glm::normalize(direction_vector)},
+  length{length},
+  thickness{thickness},
+  color{color},
+  line_quality{line_quality} {
     build_mesh();
 }
 
-void Line::build_mesh()
-{
+void Line::build_mesh() {
     std::vector<Vertex> vs;
     std::vector<GLuint> es;
 
@@ -34,8 +31,7 @@ void Line::build_mesh()
     glm::vec3 bottom_base_center = glm::vec3{0.0f};
     glm::vec3 top_base_center = glm::vec3{0.0f, 1.0f, 0.0f};
     int counter = 0;
-    for (float i = 0; i < 2 * M_PI; i += step / 2)
-    {
+    for (float i = 0; i < 2 * M_PI; i += step / 2) {
         // bottom base face
         glm::vec3 bottom_p1{
             std::cos(i) * thickness, bottom_base_center.y,
@@ -89,8 +85,7 @@ void Line::build_mesh()
     model->meshes.push_back({vs, es, {}});
 }
 
-void Line::set_end(const glm::vec3 &end)
-{
+void Line::set_end(const glm::vec3 &end) {
     // Calculate new direction
     glm::vec3 direction = end - a;
     float distance = glm::length(direction);
@@ -101,14 +96,12 @@ void Line::set_end(const glm::vec3 &end)
     length = distance;
 }
 
-void Line::draw()
-{
+void Line::draw() {
     set_matrix();
     Object3D::draw();
 }
 
-void Line::set_matrix()
-{
+void Line::set_matrix() {
     glm::mat4 mat{1.0f};
     float x_rot = get_rotation_around_x();
     float y_rot = get_rotation_around_y();
@@ -119,15 +112,13 @@ void Line::set_matrix()
     model_mat = mat;
 }
 
-float Line::get_rotation_around_x() const
-{
+float Line::get_rotation_around_x() const {
     return std::atan2(
         std::sqrt(dir_vec.z * dir_vec.z + dir_vec.x * dir_vec.x), dir_vec.y
     );
 }
 
-float Line::get_rotation_around_y() const
-{
+float Line::get_rotation_around_y() const {
     return std::atan2(dir_vec.x, dir_vec.z);
 }
 

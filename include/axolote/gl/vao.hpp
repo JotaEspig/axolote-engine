@@ -14,11 +14,9 @@
 
 #include <axolote/gl/vbo.hpp>
 
-namespace axolote
-{
+namespace axolote {
 
-namespace gl
-{
+namespace gl {
 
 /**
  * \brief OpenGL VAO handler
@@ -26,8 +24,7 @@ namespace gl
  * \date October 04, 2023
  * \version November 06, 2023
  **/
-class VAO
-{
+class VAO {
 public:
     /** OpenGL VAO id **/
     GLuint id;

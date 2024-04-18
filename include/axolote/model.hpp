@@ -17,8 +17,7 @@
 #include <axolote/gl/texture.hpp>
 #include <axolote/gmesh.hpp>
 
-namespace axolote
-{
+namespace axolote {
 
 /**
  * \brief defines a 3D model
@@ -26,8 +25,7 @@ namespace axolote
  * \date October 04, 2023
  * \version November 08, 2023
  **/
-class Model : public Drawable
-{
+class Model : public Drawable {
 public:
     /** Model meshes **/
     std::vector<GMesh> meshes;

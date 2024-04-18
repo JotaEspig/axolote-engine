@@ -6,28 +6,22 @@
 
 #include <axolote/gl/ebo.hpp>
 
-namespace axolote
-{
+namespace axolote {
 
-namespace gl
-{
+namespace gl {
 
-EBO::EBO()
-{
+EBO::EBO() {
 }
 
 EBO::EBO(const EBO &ebo) :
-    id{ebo.id}
-{
+  id{ebo.id} {
 }
 
 EBO::EBO(EBO &&ebo) :
-    id{std::move(ebo.id)}
-{
+  id{std::move(ebo.id)} {
 }
 
-EBO::EBO(const std::vector<GLuint> &indices)
-{
+EBO::EBO(const std::vector<GLuint> &indices) {
     glGenBuffers(1, &id);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
     glBufferData(
@@ -36,28 +30,23 @@ EBO::EBO(const std::vector<GLuint> &indices)
     );
 }
 
-void EBO::bind()
-{
+void EBO::bind() {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
 }
 
-void EBO::unbind()
-{
+void EBO::unbind() {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-void EBO::destroy()
-{
+void EBO::destroy() {
     glDeleteBuffers(1, &id);
 }
 
-void EBO::operator=(const EBO &ebo)
-{
+void EBO::operator=(const EBO &ebo) {
     id = ebo.id;
 }
 
-void EBO::operator=(EBO &&ebo)
-{
+void EBO::operator=(EBO &&ebo) {
     id = std::move(ebo.id);
 }
 

@@ -17,11 +17,9 @@
 
 #include <axolote/structs.hpp>
 
-namespace axolote
-{
+namespace axolote {
 
-namespace gl
-{
+namespace gl {
 
 /**
  * \brief OpenGL VBO handler
@@ -29,8 +27,7 @@ namespace gl
  * \date October 04, 2023
  * \version November 06, 2023
  **/
-class VBO
-{
+class VBO {
 public:
     /** OpenGL VBO id **/
     GLuint id;

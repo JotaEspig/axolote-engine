@@ -11,8 +11,7 @@
 
 #include <axolote/object3d.hpp>
 
-namespace axolote
-{
+namespace axolote {
 
 /**
  * \brief Defines a drawable line
@@ -23,8 +22,7 @@ namespace axolote
  * Abstraction from the equation: r = a + λb
  * See: https://www.cuemath.com/algebra/vector-equation/
  **/
-class Line : public axolote::Object3D
-{
+class Line : public axolote::Object3D {
 public:
     /** starting point **/
     glm::vec3 a;

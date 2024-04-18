@@ -13,13 +13,11 @@ uniform mat4 projection;
 uniform mat4 view;
 uniform mat4 model;
 
-mat4 camera()
-{
+mat4 camera() {
     return projection * view;
 }
 
-void main()
-{
+void main() {
     current_pos = vec3(model * vec4(aPos, 1.0f));
     tex_coord = aTex;
     color = aColor;

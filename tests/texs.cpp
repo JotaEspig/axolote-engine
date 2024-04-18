@@ -10,14 +10,12 @@
 
 #include <axolote/engine.hpp>
 
-class App : public axolote::Window
-{
+class App : public axolote::Window {
 public:
     void main_loop();
 };
 
-void App::main_loop()
-{
+void App::main_loop() {
     std::string original_title = title();
 
     axolote::gl::Shader shader_program(
@@ -36,14 +34,14 @@ void App::main_loop()
     std::shared_ptr<axolote::Object3D> body{new axolote::Object3D{
         "./resources/models/m26/m26pershing_coh.obj",
         {1.0f, 1.0f, 1.0f},
-        glm::mat4{1.0f}}};
+        glm::mat4{1.0f}
+    }};
     body->bind_shader(shader_program);
     scene->add_drawable(body);
 
     current_scene = scene;
     double before = glfwGetTime();
-    while (!should_close())
-    {
+    while (!should_close()) {
         glClearColor(_color.r, _color.g, _color.b, _color.opacity);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -66,8 +64,7 @@ void App::main_loop()
     }
 }
 
-int main()
-{
+int main() {
     std::cout << "Tests" << std::endl;
     App app{};
     app.set_title("Uepa");

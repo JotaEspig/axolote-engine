@@ -25,8 +25,7 @@
 #include <axolote/gl/texture.hpp>
 #include <axolote/gmesh.hpp>
 
-namespace axolote
-{
+namespace axolote {
 
 /**
  * \author João Vitor Espig (JotaEspig)
@@ -65,10 +64,8 @@ void process_node(
     aiNode *node, const aiScene *scene, std::vector<GMesh> &meshes,
     glm::vec3 color, std::vector<gl::Texture> &loaded_textures,
     std::vector<std::string> &loaded_textures_names, std::string directory
-)
-{
-    for (unsigned int i = 0; i < node->mNumMeshes; i++)
-    {
+) {
+    for (unsigned int i = 0; i < node->mNumMeshes; i++) {
         aiMesh *mesh = scene->mMeshes[node->mMeshes[i]];
         meshes.push_back(process_mesh(
             mesh, scene, color, loaded_textures, loaded_textures_names,
@@ -87,14 +84,12 @@ GMesh process_mesh(
     aiMesh *mesh, const aiScene *scene, glm::vec3 color,
     std::vector<gl::Texture> loaded_textures,
     std::vector<std::string> &loaded_textures_names, std::string directory
-)
-{
+) {
     std::vector<Vertex> vertices;
     std::vector<GLuint> indices;
     std::vector<gl::Texture> textures;
 
-    for (unsigned int i = 0; i < mesh->mNumVertices; i++)
-    {
+    for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
         Vertex vertex;
         vertex.position.x = mesh->mVertices[i].x;
         vertex.position.y = mesh->mVertices[i].y;
@@ -102,8 +97,7 @@ GMesh process_mesh(
 
         vertex.color = color;
 
-        if (mesh->mNormals != NULL)
-        {
+        if (mesh->mNormals != NULL) {
             vertex.normal.x = mesh->mNormals[i].x;
             vertex.normal.y = mesh->mNormals[i].y;
             vertex.normal.z = mesh->mNormals[i].z;
@@ -111,8 +105,7 @@ GMesh process_mesh(
         else
             vertex.normal = glm::vec3(0.0f, 0.0f, 0.0f);
 
-        if (mesh->mTextureCoords[0])
-        {
+        if (mesh->mTextureCoords[0]) {
             vertex.tex_UV.x = mesh->mTextureCoords[0][i].x;
             vertex.tex_UV.y = 1 - mesh->mTextureCoords[0][i].y;
         }
@@ -122,8 +115,7 @@ GMesh process_mesh(
         vertices.push_back(vertex);
     }
 
-    for (unsigned int i = 0; i < mesh->mNumFaces; i++)
-    {
+    for (unsigned int i = 0; i < mesh->mNumFaces; i++) {
         aiFace face = mesh->mFaces[i];
         for (unsigned int j = 0; j < face.mNumIndices; j++)
             indices.push_back(face.mIndices[j]);
@@ -148,18 +140,14 @@ std::vector<gl::Texture> load_material_textures(
     aiMaterial *mat, aiTextureType type, std::string type_name,
     std::vector<gl::Texture> &loaded_textures,
     std::vector<std::string> &loaded_textures_names, std::string directory
-)
-{
+) {
     std::vector<gl::Texture> textures;
-    for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
-    {
+    for (unsigned int i = 0; i < mat->GetTextureCount(type); i++) {
         aiString str;
         mat->GetTexture(type, i, &str);
         bool skip = false;
-        for (unsigned int j = 0; j < loaded_textures.size(); ++j)
-        {
-            if (std::string(str.C_Str()) == loaded_textures_names[j])
-            {
+        for (unsigned int j = 0; j < loaded_textures.size(); ++j) {
+            if (std::string(str.C_Str()) == loaded_textures_names[j]) {
                 skip = true;
                 textures.push_back(loaded_textures[j]);
                 break;

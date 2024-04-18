@@ -16,8 +16,7 @@
 #include <axolote/gmesh.hpp>
 #include <axolote/object3d.hpp>
 
-namespace axolote
-{
+namespace axolote {
 
 /**
  * \brief Describes a scene
@@ -25,8 +24,7 @@ namespace axolote
  * \date October 25, 2023
  * \version November 15, 2023
  **/
-class Scene
-{
+class Scene {
 public:
     /** vector of Entity objects **/
     std::vector<std::shared_ptr<Entity>> entity_objects;

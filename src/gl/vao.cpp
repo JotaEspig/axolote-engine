@@ -3,60 +3,49 @@
 #include <axolote/gl/vao.hpp>
 #include <axolote/gl/vbo.hpp>
 
-namespace axolote
-{
+namespace axolote {
 
-namespace gl
-{
+namespace gl {
 
-VAO::VAO()
-{
+VAO::VAO() {
     glGenVertexArrays(1, &id);
 }
 
 VAO::VAO(const VAO &vao) :
-    id{vao.id}
-{
+  id{vao.id} {
 }
 
 VAO::VAO(VAO &&vao) :
-    id{std::move(vao.id)}
-{
+  id{std::move(vao.id)} {
 }
 
 void VAO::link_attrib(
     VBO &vbo, GLuint layout, GLuint num_components, GLenum type,
     GLsizeiptr size, void *offset
-)
-{
+) {
     vbo.bind();
     glVertexAttribPointer(layout, num_components, type, GL_FALSE, size, offset);
     glEnableVertexAttribArray(layout);
     vbo.unbind();
 }
 
-void VAO::bind()
-{
+void VAO::bind() {
     glBindVertexArray(id);
 }
 
-void VAO::unbind()
-{
+void VAO::unbind() {
     glBindVertexArray(0);
 }
 
-void VAO::destroy()
-{
+void VAO::destroy() {
     glDeleteVertexArrays(1, &id);
 }
 
-void VAO::operator=(const VAO &vao)
-{
+void VAO::operator=(const VAO &vao) {
     id = vao.id;
 }
 
-void VAO::operator=(VAO &&vao)
-{
+void VAO::operator=(VAO &&vao) {
     id = std::move(vao.id);
 }
 

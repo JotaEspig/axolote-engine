@@ -11,11 +11,9 @@
 
 #include <GL/gl.h>
 
-namespace axolote
-{
+namespace axolote {
 
-namespace gl
-{
+namespace gl {
 
 /**
  * \brief texture operations
@@ -23,8 +21,7 @@ namespace gl
  * \date October 04, 2023
  * \version November 06, 2023
  **/
-class Texture
-{
+class Texture {
 public:
     /** OpenGL texture id **/
     GLuint id;

@@ -16,8 +16,7 @@
 #include <axolote/gl/texture.hpp>
 #include <axolote/structs.hpp>
 
-namespace axolote
-{
+namespace axolote {
 
 /**
  * \brief defines a polygon mesh
@@ -25,8 +24,7 @@ namespace axolote
  * \date October 04, 2023
  * \version November 06, 2023
  **/
-class Mesh
-{
+class Mesh {
 public:
     /** polygon mesh vertices **/
     std::vector<Vertex> vertices;

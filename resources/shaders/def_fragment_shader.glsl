@@ -1,7 +1,6 @@
 #version 330 core
 
-struct Light
-{
+struct Light {
     vec4 color;
     vec3 pos;
     float radius;
@@ -25,16 +24,14 @@ uniform sampler2D specular0;
 uniform bool is_tex_set;
 uniform bool is_specular_map_set;
 
-float get_specular_map()
-{
+float get_specular_map() {
     if (is_specular_map_set)
         return texture(specular0, tex_coord).r;
     else
         return color.r;
 }
 
-vec3 calculate_light(vec3 light_emissor_pos, vec4 temp_frag_color)
-{
+vec3 calculate_light(vec3 light_emissor_pos, vec4 temp_frag_color) {
     vec3 normal = normalize(normal);
     vec3 light_direction = normalize(light_emissor_pos - current_pos);
     float diffuse = max(dot(normal, light_direction), 0.0f);
@@ -54,15 +51,12 @@ vec3 calculate_light(vec3 light_emissor_pos, vec4 temp_frag_color)
     return (diffuse_light_color + specular_light_color) * light.color.rgb;
 }
 
-void main()
-{
+void main() {
     vec4 temp_frag_color = vec4(color, 1.0f);
-    if (is_tex_set)
-    {
+    if (is_tex_set) {
         temp_frag_color = texture(diffuse0, tex_coord);
     }
-    if (light.is_set)
-    {
+    if (light.is_set) {
 
         vec3 temp_frag_light
             = calculate_light(

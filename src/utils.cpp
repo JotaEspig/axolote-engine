@@ -3,11 +3,9 @@
 
 #include <axolote/utils.hpp>
 
-namespace axolote
-{
+namespace axolote {
 
-std::string get_file_content(const char *filename)
-{
+std::string get_file_content(const char *filename) {
     std::ifstream in(filename, std::ios::binary);
     if (!in)
         throw(errno);

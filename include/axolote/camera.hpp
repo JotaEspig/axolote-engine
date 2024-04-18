@@ -12,8 +12,7 @@
 
 #include <glm/glm.hpp>
 
-namespace axolote
-{
+namespace axolote {
 
 /**
  * \brief class that represents a Camera in 2D/3D
@@ -21,8 +20,7 @@ namespace axolote
  * \date October 04, 2023
  * \version November 06, 2023
  **/
-class Camera
-{
+class Camera {
 public:
     /** movement speed **/
     float speed = 1.0f;

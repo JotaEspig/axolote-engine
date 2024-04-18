@@ -17,8 +17,7 @@
 #include <axolote/model.hpp>
 #include <axolote/object3d.hpp>
 
-namespace axolote
-{
+namespace axolote {
 
 /**
  * \brief defines a Object (or multiple objects) that can move
@@ -29,8 +28,7 @@ namespace axolote
  * You should inherit from this class to be able to create an Entity.
  * That's because each Entity has its own update pattern. See update() method.
  **/
-class Entity : public Drawable
-{
+class Entity : public Drawable {
 public:
     /**
      * \brief Constructor

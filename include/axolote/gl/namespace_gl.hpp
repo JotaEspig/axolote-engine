@@ -13,11 +13,8 @@
  * \date January 14, 2024
  * \version January 14, 2024
  **/
-namespace axolote
-{
+namespace axolote {
 
-namespace gl
-{
-} // namespace gl
+namespace gl {} // namespace gl
 
 } // namespace axolote

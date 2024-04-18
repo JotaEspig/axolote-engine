@@ -12,37 +12,32 @@
 #include <axolote/mesh.hpp>
 #include <axolote/structs.hpp>
 
-namespace axolote
-{
+namespace axolote {
 
-GMesh::GMesh()
-{
+GMesh::GMesh() {
 }
 
 GMesh::GMesh(const GMesh &gmesh) :
-    Mesh{gmesh},
-    vao{gmesh.vao},
-    vbo{gmesh.vbo},
-    ebo{gmesh.ebo},
-    shader{gmesh.shader}
-{
+  Mesh{gmesh},
+  vao{gmesh.vao},
+  vbo{gmesh.vbo},
+  ebo{gmesh.ebo},
+  shader{gmesh.shader} {
 }
 
 GMesh::GMesh(GMesh &&gmesh) :
-    Mesh{std::move(gmesh)},
-    vao{std::move(gmesh.vao)},
-    vbo{std::move(gmesh.vbo)},
-    ebo{std::move(gmesh.ebo)},
-    shader{std::move(gmesh.shader)}
-{
+  Mesh{std::move(gmesh)},
+  vao{std::move(gmesh.vao)},
+  vbo{std::move(gmesh.vbo)},
+  ebo{std::move(gmesh.ebo)},
+  shader{std::move(gmesh.shader)} {
 }
 
 GMesh::GMesh(
     const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices,
     const std::vector<gl::Texture> &textures
 ) :
-    Mesh(vertices, indices, textures)
-{
+  Mesh(vertices, indices, textures) {
     vao.bind();
     vbo = gl::VBO(vertices);
     ebo = gl::EBO(indices);
@@ -62,18 +57,15 @@ GMesh::GMesh(
     ebo.unbind();
 }
 
-void GMesh::bind_shader(const gl::Shader &shader)
-{
+void GMesh::bind_shader(const gl::Shader &shader) {
     GMesh::shader = shader;
 }
 
-void GMesh::draw()
-{
+void GMesh::draw() {
     draw(glm::mat4(1.0f));
 }
 
-void GMesh::draw(const glm::mat4 &mat)
-{
+void GMesh::draw(const glm::mat4 &mat) {
     shader.activate();
     vao.bind();
 
@@ -92,14 +84,12 @@ void GMesh::draw(const glm::mat4 &mat)
     shader.set_uniform_int("diffuse0", 99);
     shader.set_uniform_int("specular0", 99);
 
-    for (gl::Texture t : textures)
-    {
+    for (gl::Texture t : textures) {
         std::string num;
         std::string type = t.type;
         if (type == "diffuse")
             num = std::to_string(num_diffuse++);
-        else if (type == "specular")
-        {
+        else if (type == "specular") {
             num = std::to_string(num_specular++);
             shader.set_uniform_int("is_specular_map_set", 1);
         }
@@ -114,22 +104,19 @@ void GMesh::draw(const glm::mat4 &mat)
     vao.bind();
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 
-    for (gl::Texture t : textures)
-    {
+    for (gl::Texture t : textures) {
         t.unbind();
     }
     vao.unbind();
 }
 
-void GMesh::destroy()
-{
+void GMesh::destroy() {
     vao.destroy();
     vbo.destroy();
     ebo.destroy();
 }
 
-void GMesh::operator=(const GMesh &gmesh)
-{
+void GMesh::operator=(const GMesh &gmesh) {
     Mesh::operator=(gmesh);
     vao = gmesh.vao;
     vbo = gmesh.vbo;
@@ -137,8 +124,7 @@ void GMesh::operator=(const GMesh &gmesh)
     shader = gmesh.shader;
 }
 
-void GMesh::operator=(GMesh &&gmesh)
-{
+void GMesh::operator=(GMesh &&gmesh) {
     Mesh::operator=(std::move(gmesh));
     vao = std::move(gmesh.vao);
     vbo = std::move(gmesh.vbo);

@@ -13,6 +13,4 @@
  * \date October 04, 2023
  * \version October 04, 2023
  **/
-namespace axolote
-{
-} // namespace axolote
+namespace axolote {} // namespace axolote

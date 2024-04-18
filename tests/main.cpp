@@ -14,8 +14,7 @@
 #define G 6.67e-11
 #define DT_MULTIPLIER 200000
 
-class CelestialBody : public axolote::Entity
-{
+class CelestialBody : public axolote::Entity {
 public:
     bool is_light_emissor = false;
     double mass;
@@ -30,33 +29,28 @@ public:
 };
 
 CelestialBody::CelestialBody(double mass, const glm::vec3 &velocity) :
-    mass{mass},
-    velocity{velocity}
-{
+  mass{mass},
+  velocity{velocity} {
 }
 
-glm::vec3 CelestialBody::calculate_acceleration_vec(const CelestialBody &other)
-{
+glm::vec3 CelestialBody::calculate_acceleration_vec(const CelestialBody &other
+) {
     glm::vec3 direction = glm::normalize(pos - other.pos);
     double r = glm::distance(pos, other.pos);
     float gravitational_acceleration = (G * mass) / (r * r);
     return direction * gravitational_acceleration;
 }
 
-void CelestialBody::update(double dt)
-{
+void CelestialBody::update(double dt) {
     pos += velocity * (float)dt;
     glm::mat4 mat
         = glm::translate(objects[0].get_matrix(), velocity * (float)dt);
     set_matrix(0, mat);
 }
 
-void CelestialBody::draw()
-{
-    for (auto &e : objects)
-    {
-        for (auto &e2 : e.model->meshes)
-        {
+void CelestialBody::draw() {
+    for (auto &e : objects) {
+        for (auto &e2 : e.model->meshes) {
             e2.shader.activate();
             e2.shader.set_uniform_int("light.is_set", !is_light_emissor);
         }
@@ -64,18 +58,15 @@ void CelestialBody::draw()
 
     Entity::draw();
 
-    for (auto &e : objects)
-    {
-        for (auto &e2 : e.model->meshes)
-        {
+    for (auto &e : objects) {
+        for (auto &e2 : e.model->meshes) {
             e2.shader.activate();
             e2.shader.set_uniform_int("light.is_set", 0);
         }
     }
 };
 
-class SolarSystem
-{
+class SolarSystem {
 public:
     SolarSystem() = default;
     ~SolarSystem() = default;
@@ -93,8 +84,7 @@ private:
 std::shared_ptr<CelestialBody> SolarSystem::add_celestial_body(
     double mass, glm::vec3 pos, glm::vec3 vel, glm::vec3 color,
     axolote::gl::Shader shader_program
-)
-{
+) {
     // Create object matrix
     glm::mat4 mat{1.0f};
     mat = glm::translate(mat, pos);
@@ -113,12 +103,9 @@ std::shared_ptr<CelestialBody> SolarSystem::add_celestial_body(
     return body;
 }
 
-void SolarSystem::update(double dt)
-{
-    for (auto body0 : celestialBodies)
-    {
-        for (auto body1 : celestialBodies)
-        {
+void SolarSystem::update(double dt) {
+    for (auto body0 : celestialBodies) {
+        for (auto body1 : celestialBodies) {
             if (body0 == body1)
                 continue;
 
@@ -128,14 +115,12 @@ void SolarSystem::update(double dt)
     }
 }
 
-class App : public axolote::Window
-{
+class App : public axolote::Window {
 public:
     void main_loop();
 };
 
-void App::main_loop()
-{
+void App::main_loop() {
     std::string original_title = title();
 
     axolote::gl::Shader shader_program(
@@ -337,8 +322,7 @@ void App::main_loop()
 
     current_scene = scene;
     double before = glfwGetTime();
-    while (!should_close())
-    {
+    while (!should_close()) {
         glClearColor(_color.r, _color.g, _color.b, _color.opacity);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -372,8 +356,7 @@ void App::main_loop()
     }
 }
 
-int main()
-{
+int main() {
     std::cout << "Solar System 3D" << std::endl;
     App app{};
     app.set_title("Uepa");
