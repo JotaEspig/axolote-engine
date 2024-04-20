@@ -22,6 +22,10 @@ namespace axolote {
  **/
 class Camera {
 public:
+    /** max view distance **/
+    float max_dist = 1000.0f;
+    /** min view distance **/
+    float min_dist = 0.1f;
     /** movement speed **/
     float speed = 1.0f;
     /** view sensitivity **/

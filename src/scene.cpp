@@ -66,7 +66,7 @@ void Scene::update_camera(float aspect_ratio) {
     glm::mat4 view
         = glm::lookAt(camera.pos, camera.pos + camera.orientation, camera.up);
     glm::mat4 projection = glm::perspective(
-        glm::radians(camera.fov), aspect_ratio, 0.1f, 1000.0f
+        glm::radians(camera.fov), aspect_ratio, camera.min_dist, camera.max_dist
     );
     for (gl::Shader &s : shaders) {
         s.activate();
