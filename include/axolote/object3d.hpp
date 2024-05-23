@@ -25,6 +25,7 @@ namespace axolote {
  **/
 class Object3D : public Drawable {
 public:
+    /** pointer to podel **/
     std::shared_ptr<Model> model{new Model{}};
 
     /**

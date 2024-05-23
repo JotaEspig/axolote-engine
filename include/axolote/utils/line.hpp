@@ -46,6 +46,7 @@ public:
      * \param direction_vector - direction vector
      * \param length - line length
      * \param thickness - line thickness
+     * \param color - line color
      * \param line_quality - line quality
      **/
     Line(
