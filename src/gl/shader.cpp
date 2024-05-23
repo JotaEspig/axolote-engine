@@ -1,4 +1,3 @@
-#include <cerrno>
 #include <iostream>
 #include <string>
 
@@ -25,14 +24,6 @@ namespace axolote {
 namespace gl {
 
 Shader::Shader() {
-}
-
-Shader::Shader(const Shader &shader) :
-  id{shader.id} {
-}
-
-Shader::Shader(Shader &&shader) :
-  id{std::move(shader.id)} {
 }
 
 Shader::Shader(const char *vertex_file, const char *fragment_file) {
@@ -108,14 +99,6 @@ void Shader::activate() {
 
 void Shader::destroy() {
     glDeleteProgram(id);
-}
-
-void Shader::operator=(const Shader &shader) {
-    id = shader.id;
-}
-
-void Shader::operator=(Shader &&shader) {
-    id = std::move(shader.id);
 }
 
 } // namespace gl

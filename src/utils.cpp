@@ -1,5 +1,4 @@
 #include <fstream>
-#include <sstream>
 
 #include <axolote/utils.hpp>
 

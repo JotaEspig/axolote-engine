@@ -1,5 +1,4 @@
 #include <iostream>
-#include <memory>
 
 #include <glad/glad.h>
 
@@ -29,21 +28,6 @@ static void error_callback(int error, const char *description) {
 
 Window::Window() {
     init();
-}
-
-Window::Window(const Window &window) :
-  _title{window._title},
-  _color{window._color},
-  current_scene{window.current_scene} {
-    Window::window = window.window;
-}
-
-Window::Window(Window &&window) :
-  _title{std::move(window._title)},
-  _color{std::move(window._color)},
-  current_scene{std::move(window.current_scene)} {
-    Window::window = window.window;
-    window.window = nullptr;
 }
 
 Window::~Window() {
@@ -176,21 +160,6 @@ void Window::set_color(const Color &color) {
 
 void Window::set_color(uint8_t r, uint8_t g, uint8_t b, float opacity) {
     _color = {(float)r / 255, (float)g / 255, (float)b / 255, opacity};
-}
-
-void Window::operator=(const Window &window) {
-    _title = window._title;
-    _color = window._color;
-    current_scene = window.current_scene;
-    Window::window = window.window;
-}
-
-void Window::operator=(Window &&window) {
-    _title = std::move(window._title);
-    _color = std::move(window._color);
-    current_scene = std::move(window.current_scene);
-    Window::window = window.window;
-    window.window = nullptr;
 }
 
 } // namespace axolote

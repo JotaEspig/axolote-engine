@@ -26,12 +26,11 @@ namespace axolote {
  * \brief defines a graphic polygon mesh
  * \author João Vitor Espig (JotaEspig)
  * \date October 06, 2023
- * \version November 08, 2023
+ * \version May 23, 2024
  *
  * The difference between GMesh and Mesh is that GMesh you can draw
  **/
-class GMesh : public Mesh, public Drawable {
-public:
+struct GMesh : public Mesh, public Drawable {
     /** VAO **/
     gl::VAO vao;
     /** VBO **/
@@ -48,22 +47,6 @@ public:
      * \version October 06, 2023
      **/
     GMesh();
-    /**
-     * \brief Copy constructor
-     * \author João Vitor Espig (JotaEspig)
-     * \date November 07, 2023
-     * \version November 07, 2023
-     * \param gmesh - GMesh object
-     **/
-    GMesh(const GMesh &gmesh);
-    /**
-     * \brief Move constructor
-     * \author João Vitor Espig (JotaEspig)
-     * \date November 07, 2023
-     * \version November 07, 2023
-     * \param gmesh - GMesh object
-     **/
-    GMesh(GMesh &&gmesh);
     /**
      * \brief Constructor
      * \author João Vitor Espig (JotaEspig)
@@ -109,25 +92,6 @@ public:
      * \version October 06, 2023
      **/
     void destroy();
-    /**
-     * \brief operator = overload (copy)
-     * \author João Vitor Espig (JotaEspig)
-     * \date November 07, 2023
-     * \version November 07, 2023
-     * \param gmesh - GMesh object
-     **/
-    void operator=(const GMesh &gmesh);
-    /**
-     * \brief operator = overload (move)
-     * \author João Vitor Espig (JotaEspig)
-     * \date November 07, 2023
-     * \version November 07, 2023
-     * \param gmesh - GMesh object
-     **/
-    void operator=(GMesh &&gmesh);
-
-    friend class Scene;
-    friend class Entity;
 };
 
 } // namespace axolote

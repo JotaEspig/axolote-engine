@@ -19,7 +19,7 @@ namespace gl {
  * \brief texture operations
  * \author João Vitor Espig (JotaEspig)
  * \date October 04, 2023
- * \version November 06, 2023
+ * \version May 23, 2024
  **/
 class Texture {
 public:
@@ -39,22 +39,6 @@ public:
      * \version October 08, 2023
      **/
     Texture();
-    /**
-     * \brief Copy constructor
-     * \author João Vitor Espig (JotaEspig)
-     * \date November 06, 2023
-     * \version November 06, 2023
-     * \param texture - Texture object
-     **/
-    Texture(const Texture &texture);
-    /**
-     * \brief Move constructor
-     * \author João Vitor Espig (JotaEspig)
-     * \date November 06, 2023
-     * \version November 06, 2023
-     * \param texture - Texture object
-     **/
-    Texture(Texture &&texture);
     /**
      * \brief Constructor
      * \author João Vitor Espig (JotaEspig)
@@ -94,22 +78,6 @@ public:
      * \version October 04, 2023
      **/
     void destroy();
-    /**
-     * \brief operator = overload (copy)
-     * \author João Vitor Espig (JotaEspig)
-     * \date November 06, 2023
-     * \version November 06, 2023
-     * \param texture - Texture object
-     **/
-    void operator=(const Texture &texture);
-    /**
-     * \brief operator = overload (copy)
-     * \author João Vitor Espig (JotaEspig)
-     * \date November 06, 2023
-     * \version November 06, 2023
-     * \param texture - Texture object
-     **/
-    void operator=(Texture &&texture);
 };
 
 } // namespace gl

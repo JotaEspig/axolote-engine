@@ -17,22 +17,6 @@ namespace axolote {
 GMesh::GMesh() {
 }
 
-GMesh::GMesh(const GMesh &gmesh) :
-  Mesh{gmesh},
-  vao{gmesh.vao},
-  vbo{gmesh.vbo},
-  ebo{gmesh.ebo},
-  shader{gmesh.shader} {
-}
-
-GMesh::GMesh(GMesh &&gmesh) :
-  Mesh{std::move(gmesh)},
-  vao{std::move(gmesh.vao)},
-  vbo{std::move(gmesh.vbo)},
-  ebo{std::move(gmesh.ebo)},
-  shader{std::move(gmesh.shader)} {
-}
-
 GMesh::GMesh(
     const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices,
     const std::vector<gl::Texture> &textures
@@ -116,20 +100,5 @@ void GMesh::destroy() {
     ebo.destroy();
 }
 
-void GMesh::operator=(const GMesh &gmesh) {
-    Mesh::operator=(gmesh);
-    vao = gmesh.vao;
-    vbo = gmesh.vbo;
-    ebo = gmesh.ebo;
-    shader = gmesh.shader;
-}
-
-void GMesh::operator=(GMesh &&gmesh) {
-    Mesh::operator=(std::move(gmesh));
-    vao = std::move(gmesh.vao);
-    vbo = std::move(gmesh.vbo);
-    ebo = std::move(gmesh.ebo);
-    shader = std::move(gmesh.shader);
-}
 
 } // namespace axolote

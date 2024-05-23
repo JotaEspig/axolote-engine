@@ -16,20 +16,6 @@ Texture::Texture() :
   loaded{false} {
 }
 
-Texture::Texture(const Texture &texture) :
-  id{texture.id},
-  type{texture.type},
-  unit{texture.unit},
-  loaded{texture.loaded} {
-}
-
-Texture::Texture(Texture &&texture) :
-  id{std::move(texture.id)},
-  type{std::move(texture.type)},
-  unit{std::move(texture.unit)},
-  loaded{std::move(texture.loaded)} {
-}
-
 Texture::Texture(
     const char *texture_filename, std::string tex_type, GLuint _unit
 ) :
@@ -94,19 +80,6 @@ void Texture::destroy() {
     glDeleteTextures(1, &id);
 }
 
-void Texture::operator=(const Texture &texture) {
-    id = texture.id;
-    type = texture.type;
-    unit = texture.unit;
-    loaded = texture.loaded;
-}
-
-void Texture::operator=(Texture &&texture) {
-    id = std::move(texture.id);
-    type = std::move(texture.type);
-    unit = std::move(texture.unit);
-    loaded = std::move(texture.loaded);
-}
 
 } // namespace gl
 

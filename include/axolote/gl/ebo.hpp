@@ -22,7 +22,7 @@ namespace gl {
  * \brief OpenGL EBO handler
  * \author João Vitor Espig (JotaEspig)
  * \date October 04, 2023
- * \version November 06, 2023
+ * \version May 23, 2024
  **/
 class EBO {
 public:
@@ -36,22 +36,6 @@ public:
      * \version October 04, 2023
      **/
     EBO();
-    /**
-     * \brief Copy constructor
-     * \author João Vitor Espig (JotaEspig)
-     * \date November 06, 2023
-     * \version November 06, 2023
-     * \param ebo - EBO object
-     **/
-    EBO(const EBO &ebo);
-    /**
-     * \brief Move constructor
-     * \author João Vitor Espig (JotaEspig)
-     * \date November 06, 2023
-     * \version November 06, 2023
-     * \param ebo - EBO object
-     **/
-    EBO(EBO &&ebo);
     /**
      * \brief Constructor
      * \author João Vitor Espig (JotaEspig)
@@ -82,22 +66,6 @@ public:
      * \version October 04, 2023
      **/
     void destroy();
-    /**
-     * \brief operator = overload (copy)
-     * \author João Vitor Espig (JotaEspig)
-     * \date November 06, 2023
-     * \version November 06, 2023
-     * \param ebo - EBO object
-     **/
-    void operator=(const EBO &ebo);
-    /**
-     * \brief operator = overload (move)
-     * \author João Vitor Espig (JotaEspig)
-     * \date November 06, 2023
-     * \version November 06, 2023
-     * \param ebo - EBO object
-     **/
-    void operator=(EBO &&ebo);
 };
 
 } // namespace gl

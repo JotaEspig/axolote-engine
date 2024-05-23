@@ -17,22 +17,6 @@ namespace axolote {
 Model::Model() {
 }
 
-Model::Model(const Model &model) :
-  meshes{model.meshes},
-  color{model.color},
-  loaded_textures{model.loaded_textures},
-  loaded_textures_names{model.loaded_textures_names},
-  directory{model.directory} {
-}
-
-Model::Model(Model &&model) :
-  meshes{std::move(model.meshes)},
-  color{std::move(model.color)},
-  loaded_textures{std::move(model.loaded_textures)},
-  loaded_textures_names{std::move(model.loaded_textures_names)},
-  directory{std::move(model.directory)} {
-}
-
 Model::Model(
     const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices,
     const std::vector<gl::Texture> &textures
@@ -77,20 +61,5 @@ void Model::load_model(std::string path) {
     );
 }
 
-void Model::operator=(const Model &model) {
-    color = model.color;
-    meshes = model.meshes;
-    loaded_textures = model.loaded_textures;
-    loaded_textures_names = model.loaded_textures_names;
-    directory = model.directory;
-}
-
-void Model::operator=(Model &&model) {
-    color = std::move(model.color);
-    meshes = std::move(model.meshes);
-    loaded_textures = std::move(model.loaded_textures);
-    loaded_textures_names = std::move(model.loaded_textures_names);
-    directory = std::move(model.directory);
-}
 
 } // namespace axolote

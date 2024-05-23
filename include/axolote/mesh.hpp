@@ -1,6 +1,6 @@
 /**
  * \file mesh.hpp
- * \brief Mesh class
+ * \brief Mesh struct
  * \author João Vitor Espig (JotaEspig)
  * \date October 04, 2023
  * \version November 06, 2023
@@ -22,10 +22,9 @@ namespace axolote {
  * \brief defines a polygon mesh
  * \author João Vitor Espig (JotaEspig)
  * \date October 04, 2023
- * \version November 06, 2023
+ * \version May 23, 2024
  **/
-class Mesh {
-public:
+struct Mesh {
     /** polygon mesh vertices **/
     std::vector<Vertex> vertices;
     /** polygon mesh indices **/
@@ -41,22 +40,6 @@ public:
      **/
     Mesh();
     /**
-     * \brief Copy constructor
-     * \author João Vitor Espig (JotaEspig)
-     * \date November 06, 2023
-     * \version November 06, 2023
-     * \param mesh - Mesh object
-     **/
-    Mesh(const Mesh &mesh);
-    /**
-     * \brief Move constructor
-     * \author João Vitor Espig (JotaEspig)
-     * \date November 06, 2023
-     * \version November 06, 2023
-     * \param mesh - Mesh object
-     **/
-    Mesh(Mesh &&mesh);
-    /**
      * \brief Constructor
      * \author João Vitor Espig (JotaEspig)
      * \date October 04, 2023
@@ -70,23 +53,6 @@ public:
         const std::vector<GLuint> &_indices,
         const std::vector<gl::Texture> &_textures
     );
-
-    /**
-     * \brief operator = overload (copy)
-     * \author João Vitor Espig (JotaEspig)
-     * \date November 06, 2023
-     * \version November 06, 2023
-     * \param mesh - Mesh object
-     **/
-    void operator=(const Mesh &mesh);
-    /**
-     * \brief operator = overload (move)
-     * \author João Vitor Espig (JotaEspig)
-     * \date November 06, 2023
-     * \version November 06, 2023
-     * \param mesh - Mesh object
-     **/
-    void operator=(Mesh &&mesh);
 };
 
 } // namespace axolote

@@ -15,14 +15,6 @@ namespace axolote {
 Entity::Entity() {
 }
 
-Entity::Entity(const Entity &ent) :
-  objects{ent.objects} {
-}
-
-Entity::Entity(Entity &&ent) :
-  objects{std::move(ent.objects)} {
-}
-
 void Entity::add_object(const Object3D &o) {
     objects.push_back(o);
 }
@@ -57,12 +49,5 @@ void Entity::draw(const glm::mat4 &mat) {
     draw();
 }
 
-void Entity::operator=(const Entity &ent) {
-    objects = ent.objects;
-}
-
-void Entity::operator=(Entity &&ent) {
-    objects = std::move(ent.objects);
-}
 
 } // namespace axolote

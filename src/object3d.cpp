@@ -15,16 +15,6 @@ Object3D::Object3D() :
   model_mat{1.0f} {
 }
 
-Object3D::Object3D(const Object3D &obj) :
-  model{obj.model},
-  model_mat{obj.model_mat} {
-}
-
-Object3D::Object3D(Object3D &&obj) :
-  model{std::move(obj.model)},
-  model_mat{std::move(obj.model_mat)} {
-}
-
 Object3D::Object3D(const glm::mat4 &mat) :
   model_mat{mat} {
 }
@@ -62,14 +52,5 @@ void Object3D::draw(const glm::mat4 &mat) {
     draw();
 }
 
-void Object3D::operator=(const Object3D &obj) {
-    model = obj.model;
-    model_mat = obj.model_mat;
-}
-
-void Object3D::operator=(Object3D &&obj) {
-    model = std::move(obj.model);
-    model_mat = std::move(obj.model_mat);
-}
 
 } // namespace axolote

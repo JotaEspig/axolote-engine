@@ -21,7 +21,7 @@ namespace axolote {
  * \brief defines a 3D Object
  * \author João Vitor Espig (JotaEspig)
  * \date October 08, 2023
- * \version March 09, 2024
+ * \version May 23, 2024
  **/
 class Object3D : public Drawable {
 public:
@@ -34,22 +34,6 @@ public:
      * \version October 08, 2023
      **/
     Object3D();
-    /**
-     * \brief Copy constructor
-     * \author João Vitor Espig (JotaEspig)
-     * \date November 07, 2023
-     * \version November 07, 2023
-     * \param obj - Object3D object
-     **/
-    Object3D(const Object3D &obj);
-    /**
-     * \brief Move constructor
-     * \author João Vitor Espig (JotaEspig)
-     * \date November 07, 2023
-     * \version November 07, 2023
-     * \param obj - Object3D object
-     **/
-    Object3D(Object3D &&obj);
     /**
      * \brief Constructor
      * \author João Vitor Espig (JotaEspig)
@@ -122,22 +106,6 @@ public:
      * It just calls draw()
      **/
     void draw(const glm::mat4 &mat) override;
-    /**
-     * \brief operator = overload (copy)
-     * \author João Vitor Espig (JotaEspig)
-     * \date November 07, 2023
-     * \version November 07, 2023
-     * \param obj - Object3D object
-     **/
-    void operator=(const Object3D &obj);
-    /**
-     * \brief operator = overload (move)
-     * \author João Vitor Espig (JotaEspig)
-     * \date November 07, 2023
-     * \version November 07, 2023
-     * \param obj - Object3D object
-     **/
-    void operator=(Object3D &&obj);
 
     friend class Entity;
     friend class Scene;

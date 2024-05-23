@@ -22,7 +22,7 @@ namespace gl {
  * \brief OpenGL VAO handler
  * \author João Vitor Espig (JotaEspig)
  * \date October 04, 2023
- * \version November 06, 2023
+ * \version May 23, 2024
  **/
 class VAO {
 public:
@@ -36,22 +36,6 @@ public:
      * \version October 04, 2023
      **/
     VAO();
-    /**
-     * \brief Copy constructor
-     * \author João Vitor Espig (JotaEspig)
-     * \date November 06, 2023
-     * \version November 06, 2023
-     * \param vao - VAO object
-     **/
-    VAO(const VAO &vao);
-    /**
-     * \brief Move constructor
-     * \author João Vitor Espig (JotaEspig)
-     * \date November 06, 2023
-     * \version November 06, 2023
-     * \param vao - VAO object
-     **/
-    VAO(VAO &&vao);
 
     /**
      * \brief links an attribute
@@ -90,22 +74,6 @@ public:
      * \version October 04, 2023
      **/
     void destroy();
-    /**
-     * \brief operator = overload (copy)
-     * \author João Vitor Espig (JotaEspig)
-     * \date November 06, 2023
-     * \version November 06, 2023
-     * \param vao - VAO object
-     **/
-    void operator=(const VAO &vao);
-    /**
-     * \brief operator = overload (move)
-     * \author João Vitor Espig (JotaEspig)
-     * \date November 06, 2023
-     * \version November 06, 2023
-     * \param vao - VAO object
-     **/
-    void operator=(VAO &&vao);
 };
 
 } // namespace gl
