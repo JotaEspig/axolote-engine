@@ -3,7 +3,7 @@
  * \brief Graphic Mesh class
  * \author João Vitor Espig (JotaEspig)
  * \date October 06, 2023
- * \version November 08, 2023
+ * \version May 23, 2024
  **/
 #pragma once
 

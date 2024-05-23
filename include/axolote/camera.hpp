@@ -3,7 +3,7 @@
  * \brief camera operations
  * \author João Vitor Espig (JotaEspig)
  * \date October 04, 2023
- * \version November 06, 2023
+ * \version May 23, 2024
  *
  * This file contains Camera class that handles operations like movement in 3D
  * and view movement

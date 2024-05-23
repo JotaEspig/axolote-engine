@@ -3,7 +3,7 @@
  * \brief OpenGL VBO operations handler
  * \author João Vitor Espig (JotaEspig)
  * \date October 04, 2023
- * \version November 06, 2023
+ * \version May 23, 2024
  *
  * this file contains a class called VBO that handles OpenGL VBO operations:
  * Bind, Unbind and destroy

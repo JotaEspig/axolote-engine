@@ -3,7 +3,7 @@
  * \brief provides class Scene
  * \author João Vitor Espig (JotaEspig)
  * \date October 25, 2023
- * \version November 15, 2023
+ * \version May 23, 2024
  **/
 #pragma once
 
