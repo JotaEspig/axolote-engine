@@ -1,3 +1,9 @@
+## v0.3.0 (2024-05-23)
+
+### Feat
+
+- **camera**: now is possible to configure zNear and zFar
+
 ## v0.2.2 (2024-04-12)
 
 ### Fix
