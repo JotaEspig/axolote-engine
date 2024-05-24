@@ -46,7 +46,6 @@ set(
     ${SOURCE_DIR}/assimp.cpp
     ${SOURCE_DIR}/camera.cpp
     ${SOURCE_DIR}/gl/ebo.cpp
-    ${SOURCE_DIR}/entity.cpp
     ${SOURCE_DIR}/gmesh.cpp
     ${SOURCE_DIR}/gmodel.cpp
     ${SOURCE_DIR}/mesh.cpp

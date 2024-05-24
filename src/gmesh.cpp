@@ -5,12 +5,15 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include <axolote/gl/ebo.hpp>
-#include <axolote/gl/vao.hpp>
-#include <axolote/gl/vbo.hpp>
-#include <axolote/gmesh.hpp>
-#include <axolote/mesh.hpp>
-#include <axolote/structs.hpp>
+#include "axolote/gl/ebo.hpp"
+#include "axolote/gl/vao.hpp"
+#include "axolote/gl/vbo.hpp"
+#include "axolote/gmesh.hpp"
+#include "axolote/gl/shader.hpp"
+#include "axolote/mesh.hpp"
+#include "axolote/structs.hpp"
+
+#define UNUSED(x) (void)(x)
 
 namespace axolote {
 
@@ -45,8 +48,16 @@ GMesh::GMesh(
     ebo.unbind();
 }
 
-void GMesh::bind_shader(const gl::Shader &shader) {
-    GMesh::shader = shader;
+void GMesh::bind_shader(const gl::Shader &shader_program) {
+    shader = shader_program;
+}
+
+gl::Shader GMesh::get_shader() const {
+    return shader;
+}
+
+void GMesh::update(double dt) {
+    UNUSED(dt);
 }
 
 void GMesh::draw() {

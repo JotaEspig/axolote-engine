@@ -2,12 +2,12 @@
 
 #include <glm/glm.hpp>
 
-#include <axolote/assimp.hpp>
-#include <axolote/gl/shader.hpp>
-#include <axolote/gl/texture.hpp>
-#include <axolote/gmesh.hpp>
-#include <axolote/gmodel.hpp>
-#include <axolote/model.hpp>
+#include "axolote/gl/shader.hpp"
+#include "axolote/gmesh.hpp"
+#include "axolote/gmodel.hpp"
+#include "axolote/model.hpp"
+
+#define UNUSED(x) (void)(x)
 
 namespace axolote {
 
@@ -22,6 +22,17 @@ void GModel::bind_shader(const gl::Shader &shader) {
     for (GMesh &e : meshes)
         e.bind_shader(shader);
 };
+
+gl::Shader GModel::get_shader() const {
+    for (const GMesh &e : meshes) {
+        return e.get_shader();
+    }
+    return gl::Shader();
+}
+
+void GModel::update(double dt) {
+    UNUSED(dt);
+}
 
 void GModel::draw() {
     draw(glm::mat4(1.0f));

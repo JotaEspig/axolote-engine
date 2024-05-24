@@ -43,6 +43,18 @@ glm::mat4 Object3D::get_matrix() const {
     return model_mat;
 }
 
+void Object3D::bind_shader(const gl::Shader &shader_program) {
+    gmodel->bind_shader(shader_program);
+}
+
+gl::Shader Object3D::get_shader() const {
+    return gmodel->get_shader();
+}
+
+void Object3D::update(double dt) {
+    UNUSED(dt);
+}
+
 void Object3D::draw() {
     gmodel->draw(model_mat);
 }

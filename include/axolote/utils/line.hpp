@@ -72,23 +72,21 @@ public:
     void set_end(const glm::vec3 &end);
 
     /**
-     * \brief draws the line using set_matrix before
-     * \author João Vitor Espig (JotaEspig)
-     * \date December 26, 2023
-     * \version December 26, 2023
-     **/
-    void draw() override;
-
-protected:
-    /**
-     * \brief get the transformation matrix
+     * \brief update matrix
      * \author João Vitor Espig (JotaEspig)
      * \date December 26, 2023
      * \version December 26, 2023
      *
      * it uses the point A and the direction vector
      **/
-    void set_matrix();
+    void update(double dt) override;
+    /**
+     * \brief draws the line using set_matrix before
+     * \author João Vitor Espig (JotaEspig)
+     * \date December 26, 2023
+     * \version December 26, 2023
+     **/
+    void draw() override;
 
 private:
     // TODO these 2 functions is not working correctly, fix it

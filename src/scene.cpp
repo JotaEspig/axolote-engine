@@ -16,36 +16,9 @@ Scene::Scene() {
 Scene::~Scene() {
 }
 
-void Scene::add_drawable(std::shared_ptr<Entity> e) {
-    entity_objects.push_back(e);
-    for (const Object3D &o : e->objects) {
-        for (const GMesh &g : o.gmodel->meshes) {
-            bool already_included = false;
-            for (const gl::Shader &s : shaders) {
-                if (s.id == g.shader.id) {
-                    already_included = true;
-                    break;
-                }
-            }
-            if (!already_included)
-                shaders.push_back(g.shader);
-        }
-    }
-}
-
-void Scene::add_drawable(std::shared_ptr<Object3D> o) {
-    object3d_objects.push_back(o);
-    for (const GMesh &g : o->gmodel->meshes) {
-        bool already_included = false;
-        for (const gl::Shader &s : shaders) {
-            if (s.id == g.shader.id) {
-                already_included = true;
-                break;
-            }
-        }
-        if (!already_included)
-            shaders.push_back(g.shader);
-    }
+void Scene::add_drawable(std::shared_ptr<Drawable> d) {
+    drawable_objects.push_back(d);
+    shaders.push_back(d->get_shader());
 }
 
 void Scene::update_camera(float aspect_ratio) {
@@ -65,16 +38,14 @@ void Scene::update_camera(float aspect_ratio) {
 }
 
 void Scene::update(double time) {
-    for (std::shared_ptr<Entity> e : entity_objects)
-        e->update(time);
+    for (std::shared_ptr<Drawable> d : drawable_objects) {
+        d->update(time);
+    }
 }
 
 void Scene::render() {
-    for (std::shared_ptr<Entity> e : entity_objects)
-        e->draw();
-    for (std::shared_ptr<Object3D> o : object3d_objects)
-        o->draw();
+    for (std::shared_ptr<Drawable> d : drawable_objects)
+        d->draw();
 }
-
 
 } // namespace axolote

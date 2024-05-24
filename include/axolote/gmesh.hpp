@@ -74,8 +74,24 @@ struct GMesh : public Mesh, public Drawable {
      * \author João Vitor Espig (JotaEspig)
      * \date October 27, 2023
      * \version October 27, 2023
+     * \param shader_program - Shader
      **/
-    void bind_shader(const gl::Shader &shader);
+    void bind_shader(const gl::Shader &shader_program) override;
+    /**
+     * \brief binds a shader into gmesh
+     * \author João Vitor Espig (JotaEspig)
+     * \data May 24, 2024
+     * \version May 24, 2024
+     **/
+    gl::Shader get_shader() const override;
+    /**
+     * \brief Override update from Drawable, does nothing in reality
+     * \author João Vitor Espig (JotaEspig)
+     * \data May 24, 2024
+     * \version May 24, 2024
+     * \param dt - delta time
+     **/
+    void update(double dt) override;
     /**
      * \brief draws
      * \author João Vitor Espig (JotaEspig)

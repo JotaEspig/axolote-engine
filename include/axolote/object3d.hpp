@@ -93,6 +93,28 @@ public:
      **/
     glm::mat4 get_matrix() const;
     /**
+     * \brief binds a shader into the meshes
+     * \author João Vitor Espig (JotaEspig)
+     * \date October 27, 2023
+     * \version October 27, 2023
+     **/
+    void bind_shader(const gl::Shader &shader_program) override;
+    /**
+     * \brief binds a shader into the meshes
+     * \author João Vitor Espig (JotaEspig)
+     * \date May 24, 2024
+     * \version May 24, 2024
+     **/
+    gl::Shader get_shader() const override;
+    /**
+     * \brief Override update from Drawable, does nothing in reality
+     * \author João Vitor Espig (JotaEspig)
+     * \data May 24, 2024
+     * \version May 24, 2024
+     * \param dt - delta time
+     **/
+    void update(double dt) override;
+    /**
      * \brief draws
      * \author João Vitor Espig (JotaEspig)
      * \date October 08, 2023
@@ -109,7 +131,6 @@ public:
      * It just calls draw()
      **/
     void draw(const glm::mat4 &mat) override;
-
 };
 
 } // namespace axolote

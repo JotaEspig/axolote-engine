@@ -22,14 +22,12 @@ namespace axolote {
  * \brief Describes a scene
  * \author João Vitor Espig (JotaEspig)
  * \date October 25, 2023
- * \version May 23, 2024
+ * \version May 24, 2024
  **/
 class Scene {
 public:
-    /** vector of Entity objects **/
-    std::vector<std::shared_ptr<Entity>> entity_objects;
-    /** vector of Entity objects **/
-    std::vector<std::shared_ptr<Object3D>> object3d_objects;
+    /** vector of drawables objects **/
+    std::vector<std::shared_ptr<Drawable>> drawable_objects;
     /** Camera in the scene **/
     Camera camera;
 
@@ -49,19 +47,12 @@ public:
     ~Scene();
 
     /**
-     * \brief add an Entity to the scene
+     * \brief add a Drawable object to the scene
      * \author João Vitor Espig (JotaEspig)
      * \date November 08, 2023
-     * \version November 15, 2023
+     * \version May 24, 2024
      **/
-    void add_drawable(std::shared_ptr<Entity> e);
-    /**
-     * \brief add an Object3D to the scene
-     * \author João Vitor Espig (JotaEspig)
-     * \date November 08, 2023
-     * \version November 15, 2023
-     **/
-    void add_drawable(std::shared_ptr<Object3D> o);
+    void add_drawable(std::shared_ptr<Drawable> d);
     /**
      * \brief updates the camera in the shaders
      * \author João Vitor Espig (JotaEspig)
@@ -73,14 +64,14 @@ public:
      * \brief updates the drawables
      * \author João Vitor Espig (JotaEspig)
      * \date November 08, 2023
-     * \version November 08, 2023
+     * \version May 24, 2024
      **/
     void update(double time);
     /**
      * \brief draw the drawables
      * \author João Vitor Espig (JotaEspig)
      * \date November 08, 2023
-     * \version November 08, 2023
+     * \version May 24, 2024
      **/
     void render();
 

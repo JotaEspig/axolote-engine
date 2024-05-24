@@ -3,8 +3,10 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include <axolote/structs.hpp>
-#include <axolote/utils/line.hpp>
+#include "axolote/structs.hpp"
+#include "axolote/utils/line.hpp"
+
+#define UNUSED(x) (void)(x)
 
 namespace axolote {
 
@@ -96,11 +98,11 @@ void Line::set_end(const glm::vec3 &end) {
 }
 
 void Line::draw() {
-    set_matrix();
     Object3D::draw();
 }
 
-void Line::set_matrix() {
+void Line::update(double dt) {
+    UNUSED(dt);
     glm::mat4 mat{1.0f};
     float x_rot = get_rotation_around_x();
     float y_rot = get_rotation_around_y();
