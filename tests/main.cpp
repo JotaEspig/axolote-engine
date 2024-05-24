@@ -17,7 +17,6 @@ class App : public axolote::Window {
 public:
     void process_input(double dt);
     void main_loop();
-
 };
 
 void App::process_input(double dt) {
