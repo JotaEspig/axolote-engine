@@ -5,7 +5,7 @@
 #include <axolote/entity.hpp>
 #include <axolote/gl/shader.hpp>
 #include <axolote/gmesh.hpp>
-#include <axolote/model.hpp>
+#include <axolote/gmodel.hpp>
 #include <axolote/object3d.hpp>
 
 #define UNUSED(x) (void)(x)
@@ -32,7 +32,7 @@ void Entity::set_matrix(size_t idx, const glm::mat4 &mat) {
 
 void Entity::bind_shader_at(size_t idx, const gl::Shader &shader) {
     assert(idx < objects.size());
-    objects[idx].model->bind_shader(shader);
+    objects[idx].gmodel->bind_shader(shader);
 }
 
 void Entity::update(double time) {

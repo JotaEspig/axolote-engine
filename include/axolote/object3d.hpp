@@ -12,7 +12,7 @@
 
 #include <axolote/drawable.hpp>
 #include <axolote/gl/shader.hpp>
-#include <axolote/model.hpp>
+#include <axolote/gmodel.hpp>
 #include <memory>
 
 namespace axolote {
@@ -25,8 +25,8 @@ namespace axolote {
  **/
 class Object3D : public Drawable {
 public:
-    /** pointer to podel **/
-    std::shared_ptr<Model> model{new Model{}};
+    /** pointer to gmodel **/
+    std::shared_ptr<GModel> gmodel{new GModel{}};
 
     /**
      * \brief Constructor

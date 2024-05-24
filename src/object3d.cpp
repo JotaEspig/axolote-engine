@@ -4,7 +4,7 @@
 #include <GL/gl.h>
 #include <glm/glm.hpp>
 
-#include <axolote/model.hpp>
+#include <axolote/gmodel.hpp>
 #include <axolote/object3d.hpp>
 
 #define UNUSED(x) (void)(x)
@@ -23,7 +23,7 @@ Object3D::Object3D(
     const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices,
     const std::vector<gl::Texture> &textures, const glm::mat4 &mat
 ) :
-  model{std::make_shared<Model>(vertices, indices, textures)},
+  gmodel{std::make_shared<GModel>(vertices, indices, textures)},
   model_mat{mat} {
 }
 
@@ -35,8 +35,8 @@ Object3D::Object3D(
 }
 
 void Object3D::load_model(std::string path, const glm::vec3 &color) {
-    model->color = color;
-    model->load_model(path);
+    gmodel->color = color;
+    gmodel->load_model(path);
 }
 
 glm::mat4 Object3D::get_matrix() const {
@@ -44,7 +44,7 @@ glm::mat4 Object3D::get_matrix() const {
 }
 
 void Object3D::draw() {
-    model->draw(model_mat);
+    gmodel->draw(model_mat);
 }
 
 void Object3D::draw(const glm::mat4 &mat) {

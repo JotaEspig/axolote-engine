@@ -25,7 +25,7 @@ namespace axolote {
  * \date October 04, 2023
  * \version May 23, 2024
  **/
-class Model : public Drawable {
+class GModel : public Drawable {
 public:
     /** Model meshes **/
     std::vector<GMesh> meshes;
@@ -36,7 +36,7 @@ public:
      * \date October 04, 2023
      * \version October 04, 2023
      **/
-    Model();
+    GModel();
     /**
      * \brief Constructor
      * \author João Vitor Espig (JotaEspig)
@@ -46,7 +46,7 @@ public:
      * \param indices - polygon mesh indices
      * \param textures - textures to be rendered with polygon mesh
      **/
-    Model(
+    GModel(
         const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices,
         const std::vector<gl::Texture> &textures
     );
@@ -58,7 +58,7 @@ public:
      * \param path - path to model file (.obj)
      * \param _color - default Model color
      **/
-    Model(
+    GModel(
         std::string path, const glm::vec3 &_color = glm::vec3(0.0f, 0.0f, 0.0f)
     );
 

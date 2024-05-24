@@ -9,6 +9,7 @@
 
 #define GLFW_INCLUDE_NONE
 
+#include <axolote/gmodel.hpp>
 #include <axolote/camera.hpp>
 #include <axolote/entity.hpp>
 #include <axolote/gl/ebo.hpp>

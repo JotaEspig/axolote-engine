@@ -81,7 +81,7 @@ void Line::build_mesh() {
         ++counter;
     }
 
-    model->meshes.push_back({vs, es, {}});
+    gmodel->meshes.push_back({vs, es, {}});
 }
 
 void Line::set_end(const glm::vec3 &end) {

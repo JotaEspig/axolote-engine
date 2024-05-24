@@ -47,6 +47,7 @@ set(
     ${SOURCE_DIR}/gl/ebo.cpp
     ${SOURCE_DIR}/entity.cpp
     ${SOURCE_DIR}/gmesh.cpp
+    ${SOURCE_DIR}/gmodel.cpp
     ${SOURCE_DIR}/mesh.cpp
     ${SOURCE_DIR}/model.cpp
     ${SOURCE_DIR}/object3d.cpp
