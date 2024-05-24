@@ -50,6 +50,14 @@ struct GMesh : public Mesh, public Drawable {
     /**
      * \brief Constructor
      * \author João Vitor Espig (JotaEspig)
+     * \date May 23, 2024
+     * \version May 23, 2024
+     * \param mesh - mesh object
+     **/
+    GMesh(const Mesh &mesh);
+    /**
+     * \brief Constructor
+     * \author João Vitor Espig (JotaEspig)
      * \date October 06, 2023
      * \version October 06, 2023
      * \param vertices - polygon mesh vertices

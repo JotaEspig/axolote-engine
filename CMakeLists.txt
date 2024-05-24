@@ -43,6 +43,7 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib)
 set(SOURCE_DIR ${CMAKE_SOURCE_DIR}/src)
 set(
     SOURCE_FILES
+    ${SOURCE_DIR}/assimp.cpp
     ${SOURCE_DIR}/camera.cpp
     ${SOURCE_DIR}/gl/ebo.cpp
     ${SOURCE_DIR}/entity.cpp

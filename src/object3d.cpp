@@ -23,8 +23,9 @@ Object3D::Object3D(
     const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices,
     const std::vector<gl::Texture> &textures, const glm::mat4 &mat
 ) :
-  gmodel{std::make_shared<GModel>(vertices, indices, textures)},
+  gmodel{std::make_shared<GModel>()},
   model_mat{mat} {
+    gmodel->meshes.push_back(GMesh{vertices, indices, textures});
 }
 
 Object3D::Object3D(
@@ -35,8 +36,7 @@ Object3D::Object3D(
 }
 
 void Object3D::load_model(std::string path, const glm::vec3 &color) {
-    gmodel->color = color;
-    gmodel->load_model(path);
+    gmodel->load_model(path, color);
 }
 
 glm::mat4 Object3D::get_matrix() const {
@@ -51,6 +51,5 @@ void Object3D::draw(const glm::mat4 &mat) {
     UNUSED(mat);
     draw();
 }
-
 
 } // namespace axolote

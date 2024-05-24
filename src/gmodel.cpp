@@ -1,9 +1,5 @@
-#include <iostream>
 #include <string>
 
-#include <assimp/Importer.hpp>
-#include <assimp/postprocess.h>
-#include <assimp/scene.h>
 #include <glm/glm.hpp>
 
 #include <axolote/assimp.hpp>
@@ -11,22 +7,15 @@
 #include <axolote/gl/texture.hpp>
 #include <axolote/gmesh.hpp>
 #include <axolote/gmodel.hpp>
+#include <axolote/model.hpp>
 
 namespace axolote {
 
 GModel::GModel() {
 }
 
-GModel::GModel(
-    const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices,
-    const std::vector<gl::Texture> &textures
-) {
-    meshes.push_back(GMesh{vertices, indices, textures});
-}
-
-GModel::GModel(std::string path, const glm::vec3 &_color) :
-  color{_color} {
-    load_model(path);
+GModel::GModel(std::string path, const glm::vec3 &color) {
+    load_model(path, color);
 }
 
 void GModel::bind_shader(const gl::Shader &shader) {
@@ -43,22 +32,12 @@ void GModel::draw(const glm::mat4 &mat) {
         e.draw(mat);
 }
 
-void GModel::load_model(std::string path) {
-    Assimp::Importer import;
-
-    const aiScene *scene
-        = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
-    if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE
-        || !scene->mRootNode) {
-        std::cerr << "ERROR::ASSIMP: " << import.GetErrorString() << std::endl;
-        return;
+void GModel::load_model(std::string path, const glm::vec3 &color) {
+    meshes.clear();
+    Model m{path, color};
+    for (const Mesh &mesh : m.meshes) {
+        meshes.push_back(mesh);
     }
-
-    directory = path.substr(0, path.find_last_of('/') + 1);
-    process_node(
-        scene->mRootNode, scene, meshes, color, loaded_textures,
-        loaded_textures_names, directory
-    );
 }
 
 } // namespace axolote

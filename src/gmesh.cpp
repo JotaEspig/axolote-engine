@@ -17,6 +17,10 @@ namespace axolote {
 GMesh::GMesh() {
 }
 
+GMesh::GMesh(const Mesh &mesh) :
+  GMesh{mesh.vertices, mesh.indices, mesh.textures} {
+}
+
 GMesh::GMesh(
     const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices,
     const std::vector<gl::Texture> &textures
@@ -99,6 +103,5 @@ void GMesh::destroy() {
     vbo.destroy();
     ebo.destroy();
 }
-
 
 } // namespace axolote

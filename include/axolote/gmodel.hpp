@@ -1,6 +1,6 @@
 /**
- * \file model.hpp
- * \brief Model class
+ * \file gmodel.hpp
+ * \brief GModel class
  * \author João Vitor Espig (JotaEspig)
  * \date October 04, 2023
  * \version May 23, 2024
@@ -20,7 +20,7 @@
 namespace axolote {
 
 /**
- * \brief defines a 3D model
+ * \brief defines a drawable 3D model
  * \author João Vitor Espig (JotaEspig)
  * \date October 04, 2023
  * \version May 23, 2024
@@ -40,28 +40,24 @@ public:
     /**
      * \brief Constructor
      * \author João Vitor Espig (JotaEspig)
-     * \date October 27, 2023
-     * \version October 27, 2023
-     * \param vertices - polygon mesh vertices
-     * \param indices - polygon mesh indices
-     * \param textures - textures to be rendered with polygon mesh
-     **/
-    GModel(
-        const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices,
-        const std::vector<gl::Texture> &textures
-    );
-    /**
-     * \brief Constructor
-     * \author João Vitor Espig (JotaEspig)
      * \date October 04, 2023
      * \version October 08, 2023
      * \param path - path to model file (.obj)
-     * \param _color - default Model color
+     * \param color - default Model color
      **/
     GModel(
-        std::string path, const glm::vec3 &_color = glm::vec3(0.0f, 0.0f, 0.0f)
+        std::string path, const glm::vec3 &color = glm::vec3(0.0f, 0.0f, 0.0f)
     );
 
+    /**
+     * \brief loads a model from file
+     * \author João Vitor Espig (JotaEspig)
+     * \date October 04, 2023
+     * \version October 04, 2023
+     * \param path - path to file
+     * \param color - default color for model
+     **/
+    void load_model(std::string path, const glm::vec3 &color);
     /**
      * \brief binds a shader into the meshes
      * \author João Vitor Espig (JotaEspig)
@@ -86,31 +82,6 @@ public:
      * \param mat - model transformation matrix
      **/
     void draw(const glm::mat4 &mat) override;
-
-    friend class Object3D;
-    friend class Scene;
-    friend class Entity;
-
-protected:
-    /** default color **/
-    glm::vec3 color;
-
-    /**
-     * \brief loads a model from file
-     * \author João Vitor Espig (JotaEspig)
-     * \date October 04, 2023
-     * \version October 04, 2023
-     * \param path - path to file
-     **/
-    void load_model(std::string path);
-
-private:
-    /** loaded textures **/
-    std::vector<gl::Texture> loaded_textures;
-    /** loaded textures names **/
-    std::vector<std::string> loaded_textures_names;
-    /** model file directory **/
-    std::string directory;
 };
 
 } // namespace axolote

@@ -27,6 +27,8 @@ class Object3D : public Drawable {
 public:
     /** pointer to gmodel **/
     std::shared_ptr<GModel> gmodel{new GModel{}};
+    /** model_matition **/
+    glm::mat4 model_mat;
 
     /**
      * \brief Constructor
@@ -108,12 +110,6 @@ public:
      **/
     void draw(const glm::mat4 &mat) override;
 
-    friend class Entity;
-    friend class Scene;
-
-protected:
-    /** model_matition **/
-    glm::mat4 model_mat;
 };
 
 } // namespace axolote
