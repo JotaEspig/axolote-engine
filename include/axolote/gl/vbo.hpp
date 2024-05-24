@@ -15,7 +15,7 @@
 #include <GL/gl.h>
 #include <glm/glm.hpp>
 
-#include <axolote/structs.hpp>
+#include "axolote/structs.hpp"
 
 namespace axolote {
 

@@ -6,8 +6,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include <axolote/gl/shader.hpp>
-#include <axolote/utils.hpp>
+#include "axolote/gl/shader.hpp"
+#include "axolote/utils.hpp"
 
 static GLint
 check_shader_compilation(GLuint shader_id, char *log, size_t size) {

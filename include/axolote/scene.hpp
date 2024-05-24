@@ -3,18 +3,15 @@
  * \brief provides class Scene
  * \author João Vitor Espig (JotaEspig)
  * \date October 25, 2023
- * \version May 23, 2024
+ * \version May 24, 2024
  **/
 #pragma once
 
 #include <memory>
 #include <vector>
 
-#include <axolote/camera.hpp>
-#include <axolote/drawable.hpp>
-#include <axolote/entity.hpp>
-#include <axolote/gmesh.hpp>
-#include <axolote/object3d.hpp>
+#include "axolote/camera.hpp"
+#include "axolote/drawable.hpp"
 
 namespace axolote {
 

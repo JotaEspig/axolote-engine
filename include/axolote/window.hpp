@@ -15,9 +15,8 @@
 
 #include <GLFW/glfw3.h>
 
-#include <axolote/camera.hpp>
-#include <axolote/scene.hpp>
-#include <axolote/structs.hpp>
+#include "axolote/scene.hpp"
+#include "axolote/structs.hpp"
 
 namespace axolote {
 

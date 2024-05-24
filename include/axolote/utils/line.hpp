@@ -9,7 +9,7 @@
 
 #include <glm/glm.hpp>
 
-#include <axolote/object3d.hpp>
+#include "axolote/object3d.hpp"
 
 namespace axolote {
 

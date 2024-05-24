@@ -12,13 +12,13 @@
 #include <GL/gl.h>
 #include <glm/glm.hpp>
 
-#include <axolote/drawable.hpp>
-#include <axolote/gl/ebo.hpp>
-#include <axolote/gl/shader.hpp>
-#include <axolote/gl/texture.hpp>
-#include <axolote/gl/vao.hpp>
-#include <axolote/gl/vbo.hpp>
-#include <axolote/mesh.hpp>
+#include "axolote/drawable.hpp"
+#include "axolote/gl/ebo.hpp"
+#include "axolote/gl/shader.hpp"
+#include "axolote/gl/texture.hpp"
+#include "axolote/gl/vao.hpp"
+#include "axolote/gl/vbo.hpp"
+#include "axolote/mesh.hpp"
 
 namespace axolote {
 

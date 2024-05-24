@@ -12,8 +12,7 @@
 
 #include <glm/glm.hpp>
 
-#include <axolote/gl/texture.hpp>
-#include <axolote/mesh.hpp>
+#include "axolote/mesh.hpp"
 
 namespace axolote {
 

@@ -1,7 +1,7 @@
 #include <vector>
 
-#include <axolote/mesh.hpp>
-#include <axolote/structs.hpp>
+#include "axolote/mesh.hpp"
+#include "axolote/structs.hpp"
 
 namespace axolote {
 

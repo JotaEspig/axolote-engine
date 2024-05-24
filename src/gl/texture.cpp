@@ -5,8 +5,7 @@
 
 #include <stb/stb_image.h>
 
-#include <axolote/gl/shader.hpp>
-#include <axolote/gl/texture.hpp>
+#include "axolote/gl/texture.hpp"
 
 namespace axolote {
 
@@ -79,7 +78,6 @@ void Texture::unbind() {
 void Texture::destroy() {
     glDeleteTextures(1, &id);
 }
-
 
 } // namespace gl
 

@@ -2,8 +2,8 @@
 
 #include <glad/glad.h>
 
-#include <axolote/gl/vbo.hpp>
-#include <axolote/structs.hpp>
+#include "axolote/gl/vbo.hpp"
+#include "axolote/structs.hpp"
 
 namespace axolote {
 

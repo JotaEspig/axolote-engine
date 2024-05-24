@@ -1,7 +1,7 @@
 #include <glad/glad.h>
 
-#include <axolote/gl/vao.hpp>
-#include <axolote/gl/vbo.hpp>
+#include "axolote/gl/vao.hpp"
+#include "axolote/gl/vbo.hpp"
 
 namespace axolote {
 

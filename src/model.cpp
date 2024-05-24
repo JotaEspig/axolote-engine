@@ -6,11 +6,9 @@
 #include <assimp/scene.h>
 #include <glm/glm.hpp>
 
-#include <axolote/assimp.hpp>
-#include <axolote/gl/shader.hpp>
-#include <axolote/gl/texture.hpp>
-#include <axolote/mesh.hpp>
-#include <axolote/model.hpp>
+#include "axolote/assimp.hpp"
+#include "axolote/gl/texture.hpp"
+#include "axolote/model.hpp"
 
 namespace axolote {
 

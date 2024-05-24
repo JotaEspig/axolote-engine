@@ -4,8 +4,8 @@
 #include <GL/gl.h>
 #include <glm/glm.hpp>
 
-#include <axolote/gmodel.hpp>
-#include <axolote/object3d.hpp>
+#include "axolote/gmodel.hpp"
+#include "axolote/object3d.hpp"
 
 #define UNUSED(x) (void)(x)
 

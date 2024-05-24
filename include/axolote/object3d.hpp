@@ -7,13 +7,14 @@
  **/
 #pragma once
 
+#include <memory>
+
 #include <GL/gl.h>
 #include <glm/glm.hpp>
 
-#include <axolote/drawable.hpp>
-#include <axolote/gl/shader.hpp>
-#include <axolote/gmodel.hpp>
-#include <memory>
+#include "axolote/drawable.hpp"
+#include "axolote/gl/shader.hpp"
+#include "axolote/gmodel.hpp"
 
 namespace axolote {
 

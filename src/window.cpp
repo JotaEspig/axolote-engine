@@ -6,9 +6,8 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 
-#include <axolote/scene.hpp>
-#include <axolote/structs.hpp>
-#include <axolote/window.hpp>
+#include "axolote/structs.hpp"
+#include "axolote/window.hpp"
 
 #define INITIAL_SIZE 800
 #define __UNUSED(x) (void)(x)

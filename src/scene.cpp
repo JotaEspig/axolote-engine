@@ -3,10 +3,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include <axolote/entity.hpp>
-#include <axolote/gmesh.hpp>
-#include <axolote/object3d.hpp>
-#include <axolote/scene.hpp>
+#include "axolote/drawable.hpp"
+#include "axolote/scene.hpp"
 
 namespace axolote {
 

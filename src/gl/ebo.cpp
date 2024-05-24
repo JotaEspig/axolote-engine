@@ -4,7 +4,7 @@
 
 #include <GL/gl.h>
 
-#include <axolote/gl/ebo.hpp>
+#include "axolote/gl/ebo.hpp"
 
 namespace axolote {
 
