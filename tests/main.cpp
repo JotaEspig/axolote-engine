@@ -51,62 +51,62 @@ void App::main_loop() {
     std::shared_ptr<axolote::Line> l_x{new axolote::Line{
         {0.0f, 0.0f, 0.0f}, {1.0f, 0.0f, 0.0f}, 1.0f, 0.01f, {1.0f, 0.0f, 0.0f}
     }};
-    l_x->gmodel->bind_shader(shader_program);
+    l_x->bind_shader(shader_program);
     scene->add_drawable(l_x);
 
     // y-axis line
     std::shared_ptr<axolote::Line> l_y{new axolote::Line{
         {0.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}, 1.0f, 0.01f, {0.0f, 1.0f, 0.0f}
     }};
-    l_y->gmodel->bind_shader(shader_program);
+    l_y->bind_shader(shader_program);
     scene->add_drawable(l_y);
 
     // z-axis line
     std::shared_ptr<axolote::Line> l_z{new axolote::Line{
         {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 1.0f}, 1.0f, 0.01f, {0.0f, 0.0f, 1.0f}
     }};
-    l_z->gmodel->bind_shader(shader_program);
+    l_z->bind_shader(shader_program);
     scene->add_drawable(l_z);
 
     // xy-axis line
     std::shared_ptr<axolote::Line> l_xy{new axolote::Line{
         {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 0.0f}, 0.3f, 0.01f, {1.0f, 1.0f, 0.0f}
     }};
-    l_xy->gmodel->bind_shader(shader_program);
+    l_xy->bind_shader(shader_program);
     scene->add_drawable(l_xy);
 
     // xz-axis line
     std::shared_ptr<axolote::Line> l_xz{new axolote::Line{
         {0.0f, 0.0f, 0.0f}, {1.0f, 0.0f, 1.0f}, 0.3f, 0.01f, {1.0f, 0.0f, 1.0f}
     }};
-    l_xz->gmodel->bind_shader(shader_program);
+    l_xz->bind_shader(shader_program);
     scene->add_drawable(l_xz);
 
     // yz-axis line
     std::shared_ptr<axolote::Line> l_yz{new axolote::Line{
         {0.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 1.0f}, 0.3f, 0.01f, {0.0f, 1.0f, 1.0f}
     }};
-    l_yz->gmodel->bind_shader(shader_program);
+    l_yz->bind_shader(shader_program);
     scene->add_drawable(l_yz);
 
     // xyz-axis line
     std::shared_ptr<axolote::Line> l_xyz{new axolote::Line{
         {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0.3f, 0.01f, {1.0f, 1.0f, 1.0f}
     }};
-    l_xyz->gmodel->bind_shader(shader_program);
+    l_xyz->bind_shader(shader_program);
     scene->add_drawable(l_xyz);
 
     std::shared_ptr<axolote::Line> l_test{new axolote::Line{
         {-0.4f, 0.0f, 0.0f}, {1.0f, 0.0f, 1.0f}, 0.3f, 0.01f, {1.0f, 0.5f, 0.0f}
     }};
-    l_test->gmodel->bind_shader(shader_program);
+    l_test->bind_shader(shader_program);
     scene->add_drawable(l_test);
 
     auto sphere = std::make_shared<axolote::Object3D>(
         "./resources/models/sphere/sphere.obj", glm::vec3{1.0f, 1.0f, 1.0f},
         glm::mat4{1.0f}
     );
-    sphere->gmodel->bind_shader(shader_program);
+    sphere->bind_shader(shader_program);
     scene->add_drawable(sphere);
 
     current_scene = scene;

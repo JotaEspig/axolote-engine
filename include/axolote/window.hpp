@@ -46,6 +46,43 @@ public:
     ~Window();
 
     /**
+     * \brief initializes window
+     * \author João Vitor Espig (JotaEspig)
+     * \date October 04, 2023
+     * \version October 04, 2023
+     **/
+    void init();
+    /**
+     * \brief process user input
+     * \author João Vitor Espig (JotaEspig)
+     * \date October 04, 2023
+     * \version October 04, 2023
+     * \param delta_t - time difference from last frame
+     *
+     * Preconfigured way to process SPACE, SHIFT, CTRL and mouse movement
+     * (this method can be overrided)
+     **/
+    void process_input(float delta_t = 1.0f);
+    /**
+     * \brief process the simplest user input (AWSD)
+     * \author João Vitor Espig (JotaEspig)
+     * \date October 04, 2023
+     * \version October 04, 2023
+     * \param delta_t - time difference from last frame
+     *
+     * Preconfigured way to process A, W, S and D keys
+     * (this method can be overrided)
+     **/
+    void minimal_process_input(float delta_t = 1.0f);
+    /**
+     * \brief checks if window should close
+     * \author João Vitor Espig (JotaEspig)
+     * \date October 04, 2023
+     * \version October 04, 2023
+     **/
+    bool should_close();
+
+    /**
      * \brief title getter
      * \author João Vitor Espig (JotaEspig)
      * \date October 04, 2023
@@ -126,43 +163,6 @@ protected:
     GLFWwindow *window;
     /** Current scene **/
     std::shared_ptr<Scene> current_scene;
-
-    /**
-     * \brief initializes window
-     * \author João Vitor Espig (JotaEspig)
-     * \date October 04, 2023
-     * \version October 04, 2023
-     **/
-    void init();
-    /**
-     * \brief process user input
-     * \author João Vitor Espig (JotaEspig)
-     * \date October 04, 2023
-     * \version October 04, 2023
-     * \param delta_t - time difference from last frame
-     *
-     * Preconfigured way to process SPACE, SHIFT, CTRL and mouse movement
-     * (this method can be overrided)
-     **/
-    void process_input(float delta_t = 1.0f);
-    /**
-     * \brief process the simplest user input (AWSD)
-     * \author João Vitor Espig (JotaEspig)
-     * \date October 04, 2023
-     * \version October 04, 2023
-     * \param delta_t - time difference from last frame
-     *
-     * Preconfigured way to process A, W, S and D keys
-     * (this method can be overrided)
-     **/
-    void minimal_process_input(float delta_t = 1.0f);
-    /**
-     * \brief checks if window should close
-     * \author João Vitor Espig (JotaEspig)
-     * \date October 04, 2023
-     * \version October 04, 2023
-     **/
-    bool should_close();
 };
 
 } // namespace axolote
