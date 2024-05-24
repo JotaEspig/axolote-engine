@@ -80,14 +80,14 @@ struct GMesh : public Mesh, public Drawable {
     /**
      * \brief binds a shader into gmesh
      * \author João Vitor Espig (JotaEspig)
-     * \data May 24, 2024
+     * \date May 24, 2024
      * \version May 24, 2024
      **/
     gl::Shader get_shader() const override;
     /**
      * \brief Override update from Drawable, does nothing in reality
      * \author João Vitor Espig (JotaEspig)
-     * \data May 24, 2024
+     * \date May 24, 2024
      * \version May 24, 2024
      * \param dt - delta time
      **/

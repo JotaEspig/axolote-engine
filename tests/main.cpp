@@ -142,7 +142,7 @@ void App::main_loop() {
 }
 
 int main() {
-    std::cout << "Solar System 3D" << std::endl;
+    std::cout << "Axolote Engine" << std::endl;
     App app{};
     app.set_title("Uepa");
     app.set_width(600);
