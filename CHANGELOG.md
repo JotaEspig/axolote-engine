@@ -1,3 +1,14 @@
+## v0.4.0 (2024-05-24)
+
+### Feat
+
+- **window**: improved power of Window class
+- turned Drawable more meaningful
+
+### Refactor
+
+- removed unused methods
+
 ## v0.3.0 (2024-05-23)
 
 ### Feat
