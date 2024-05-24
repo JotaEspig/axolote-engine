@@ -2,6 +2,7 @@
 #include <memory>
 #include <sstream>
 
+#include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -14,8 +15,23 @@
 
 class App : public axolote::Window {
 public:
+    void process_input(double dt);
     void main_loop();
+
 };
+
+void App::process_input(double dt) {
+    axolote::Window::process_input(dt);
+
+    int v_key_state = glfwGetKey(window, GLFW_KEY_V);
+    if (v_key_state == GLFW_PRESS && !_keys_pressed[GLFW_KEY_V]) {
+        _keys_pressed[GLFW_KEY_V] = true;
+    }
+    else if (v_key_state == GLFW_RELEASE && _keys_pressed[GLFW_KEY_V]) {
+        set_vsync(!_vsync);
+        _keys_pressed[GLFW_KEY_V] = false;
+    }
+}
 
 void App::main_loop() {
     std::string original_title = title();
@@ -137,13 +153,13 @@ void App::main_loop() {
         scene->update(dt);
         scene->render();
 
-        glfwSwapBuffers(window);
+        flush();
     }
 }
 
 int main() {
     std::cout << "Axolote Engine" << std::endl;
-    App app{};
+    App app{false};
     app.set_title("Uepa");
     app.set_width(600);
     app.set_height(600);

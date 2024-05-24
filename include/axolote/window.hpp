@@ -12,6 +12,7 @@
 #include <cstdint>
 #include <memory>
 #include <string>
+#include <unordered_map>
 
 #include <GLFW/glfw3.h>
 
@@ -37,6 +38,14 @@ public:
      * \version October 04, 2023
      **/
     Window();
+    /**
+     * \brief Constructor with Vsync
+     * \author João Vitor Espig (JotaEspig)
+     * \date May 24, 2024
+     * \version May 24, 2024
+     * \param vsync - should use vsync
+     **/
+    Window(bool vsync);
     /**
      * \brief Destructor
      * \author João Vitor Espig (JotaEspig)
@@ -81,7 +90,30 @@ public:
      * \version October 04, 2023
      **/
     bool should_close();
+    /**
+     * \brief Flush the buffers. Should be called at the end of the main loop
+     * \author João Vitor Espig (JotaEspig)
+     * \date May 24, 2024
+     * \version May 24, 2024
+     **/
+    void flush();
 
+    /**
+     * \brief Get the state of vsync
+     * \author João Vitor Espig (JotaEspig)
+     * \date May 24, 2024
+     * \version May 24, 2024
+     * \return return vsync member
+     **/
+    bool vsync() const;
+    /**
+     * \brief Enable or disable vsync
+     * \author João Vitor Espig (JotaEspig)
+     * \date May 24, 2024
+     * \version May 24, 2024
+     * \param vsync - should use vsync
+     **/
+    void set_vsync(bool vsync);
     /**
      * \brief title getter
      * \author João Vitor Espig (JotaEspig)
@@ -155,6 +187,8 @@ public:
     void set_color(uint8_t r, uint8_t g, uint8_t b, float opacity = 1.0f);
 
 protected:
+    /** should use vsync **/
+    bool _vsync = true;
     /** window title **/
     std::string _title;
     /** window background color **/
@@ -163,6 +197,8 @@ protected:
     GLFWwindow *window;
     /** Current scene **/
     std::shared_ptr<Scene> current_scene;
+    /** map to pressed keys **/
+    std::unordered_map<int, bool> _keys_pressed;
 };
 
 } // namespace axolote

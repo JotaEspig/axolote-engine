@@ -29,6 +29,11 @@ Window::Window() {
     init();
 }
 
+Window::Window(bool vsync) :
+  _vsync{vsync} {
+    init();
+}
+
 Window::~Window() {
     glfwDestroyWindow(window);
     glfwTerminate();
@@ -67,7 +72,7 @@ void Window::init() {
         return;
     }
 
-    glfwSwapInterval(1);
+    glfwSwapInterval(_vsync);
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
@@ -118,6 +123,19 @@ void Window::minimal_process_input(float delta_t) {
 
 bool Window::should_close() {
     return glfwWindowShouldClose(window);
+}
+
+void Window::flush() {
+    glfwSwapBuffers(window);
+}
+
+bool Window::vsync() const {
+    return _vsync;
+}
+
+void Window::set_vsync(bool vsync) {
+    _vsync = vsync;
+    glfwSwapInterval(vsync);
 }
 
 std::string Window::title() const {
