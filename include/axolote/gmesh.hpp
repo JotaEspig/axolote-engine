@@ -28,7 +28,8 @@ namespace axolote {
  * \date October 06, 2023
  * \version May 23, 2024
  *
- * The difference between GMesh and Mesh is that GMesh you can draw
+ * The difference between GMesh and Mesh is that GMesh you can draw.
+ * You should use GMesh if you want a default implementation for drawing
  **/
 struct GMesh : public Mesh, public Drawable {
     /** VAO **/
@@ -92,6 +93,20 @@ struct GMesh : public Mesh, public Drawable {
      * \param dt - delta time
      **/
     void update(double dt) override;
+    /**
+     * \brief sets shaders uniforms and do the binds
+     * \author João Vitor Espig (JotaEspig)
+     * \date May 24, 2024
+     * \version May 24, 2024
+     **/
+    void default_draw_binds(const glm::mat4 &mat);
+    /**
+     * \brief unbinds things used in drawing
+     * \author João Vitor Espig (JotaEspig)
+     * \date May 24, 2024
+     * \version May 24, 2024
+     **/
+    void default_draw_unbinds();
     /**
      * \brief draws
      * \author João Vitor Espig (JotaEspig)

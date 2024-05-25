@@ -158,7 +158,7 @@ void App::main_loop() {
 
 int main() {
     std::cout << "Axolote Engine" << std::endl;
-    App app{false};
+    App app{};
     app.set_title("Uepa");
     app.set_width(600);
     app.set_height(600);

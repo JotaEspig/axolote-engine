@@ -33,7 +33,6 @@ void VAO::destroy() {
     glDeleteVertexArrays(1, &id);
 }
 
-
 } // namespace gl
 
 } // namespace axolote

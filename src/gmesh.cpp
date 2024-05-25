@@ -6,10 +6,11 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "axolote/gl/ebo.hpp"
+#include "axolote/gl/shader.hpp"
+#include "axolote/gl/texture.hpp"
 #include "axolote/gl/vao.hpp"
 #include "axolote/gl/vbo.hpp"
 #include "axolote/gmesh.hpp"
-#include "axolote/gl/shader.hpp"
 #include "axolote/mesh.hpp"
 #include "axolote/structs.hpp"
 
@@ -60,11 +61,7 @@ void GMesh::update(double dt) {
     UNUSED(dt);
 }
 
-void GMesh::draw() {
-    draw(glm::mat4(1.0f));
-}
-
-void GMesh::draw(const glm::mat4 &mat) {
+void GMesh::default_draw_binds(const glm::mat4 &mat) {
     shader.activate();
     vao.bind();
 
@@ -93,20 +90,29 @@ void GMesh::draw(const glm::mat4 &mat) {
             shader.set_uniform_int("is_specular_map_set", 1);
         }
 
-        shader.set_uniform_int((type + num).c_str(), t.unit);
-        t.activate();
         t.bind();
+        t.activate();
+        shader.set_uniform_int((type + num).c_str(), t.unit);
     }
 
     shader.set_uniform_matrix4("model", mat);
+}
 
-    vao.bind();
-    glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
-
+void GMesh::default_draw_unbinds() {
+    vao.unbind();
     for (gl::Texture t : textures) {
         t.unbind();
     }
-    vao.unbind();
+}
+
+void GMesh::draw() {
+    draw(glm::mat4(1.0f));
+}
+
+void GMesh::draw(const glm::mat4 &mat) {
+    default_draw_binds(mat);
+    glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+    default_draw_unbinds();
 }
 
 void GMesh::destroy() {

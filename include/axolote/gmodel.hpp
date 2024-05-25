@@ -23,6 +23,8 @@ namespace axolote {
  * \author João Vitor Espig (JotaEspig)
  * \date October 04, 2023
  * \version May 23, 2024
+ *
+ * You should use GModel if you want a default implementation for drawing
  **/
 class GModel : public Drawable {
 public:
