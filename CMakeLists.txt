@@ -45,7 +45,7 @@ set(
     SOURCE_FILES
     ${SOURCE_DIR}/assimp.cpp
     ${SOURCE_DIR}/camera.cpp
-    ${SOURCE_DIR}/glad.c
+    ${SOURCE_DIR}/glad/glad.c
     ${SOURCE_DIR}/gl/ebo.cpp
     ${SOURCE_DIR}/gmesh.cpp
     ${SOURCE_DIR}/gmodel.cpp
