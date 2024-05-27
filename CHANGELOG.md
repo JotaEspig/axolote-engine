@@ -1,3 +1,9 @@
+## v0.4.1 (2024-05-27)
+
+### Refactor
+
+- separated draw function into draw and draw prepearations
+
 ## v0.4.0 (2024-05-24)
 
 ### Feat
