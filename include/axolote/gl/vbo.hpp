@@ -12,9 +12,9 @@
 
 #include <vector>
 
-#include <GL/gl.h>
 #include <glm/glm.hpp>
 
+#include "axolote/glad/glad.h"
 #include "axolote/structs.hpp"
 
 namespace axolote {
@@ -46,7 +46,15 @@ public:
      * \version October 04, 2023
      * \param vertices - array of vertex
      **/
-    VBO(const std::vector<Vertex> &vertices);
+    template <class T>
+    VBO(const std::vector<T> &vertices) {
+        glGenBuffers(1, &id);
+        glBindBuffer(GL_ARRAY_BUFFER, id);
+        glBufferData(
+            GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(),
+            GL_STATIC_DRAW
+        );
+    }
 
     /**
      * \brief binds

@@ -9,7 +9,6 @@
 
 #include <vector>
 
-#include <GL/gl.h>
 #include <glm/glm.hpp>
 
 #include "axolote/drawable.hpp"

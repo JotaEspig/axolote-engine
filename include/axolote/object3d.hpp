@@ -9,10 +9,10 @@
 
 #include <memory>
 
-#include <GL/gl.h>
 #include <glm/glm.hpp>
 
 #include "axolote/drawable.hpp"
+#include "axolote/glad/glad.h"
 #include "axolote/gl/shader.hpp"
 #include "axolote/gmodel.hpp"
 

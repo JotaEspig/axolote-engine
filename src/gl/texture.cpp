@@ -1,10 +1,10 @@
 #include <stdexcept>
 #include <string>
 
-#include <glad/glad.h>
 
 #include <stb/stb_image.h>
 
+#include "axolote/glad/glad.h"
 #include "axolote/gl/texture.hpp"
 
 namespace axolote {

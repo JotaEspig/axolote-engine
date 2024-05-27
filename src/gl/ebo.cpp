@@ -1,10 +1,7 @@
 #include <vector>
 
-#include <glad/glad.h>
-
-#include <GL/gl.h>
-
 #include "axolote/gl/ebo.hpp"
+#include "axolote/glad/glad.h"
 
 namespace axolote {
 

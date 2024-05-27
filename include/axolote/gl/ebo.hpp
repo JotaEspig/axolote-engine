@@ -12,7 +12,7 @@
 
 #include <vector>
 
-#include <GL/gl.h>
+#include "axolote/glad/glad.h"
 
 namespace axolote {
 

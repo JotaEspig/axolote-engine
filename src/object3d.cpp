@@ -1,9 +1,9 @@
 #include <memory>
 #include <string>
 
-#include <GL/gl.h>
 #include <glm/glm.hpp>
 
+#include "axolote/glad/glad.h"
 #include "axolote/gmodel.hpp"
 #include "axolote/object3d.hpp"
 

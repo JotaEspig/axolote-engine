@@ -1,11 +1,8 @@
 #include <iostream>
 
-#include <glad/glad.h>
-
-#include <GL/gl.h>
-#include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 
+#include "axolote/glad/glad.h"
 #include "axolote/structs.hpp"
 #include "axolote/window.hpp"
 

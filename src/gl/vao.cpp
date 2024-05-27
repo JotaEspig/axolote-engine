@@ -1,5 +1,4 @@
-#include <glad/glad.h>
-
+#include "axolote/glad/glad.h"
 #include "axolote/gl/vao.hpp"
 #include "axolote/gl/vbo.hpp"
 

@@ -10,7 +10,6 @@
  **/
 #pragma once
 
-#include <GL/gl.h>
 
 #include "axolote/gl/vbo.hpp"
 

@@ -1,24 +1,11 @@
-#include <vector>
-
-#include <glad/glad.h>
-
 #include "axolote/gl/vbo.hpp"
-#include "axolote/structs.hpp"
+#include "axolote/glad/glad.h"
 
 namespace axolote {
 
 namespace gl {
 
 VBO::VBO() {
-}
-
-VBO::VBO(const std::vector<Vertex> &vertices) {
-    glGenBuffers(1, &id);
-    glBindBuffer(GL_ARRAY_BUFFER, id);
-    glBufferData(
-        GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(),
-        GL_STATIC_DRAW
-    );
 }
 
 void VBO::bind() {
@@ -32,7 +19,6 @@ void VBO::unbind() {
 void VBO::destroy() {
     glDeleteBuffers(1, &id);
 }
-
 
 } // namespace gl
 

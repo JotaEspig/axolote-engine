@@ -16,12 +16,12 @@
 #include <string>
 #include <vector>
 
-#include <GL/gl.h>
 #include <assimp/Importer.hpp>
 #include <assimp/postprocess.h>
 #include <assimp/scene.h>
 #include <glm/glm.hpp>
 
+#include "axolote/glad/glad.h"
 #include "axolote/gl/texture.hpp"
 #include "axolote/mesh.hpp"
 

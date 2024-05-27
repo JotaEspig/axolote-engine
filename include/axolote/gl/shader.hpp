@@ -7,8 +7,9 @@
  **/
 #pragma once
 
-#include <GL/gl.h>
 #include <glm/glm.hpp>
+
+#include "axolote/glad/glad.h"
 
 namespace axolote {
 

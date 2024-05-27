@@ -9,9 +9,9 @@
 
 #include <vector>
 
-#include <GL/gl.h>
 #include <glm/glm.hpp>
 
+#include "axolote/glad/glad.h"
 #include "axolote/gl/texture.hpp"
 #include "axolote/structs.hpp"
 

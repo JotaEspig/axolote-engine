@@ -45,6 +45,7 @@ set(
     SOURCE_FILES
     ${SOURCE_DIR}/assimp.cpp
     ${SOURCE_DIR}/camera.cpp
+    ${SOURCE_DIR}/glad.c
     ${SOURCE_DIR}/gl/ebo.cpp
     ${SOURCE_DIR}/gmesh.cpp
     ${SOURCE_DIR}/gmodel.cpp
@@ -60,7 +61,6 @@ set(
     ${SOURCE_DIR}/window.cpp
     ${SOURCE_DIR}/utils/line.cpp
 
-    ${CMAKE_SOURCE_DIR}/external/glad/src/glad.c
     ${CMAKE_SOURCE_DIR}/external/stb/stb.cpp
 )
 

@@ -9,7 +9,7 @@
 
 #include <string>
 
-#include <GL/gl.h>
+#include "axolote/glad/glad.h"
 
 namespace axolote {
 
