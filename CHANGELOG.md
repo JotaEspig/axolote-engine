@@ -1,3 +1,9 @@
+## v0.4.2 (2024-05-27)
+
+### Fix
+
+- using glad as a normal source file
+
 ## v0.4.1 (2024-05-27)
 
 ### Refactor
