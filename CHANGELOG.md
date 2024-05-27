@@ -1,3 +1,9 @@
+## v0.4.4 (2024-05-27)
+
+### Fix
+
+- VBO constructor using template now
+
 ## v0.4.3 (2024-05-27)
 
 ### Fix
