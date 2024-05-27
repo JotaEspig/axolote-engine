@@ -51,7 +51,7 @@ public:
         glGenBuffers(1, &id);
         glBindBuffer(GL_ARRAY_BUFFER, id);
         glBufferData(
-            GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(),
+            GL_ARRAY_BUFFER, vertices.size() * sizeof(T), vertices.data(),
             GL_STATIC_DRAW
         );
     }
