@@ -1,6 +1,6 @@
-#include "axolote/glad/glad.h"
 #include "axolote/gl/vao.hpp"
 #include "axolote/gl/vbo.hpp"
+#include "axolote/glad/glad.h"
 
 namespace axolote {
 
@@ -17,6 +17,12 @@ void VAO::link_attrib(
     vbo.bind();
     glVertexAttribPointer(layout, num_components, type, GL_FALSE, size, offset);
     glEnableVertexAttribArray(layout);
+    vbo.unbind();
+}
+
+void VAO::attrib_divisor(VBO &vbo, GLuint index, GLuint divisor) {
+    vbo.bind();
+    glVertexAttribDivisor(index, divisor);
     vbo.unbind();
 }
 

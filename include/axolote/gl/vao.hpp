@@ -10,7 +10,6 @@
  **/
 #pragma once
 
-
 #include "axolote/gl/vbo.hpp"
 
 namespace axolote {
@@ -52,6 +51,16 @@ public:
         VBO &vbo, GLuint layout, GLuint num_components, GLenum type,
         GLsizeiptr size, void *offset
     );
+    /**
+     * \brief Divides correctly attrib
+     * \author João Vitor Espig (JotaEspig)
+     * \date May 27, 2024
+     * \version May 27, 2024
+     * \param vbo - VBO object
+     * \param layout - index
+     * \param divisor - divisor
+     **/
+    void attrib_divisor(VBO &vbo, GLuint index, GLuint divisor);
     /**
      * \brief binds
      * \author João Vitor Espig (JotaEspig)
