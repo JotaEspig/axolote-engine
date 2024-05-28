@@ -1,3 +1,10 @@
+## v0.5.0 (2024-05-27)
+
+### Feat
+
+- added method attrib_divisor
+- updated glad
+
 ## v0.4.4 (2024-05-27)
 
 ### Fix
