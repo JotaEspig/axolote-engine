@@ -77,53 +77,119 @@ void Window::init() {
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
+void Window::poll_events() {
+    glfwPollEvents();
+}
+
+Window::KeyState Window::get_key_state(Window::Key key) {
+    int key_int = static_cast<int>(key);
+    return static_cast<KeyState>(glfwGetKey(window, key_int));
+}
+
+Window::MouseKeyState Window::get_mouse_key_state(Window::MouseKey key) {
+    int key_int = static_cast<int>(key);
+    return static_cast<MouseKeyState>(glfwGetMouseButton(window, key_int));
+}
+
+bool Window::is_key_pressed(Window::Key key) const {
+    int key_int = static_cast<int>(key);
+    return _keys_pressed.at(key_int);
+}
+
+void Window::set_key_pressed(Window::Key key, bool pressed) {
+    int key_int = static_cast<int>(key);
+    _keys_pressed.at(key_int) = pressed;
+}
+
+void Window::set_cursor_mode(CursorMode mode) {
+    int mode_int = static_cast<int>(mode);
+    glfwSetInputMode(window, GLFW_CURSOR, mode_int);
+}
+
+void Window::get_cursor_position(double *x, double *y) {
+    glfwGetCursorPos(window, x, y);
+}
+
+void Window::set_cursor_position(double x, double y) {
+    glfwSetCursorPos(window, x, y);
+}
+
 void Window::process_input(float delta_t) {
     minimal_process_input(delta_t);
 
     // More keybinds
-    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
-        current_scene->camera.upward(delta_t);
-    if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-        current_scene->camera.downward(delta_t);
-    if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS) {
-        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+    if (get_key_state(Key::UP) == KeyState::PRESSED)
+        _current_scene->camera.upward(delta_t);
+    if (get_key_state(Key::LEFT_SHIFT) == KeyState::PRESSED)
+        _current_scene->camera.downward(delta_t);
+    if (get_mouse_key_state(MouseKey::RIGHT) == MouseKeyState::PRESSED) {
+        set_cursor_mode(CursorMode::DISABLED);
 
-        if (current_scene->camera.first_click)
-            glfwSetCursorPos(window, (double)width() / 2, (double)height() / 2);
+        if (_current_scene->camera.first_click)
+            set_cursor_position((double)width() / 2, (double)height() / 2);
 
         double mouse_x, mouse_y;
-        glfwGetCursorPos(window, &mouse_x, &mouse_y);
-        current_scene->camera.move_vision(
+        get_cursor_position(&mouse_x, &mouse_y);
+        _current_scene->camera.move_vision(
             (float)mouse_x, (float)mouse_y, (float)width(), (float)height(),
             delta_t
         );
-        glfwSetCursorPos(window, (double)width() / 2, (double)height() / 2);
+        set_cursor_position((double)width() / 2, (double)height() / 2);
     }
-    if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_RELEASE) {
-        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-        current_scene->camera.first_click = true;
+    if (get_mouse_key_state(MouseKey::RIGHT) == MouseKeyState::RELEASED) {
+        set_cursor_mode(CursorMode::NORMAL);
+        _current_scene->camera.first_click = true;
     }
 }
 
 void Window::minimal_process_input(float delta_t) {
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, true);
-    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        current_scene->camera.forward(delta_t);
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        current_scene->camera.backward(delta_t);
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        current_scene->camera.leftward(delta_t);
-    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        current_scene->camera.rightward(delta_t);
+    if (get_key_state(Key::ESCAPE) == KeyState::PRESSED)
+        set_should_close(true);
+    if (get_key_state(Key::W) == KeyState::PRESSED)
+        _current_scene->camera.forward(delta_t);
+    if (get_key_state(Key::S) == KeyState::PRESSED)
+        _current_scene->camera.backward(delta_t);
+    if (get_key_state(Key::A) == KeyState::PRESSED)
+        _current_scene->camera.leftward(delta_t);
+    if (get_key_state(Key::D) == KeyState::PRESSED)
+        _current_scene->camera.rightward(delta_t);
 }
 
-bool Window::should_close() {
+bool Window::should_close() const {
     return glfwWindowShouldClose(window);
+}
+
+void Window::set_should_close(bool should_close) {
+    glfwSetWindowShouldClose(window, should_close);
+}
+
+void Window::clear() {
+    glClearColor(_color.r, _color.g, _color.b, _color.opacity);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void Window::flush() {
     glfwSwapBuffers(window);
+}
+
+void Window::update_camera(float aspect_ratio) {
+    _current_scene->update_camera(aspect_ratio);
+}
+
+void Window::update(float delta_t) {
+    _current_scene->update(delta_t);
+}
+
+void Window::render() {
+    _current_scene->render();
+}
+
+std::shared_ptr<Scene> Window::current_scene() const {
+    return _current_scene;
+}
+
+void Window::set_scene(std::shared_ptr<Scene> scene) {
+    _current_scene = scene;
 }
 
 bool Window::vsync() const {
@@ -174,6 +240,10 @@ void Window::set_color(const Color &color) {
 
 void Window::set_color(uint8_t r, uint8_t g, uint8_t b, float opacity) {
     _color = {(float)r / 255, (float)g / 255, (float)b / 255, opacity};
+}
+
+double Window::get_time() const {
+    return glfwGetTime();
 }
 
 } // namespace axolote

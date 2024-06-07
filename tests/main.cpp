@@ -21,13 +21,13 @@ public:
 void App::process_input(double dt) {
     axolote::Window::process_input(dt);
 
-    int v_key_state = glfwGetKey(window, GLFW_KEY_V);
-    if (v_key_state == GLFW_PRESS && !_keys_pressed[GLFW_KEY_V]) {
-        _keys_pressed[GLFW_KEY_V] = true;
+    KeyState v_key_state = get_key_state(Key::V);
+    if (v_key_state == KeyState::PRESSED && !is_key_pressed(Key::V)) {
+        set_key_pressed(Key::V, true);
     }
-    else if (v_key_state == GLFW_RELEASE && _keys_pressed[GLFW_KEY_V]) {
-        set_vsync(!_vsync);
-        _keys_pressed[GLFW_KEY_V] = false;
+    else if (v_key_state == KeyState::RELEASED && is_key_pressed(Key::V)) {
+        set_vsync(!vsync());
+        set_key_pressed(Key::V, false);
     }
 }
 
@@ -123,15 +123,14 @@ void App::main_loop() {
     sphere->bind_shader(shader_program);
     scene->add_drawable(sphere);
 
-    current_scene = scene;
-    double before = glfwGetTime();
+    set_scene(scene);
+    double before = get_time();
     while (!should_close()) {
-        glClearColor(_color.r, _color.g, _color.b, _color.opacity);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        clear();
 
-        glfwPollEvents();
+        poll_events();
 
-        double now = glfwGetTime();
+        double now = get_time();
         double dt = now - before;
         before = now;
         process_input(dt);
@@ -147,9 +146,9 @@ void App::main_loop() {
             std::cos((float)now * 0.2f) * .15f
         });
 
-        scene->update_camera((float)width() / height());
-        scene->update(dt);
-        scene->render();
+        update_camera((float)width() / height());
+        update(dt);
+        render();
 
         flush();
     }
