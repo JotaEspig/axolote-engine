@@ -15,7 +15,6 @@
 #include <glm/glm.hpp>
 
 #include "axolote/glad/glad.h"
-#include "axolote/structs.hpp"
 
 namespace axolote {
 
