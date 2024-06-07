@@ -121,7 +121,7 @@ void Window::process_input(float delta_t) {
     minimal_process_input(delta_t);
 
     // More keybinds
-    if (get_key_state(Key::UP) == KeyState::PRESSED)
+    if (get_key_state(Key::SPACE) == KeyState::PRESSED)
         _current_scene->camera.upward(delta_t);
     if (get_key_state(Key::LEFT_SHIFT) == KeyState::PRESSED)
         _current_scene->camera.downward(delta_t);
