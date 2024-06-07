@@ -93,12 +93,15 @@ Window::MouseKeyState Window::get_mouse_key_state(Window::MouseKey key) {
 
 bool Window::is_key_pressed(Window::Key key) const {
     int key_int = static_cast<int>(key);
-    return _keys_pressed.at(key_int);
+    auto found = _keys_pressed.find(key_int);
+    if (found == _keys_pressed.end())
+        return false;
+    return found->second;
 }
 
 void Window::set_key_pressed(Window::Key key, bool pressed) {
     int key_int = static_cast<int>(key);
-    _keys_pressed.at(key_int) = pressed;
+    _keys_pressed[key_int] = pressed;
 }
 
 void Window::set_cursor_mode(CursorMode mode) {
