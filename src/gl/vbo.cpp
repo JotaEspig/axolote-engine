@@ -6,6 +6,7 @@ namespace axolote {
 namespace gl {
 
 VBO::VBO() {
+    glGenBuffers(1, &id);
 }
 
 void VBO::bind() {
@@ -14,6 +15,12 @@ void VBO::bind() {
 
 void VBO::unbind() {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+void VBO::buffer_data(std::size_t size, const void *data, GLenum usage) {
+    bind();
+    glBufferData(GL_ARRAY_BUFFER, size, data, usage);
+    unbind();
 }
 
 void VBO::destroy() {

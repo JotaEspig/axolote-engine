@@ -8,14 +8,14 @@ namespace axolote {
 namespace gl {
 
 EBO::EBO() {
+    glGenBuffers(1, &id);
 }
 
-EBO::EBO(const std::vector<GLuint> &indices) {
-    glGenBuffers(1, &id);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
-    glBufferData(
-        GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint),
-        indices.data(), GL_STATIC_DRAW
+EBO::EBO(const std::vector<GLuint> &indices) :
+  EBO{} {
+    bind();
+    buffer_data(
+        indices.size() * sizeof(GLuint), indices.data(), GL_STATIC_DRAW
     );
 }
 
@@ -25,6 +25,12 @@ void EBO::bind() {
 
 void EBO::unbind() {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+}
+
+void EBO::buffer_data(std::size_t size, const void *data, GLenum usage) {
+    bind();
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, data, usage);
+    unbind();
 }
 
 void EBO::destroy() {

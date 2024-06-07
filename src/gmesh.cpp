@@ -32,7 +32,9 @@ GMesh::GMesh(
   Mesh(vertices, indices, textures) {
     vao.bind();
     vbo = gl::VBO(vertices);
+    vbo.bind();
     ebo = gl::EBO(indices);
+    ebo.bind();
 
     vao.link_attrib(vbo, 0, 3, GL_FLOAT, sizeof(Vertex), (void *)0);
     vao.link_attrib(
@@ -111,7 +113,9 @@ void GMesh::draw() {
 
 void GMesh::draw(const glm::mat4 &mat) {
     default_draw_binds(mat);
+    vao.bind();
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+    vao.unbind();
     default_draw_unbinds();
 }
 
