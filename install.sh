@@ -46,7 +46,7 @@ echo "Moving content to temp folder"
 cp lib/* tmp/external/lib/axolote/
 cp external/assimp/* tmp/external/lib/axolote
 cp -r include/axolote tmp/external/include/
-cp -r resources/shaders tmp/resources/shaders
+cp -r resources/shaders/* tmp/resources/shaders
 
 echo "Checking existence of $path"
 if [ -d "$path" ]; then
