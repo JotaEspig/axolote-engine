@@ -15,6 +15,7 @@
 #include "axolote/gl/texture.hpp"
 #include "axolote/gl/vao.hpp"
 #include "axolote/gl/vbo.hpp"
+#include "axolote/model.hpp"
 #include "axolote/gmodel.hpp"
 #include "axolote/mesh.hpp"
 #include "axolote/object3d.hpp"
