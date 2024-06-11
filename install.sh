@@ -55,7 +55,7 @@ if [ -d "$path" ]; then
 fi
 
 echo "Moving to target path: $path"
-cp tmp -r $path
+cp tmp/* -r $path
 
 echo "Cleaning temp folder"
 rm -rf tmp
