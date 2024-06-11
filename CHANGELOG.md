@@ -1,3 +1,15 @@
+## v0.6.0 (2024-06-11)
+
+### Feat
+
+- add some wrapper methods for OpenGL functions
+- **window**: add wrapper methods to glfw functions
+
+### Fix
+
+- **window**: changed Key to camera go upwards
+- **window**: keys_pressed map access methods
+
 ## v0.5.0 (2024-05-27)
 
 ### Feat
