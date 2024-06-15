@@ -39,6 +39,10 @@ cmake .
 make -j4
 ```
 
+### Examples
+
+You can see some examples in the [tests](tests) folder.
+
 ### Executing some tests
 
 After compiling the project:
