@@ -39,22 +39,6 @@ void App::main_loop() {
         "./resources/shaders/def_fragment_shader.glsl"
     );
 
-    shader_program.activate();
-    shader_program.set_uniform_float("light.ambient", 0.05f);
-    shader_program.set_uniform_float4("light.color", 1.0f, 1.0f, 1.0f, 1.0f);
-    shader_program.set_uniform_float3("light.pos", 0.0f, 0.0f, 0.0f);
-    // Hardcoded Sun object radius
-    shader_program.set_uniform_float("light.radius", 5.0f);
-
-    // Table with planets data:
-    // https://nssdc.gsfc.nasa.gov/planetary/factsheet/
-
-    // website used for initial velocity calculation:
-    // https://pt.calcprofi.com/calculadora-formula-velocidade-orbital.html
-    // using: parâmetros -> km, kg and m/s
-
-    // --------------------------------------------------------------------
-
     // Scene object
     std::shared_ptr<axolote::Scene> scene{new axolote::Scene{}};
     scene->camera.pos = {0.0f, 0.0f, 1.0f};
