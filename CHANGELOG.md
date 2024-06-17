@@ -1,3 +1,9 @@
+## v0.6.5 (2024-06-17)
+
+### Fix
+
+- now gl methods dont call unbind
+
 ## v0.6.4 (2024-06-11)
 
 ### Fix
