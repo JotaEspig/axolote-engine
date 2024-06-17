@@ -87,7 +87,6 @@ VBO::VBO(const std::vector<T> &vertices) :
   VBO{} {
     bind();
     buffer_data(vertices.size() * sizeof(T), vertices.data(), GL_STATIC_DRAW);
-    unbind();
   }
 
 } // namespace gl

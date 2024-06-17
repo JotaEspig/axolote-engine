@@ -30,7 +30,6 @@ void EBO::unbind() {
 void EBO::buffer_data(std::size_t size, const void *data, GLenum usage) {
     bind();
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, data, usage);
-    unbind();
 }
 
 void EBO::destroy() {
