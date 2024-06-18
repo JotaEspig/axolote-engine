@@ -45,6 +45,13 @@ void App::main_loop() {
     scene->camera.speed = 1.0f;
     scene->camera.sensitivity = 10000.0f;
 
+    auto saul = std::make_shared<axolote::Object3D>();
+    saul->load_model("./resources/models/saul-goodman/model.obj");
+    saul->model_mat
+        = glm::translate(glm::mat4{1.0f}, glm::vec3{-2.0f, 0.0f, 0.0f});
+    saul->bind_shader(shader_program);
+    scene->add_drawable(saul);
+
     // x-axis line
     std::shared_ptr<axolote::Line> l_x{new axolote::Line{
         {0.0f, 0.0f, 0.0f}, {1.0f, 0.0f, 0.0f}, 1.0f, 0.01f, {1.0f, 0.0f, 0.0f}
