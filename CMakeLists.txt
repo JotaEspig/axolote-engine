@@ -90,25 +90,27 @@ target_include_directories(
 
 
 # =-=-=-=-=-=-= TESTS =-=-=-=-=-=-=
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/tests/bin)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
+
+# ------ MAIN ------
 
 # Source files
 set(
-    TEST_SOURCE_FILES
+    MAIN_TEST_SOURCE_FILES
     ${CMAKE_SOURCE_DIR}/tests/main.cpp
 )
 
 # Adding executables for testing
-add_executable(tests ${TEST_SOURCE_FILES})
+add_executable(main-test ${MAIN_TEST_SOURCE_FILES})
 
 # Libraries
 target_link_directories(
-    tests
+    main-test
     PRIVATE
     ./lib
 )
 target_link_libraries(
-    tests
+    main-test
     PRIVATE
     axolote
     ${OPENGL_LIBRARIES} glfw stdc++
@@ -116,7 +118,69 @@ target_link_libraries(
 
 # Header files
 target_include_directories(
-    tests
+    main-test
+    PRIVATE
+    ${CMAKE_SOURCE_DIR}/include
+)
+
+# ------ WINDOW ------
+
+# Source files
+set(
+    WINDOW_TEST_SOURCE_FILES
+    ${CMAKE_SOURCE_DIR}/tests/window.cpp
+)
+
+# Adding executables for testing
+add_executable(window-test ${WINDOW_TEST_SOURCE_FILES})
+
+# Libraries
+target_link_directories(
+    window-test
+    PRIVATE
+    ./lib
+)
+target_link_libraries(
+    window-test
+    PRIVATE
+    axolote
+    ${OPENGL_LIBRARIES} glfw stdc++
+)
+
+# Header files
+target_include_directories(
+    window-test
+    PRIVATE
+    ${CMAKE_SOURCE_DIR}/include
+)
+
+# ------ MODELS_AND_SHADERS ------
+
+# Source files
+set(
+    MODELS_AND_SHADERS_TEST_SOURCE_FILES
+    ${CMAKE_SOURCE_DIR}/tests/models_and_shaders.cpp
+)
+
+# Adding executables for testing
+add_executable(models-and-shaders-test ${MODELS_AND_SHADERS_TEST_SOURCE_FILES})
+
+# Libraries
+target_link_directories(
+    models-and-shaders-test
+    PRIVATE
+    ./lib
+)
+target_link_libraries(
+    models-and-shaders-test
+    PRIVATE
+    axolote
+    ${OPENGL_LIBRARIES} glfw stdc++
+)
+
+# Header files
+target_include_directories(
+    models-and-shaders-test
     PRIVATE
     ${CMAKE_SOURCE_DIR}/include
 )
