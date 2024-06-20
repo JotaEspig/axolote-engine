@@ -8,7 +8,7 @@ public:
 };
 
 void App::main_loop() {
-    // You must set a scene for the engine renders, otherwise it will give you a
+    // You must set a scene for the engine to render it, otherwise it will give you a
     // segfault
     std::shared_ptr<axolote::Scene> scene{new axolote::Scene{}};
     set_scene(scene);

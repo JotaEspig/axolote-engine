@@ -30,7 +30,7 @@ void App::main_loop() {
     scene->camera.sensitivity = 5000.0f;
     scene->add_drawable(saul_goodman);
 
-    // You must set a scene for the engine renders, otherwise it will give you a
+    // You must set a scene for the engine to render it, otherwise it will give you a
     // segfault :)
     set_scene(scene);
 
