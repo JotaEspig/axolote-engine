@@ -41,78 +41,67 @@ void App::main_loop() {
 
     // Scene object
     std::shared_ptr<axolote::Scene> scene{new axolote::Scene{}};
-    scene->camera.pos = {0.0f, 0.0f, 1.0f};
-    scene->camera.speed = 1.0f;
+    scene->camera.pos = {0.0f, 0.0f, 3.0f};
+    scene->camera.speed = 3.0f;
     scene->camera.sensitivity = 10000.0f;
 
-    auto saul = std::make_shared<axolote::Object3D>();
-    saul->load_model("./resources/models/saul-goodman/model.obj");
-    saul->model_mat
-        = glm::translate(glm::mat4{1.0f}, glm::vec3{-2.0f, 0.0f, 0.0f});
-    saul->bind_shader(shader_program);
-    scene->add_drawable(saul);
-
-    // x-axis line
-    std::shared_ptr<axolote::Line> l_x{new axolote::Line{
-        {0.0f, 0.0f, 0.0f}, {1.0f, 0.0f, 0.0f}, 1.0f, 0.01f, {1.0f, 0.0f, 0.0f}
+    float s = 20.0f;
+    std::shared_ptr<axolote::PointLight> point_light{new axolote::PointLight{
+        glm::vec3{1.0f, 1.0f, 0.0f}, true,
+        glm::vec3{0.0f, 0.0f, s}, 1.0f
     }};
-    l_x->bind_shader(shader_program);
-    scene->add_drawable(l_x);
+    scene->add_light(point_light);
 
-    // y-axis line
-    std::shared_ptr<axolote::Line> l_y{new axolote::Line{
-        {0.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}, 1.0f, 0.01f, {0.0f, 1.0f, 0.0f}
+    std::shared_ptr<axolote::PointLight> point_light1{new axolote::PointLight{
+        glm::vec3{1.0f, 0.5f, 0.0f}, true,
+        glm::vec3{0.0f, 0.0f, -s}, 1.0f
     }};
-    l_y->bind_shader(shader_program);
-    scene->add_drawable(l_y);
+    scene->add_light(point_light1);
 
-    // z-axis line
-    std::shared_ptr<axolote::Line> l_z{new axolote::Line{
-        {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 1.0f}, 1.0f, 0.01f, {0.0f, 0.0f, 1.0f}
+    std::shared_ptr<axolote::PointLight> point_light2{new axolote::PointLight{
+        glm::vec3{0.0f, 0.5f, 1.0f}, true,
+        glm::vec3{s, 0.0f, 0.0f}, 1.0f
     }};
-    l_z->bind_shader(shader_program);
-    scene->add_drawable(l_z);
+    scene->add_light(point_light2);
 
-    // xy-axis line
-    std::shared_ptr<axolote::Line> l_xy{new axolote::Line{
-        {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 0.0f}, 0.3f, 0.01f, {1.0f, 1.0f, 0.0f}
+    std::shared_ptr<axolote::PointLight> point_light3{new axolote::PointLight{
+        glm::vec3{0.0f, 1.0f, 0.5f}, true,
+        glm::vec3{-s, 0.0f, 0.0f}, 1.0f
     }};
-    l_xy->bind_shader(shader_program);
-    scene->add_drawable(l_xy);
+    scene->add_light(point_light3);
 
-    // xz-axis line
-    std::shared_ptr<axolote::Line> l_xz{new axolote::Line{
-        {0.0f, 0.0f, 0.0f}, {1.0f, 0.0f, 1.0f}, 0.3f, 0.01f, {1.0f, 0.0f, 1.0f}
+    std::shared_ptr<axolote::PointLight> point_light4{new axolote::PointLight{
+        glm::vec3{0.5f, 0.0f, 1.0f}, true,
+        glm::vec3{0.0f, s, 0.0f}, 1.0f
     }};
-    l_xz->bind_shader(shader_program);
-    scene->add_drawable(l_xz);
+    scene->add_light(point_light4);
 
-    // yz-axis line
-    std::shared_ptr<axolote::Line> l_yz{new axolote::Line{
-        {0.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 1.0f}, 0.3f, 0.01f, {0.0f, 1.0f, 1.0f}
+    std::shared_ptr<axolote::PointLight> point_light5{new axolote::PointLight{
+        glm::vec3{1.0f, 0.0f, 0.5f}, true,
+        glm::vec3{0.0f, -s, 0.0f}, 1.0f
     }};
-    l_yz->bind_shader(shader_program);
-    scene->add_drawable(l_yz);
-
-    // xyz-axis line
-    std::shared_ptr<axolote::Line> l_xyz{new axolote::Line{
-        {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0.3f, 0.01f, {1.0f, 1.0f, 1.0f}
-    }};
-    l_xyz->bind_shader(shader_program);
-    scene->add_drawable(l_xyz);
-
-    std::shared_ptr<axolote::Line> l_test{new axolote::Line{
-        {-0.4f, 0.0f, 0.0f}, {1.0f, 0.0f, 1.0f}, 0.3f, 0.01f, {1.0f, 0.5f, 0.0f}
-    }};
-    l_test->bind_shader(shader_program);
-    scene->add_drawable(l_test);
+    scene->add_light(point_light5);
 
     auto sphere = std::make_shared<axolote::Object3D>(
         "./resources/models/sphere/sphere.obj", glm::vec3{1.0f, 1.0f, 1.0f},
-        glm::mat4{1.0f}
+        glm::translate(glm::mat4{1.0f}, glm::vec3{0.f, 0.f, 0.f})
     );
     sphere->bind_shader(shader_program);
     scene->add_drawable(sphere);
+
+    auto m26 = std::make_shared<axolote::Object3D>(
+        "./resources/models/m26/m26pershing_coh.obj", glm::vec3{1.0f, 1.0f, 1.0f},
+        glm::translate(glm::mat4{1.0f}, glm::vec3{0.f, 0.f, 0.f})
+    );
+    m26->bind_shader(shader_program);
+    scene->add_drawable(m26);
+
+    // xyz-axis line
+    std::shared_ptr<axolote::Line> l_xyz{new axolote::Line{
+        {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 20.0f, 01.1f, {1.0f, 1.0f, 1.0f}
+    }};
+    l_xyz->bind_shader(shader_program);
+    scene->add_drawable(l_xyz);
 
     set_scene(scene);
     double before = get_time();
@@ -132,10 +121,10 @@ void App::main_loop() {
 
         dt *= DT_MULTIPLIER;
 
-        l_xyz->set_end(glm::vec3{
-            std::cos((float)now) * .2f, std::sin((float)now) * .3f,
-            std::cos((float)now * 0.2f) * .15f
-        });
+        // l_xyz->set_end(glm::vec3{
+        //     std::cos((float)now), std::sin((float)now),
+        //     std::cos((float)now * 0.2f)
+        // } * 20.0f);
 
         update_camera((float)width() / height());
         update(dt);

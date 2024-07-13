@@ -59,6 +59,7 @@ set(
     ${SOURCE_DIR}/gl/vao.cpp
     ${SOURCE_DIR}/gl/vbo.cpp
     ${SOURCE_DIR}/window.cpp
+    ${SOURCE_DIR}/light.cpp
     ${SOURCE_DIR}/utils/line.cpp
 
     ${CMAKE_SOURCE_DIR}/external/stb/stb.cpp

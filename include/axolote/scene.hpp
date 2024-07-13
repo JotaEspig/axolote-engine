@@ -12,6 +12,7 @@
 
 #include "axolote/camera.hpp"
 #include "axolote/drawable.hpp"
+#include "axolote/light.hpp"
 
 namespace axolote {
 
@@ -50,6 +51,9 @@ public:
      * \version May 24, 2024
      **/
     void add_drawable(std::shared_ptr<Drawable> d);
+
+    void add_light(const std::shared_ptr<Light> &light);
+
     /**
      * \brief updates the camera in the shaders
      * \author João Vitor Espig (JotaEspig)
@@ -75,6 +79,8 @@ public:
 private:
     /** vector of shaders from drawable objects **/
     std::vector<gl::Shader> shaders;
+
+    std::vector<std::shared_ptr<Light>> lights;
 };
 
 } // namespace axolote
