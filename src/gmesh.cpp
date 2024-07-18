@@ -67,11 +67,11 @@ void GMesh::default_draw_binds(const glm::mat4 &mat) {
     shader.activate();
     vao.bind();
 
-    shader.set_uniform_int("is_specular_map_set", 0);
+    shader.set_uniform_int("axolote_is_specular_map_set", 0);
     if (textures.size() > 0)
-        shader.set_uniform_int("is_tex_set", 1);
+        shader.set_uniform_int("axolote_is_tex_set", 1);
     else
-        shader.set_uniform_int("is_tex_set", 0);
+        shader.set_uniform_int("axolote_is_tex_set", 0);
 
     unsigned int num_diffuse = 0;
     unsigned int num_specular = 0;
@@ -79,8 +79,8 @@ void GMesh::default_draw_binds(const glm::mat4 &mat) {
     // to use a texture from another Mesh
     // TODO search if there's a better solution than this
     // i.e. set to 99 (a unused texture id)
-    shader.set_uniform_int("diffuse0", 99);
-    shader.set_uniform_int("specular0", 99);
+    shader.set_uniform_int("axolote_diffuse0", 99);
+    shader.set_uniform_int("axolote_specular0", 99);
 
     for (gl::Texture t : textures) {
         std::string num;
@@ -89,15 +89,15 @@ void GMesh::default_draw_binds(const glm::mat4 &mat) {
             num = std::to_string(num_diffuse++);
         else if (type == "specular") {
             num = std::to_string(num_specular++);
-            shader.set_uniform_int("is_specular_map_set", 1);
+            shader.set_uniform_int("axolote_is_specular_map_set", 1);
         }
 
         t.bind();
         t.activate();
-        shader.set_uniform_int((type + num).c_str(), t.unit);
+        shader.set_uniform_int(("axolote_" + type + num).c_str(), t.unit);
     }
 
-    shader.set_uniform_matrix4("model", mat);
+    shader.set_uniform_matrix4("axolote_model", mat);
 }
 
 void GMesh::default_draw_unbinds() {

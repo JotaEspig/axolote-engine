@@ -32,10 +32,10 @@ void Scene::update_camera(float aspect_ratio) {
     for (gl::Shader &s : shaders) {
         s.activate();
         s.set_uniform_float3(
-            "camera_pos", camera.pos.x, camera.pos.y, camera.pos.z
+            "axolote_camera_pos", camera.pos.x, camera.pos.y, camera.pos.z
         );
-        s.set_uniform_matrix4("projection", projection);
-        s.set_uniform_matrix4("view", view);
+        s.set_uniform_matrix4("axolote_projection", projection);
+        s.set_uniform_matrix4("axolote_view", view);
     }
 }
 
@@ -54,16 +54,18 @@ void Scene::update(double time) {
 
         switch (light->type) {
         case Light::Type::point:
-            prefix = "point_lights[" + std::to_string(num_point_lights++) + "]";
+            prefix = "axolote_point_lights["
+                     + std::to_string(++num_point_lights) + "]";
             break;
         case Light::Type::directional:
             num_directional_lights++;
-            prefix = "directional_lights["
-                     + std::to_string(num_directional_lights++) + "]";
+            prefix = "axolote_directional_lights["
+                     + std::to_string(++num_directional_lights) + "]";
             break;
         case Light::Type::spot:
             num_spot_lights++;
-            prefix = "spot_lights[" + std::to_string(num_spot_lights++) + "]";
+            prefix = "axolote_spot_lights[" + std::to_string(++num_spot_lights)
+                     + "]";
             break;
         }
 
@@ -74,11 +76,11 @@ void Scene::update(double time) {
 
     // Set number of each light type for every shader
     for (auto &shader : shaders) {
-        shader.set_uniform_int("num_point_lights", num_point_lights);
+        shader.set_uniform_int("axolote_num_point_lights", num_point_lights);
         shader.set_uniform_int(
-            "num_directional_lights", num_directional_lights
+            "axolote_num_directional_lights", num_directional_lights
         );
-        shader.set_uniform_int("num_spot_lights", num_spot_lights);
+        shader.set_uniform_int("axolote_num_spot_lights", num_spot_lights);
     }
 }
 
