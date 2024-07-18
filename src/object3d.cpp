@@ -11,32 +11,37 @@
 
 namespace axolote {
 
-Object3D::Object3D() :
-  model_mat{1.0f} {
+Object3D::Object3D() {
+    set_matrix(glm::mat4{1.0f});
 }
 
-Object3D::Object3D(const glm::mat4 &mat) :
-  model_mat{mat} {
+Object3D::Object3D(const glm::mat4 &mat) {
+    set_matrix(mat);
 }
 
 Object3D::Object3D(
     const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices,
     const std::vector<gl::Texture> &textures, const glm::mat4 &mat
 ) :
-  gmodel{std::make_shared<GModel>()},
-  model_mat{mat} {
+  gmodel{std::make_shared<GModel>()} {
+    set_matrix(mat);
     gmodel->meshes.push_back(GMesh{vertices, indices, textures});
 }
 
 Object3D::Object3D(
     std::string path, const glm::vec3 &color, const glm::mat4 &mat
-) :
-  model_mat{mat} {
+) {
+    set_matrix(mat);
     load_model(path, color);
 }
 
 void Object3D::load_model(std::string path, const glm::vec3 &color) {
     gmodel->load_model(path, color);
+}
+
+void Object3D::set_matrix(const glm::mat4 &mat) {
+    model_mat = mat;
+    normal_mat = glm::transpose(glm::inverse(mat));
 }
 
 glm::mat4 Object3D::get_matrix() const {
@@ -56,6 +61,7 @@ void Object3D::update(double dt) {
 }
 
 void Object3D::draw() {
+    get_shader().set_uniform_matrix4("axolote_normal_matrix", normal_mat);
     gmodel->draw(model_mat);
 }
 

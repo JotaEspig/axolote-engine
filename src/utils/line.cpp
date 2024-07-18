@@ -110,7 +110,7 @@ void Line::update(double dt) {
     mat = glm::rotate(mat, y_rot, {0.0f, 1.0f, 0.0f});
     mat = glm::rotate(mat, x_rot, {1.0f, 0.0f, 0.0f});
     mat = glm::scale(mat, {1.0f, length, 1.0f});
-    model_mat = mat;
+    set_matrix(mat);
 }
 
 float Line::get_rotation_around_x() const {

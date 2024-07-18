@@ -121,10 +121,10 @@ void App::main_loop() {
 
         dt *= DT_MULTIPLIER;
 
-        // l_xyz->set_end(glm::vec3{
-        //     std::cos((float)now), std::sin((float)now),
-        //     std::cos((float)now * 0.2f)
-        // } * 20.0f);
+        m26->set_matrix(glm::rotate(
+            glm::translate(glm::mat4{1.0f}, glm::vec3{0.0f, 2.5f, 0.0f}),
+            (float)now, glm::vec3{0.0f, 1.0f, 0.0f}
+        ));
 
         update_camera((float)width() / height());
         update(dt);

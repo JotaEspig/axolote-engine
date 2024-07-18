@@ -20,8 +20,9 @@ void App::main_loop() {
 
     auto saul_goodman = std::make_shared<axolote::Object3D>();
     saul_goodman->load_model("./resources/models/saul-goodman/model.obj");
-    saul_goodman->model_mat
-        = glm::translate(glm::mat4{1.0f}, glm::vec3{0.0f, 0.0f, -2.0f});
+    saul_goodman->set_matrix(
+        glm::translate(glm::mat4{1.0f}, glm::vec3{0.0f, 0.0f, -2.0f})
+    );
     saul_goodman->bind_shader(shader);
 
     // Creating a scene, configurating the camera and adding a drawable object

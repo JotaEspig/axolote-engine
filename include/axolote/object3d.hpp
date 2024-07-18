@@ -25,9 +25,6 @@ class Object3D : public Drawable {
 public:
     /** pointer to gmodel **/
     std::shared_ptr<GModel> gmodel{new GModel{}};
-    /** model_matition **/
-    glm::mat4 model_mat;
-
     /**
      * \brief Constructor
      * \author João Vitor Espig (JotaEspig)
@@ -74,8 +71,13 @@ public:
         std::string path, const glm::vec3 &color = glm::vec3(0.0f, 0.0f, 0.0f)
     );
     /**
+     * \brief sets model matrix
+     * \author João Vitor Espig (JotaEspig)
+     **/
+    void set_matrix(const glm::mat4 &mat);
+    /**
      * \brief gets model matrix
-     * \author João Vitor Espig
+     * \author João Vitor Espig (JotaEspig)
      **/
     glm::mat4 get_matrix() const;
     /**
@@ -105,6 +107,12 @@ public:
      * It just calls draw()
      **/
     void draw(const glm::mat4 &mat) override;
+
+protected:
+    /** model_matition **/
+    glm::mat4 model_mat;
+    /** normal_matrix **/
+    glm::mat4 normal_mat;
 };
 
 } // namespace axolote
