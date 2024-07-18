@@ -11,8 +11,9 @@
 
 #include <glm/glm.hpp>
 
-#include "axolote/drawable.hpp"
 #include "axolote/glad/glad.h"
+
+#include "axolote/drawable.hpp"
 #include "axolote/gl/shader.hpp"
 #include "axolote/gmodel.hpp"
 
