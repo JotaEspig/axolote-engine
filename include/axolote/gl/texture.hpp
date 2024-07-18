@@ -2,8 +2,6 @@
  * \file texture.hpp
  * \brief Texture class
  * \author João Vitor Espig (JotaEspig)
- * \date October 04, 2023
- * \version May 23, 2024
  **/
 #pragma once
 
@@ -18,8 +16,6 @@ namespace gl {
 /**
  * \brief texture operations
  * \author João Vitor Espig (JotaEspig)
- * \date October 04, 2023
- * \version May 23, 2024
  **/
 class Texture {
 public:
@@ -35,15 +31,11 @@ public:
     /**
      * \brief Constructor
      * \author João Vitor Espig (JotaEspig)
-     * \date October 04, 2023
-     * \version October 08, 2023
      **/
     Texture();
     /**
      * \brief Constructor
      * \author João Vitor Espig (JotaEspig)
-     * \date October 04, 2023
-     * \version October 08, 2023
      * \param texture_filename - name of texture file
      * \param tex_type - type of text ("diffuse" or "specular")
      * \param _unit - texture unit (used inside OpenGL shaders)
@@ -53,29 +45,21 @@ public:
     /**
      * \brief activates texture
      * \author João Vitor Espig (JotaEspig)
-     * \date October 04, 2023
-     * \version October 04, 2023
      **/
     void activate();
     /**
      * \brief binds texture
      * \author João Vitor Espig (JotaEspig)
-     * \date October 04, 2023
-     * \version October 04, 2023
      **/
     void bind();
     /**
      * \brief unbinds texture
      * \author João Vitor Espig (JotaEspig)
-     * \date October 04, 2023
-     * \version October 04, 2023
      **/
     void unbind();
     /**
      * \brief destroys texture
      * \author João Vitor Espig (JotaEspig)
-     * \date October 04, 2023
-     * \version October 04, 2023
      **/
     void destroy();
 };

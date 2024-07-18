@@ -2,8 +2,6 @@
  * \file assimp.hpp
  * \brief assimp functions
  * \author João Vitor Espig (JotaEspig)
- * \date October 04, 2023
- * \version October 04, 2023
  *
  * This file is a piece of shit.
  * This file is created to try to don't force the user to have the assimp
@@ -28,8 +26,6 @@ namespace axolote {
 
 /**
  * \author João Vitor Espig (JotaEspig)
- * \date October 04, 2023
- * \version Octboer 04, 2023
  **/
 void process_node(
     aiNode *node, const aiScene *scene, std::vector<Mesh> &meshes,
@@ -39,8 +35,6 @@ void process_node(
 
 /**
  * \author João Vitor Espig (JotaEspig)
- * \date October 04, 2023
- * \version Octboer 04, 2023
  **/
 Mesh process_mesh(
     aiMesh *mesh, const aiScene *scene, glm::vec3 color,
@@ -50,8 +44,6 @@ Mesh process_mesh(
 
 /**
  * \author João Vitor Espig (JotaEspig)
- * \date October 04, 2023
- * \version Octboer 04, 2023
  **/
 std::vector<gl::Texture> load_material_textures(
     aiMaterial *mat, aiTextureType type, std::string type_name,

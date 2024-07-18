@@ -2,8 +2,6 @@
  * \file model.hpp
  * \brief Model class
  * \author João Vitor Espig (JotaEspig)
- * \date May 23, 2024
- * \version May 23, 2024
  **/
 #pragma once
 
@@ -19,8 +17,6 @@ namespace axolote {
 /**
  * \brief defines a drawable 3D model
  * \author João Vitor Espig (JotaEspig)
- * \date May 23, 2024
- * \version May 23, 2024
  **/
 class Model {
 public:
@@ -30,15 +26,11 @@ public:
     /**
      * \brief Constructor
      * \author João Vitor Espig (JotaEspig)
-     * \date May 23, 2024
-     * \version May 23, 2024
      **/
     Model();
     /**
      * \brief Constructor
      * \author João Vitor Espig (JotaEspig)
-     * \date May 23, 2024
-     * \version May 23, 2024
      * \param path - path to model file (.obj)
      * \param color - default Model color
      **/
@@ -49,8 +41,6 @@ public:
     /**
      * \brief loads a model from file
      * \author João Vitor Espig (JotaEspig)
-     * \date October 04, 2023
-     * \version October 04, 2023
      * \param path - path to file
      * \param color - default color for model
      **/

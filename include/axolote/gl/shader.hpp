@@ -2,8 +2,6 @@
  * \file shader.hpp
  * \brief Shader class
  * \author João Vitor Espig (JotaEspig)
- * \date October 04, 2023
- * \version May 23, 2024
  **/
 #pragma once
 
@@ -18,8 +16,6 @@ namespace gl {
 /**
  * \brief OpenGL shader handler
  * \author João Vitor Espig (JotaEspig)
- * \date October 04, 2023
- * \version May 23, 2024
  **/
 class Shader {
 public:
@@ -29,15 +25,11 @@ public:
     /**
      * \brief Constructor
      * \author João Vitor Espig (JotaEspig)
-     * \date October 25, 2023
-     * \version October 25, 2023
      **/
     Shader();
     /**
      * \brief Constructor
      * \author João Vitor Espig (JotaEspig)
-     * \date October 04, 2023
-     * \version October 04, 2023
      * \param vertex_file - vertex glsl file
      * \param fragment_file - fragment glsl file
      **/
@@ -46,8 +38,6 @@ public:
     /**
      * \brief sets a value in an integer uniform
      * \author João Vitor Espig (JotaEspig)
-     * \date October 04, 2023
-     * \version October 04, 2023
      * \param uniform_name - name of uniform variable
      * \param value - integer value
      **/
@@ -55,8 +45,6 @@ public:
     /**
      * \brief sets a value in a matrix 4x4 uniform
      * \author João Vitor Espig (JotaEspig)
-     * \date October 04, 2023
-     * \version October 04, 2023
      * \param uniform_name - name of uniform variable
      * \param matrix - matrix 4x4 value
      **/
@@ -64,8 +52,6 @@ public:
     /**
      * \brief sets a value in a matrix 4x4 uniform
      * \author João Vitor Espig (JotaEspig)
-     * \date October 04, 2023
-     * \version October 04, 2023
      * \param uniform_name - name of uniform variable
      * \param x - float value
      **/
@@ -73,8 +59,6 @@ public:
     /**
      * \brief sets a value in a vector of 3 floats uniform
      * \author João Vitor Espig (JotaEspig)
-     * \date October 04, 2023
-     * \version October 04, 2023
      * \param uniform_name - name of uniform variable
      * \param x - first float value
      * \param y - second float value
@@ -85,8 +69,6 @@ public:
     /**
      * \brief sets a value in a vector of 4 floats uniform
      * \author João Vitor Espig (JotaEspig)
-     * \date October 04, 2023
-     * \version October 04, 2023
      * \param uniform_name - name of uniform variable
      * \param x - first float value
      * \param y - second float value
@@ -99,15 +81,11 @@ public:
     /**
      * \brief activates shader
      * \author João Vitor Espig (JotaEspig)
-     * \date October 04, 2023
-     * \version October 04, 2023
      **/
     void activate();
     /**
      * \brief destroys shader
      * \author João Vitor Espig (JotaEspig)
-     * \date October 04, 2023
-     * \version October 04, 2023
      **/
     void destroy();
 };

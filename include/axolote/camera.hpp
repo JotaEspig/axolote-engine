@@ -2,8 +2,6 @@
  * \file camera.hpp
  * \brief camera operations
  * \author João Vitor Espig (JotaEspig)
- * \date October 04, 2023
- * \version May 23, 2024
  *
  * This file contains Camera class that handles operations like movement in 3D
  * and view movement
@@ -17,8 +15,6 @@ namespace axolote {
 /**
  * \brief struct that represents a Camera in 2D/3D
  * \author João Vitor Espig (JotaEspig)
- * \date October 04, 2023
- * \version May 23, 2024
  **/
 struct Camera {
     /** max view distance **/
@@ -43,15 +39,11 @@ struct Camera {
     /**
      * \brief Constructor
      * \author João Vitor Espig (JotaEspig)
-     * \date October 04, 2023
-     * \version October 08, 2023
      **/
     Camera();
     /**
      * \brief Constructor
      * \author João Vitor Espig (JotaEspig)
-     * \date October 04, 2023
-     * \version October 08, 2023
      * \param position - Camera position vector
      **/
     Camera(const glm::vec3 &position);
@@ -59,56 +51,42 @@ struct Camera {
     /**
      * \brief moves camera position forward
      * \author João Vitor Espig (JotaEspig)
-     * \date October 04, 2023
-     * \version October 04, 2023
      * \param delta_t - time difference from last frame
      **/
     void forward(float delta_t = 1.0f);
     /**
      * \brief moves camera position leftward
      * \author João Vitor Espig (JotaEspig)
-     * \date October 04, 2023
-     * \version October 04, 2023
      * \param delta_t - time difference from last frame
      **/
     void leftward(float delta_t = 1.0f);
     /**
      * \brief moves camera position rightward
      * \author João Vitor Espig (JotaEspig)
-     * \date October 04, 2023
-     * \version October 04, 2023
      * \param delta_t - time difference from last frame
      **/
     void rightward(float delta_t = 1.0f);
     /**
      * \brief moves camera position backward
      * \author João Vitor Espig (JotaEspig)
-     * \date October 04, 2023
-     * \version October 04, 2023
      * \param delta_t - time difference from last frame
      **/
     void backward(float delta_t = 1.0f);
     /**
      * \brief moves camera position upward
      * \author João Vitor Espig (JotaEspig)
-     * \date October 04, 2023
-     * \version October 04, 2023
      * \param delta_t - time difference from last frame
      **/
     void upward(float delta_t = 1.0f);
     /**
      * \brief moves camera position downward
      * \author João Vitor Espig (JotaEspig)
-     * \date October 04, 2023
-     * \version October 04, 2023
      * \param delta_t - time difference from last frame
      **/
     void downward(float delta_t = 1.0f);
     /**
      * \brief do view movement
      * \author João Vitor Espig (JotaEspig)
-     * \date October 04, 2023
-     * \version October 04, 2023
      * \param x - mouse click point x value
      * \param y - mouse click point y value
      * \param width - Window width

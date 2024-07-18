@@ -2,8 +2,6 @@
  * \file gmodel.hpp
  * \brief GModel class
  * \author João Vitor Espig (JotaEspig)
- * \date October 04, 2023
- * \version May 23, 2024
  **/
 #pragma once
 
@@ -21,8 +19,6 @@ namespace axolote {
 /**
  * \brief defines a drawable 3D model
  * \author João Vitor Espig (JotaEspig)
- * \date October 04, 2023
- * \version May 23, 2024
  *
  * You should use GModel if you want a default implementation for drawing
  **/
@@ -34,15 +30,11 @@ public:
     /**
      * \brief Constructor
      * \author João Vitor Espig (JotaEspig)
-     * \date October 04, 2023
-     * \version October 04, 2023
      **/
     GModel();
     /**
      * \brief Constructor
      * \author João Vitor Espig (JotaEspig)
-     * \date October 04, 2023
-     * \version October 08, 2023
      * \param path - path to model file (.obj)
      * \param color - default Model color
      **/
@@ -53,8 +45,6 @@ public:
     /**
      * \brief loads a model from file
      * \author João Vitor Espig (JotaEspig)
-     * \date October 04, 2023
-     * \version October 04, 2023
      * \param path - path to file
      * \param color - default color for model
      **/
@@ -62,30 +52,20 @@ public:
     /**
      * \brief binds a shader into the meshes
      * \author João Vitor Espig (JotaEspig)
-     * \date October 27, 2023
-     * \version October 27, 2023
      **/
     void bind_shader(const gl::Shader &shader_program) override;
     /**
      * \brief binds a shader into the meshes
      * \author João Vitor Espig (JotaEspig)
-     * \date May 24, 2024
-     * \version May 24, 2024
      **/
     gl::Shader get_shader() const override;
     /**
-     * \brief Override update from Drawable, does nothing in reality
-     * \author João Vitor Espig (JotaEspig)
-     * \date May 24, 2024
-     * \version May 24, 2024
      * \param dt - delta time
      **/
     void update(double dt) override;
     /**
      * \brief draws
      * \author João Vitor Espig (JotaEspig)
-     * \date October 25, 2023
-     * \version October 27, 2023
      *
      * It calls draw(glm::mat4(1.0f))
      **/
@@ -93,8 +73,6 @@ public:
     /**
      * \brief draws
      * \author João Vitor Espig (JotaEspig)
-     * \date October 04, 2023
-     * \version October 07, 2023
      * \param mat - model transformation matrix
      **/
     void draw(const glm::mat4 &mat) override;

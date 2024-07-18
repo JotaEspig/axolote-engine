@@ -2,8 +2,6 @@
  * \file drawable.hpp
  * \brief provides Java-like interface
  * \author João Vitor Espig (JotaEspig)
- * \date October 25, 2023
- * \version May 24, 2024
  **/
 #pragma once
 
@@ -16,8 +14,6 @@ namespace axolote {
 /**
  * \brief describes things that can draw
  * \author João Vitor Espig (JotaEspig)
- * \date October 25, 2023
- * \version May 24, 2024
  **/
 class Drawable {
 public:

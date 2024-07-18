@@ -2,8 +2,6 @@
  * \file scene.hpp
  * \brief provides class Scene
  * \author João Vitor Espig (JotaEspig)
- * \date October 25, 2023
- * \version May 24, 2024
  **/
 #pragma once
 
@@ -19,8 +17,6 @@ namespace axolote {
 /**
  * \brief Describes a scene
  * \author João Vitor Espig (JotaEspig)
- * \date October 25, 2023
- * \version May 24, 2024
  **/
 class Scene {
 public:
@@ -32,23 +28,17 @@ public:
     /**
      * \brief Constructor
      * \author João Vitor Espig (JotaEspig)
-     * \date November 08, 2023
-     * \version November 08, 2023
      **/
     Scene();
     /**
      * \brief Destructor
      * \author João Vitor Espig (JotaEspig)
-     * \date November 08, 2023
-     * \version November 08, 2023
      **/
     ~Scene();
 
     /**
      * \brief add a Drawable object to the scene
      * \author João Vitor Espig (JotaEspig)
-     * \date November 08, 2023
-     * \version May 24, 2024
      **/
     void add_drawable(std::shared_ptr<Drawable> d);
 
@@ -57,22 +47,16 @@ public:
     /**
      * \brief updates the camera in the shaders
      * \author João Vitor Espig (JotaEspig)
-     * \date November 08, 2023
-     * \version November 08, 2023
      **/
     void update_camera(float aspect_ratio);
     /**
      * \brief updates the drawables
      * \author João Vitor Espig (JotaEspig)
-     * \date November 08, 2023
-     * \version May 24, 2024
      **/
     void update(double time);
     /**
      * \brief draw the drawables
      * \author João Vitor Espig (JotaEspig)
-     * \date November 08, 2023
-     * \version May 24, 2024
      **/
     void render();
 

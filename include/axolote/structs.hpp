@@ -2,8 +2,6 @@
  * \file structs.hpp
  * \brief Useful structs used by Axolote Engine
  * \author João Vitor Espig (JotaEspig)
- * \date October 04, 2023
- * \version October 04, 2023
  **/
 #pragma once
 
@@ -14,8 +12,6 @@ namespace axolote {
 /**
  * \brief defines a vertex
  * \author João Vitor Espig (JotaEspig)
- * \date October 04, 2023
- * \version October 04, 2023
  **/
 struct Vertex {
     /** position vector **/
@@ -31,8 +27,6 @@ struct Vertex {
 /**
  * \brief defines a color using RGBA
  * \author João Vitor Espig (JotaEspig)
- * \date October 04, 2023
- * \version October 04, 2023
  **/
 struct Color {
     /** red **/

@@ -2,8 +2,6 @@
  * \file vao.hpp
  * \brief OpenGL VAO operations handler
  * \author João Vitor Espig (JotaEspig)
- * \date October 04, 2023
- * \version May 23, 2024
  *
  * this file contains a class called VAO that handles OpenGL VAO operations:
  * Bind, Unbind and destroy
@@ -19,8 +17,6 @@ namespace gl {
 /**
  * \brief OpenGL VAO handler
  * \author João Vitor Espig (JotaEspig)
- * \date October 04, 2023
- * \version May 23, 2024
  **/
 class VAO {
 public:
@@ -30,16 +26,12 @@ public:
     /**
      * \brief Constructor
      * \author João Vitor Espig (JotaEspig)
-     * \date October 04, 2023
-     * \version October 04, 2023
      **/
     VAO();
 
     /**
      * \brief links an attribute
      * \author João Vitor Espig (JotaEspig)
-     * \date October 04, 2023
-     * \version October 04, 2023
      * \param vbo - VBO object
      * \param layout - layout index (used in inside OpenGL shaders)
      * \param num_components - number of components in attribute
@@ -54,8 +46,6 @@ public:
     /**
      * \brief Divides correctly attrib
      * \author João Vitor Espig (JotaEspig)
-     * \date May 27, 2024
-     * \version May 27, 2024
      * \param vbo - VBO object
      * \param layout - index
      * \param divisor - divisor
@@ -64,22 +54,16 @@ public:
     /**
      * \brief binds
      * \author João Vitor Espig (JotaEspig)
-     * \date October 04, 2023
-     * \version October 04, 2023
      **/
     void bind();
     /**
      * \brief unbinds
      * \author João Vitor Espig (JotaEspig)
-     * \date October 04, 2023
-     * \version October 04, 2023
      **/
     void unbind();
     /**
      * \brief destroys
      * \author João Vitor Espig (JotaEspig)
-     * \date October 04, 2023
-     * \version October 04, 2023
      **/
     void destroy();
 };
