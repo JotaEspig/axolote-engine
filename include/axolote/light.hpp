@@ -117,7 +117,7 @@ public:
     glm::vec3 pos;
     /** Light direction **/
     glm::vec3 dir;
-    /** Light cut off angle **/
+    /** Light cut off angle in degrees **/
     float cut_off_angle;
     /** Light constant term **/
     float constant = 1.0f;

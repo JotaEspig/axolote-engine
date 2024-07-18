@@ -112,11 +112,10 @@ vec3 axolote_calculate_directional_light(axolote_DirectionalLight light) {
 }
 
 vec3 axolote_calculate_spot_light(axolote_SpotLight light) {
-
     vec3 normal = normalize(axolote_normal);
     vec3 light_direction = normalize(light.pos - axolote_current_pos);
     float theta = dot(light_direction, normalize(-light.dir));
-    if (theta <= light.cut_off_angle) {
+    if (theta <= cos(radians(light.cut_off_angle))) {
         return vec3(0.0f);
     }
 

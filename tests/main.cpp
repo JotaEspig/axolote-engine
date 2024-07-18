@@ -68,10 +68,10 @@ void App::main_loop() {
 
     auto spot_light = std::make_shared<axolote::SpotLight>(
         glm::vec3{1.0f}, true, glm::vec3{0.0f, 5.0f, 0.0f},
-        glm::vec3{0.0f, -1.0f, 0.0f}, 5.5f
+        glm::vec3{0.0f, -1.0f, 0.0f}, 15.f
     );
-    spot_light->linear = 0.009f;
-    spot_light->quadratic = 0.0032f;
+    spot_light->linear = 0.09f;
+    spot_light->quadratic = 0.032f;
     scene->add_light(spot_light);
 
     auto sphere = std::make_shared<axolote::Object3D>(
