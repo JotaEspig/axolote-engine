@@ -45,42 +45,47 @@ void App::main_loop() {
     scene->camera.speed = 3.0f;
     scene->camera.sensitivity = 10000.0f;
 
-    float s = 20.0f;
-    std::shared_ptr<axolote::PointLight> point_light{new axolote::PointLight{
-        glm::vec3{1.0f, 1.0f, 0.0f}, true,
-        glm::vec3{0.0f, 0.0f, s}, 1.0f
-    }};
-    scene->add_light(point_light);
+    auto dir_light = std::make_shared<axolote::DirectionalLight>(
+        glm::vec3{1.0f, 0.0f, 0.0f}, true, glm::vec3{1.0f, 0.0f, 0.0f}
+    );
+    scene->add_light(dir_light);
 
-    std::shared_ptr<axolote::PointLight> point_light1{new axolote::PointLight{
-        glm::vec3{1.0f, 0.5f, 0.0f}, true,
-        glm::vec3{0.0f, 0.0f, -s}, 1.0f
-    }};
-    scene->add_light(point_light1);
-
-    std::shared_ptr<axolote::PointLight> point_light2{new axolote::PointLight{
-        glm::vec3{0.0f, 0.5f, 1.0f}, true,
-        glm::vec3{s, 0.0f, 0.0f}, 1.0f
-    }};
-    scene->add_light(point_light2);
-
-    std::shared_ptr<axolote::PointLight> point_light3{new axolote::PointLight{
-        glm::vec3{0.0f, 1.0f, 0.5f}, true,
-        glm::vec3{-s, 0.0f, 0.0f}, 1.0f
-    }};
-    scene->add_light(point_light3);
-
-    std::shared_ptr<axolote::PointLight> point_light4{new axolote::PointLight{
-        glm::vec3{0.5f, 0.0f, 1.0f}, true,
-        glm::vec3{0.0f, s, 0.0f}, 1.0f
-    }};
-    scene->add_light(point_light4);
-
-    std::shared_ptr<axolote::PointLight> point_light5{new axolote::PointLight{
-        glm::vec3{1.0f, 0.0f, 0.5f}, true,
-        glm::vec3{0.0f, -s, 0.0f}, 1.0f
-    }};
-    scene->add_light(point_light5);
+    // float s = 20.0f;
+    // std::shared_ptr<axolote::PointLight> point_light{new
+    // axolote::PointLight{
+    //     glm::vec3{1.0f, 1.0f, 0.0f}, true, glm::vec3{0.0f, 0.0f, s}, 1.0f
+    // }};
+    // scene->add_light(point_light);
+    //
+    // std::shared_ptr<axolote::PointLight> point_light1{new
+    // axolote::PointLight{
+    //     glm::vec3{1.0f, 0.5f, 0.0f}, true, glm::vec3{0.0f, 0.0f, -s}, 1.0f
+    // }};
+    // scene->add_light(point_light1);
+    //
+    // std::shared_ptr<axolote::PointLight> point_light2{new
+    // axolote::PointLight{
+    //     glm::vec3{0.0f, 0.5f, 1.0f}, true, glm::vec3{s, 0.0f, 0.0f}, 1.0f
+    // }};
+    // scene->add_light(point_light2);
+    //
+    // std::shared_ptr<axolote::PointLight> point_light3{new
+    // axolote::PointLight{
+    //     glm::vec3{0.0f, 1.0f, 0.5f}, true, glm::vec3{-s, 0.0f, 0.0f}, 1.0f
+    // }};
+    // scene->add_light(point_light3);
+    //
+    // std::shared_ptr<axolote::PointLight> point_light4{new
+    // axolote::PointLight{
+    //     glm::vec3{0.5f, 0.0f, 1.0f}, true, glm::vec3{0.0f, s, 0.0f}, 1.0f
+    // }};
+    // scene->add_light(point_light4);
+    //
+    // std::shared_ptr<axolote::PointLight> point_light5{new
+    // axolote::PointLight{
+    //     glm::vec3{1.0f, 0.0f, 0.5f}, true, glm::vec3{0.0f, -s, 0.0f}, 1.0f
+    // }};
+    // scene->add_light(point_light5);
 
     auto sphere = std::make_shared<axolote::Object3D>(
         "./resources/models/sphere/sphere.obj", glm::vec3{1.0f, 1.0f, 1.0f},
@@ -90,18 +95,12 @@ void App::main_loop() {
     scene->add_drawable(sphere);
 
     auto m26 = std::make_shared<axolote::Object3D>(
-        "./resources/models/m26/m26pershing_coh.obj", glm::vec3{1.0f, 1.0f, 1.0f},
+        "./resources/models/m26/m26pershing_coh.obj",
+        glm::vec3{1.0f, 1.0f, 1.0f},
         glm::translate(glm::mat4{1.0f}, glm::vec3{0.f, 0.f, 0.f})
     );
     m26->bind_shader(shader_program);
     scene->add_drawable(m26);
-
-    // xyz-axis line
-    std::shared_ptr<axolote::Line> l_xyz{new axolote::Line{
-        {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 20.0f, 01.1f, {1.0f, 1.0f, 1.0f}
-    }};
-    l_xyz->bind_shader(shader_program);
-    scene->add_drawable(l_xyz);
 
     set_scene(scene);
     double before = get_time();

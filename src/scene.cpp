@@ -55,16 +55,16 @@ void Scene::update(double time) {
         switch (light->type) {
         case Light::Type::point:
             prefix = "axolote_point_lights["
-                     + std::to_string(++num_point_lights) + "]";
+                     + std::to_string(num_point_lights++) + "]";
             break;
         case Light::Type::directional:
             num_directional_lights++;
             prefix = "axolote_directional_lights["
-                     + std::to_string(++num_directional_lights) + "]";
+                     + std::to_string(num_directional_lights++) + "]";
             break;
         case Light::Type::spot:
             num_spot_lights++;
-            prefix = "axolote_spot_lights[" + std::to_string(++num_spot_lights)
+            prefix = "axolote_spot_lights[" + std::to_string(num_spot_lights++)
                      + "]";
             break;
         }

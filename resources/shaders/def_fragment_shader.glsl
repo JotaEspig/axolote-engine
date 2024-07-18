@@ -32,7 +32,7 @@ in vec3 axolote_current_pos;
 
 // Scene info
 uniform vec3 axolote_camera_pos;
-uniform float axolote_ambient;
+uniform float axolote_ambient_light;
 
 // Scene lights
 const int axolote_NUM_MAX_LIGHTS = 50;
@@ -69,7 +69,7 @@ vec3 axolote_calculate_point_light(axolote_PointLight light) {
         = pow(max(dot(view_direction, reflection_direction), 0.0f), 16);
     float specular = spec_amount * specular_light;
 
-    vec3 diffuse_light_color = light.color.rgb * (diffuse + axolote_ambient);
+    vec3 diffuse_light_color = light.color.rgb * (diffuse + axolote_ambient_light);
 
     float specular_map = axolote_get_specular_map();
     float specular_light_color = specular_map * specular;
@@ -78,7 +78,23 @@ vec3 axolote_calculate_point_light(axolote_PointLight light) {
 }
 
 vec3 axolote_calculate_directional_light(axolote_DirectionalLight light) {
-    return vec3(0.0f);
+    vec3 normal = normalize(axolote_normal);
+    vec3 light_direction = normalize(-light.dir);
+    float diffuse = max(dot(normal, light_direction), 0.0f);
+
+    float specular_light = 0.25f;
+    vec3 view_direction = normalize(axolote_camera_pos - axolote_current_pos);
+    vec3 reflection_direction = reflect(-light_direction, normal);
+    float spec_amount
+        = pow(max(dot(view_direction, reflection_direction), 0.0f), 16);
+    float specular = spec_amount * specular_light;
+
+    vec3 diffuse_light_color = light.color.rgb * (diffuse + axolote_ambient_light);
+
+    float specular_map = axolote_get_specular_map();
+    float specular_light_color = specular_map * specular;
+
+    return (diffuse_light_color + specular_light_color) * light.color.rgb;
 }
 
 vec3 axolote_calculate_spot_light(axolote_SpotLight light) {
@@ -115,6 +131,14 @@ void main() {
         temp_frag_color = texture(axolote_diffuse0, axolote_tex_coord);
     }
 
-    vec3 light_influence_color = axolote_calculate_light();
-    FragColor = temp_frag_color * vec4(light_influence_color, 1.0f);
+    bool should_use_light = axolote_num_point_lights
+                            + axolote_num_directional_lights
+                            + axolote_num_spot_lights <= 0;
+    if (should_use_light) {
+        FragColor = temp_frag_color;
+    }
+    else {
+        vec3 light_influence_color = axolote_calculate_light();
+        FragColor = temp_frag_color * vec4(light_influence_color, 1.0f);
+    }
 }
