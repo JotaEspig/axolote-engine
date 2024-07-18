@@ -48,8 +48,8 @@ void Scene::update(double time) {
     int num_point_lights = 0;
     int num_directional_lights = 0;
     int num_spot_lights = 0;
-    for (size_t i = 0; i < lights.size(); ++i) {
-        auto &light = lights[i];
+    for (auto &light : lights) {
+        light->update(time);
         std::string prefix;
 
         switch (light->type) {
@@ -76,6 +76,7 @@ void Scene::update(double time) {
 
     // Set number of each light type for every shader
     for (auto &shader : shaders) {
+        shader.set_uniform_float("axolote_ambient_light", ambient_light);
         shader.set_uniform_int("axolote_num_point_lights", num_point_lights);
         shader.set_uniform_int(
             "axolote_num_directional_lights", num_directional_lights

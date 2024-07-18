@@ -24,6 +24,8 @@ public:
     std::vector<std::shared_ptr<Drawable>> drawable_objects;
     /** Camera in the scene **/
     Camera camera;
+    /** Ambient light **/
+    float ambient_light = 0.1f;
 
     /**
      * \brief Constructor

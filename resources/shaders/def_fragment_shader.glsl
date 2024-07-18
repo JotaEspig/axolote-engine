@@ -5,6 +5,9 @@ struct axolote_PointLight {
     vec3 color;
     bool is_set;
     vec3 pos;
+    float constant;
+    float linear;
+    float quadratic;
 };
 
 struct axolote_DirectionalLight {
@@ -19,6 +22,9 @@ struct axolote_SpotLight {
     vec3 pos;
     vec3 dir;
     float cut_off_angle;
+    float constant;
+    float linear;
+    float quadratic;
 };
 
 // Output color
@@ -69,6 +75,14 @@ vec3 axolote_calculate_point_light(axolote_PointLight light) {
         = pow(max(dot(view_direction, reflection_direction), 0.0f), 16);
     float specular = spec_amount * specular_light;
 
+    // Apply attenuation to the light
+    float distance = length(light.pos - axolote_current_pos);
+    float attenuation = 1.0f / (light.constant + light.linear * distance
+                                + light.quadratic * distance * distance);
+
+    diffuse *= attenuation;
+    specular *= attenuation;
+
     vec3 diffuse_light_color = light.color.rgb * (diffuse + axolote_ambient_light);
 
     float specular_map = axolote_get_specular_map();
@@ -98,7 +112,37 @@ vec3 axolote_calculate_directional_light(axolote_DirectionalLight light) {
 }
 
 vec3 axolote_calculate_spot_light(axolote_SpotLight light) {
-    return vec3(0.0f);
+
+    vec3 normal = normalize(axolote_normal);
+    vec3 light_direction = normalize(light.pos - axolote_current_pos);
+    float theta = dot(light_direction, normalize(-light.dir));
+    if (theta <= light.cut_off_angle) {
+        return vec3(0.0f);
+    }
+
+    float diffuse = max(dot(normal, light_direction), 0.0f);
+
+    float specular_light = 0.25f;
+    vec3 view_direction = normalize(axolote_camera_pos - axolote_current_pos);
+    vec3 reflection_direction = reflect(-light_direction, normal);
+    float spec_amount
+        = pow(max(dot(view_direction, reflection_direction), 0.0f), 16);
+    float specular = spec_amount * specular_light;
+
+    // Apply attenuation to the light
+    float distance = length(light.pos - axolote_current_pos);
+    float attenuation = 1.0f / (light.constant + light.linear * distance
+                                + light.quadratic * distance * distance);
+
+    diffuse *= attenuation;
+    specular *= attenuation;
+
+    vec3 diffuse_light_color = light.color.rgb * (diffuse + axolote_ambient_light);
+
+    float specular_map = axolote_get_specular_map();
+    float specular_light_color = specular_map * specular;
+
+    return (diffuse_light_color + specular_light_color) * light.color.rgb;
 }
 
 vec3 axolote_calculate_light() {
@@ -122,6 +166,9 @@ vec3 axolote_calculate_light() {
         color += axolote_calculate_spot_light(axolote_spot_lights[i]);
     }
 
+    if (color == vec3(0.0f)) {
+        color = vec3(1.0f) * axolote_ambient_light;
+    }
     return color;
 }
 

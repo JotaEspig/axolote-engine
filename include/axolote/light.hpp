@@ -38,6 +38,11 @@ public:
      * \author Mickael Reichert (mickaelrei)
      **/
     virtual void bind(gl::Shader &shader, const std::string &prefix);
+    /**
+     * \brief Update light
+     * \author João Vitor Espig
+     **/
+    virtual void update(double dt);
 
     /** Light color **/
     glm::vec3 color;
@@ -54,6 +59,17 @@ public:
  **/
 class PointLight : public Light {
 public:
+    /** Light position **/
+    glm::vec3 pos;
+    /** Light radius **/
+    float radius;
+    /** Light constant term **/
+    float constant = 1.0f;
+    /** Light linear term **/
+    float linear = 0.09f;
+    /** Light quadratic term **/
+    float quadratic = 0.032f;
+
     /**
      * \brief Constructor
      * \author Mickael Reichert (mickaelrei)
@@ -67,11 +83,6 @@ public:
      * \author Mickael Reichert (mickaelrei)
      **/
     void bind(gl::Shader &shader, const std::string &prefix) override;
-
-    /** Light position **/
-    glm::vec3 pos;
-    /** Light radius **/
-    float radius;
 };
 
 /**
@@ -80,6 +91,9 @@ public:
  **/
 class DirectionalLight : public Light {
 public:
+    /** Light direction **/
+    glm::vec3 dir;
+
     /**
      * \brief Constructor
      * \author Mickael Reichert (mickaelrei)
@@ -91,9 +105,6 @@ public:
      * \author Mickael Reichert (mickaelrei)
      **/
     void bind(gl::Shader &shader, const std::string &prefix) override;
-
-    /** Light direction **/
-    glm::vec3 dir;
 };
 
 /**
@@ -102,6 +113,19 @@ public:
  **/
 class SpotLight : public Light {
 public:
+    /** Light position **/
+    glm::vec3 pos;
+    /** Light direction **/
+    glm::vec3 dir;
+    /** Light cut off angle **/
+    float cut_off_angle;
+    /** Light constant term **/
+    float constant = 1.0f;
+    /** Light linear term **/
+    float linear = 0.09f;
+    /** Light quadratic term **/
+    float quadratic = 0.032f;
+
     /**
      * \brief Constructor
      * \author Mickael Reichert (mickaelrei)
@@ -116,13 +140,6 @@ public:
      * \author Mickael Reichert (mickaelrei)
      **/
     void bind(gl::Shader &shader, const std::string &prefix) override;
-
-    /** Light position **/
-    glm::vec3 pos;
-    /** Light direction **/
-    glm::vec3 dir;
-    /** Light cut off angle **/
-    float cut_off_angle;
 };
 
 } // namespace axolote

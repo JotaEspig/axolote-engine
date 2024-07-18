@@ -1,5 +1,7 @@
 #include "axolote/light.hpp"
 
+#define UNUSED(x) (void)(x)
+
 namespace axolote {
 
 Light::Light(const glm::vec3 &color, bool is_set, Type type) :
@@ -14,6 +16,10 @@ void Light::bind(gl::Shader &shader, const std::string &prefix) {
 
     std::string is_set_name = prefix + ".is_set";
     shader.set_uniform_int(is_set_name.c_str(), is_set);
+}
+
+void Light::update(double dt) {
+    UNUSED(dt);
 }
 
 PointLight::PointLight(
@@ -34,6 +40,15 @@ void PointLight::bind(gl::Shader &shader, const std::string &prefix) {
 
     std::string radius_name = prefix + ".radius";
     shader.set_uniform_float(radius_name.c_str(), radius);
+
+    std::string constant_name = prefix + ".constant";
+    shader.set_uniform_float(constant_name.c_str(), constant);
+
+    std::string linear_name = prefix + ".linear";
+    shader.set_uniform_float(linear_name.c_str(), linear);
+
+    std::string quadratic_name = prefix + ".quadratic";
+    shader.set_uniform_float(quadratic_name.c_str(), quadratic);
 }
 
 DirectionalLight::DirectionalLight(
@@ -75,6 +90,15 @@ void SpotLight::bind(gl::Shader &shader, const std::string &prefix) {
 
     std::string cut_off_angle_name = prefix + ".cut_off_angle";
     shader.set_uniform_float(cut_off_angle_name.c_str(), cut_off_angle);
+
+    std::string constant_name = prefix + ".constant";
+    shader.set_uniform_float(constant_name.c_str(), constant);
+
+    std::string linear_name = prefix + ".linear";
+    shader.set_uniform_float(linear_name.c_str(), linear);
+
+    std::string quadratic_name = prefix + ".quadratic";
+    shader.set_uniform_float(quadratic_name.c_str(), quadratic);
 }
 
 }

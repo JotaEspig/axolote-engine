@@ -12,6 +12,22 @@
 
 #define DT_MULTIPLIER 200000
 
+class MyDirLight : public axolote::DirectionalLight {
+public:
+    float absolute_time = 0.0;
+
+    MyDirLight(const glm::vec3 &color, bool is_set, const glm::vec3 &dir) :
+      axolote::DirectionalLight{color, is_set, dir} {
+    }
+
+    void update(double dt) override {
+        absolute_time += dt / (DT_MULTIPLIER * 10);
+        dir = glm::vec3{
+            glm::cos((float)absolute_time), 0.0f, glm::sin((float)absolute_time)
+        };
+    }
+};
+
 class App : public axolote::Window {
 public:
     void process_input(double dt);
@@ -45,47 +61,18 @@ void App::main_loop() {
     scene->camera.speed = 3.0f;
     scene->camera.sensitivity = 10000.0f;
 
-    auto dir_light = std::make_shared<axolote::DirectionalLight>(
+    auto dir_light = std::make_shared<MyDirLight>(
         glm::vec3{1.0f, 0.0f, 0.0f}, true, glm::vec3{1.0f, 0.0f, 0.0f}
     );
     scene->add_light(dir_light);
 
-    // float s = 20.0f;
-    // std::shared_ptr<axolote::PointLight> point_light{new
-    // axolote::PointLight{
-    //     glm::vec3{1.0f, 1.0f, 0.0f}, true, glm::vec3{0.0f, 0.0f, s}, 1.0f
-    // }};
-    // scene->add_light(point_light);
-    //
-    // std::shared_ptr<axolote::PointLight> point_light1{new
-    // axolote::PointLight{
-    //     glm::vec3{1.0f, 0.5f, 0.0f}, true, glm::vec3{0.0f, 0.0f, -s}, 1.0f
-    // }};
-    // scene->add_light(point_light1);
-    //
-    // std::shared_ptr<axolote::PointLight> point_light2{new
-    // axolote::PointLight{
-    //     glm::vec3{0.0f, 0.5f, 1.0f}, true, glm::vec3{s, 0.0f, 0.0f}, 1.0f
-    // }};
-    // scene->add_light(point_light2);
-    //
-    // std::shared_ptr<axolote::PointLight> point_light3{new
-    // axolote::PointLight{
-    //     glm::vec3{0.0f, 1.0f, 0.5f}, true, glm::vec3{-s, 0.0f, 0.0f}, 1.0f
-    // }};
-    // scene->add_light(point_light3);
-    //
-    // std::shared_ptr<axolote::PointLight> point_light4{new
-    // axolote::PointLight{
-    //     glm::vec3{0.5f, 0.0f, 1.0f}, true, glm::vec3{0.0f, s, 0.0f}, 1.0f
-    // }};
-    // scene->add_light(point_light4);
-    //
-    // std::shared_ptr<axolote::PointLight> point_light5{new
-    // axolote::PointLight{
-    //     glm::vec3{1.0f, 0.0f, 0.5f}, true, glm::vec3{0.0f, -s, 0.0f}, 1.0f
-    // }};
-    // scene->add_light(point_light5);
+    auto spot_light = std::make_shared<axolote::SpotLight>(
+        glm::vec3{1.0f}, true, glm::vec3{0.0f, 5.0f, 0.0f},
+        glm::vec3{0.0f, -1.0f, 0.0f}, 5.5f
+    );
+    spot_light->linear = 0.009f;
+    spot_light->quadratic = 0.0032f;
+    scene->add_light(spot_light);
 
     auto sphere = std::make_shared<axolote::Object3D>(
         "./resources/models/sphere/sphere.obj", glm::vec3{1.0f, 1.0f, 1.0f},
@@ -120,8 +107,11 @@ void App::main_loop() {
 
         dt *= DT_MULTIPLIER;
 
+        spot_light->pos = current_scene()->camera.pos;
+        spot_light->dir = current_scene()->camera.orientation;
+
         m26->set_matrix(glm::rotate(
-            glm::translate(glm::mat4{1.0f}, glm::vec3{0.0f, 2.5f, 0.0f}),
+            glm::translate(glm::mat4{1.0f}, glm::vec3{0.0f, -10.5f, 0.0f}),
             (float)now, glm::vec3{0.0f, 1.0f, 0.0f}
         ));
 
