@@ -17,5 +17,4 @@ Mesh::Mesh(
   textures{_textures} {
 }
 
-
 } // namespace axolote

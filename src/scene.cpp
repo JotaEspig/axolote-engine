@@ -23,7 +23,6 @@ void Scene::add_light(const std::shared_ptr<Light> &light) {
     lights.push_back(light);
 }
 
-
 void Scene::update_camera(float aspect_ratio) {
     glm::mat4 view
         = glm::lookAt(camera.pos, camera.pos + camera.orientation, camera.up);
@@ -54,17 +53,18 @@ void Scene::update(double time) {
         std::string prefix;
 
         switch (light->type) {
-            case Light::Type::point:
-                prefix = "point_lights[" + std::to_string(num_point_lights++) + "]";
-                break;
-            case Light::Type::directional:
-                num_directional_lights++;
-                prefix = "directional_lights[" + std::to_string(num_directional_lights++) + "]";
-                break;
-            case Light::Type::spot:
-                num_spot_lights++;
-                prefix = "spot_lights[" + std::to_string(num_spot_lights++) + "]";
-                break;
+        case Light::Type::point:
+            prefix = "point_lights[" + std::to_string(num_point_lights++) + "]";
+            break;
+        case Light::Type::directional:
+            num_directional_lights++;
+            prefix = "directional_lights["
+                     + std::to_string(num_directional_lights++) + "]";
+            break;
+        case Light::Type::spot:
+            num_spot_lights++;
+            prefix = "spot_lights[" + std::to_string(num_spot_lights++) + "]";
+            break;
         }
 
         for (auto &shader : shaders) {
@@ -75,7 +75,9 @@ void Scene::update(double time) {
     // Set number of each light type for every shader
     for (auto &shader : shaders) {
         shader.set_uniform_int("num_point_lights", num_point_lights);
-        shader.set_uniform_int("num_directional_lights", num_directional_lights);
+        shader.set_uniform_int(
+            "num_directional_lights", num_directional_lights
+        );
         shader.set_uniform_int("num_spot_lights", num_spot_lights);
     }
 }

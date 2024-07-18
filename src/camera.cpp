@@ -61,5 +61,4 @@ void Camera::move_vision(
     orientation = glm::rotate(orientation, glm::radians(-rot_y), up);
 }
 
-
 } // namespace axolote

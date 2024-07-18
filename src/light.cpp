@@ -4,7 +4,8 @@ namespace axolote {
 
 Light::Light(const glm::vec3 &color, bool is_set, Type type) :
   color{color},
-  is_set{is_set}, type{type} {
+  is_set{is_set},
+  type{type} {
 }
 
 void Light::bind(gl::Shader &shader, const std::string &prefix) {
