@@ -7,13 +7,13 @@
 #include "axolote/window.hpp"
 
 #define INITIAL_SIZE 800
-#define __UNUSED(x) (void)(x)
+#define UNUSED(x) (void)(x)
 
 namespace axolote {
 
 static void
 framebuffer_size_callback(GLFWwindow *window, int width, int height) {
-    __UNUSED(window);
+    UNUSED(window);
     glViewport(0, 0, width, height);
 }
 
@@ -32,7 +32,7 @@ Window::Window(bool vsync) :
 }
 
 Window::~Window() {
-    glfwDestroyWindow(window);
+    glfwDestroyWindow(_window);
     glfwTerminate();
 }
 
@@ -40,7 +40,7 @@ void Window::init() {
     glfwSetErrorCallback(error_callback);
 
     _title = "Axolote Engine";
-    window = NULL;
+    _window = NULL;
     _color.r = 0x00;
     _color.g = 0x00;
     _color.b = 0x00;
@@ -52,18 +52,18 @@ void Window::init() {
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
-    window = glfwCreateWindow(
+    _window = glfwCreateWindow(
         INITIAL_SIZE, INITIAL_SIZE, _title.c_str(), NULL, NULL
     );
-    if (!window) {
+    if (!_window) {
         std::cerr << "Error initialing window" << std::endl;
         glfwTerminate();
         return;
     }
 
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    glfwSetFramebufferSizeCallback(_window, framebuffer_size_callback);
 
-    glfwMakeContextCurrent(window);
+    glfwMakeContextCurrent(_window);
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
         std::cerr << "Failed to initialize GLAD" << std::endl;
         return;
@@ -83,12 +83,12 @@ void Window::poll_events() {
 
 Window::KeyState Window::get_key_state(Window::Key key) {
     int key_int = static_cast<int>(key);
-    return static_cast<KeyState>(glfwGetKey(window, key_int));
+    return static_cast<KeyState>(glfwGetKey(_window, key_int));
 }
 
 Window::MouseKeyState Window::get_mouse_key_state(Window::MouseKey key) {
     int key_int = static_cast<int>(key);
-    return static_cast<MouseKeyState>(glfwGetMouseButton(window, key_int));
+    return static_cast<MouseKeyState>(glfwGetMouseButton(_window, key_int));
 }
 
 bool Window::is_key_pressed(Window::Key key) const {
@@ -106,15 +106,15 @@ void Window::set_key_pressed(Window::Key key, bool pressed) {
 
 void Window::set_cursor_mode(CursorMode mode) {
     int mode_int = static_cast<int>(mode);
-    glfwSetInputMode(window, GLFW_CURSOR, mode_int);
+    glfwSetInputMode(_window, GLFW_CURSOR, mode_int);
 }
 
 void Window::get_cursor_position(double *x, double *y) {
-    glfwGetCursorPos(window, x, y);
+    glfwGetCursorPos(_window, x, y);
 }
 
 void Window::set_cursor_position(double x, double y) {
-    glfwSetCursorPos(window, x, y);
+    glfwSetCursorPos(_window, x, y);
 }
 
 void Window::process_input(float delta_t) {
@@ -159,11 +159,11 @@ void Window::minimal_process_input(float delta_t) {
 }
 
 bool Window::should_close() const {
-    return glfwWindowShouldClose(window);
+    return glfwWindowShouldClose(_window);
 }
 
 void Window::set_should_close(bool should_close) {
-    glfwSetWindowShouldClose(window, should_close);
+    glfwSetWindowShouldClose(_window, should_close);
 }
 
 void Window::clear() {
@@ -172,7 +172,7 @@ void Window::clear() {
 }
 
 void Window::flush() {
-    glfwSwapBuffers(window);
+    glfwSwapBuffers(_window);
 }
 
 void Window::update_camera(float aspect_ratio) {
@@ -209,28 +209,28 @@ std::string Window::title() const {
 }
 
 void Window::set_title(std::string new_title) {
-    glfwSetWindowTitle(window, new_title.c_str());
+    glfwSetWindowTitle(_window, new_title.c_str());
     _title = new_title;
 }
 
 int Window::width() const {
     int width, height;
-    glfwGetWindowSize(window, &width, &height);
+    glfwGetWindowSize(_window, &width, &height);
     return width;
 }
 
 void Window::set_width(int new_width) {
-    glfwSetWindowSize(window, new_width, height());
+    glfwSetWindowSize(_window, new_width, height());
 }
 
 int Window::height() const {
     int width, height;
-    glfwGetWindowSize(window, &width, &height);
+    glfwGetWindowSize(_window, &width, &height);
     return height;
 }
 
 void Window::set_height(int new_height) {
-    glfwSetWindowSize(window, width(), new_height);
+    glfwSetWindowSize(_window, width(), new_height);
 }
 
 Color Window::color() const {

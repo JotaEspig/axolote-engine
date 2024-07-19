@@ -22,9 +22,9 @@ public:
      * \author Mickael Reichert (mickaelrei)
      **/
     enum class Type {
-        point,
-        directional,
-        spot,
+        Point,
+        Directional,
+        Spot,
     };
 
     /**

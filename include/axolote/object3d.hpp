@@ -112,10 +112,11 @@ public:
     void draw(const glm::mat4 &mat) override;
 
 protected:
-    /** model_matition **/
-    glm::mat4 model_mat;
-    /** normal_matrix **/
-    glm::mat4 normal_mat;
+    /** model_matrix **/
+    glm::mat4 _model_matrix;
+    /** normal_matrix.
+     * Used in shaders to calcule correctly normals **/
+    glm::mat4 _normal_matrix;
 };
 
 } // namespace axolote

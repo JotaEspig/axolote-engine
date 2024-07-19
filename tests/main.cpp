@@ -104,7 +104,8 @@ void App::main_loop() {
     scene->add_sorted_drawable(m26);
 
     auto obj = std::make_shared<axolote::Object3D>(
-        "./resources/models/fish/13007_Blue-Green_Reef_Chromis_v2_l3.obj", glm::vec3{1.0f, 1.0f, 1.0f},
+        "./resources/models/fish/13007_Blue-Green_Reef_Chromis_v2_l3.obj",
+        glm::vec3{1.0f, 1.0f, 1.0f},
         glm::translate(glm::mat4{1.0f}, glm::vec3{4.f, 0.f, 0.f})
     );
     obj->is_transparent = true;
@@ -144,7 +145,7 @@ void App::main_loop() {
 int main() {
     std::cout << "Axolote Engine" << std::endl;
     App app{};
-    app.set_title("Uepa");
+    app.set_title("Main test");
     app.set_width(600);
     app.set_height(600);
     app.set_color(0x10, 0x10, 0x10);

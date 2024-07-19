@@ -92,13 +92,13 @@ public:
 
 private:
     /** vector of drawables objects **/
-    std::vector<std::shared_ptr<Drawable>> drawable_objects;
+    std::vector<std::shared_ptr<Drawable>> _drawable_objects;
     /** sorted drawables objects **/
     std::vector<std::shared_ptr<Object3D>> _sorted_drawables_objects;
     /** vector of shaders from drawable objects **/
-    std::vector<gl::Shader> shaders;
+    std::vector<gl::Shader> _shaders;
     /** lights of the scene **/
-    std::vector<std::shared_ptr<Light>> lights;
+    std::vector<std::shared_ptr<Light>> _lights;
 };
 
 } // namespace axolote

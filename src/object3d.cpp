@@ -42,12 +42,12 @@ void Object3D::load_model(std::string path, const glm::vec3 &color) {
 }
 
 void Object3D::set_matrix(const glm::mat4 &mat) {
-    model_mat = mat;
-    normal_mat = glm::transpose(glm::inverse(mat));
+    _model_matrix = mat;
+    _normal_matrix = glm::transpose(glm::inverse(mat));
 }
 
 glm::mat4 Object3D::get_matrix() const {
-    return model_mat;
+    return _model_matrix;
 }
 
 void Object3D::bind_shader(const gl::Shader &shader_program) {
@@ -63,8 +63,8 @@ void Object3D::update(double dt) {
 }
 
 void Object3D::draw() {
-    get_shader().set_uniform_matrix4("axolote_normal_matrix", normal_mat);
-    gmodel->draw(model_mat);
+    get_shader().set_uniform_matrix4("axolote_normal_matrix", _normal_matrix);
+    gmodel->draw(_model_matrix);
 }
 
 void Object3D::draw(const glm::mat4 &mat) {

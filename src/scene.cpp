@@ -20,17 +20,17 @@ Scene::~Scene() {
 }
 
 void Scene::add_drawable(std::shared_ptr<Drawable> d) {
-    drawable_objects.push_back(d);
-    shaders.push_back(d->get_shader());
+    _drawable_objects.push_back(d);
+    _shaders.push_back(d->get_shader());
 }
 
 const std::vector<std::shared_ptr<Drawable>> &Scene::drawables_objects() const {
-    return drawable_objects;
+    return _drawable_objects;
 }
 
 void Scene::add_sorted_drawable(std::shared_ptr<Object3D> d) {
     _sorted_drawables_objects.push_back(d);
-    shaders.push_back(d->get_shader());
+    _shaders.push_back(d->get_shader());
 }
 
 const std::vector<std::shared_ptr<Object3D>> &
@@ -39,7 +39,7 @@ Scene::sorted_drawables_objects() const {
 }
 
 void Scene::add_light(const std::shared_ptr<Light> &light) {
-    lights.push_back(light);
+    _lights.push_back(light);
 }
 
 void Scene::update_camera(float aspect_ratio) {
@@ -48,7 +48,7 @@ void Scene::update_camera(float aspect_ratio) {
     glm::mat4 projection = glm::perspective(
         glm::radians(camera.fov), aspect_ratio, camera.min_dist, camera.max_dist
     );
-    for (gl::Shader &s : shaders) {
+    for (gl::Shader &s : _shaders) {
         s.activate();
         s.set_uniform_float3(
             "axolote_camera_pos", camera.pos.x, camera.pos.y, camera.pos.z
@@ -76,41 +76,41 @@ void Scene::update(double time) {
     for (std::shared_ptr<Object3D> d : _sorted_drawables_objects) {
         d->update(time);
     }
-    for (std::shared_ptr<Drawable> d : drawable_objects)
+    for (std::shared_ptr<Drawable> d : _drawable_objects)
         d->update(time);
 
     // Bind lighs to every shader and calculate how much of each type
     int num_point_lights = 0;
     int num_directional_lights = 0;
     int num_spot_lights = 0;
-    for (auto &light : lights) {
+    for (auto &light : _lights) {
         light->update(time);
         std::string prefix;
 
         switch (light->type) {
-        case Light::Type::point:
+        case Light::Type::Point:
             prefix = "axolote_point_lights["
                      + std::to_string(num_point_lights++) + "]";
             break;
-        case Light::Type::directional:
+        case Light::Type::Directional:
             num_directional_lights++;
             prefix = "axolote_directional_lights["
                      + std::to_string(num_directional_lights++) + "]";
             break;
-        case Light::Type::spot:
+        case Light::Type::Spot:
             num_spot_lights++;
             prefix = "axolote_spot_lights[" + std::to_string(num_spot_lights++)
                      + "]";
             break;
         }
 
-        for (auto &shader : shaders) {
+        for (auto &shader : _shaders) {
             light->bind(shader, prefix);
         }
     }
 
     // Set number of each light type for every shader
-    for (auto &shader : shaders) {
+    for (auto &shader : _shaders) {
         shader.set_uniform_float("axolote_ambient_light", 1);
         shader.set_uniform_float(
             "axolote_ambient_light_intensity", ambient_light_intensity
@@ -124,7 +124,7 @@ void Scene::update(double time) {
 }
 
 void Scene::render() {
-    for (std::shared_ptr<Drawable> d : drawable_objects)
+    for (std::shared_ptr<Drawable> d : _drawable_objects)
         d->draw();
     for (std::shared_ptr<Object3D> d : _sorted_drawables_objects)
         d->draw();

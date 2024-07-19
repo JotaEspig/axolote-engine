@@ -381,7 +381,7 @@ protected:
 
 private:
     /** GLFWwindow struct object **/
-    GLFWwindow *window;
+    GLFWwindow *_window;
     /** should use vsync **/
     bool _vsync = true;
     /** Current scene **/
