@@ -30,6 +30,8 @@ public:
 
 class App : public axolote::Window {
 public:
+    std::shared_ptr<axolote::SpotLight> spot_light;
+
     void process_input(double dt);
     void main_loop();
 };
@@ -44,6 +46,15 @@ void App::process_input(double dt) {
     else if (v_key_state == KeyState::RELEASED && is_key_pressed(Key::V)) {
         set_vsync(!vsync());
         set_key_pressed(Key::V, false);
+    }
+
+    KeyState l_key_state = get_key_state(Key::L);
+    if (l_key_state == KeyState::PRESSED && !is_key_pressed(Key::L)) {
+        set_key_pressed(Key::L, true);
+    }
+    else if (l_key_state == KeyState::RELEASED && is_key_pressed(Key::L)) {
+        spot_light->is_set = !spot_light->is_set;
+        set_key_pressed(Key::L, false);
     }
 }
 
@@ -68,11 +79,13 @@ void App::main_loop() {
 
     auto spot_light = std::make_shared<axolote::SpotLight>(
         glm::vec3{1.0f}, true, glm::vec3{0.0f, 5.0f, 0.0f},
-        glm::vec3{0.0f, -1.0f, 0.0f}, 15.f
+        glm::vec3{0.0f, -1.0f, 0.0f}, glm::cos(glm::radians(12.5f)),
+        glm::cos(glm::radians(20.0f))
     );
     spot_light->linear = 0.09f;
     spot_light->quadratic = 0.032f;
     scene->add_light(spot_light);
+    App::spot_light = spot_light;
 
     auto sphere = std::make_shared<axolote::Object3D>(
         "./resources/models/sphere/sphere.obj", glm::vec3{1.0f, 1.0f, 1.0f},
@@ -84,7 +97,7 @@ void App::main_loop() {
     auto m26 = std::make_shared<axolote::Object3D>(
         "./resources/models/m26/m26pershing_coh.obj",
         glm::vec3{1.0f, 1.0f, 1.0f},
-        glm::translate(glm::mat4{1.0f}, glm::vec3{0.f, 0.f, 0.f})
+        glm::translate(glm::mat4{1.0f}, glm::vec3{0.f, -7.f, 0.f})
     );
     m26->bind_shader(shader_program);
     scene->add_drawable(m26);
@@ -109,11 +122,6 @@ void App::main_loop() {
 
         spot_light->pos = current_scene()->camera.pos;
         spot_light->dir = current_scene()->camera.orientation;
-
-        m26->set_matrix(glm::rotate(
-            glm::translate(glm::mat4{1.0f}, glm::vec3{0.0f, -10.5f, 0.0f}),
-            (float)now, glm::vec3{0.0f, 1.0f, 0.0f}
-        ));
 
         update_camera((float)width() / height());
         update(dt);

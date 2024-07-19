@@ -69,12 +69,13 @@ void DirectionalLight::bind(gl::Shader &shader, const std::string &prefix) {
 
 SpotLight::SpotLight(
     const glm::vec3 &color, bool is_set, const glm::vec3 &pos,
-    const glm::vec3 &dir, float cut_off_angle
+    const glm::vec3 &dir, float cut_off, float outer_cut_off
 ) :
   Light::Light{color, is_set, Type::spot},
   pos{pos},
   dir{dir},
-  cut_off_angle{cut_off_angle} {
+  cut_off{cut_off},
+  outer_cut_off{outer_cut_off} {
 }
 
 void SpotLight::bind(gl::Shader &shader, const std::string &prefix) {
@@ -88,8 +89,13 @@ void SpotLight::bind(gl::Shader &shader, const std::string &prefix) {
     std::string dir_name = prefix + ".dir";
     shader.set_uniform_float3(dir_name.c_str(), dir.x, dir.y, dir.z);
 
-    std::string cut_off_angle_name = prefix + ".cut_off_angle";
-    shader.set_uniform_float(cut_off_angle_name.c_str(), cut_off_angle);
+    std::string cut_off_name = prefix + ".cut_off";
+    shader.set_uniform_float(cut_off_name.c_str(), cut_off);
+
+    std::string outer_cut_off_name = prefix + ".outer_cut_off";
+    shader.set_uniform_float(
+        outer_cut_off_name.c_str(), outer_cut_off
+    );
 
     std::string constant_name = prefix + ".constant";
     shader.set_uniform_float(constant_name.c_str(), constant);

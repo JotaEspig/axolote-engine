@@ -21,7 +21,8 @@ struct axolote_SpotLight {
     bool is_set;
     vec3 pos;
     vec3 dir;
-    float cut_off_angle;
+    float cut_off;
+    float outer_cut_off;
     float constant;
     float linear;
     float quadratic;
@@ -114,10 +115,6 @@ vec3 axolote_calculate_directional_light(axolote_DirectionalLight light) {
 vec3 axolote_calculate_spot_light(axolote_SpotLight light) {
     vec3 normal = normalize(axolote_normal);
     vec3 light_direction = normalize(light.pos - axolote_current_pos);
-    float theta = dot(light_direction, normalize(-light.dir));
-    if (theta <= cos(radians(light.cut_off_angle))) {
-        return vec3(0.0f);
-    }
 
     float diffuse = max(dot(normal, light_direction), 0.0f);
 
@@ -136,7 +133,15 @@ vec3 axolote_calculate_spot_light(axolote_SpotLight light) {
     diffuse *= attenuation;
     specular *= attenuation;
 
-    vec3 diffuse_light_color = light.color.rgb * (diffuse + axolote_ambient_light);
+    // Apply smooth edges to the spot light
+    float theta = dot(light_direction, normalize(-light.dir));
+    float epsilon = light.cut_off - light.outer_cut_off;
+    float intensity = clamp((theta - light.outer_cut_off) / epsilon, 0.0f, 1.0f);
+
+    diffuse *= intensity;
+    specular *= intensity;
+
+    vec3 diffuse_light_color = light.color.rgb * diffuse;
 
     float specular_map = axolote_get_specular_map();
     float specular_light_color = specular_map * specular;

@@ -117,8 +117,10 @@ public:
     glm::vec3 pos;
     /** Light direction **/
     glm::vec3 dir;
-    /** Light cut off angle in degrees **/
-    float cut_off_angle;
+    /** Light cut off angle **/
+    float cut_off;
+    /** Light outer cut off **/
+    float outer_cut_off;
     /** Light constant term **/
     float constant = 1.0f;
     /** Light linear term **/
@@ -132,7 +134,7 @@ public:
      **/
     SpotLight(
         const glm::vec3 &color, bool is_set, const glm::vec3 &pos,
-        const glm::vec3 &dir, float cut_off_angle
+        const glm::vec3 &dir, float cut_off_angle, float outer_cut_off_angle
     );
 
     /**
