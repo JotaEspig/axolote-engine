@@ -1,9 +1,14 @@
+#include <algorithm>
 #include <memory>
 
 #include <glm/glm.hpp>
+#define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/norm.hpp>
+#include <glm/gtx/string_cast.hpp>
 
 #include "axolote/drawable.hpp"
+#include "axolote/object3d.hpp"
 #include "axolote/scene.hpp"
 
 namespace axolote {
@@ -17,6 +22,20 @@ Scene::~Scene() {
 void Scene::add_drawable(std::shared_ptr<Drawable> d) {
     drawable_objects.push_back(d);
     shaders.push_back(d->get_shader());
+}
+
+const std::vector<std::shared_ptr<Drawable>> &Scene::drawables_objects() const {
+    return drawable_objects;
+}
+
+void Scene::add_sorted_drawable(std::shared_ptr<Object3D> d) {
+    _sorted_drawables_objects.push_back(d);
+    shaders.push_back(d->get_shader());
+}
+
+const std::vector<std::shared_ptr<Object3D>> &
+Scene::sorted_drawables_objects() const {
+    return _sorted_drawables_objects;
 }
 
 void Scene::add_light(const std::shared_ptr<Light> &light) {
@@ -40,9 +59,25 @@ void Scene::update_camera(float aspect_ratio) {
 }
 
 void Scene::update(double time) {
-    for (std::shared_ptr<Drawable> d : drawable_objects) {
+    std::sort(
+        _sorted_drawables_objects.begin(), _sorted_drawables_objects.end(),
+        [this](
+            const std::shared_ptr<Object3D> &a,
+            const std::shared_ptr<Object3D> &b
+        ) {
+            if (a->is_transparent < b->is_transparent)
+                return true;
+
+            return glm::length2(camera.pos - glm::vec3(a->get_matrix()[3]))
+                   > glm::length2(camera.pos - glm::vec3(b->get_matrix()[3]));
+        }
+    );
+
+    for (std::shared_ptr<Object3D> d : _sorted_drawables_objects) {
         d->update(time);
     }
+    for (std::shared_ptr<Drawable> d : drawable_objects)
+        d->update(time);
 
     // Bind lighs to every shader and calculate how much of each type
     int num_point_lights = 0;
@@ -77,7 +112,9 @@ void Scene::update(double time) {
     // Set number of each light type for every shader
     for (auto &shader : shaders) {
         shader.set_uniform_float("axolote_ambient_light", 1);
-        shader.set_uniform_float("axolote_ambient_light_intensity", ambient_light_intensity);
+        shader.set_uniform_float(
+            "axolote_ambient_light_intensity", ambient_light_intensity
+        );
         shader.set_uniform_int("axolote_num_point_lights", num_point_lights);
         shader.set_uniform_int(
             "axolote_num_directional_lights", num_directional_lights
@@ -88,6 +125,8 @@ void Scene::update(double time) {
 
 void Scene::render() {
     for (std::shared_ptr<Drawable> d : drawable_objects)
+        d->draw();
+    for (std::shared_ptr<Object3D> d : _sorted_drawables_objects)
         d->draw();
 }
 

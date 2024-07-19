@@ -11,6 +11,7 @@
 #include "axolote/camera.hpp"
 #include "axolote/drawable.hpp"
 #include "axolote/light.hpp"
+#include "axolote/object3d.hpp"
 
 namespace axolote {
 
@@ -20,8 +21,6 @@ namespace axolote {
  **/
 class Scene {
 public:
-    /** vector of drawables objects **/
-    std::vector<std::shared_ptr<Drawable>> drawable_objects;
     /** Camera in the scene **/
     Camera camera;
     /** Ambient light **/
@@ -46,6 +45,27 @@ public:
      **/
     void add_drawable(std::shared_ptr<Drawable> d);
     /**
+     * \brief get the unsorted drawables objects
+     * \author João Vitor Espig (JotaEspig)
+     **/
+    const std::vector<std::shared_ptr<Drawable>> &drawables_objects() const;
+    /**
+     * \brief add a Drawable object to the scene in a sorted way
+     * \author João Vitor Espig (JotaEspig)
+     *
+     * Useful when you want to use transparency in the objects
+     **/
+    void add_sorted_drawable(std::shared_ptr<Object3D> d);
+    /**
+     * \brief get the sorted drawables objects
+     * \author João Vitor Espig (JotaEspig)
+     *
+     * It's not garanteed that the objects are sorted, because it depends on the
+     * camera position
+     **/
+    const std::vector<std::shared_ptr<Object3D>> &
+    sorted_drawables_objects() const;
+    /**
      * \brief add a light to the scene
      * \author Mickael Reichert (mickaelrei)
      * \author João Vitor Espig (JotaEspig)
@@ -64,10 +84,17 @@ public:
     /**
      * \brief draw the drawables
      * \author João Vitor Espig (JotaEspig)
+     *
+     * It draws the unsorted drawables first
+     * (it assumes they're opaque objects), then the sorted drawables
      **/
     void render();
 
 private:
+    /** vector of drawables objects **/
+    std::vector<std::shared_ptr<Drawable>> drawable_objects;
+    /** sorted drawables objects **/
+    std::vector<std::shared_ptr<Object3D>> _sorted_drawables_objects;
     /** vector of shaders from drawable objects **/
     std::vector<gl::Shader> shaders;
     /** lights of the scene **/

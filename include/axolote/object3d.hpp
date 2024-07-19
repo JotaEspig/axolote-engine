@@ -25,6 +25,9 @@ class Object3D : public Drawable {
 public:
     /** pointer to gmodel **/
     std::shared_ptr<GModel> gmodel{new GModel{}};
+    /** is the object transparent **/
+    bool is_transparent = false;
+
     /**
      * \brief Constructor
      * \author João Vitor Espig (JotaEspig)

@@ -92,15 +92,24 @@ void App::main_loop() {
         glm::translate(glm::mat4{1.0f}, glm::vec3{0.f, 0.f, 0.f})
     );
     sphere->bind_shader(shader_program);
-    scene->add_drawable(sphere);
+    scene->add_sorted_drawable(sphere);
 
     auto m26 = std::make_shared<axolote::Object3D>(
         "./resources/models/m26/m26pershing_coh.obj",
         glm::vec3{1.0f, 1.0f, 1.0f},
         glm::translate(glm::mat4{1.0f}, glm::vec3{0.f, -7.f, 0.f})
     );
+    m26->is_transparent = true;
     m26->bind_shader(shader_program);
-    scene->add_drawable(m26);
+    scene->add_sorted_drawable(m26);
+
+    auto obj = std::make_shared<axolote::Object3D>(
+        "./resources/models/fish/13007_Blue-Green_Reef_Chromis_v2_l3.obj", glm::vec3{1.0f, 1.0f, 1.0f},
+        glm::translate(glm::mat4{1.0f}, glm::vec3{4.f, 0.f, 0.f})
+    );
+    obj->is_transparent = true;
+    obj->bind_shader(shader_program);
+    scene->add_sorted_drawable(obj);
 
     set_scene(scene);
     double before = get_time();
@@ -120,6 +129,7 @@ void App::main_loop() {
 
         dt *= DT_MULTIPLIER;
 
+        // Flashlight
         spot_light->pos = current_scene()->camera.pos;
         spot_light->dir = current_scene()->camera.orientation;
 

@@ -2,6 +2,8 @@
 #include <string>
 
 #include <glm/glm.hpp>
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/norm.hpp>
 
 #include "axolote/glad/glad.h"
 #include "axolote/gmodel.hpp"
