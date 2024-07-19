@@ -6,6 +6,7 @@
 #include <glm/gtx/norm.hpp>
 
 #include "axolote/glad/glad.h"
+
 #include "axolote/gmodel.hpp"
 #include "axolote/object3d.hpp"
 

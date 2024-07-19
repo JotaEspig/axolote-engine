@@ -29,7 +29,20 @@ const std::vector<std::shared_ptr<Drawable>> &Scene::drawables_objects() const {
 }
 
 void Scene::add_sorted_drawable(std::shared_ptr<Object3D> d) {
-    _sorted_drawables_objects.push_back(d);
+    auto it = std::lower_bound(
+        _sorted_drawables_objects.begin(), _sorted_drawables_objects.end(), d,
+        [this](
+            const std::shared_ptr<Object3D> &a,
+            const std::shared_ptr<Object3D> &b
+        ) {
+            if (a->is_transparent < b->is_transparent)
+                return true;
+
+            return glm::length2(camera.pos - glm::vec3(a->get_matrix()[3]))
+                   > glm::length2(camera.pos - glm::vec3(b->get_matrix()[3]));
+        }
+    );
+    _sorted_drawables_objects.insert(it, d);
     _shaders.push_back(d->get_shader());
 }
 
@@ -59,19 +72,24 @@ void Scene::update_camera(float aspect_ratio) {
 }
 
 void Scene::update(double time) {
-    std::sort(
-        _sorted_drawables_objects.begin(), _sorted_drawables_objects.end(),
-        [this](
-            const std::shared_ptr<Object3D> &a,
-            const std::shared_ptr<Object3D> &b
-        ) {
-            if (a->is_transparent < b->is_transparent)
-                return true;
+    if (camera.has_moved) {
+        std::sort(
+            _sorted_drawables_objects.begin(), _sorted_drawables_objects.end(),
+            [this](
+                const std::shared_ptr<Object3D> &a,
+                const std::shared_ptr<Object3D> &b
+            ) {
+                if (a->is_transparent < b->is_transparent)
+                    return true;
 
-            return glm::length2(camera.pos - glm::vec3(a->get_matrix()[3]))
-                   > glm::length2(camera.pos - glm::vec3(b->get_matrix()[3]));
-        }
-    );
+                return glm::length2(camera.pos - glm::vec3(a->get_matrix()[3]))
+                       > glm::length2(
+                           camera.pos - glm::vec3(b->get_matrix()[3])
+                       );
+            }
+        );
+        camera.has_moved = false;
+    }
 
     for (std::shared_ptr<Object3D> d : _sorted_drawables_objects) {
         d->update(time);

@@ -18,26 +18,32 @@ Camera::Camera(const glm::vec3 &position) :
 
 void Camera::forward(float delta_t) {
     pos += delta_t * speed * orientation;
+    has_moved = true;
 }
 
 void Camera::backward(float delta_t) {
     pos += delta_t * speed * -orientation;
+    has_moved = true;
 }
 
 void Camera::leftward(float delta_t) {
     pos += delta_t * speed * -glm::normalize(glm::cross(orientation, up));
+    has_moved = true;
 }
 
 void Camera::rightward(float delta_t) {
     pos += delta_t * speed * glm::normalize(glm::cross(orientation, up));
+    has_moved = true;
 }
 
 void Camera::upward(float delta_t) {
     pos += delta_t * speed * up;
+    has_moved = true;
 }
 
 void Camera::downward(float delta_t) {
     pos += delta_t * speed * -up;
+    has_moved = true;
 }
 
 void Camera::move_vision(

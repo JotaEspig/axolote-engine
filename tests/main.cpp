@@ -5,6 +5,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <variant>
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/string_cast.hpp>
 
@@ -30,7 +31,7 @@ public:
 
 class App : public axolote::Window {
 public:
-    std::shared_ptr<axolote::SpotLight> spot_light;
+    std::shared_ptr<axolote::SpotLight> flashlight;
 
     void process_input(double dt);
     void main_loop();
@@ -53,7 +54,7 @@ void App::process_input(double dt) {
         set_key_pressed(Key::L, true);
     }
     else if (l_key_state == KeyState::RELEASED && is_key_pressed(Key::L)) {
-        spot_light->is_set = !spot_light->is_set;
+        flashlight->is_set = !flashlight->is_set;
         set_key_pressed(Key::L, false);
     }
 }
@@ -73,7 +74,7 @@ void App::main_loop() {
     scene->camera.sensitivity = 10000.0f;
 
     auto dir_light = std::make_shared<MyDirLight>(
-        glm::vec3{1.0f, 0.0f, 0.0f}, true, glm::vec3{1.0f, 0.0f, 0.0f}
+        glm::vec3{1.f, 1.f, 1.f}, true, glm::vec3{1.0f, 0.0f, 0.0f}
     );
     scene->add_light(dir_light);
 
@@ -85,14 +86,21 @@ void App::main_loop() {
     spot_light->linear = 0.09f;
     spot_light->quadratic = 0.032f;
     scene->add_light(spot_light);
-    App::spot_light = spot_light;
+    App::flashlight = spot_light;
 
-    auto sphere = std::make_shared<axolote::Object3D>(
-        "./resources/models/sphere/sphere.obj", glm::vec3{1.0f, 1.0f, 1.0f},
-        glm::translate(glm::mat4{1.0f}, glm::vec3{0.f, 0.f, 0.f})
+    auto earth = std::make_shared<axolote::Object3D>(
+        "./resources/models/sphere/sphere.obj", glm::vec3{0.0f, 0.0f, 1.0f},
+        glm::scale(glm::mat4{1.0f}, 6.0f * glm::vec3{1.0f, 1.0f, 1.0f})
     );
-    sphere->bind_shader(shader_program);
-    scene->add_sorted_drawable(sphere);
+    earth->bind_shader(shader_program);
+    scene->add_drawable(earth);
+
+    auto moon = std::make_shared<axolote::Object3D>(
+        "./resources/models/sphere/sphere.obj", glm::vec3{1.0f, 1.0f, 1.0f},
+        glm::translate(glm::mat4{1.0f}, glm::vec3{15.f, 2.f, 0.f})
+    );
+    moon->bind_shader(shader_program);
+    scene->add_drawable(moon);
 
     auto m26 = std::make_shared<axolote::Object3D>(
         "./resources/models/m26/m26pershing_coh.obj",
@@ -114,6 +122,7 @@ void App::main_loop() {
 
     set_scene(scene);
     double before = get_time();
+    std::variant<int, float> a;
     while (!should_close()) {
         clear();
 

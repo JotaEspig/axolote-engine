@@ -17,6 +17,7 @@ namespace axolote {
  * \author João Vitor Espig (JotaEspig)
  **/
 struct Camera {
+    bool has_moved = true;
     /** max view distance **/
     float max_dist = 1000.0f;
     /** min view distance **/
