@@ -76,7 +76,8 @@ void Scene::update(double time) {
 
     // Set number of each light type for every shader
     for (auto &shader : shaders) {
-        shader.set_uniform_float("axolote_ambient_light", ambient_light);
+        shader.set_uniform_float("axolote_ambient_light", 1);
+        shader.set_uniform_float("axolote_ambient_light_intensity", ambient_light_intensity);
         shader.set_uniform_int("axolote_num_point_lights", num_point_lights);
         shader.set_uniform_int(
             "axolote_num_directional_lights", num_directional_lights

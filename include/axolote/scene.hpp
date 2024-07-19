@@ -25,7 +25,9 @@ public:
     /** Camera in the scene **/
     Camera camera;
     /** Ambient light **/
-    float ambient_light = 0.1f;
+    glm::vec3 ambient_light{1.0f};
+    /** Ambient light intensity **/
+    float ambient_light_intensity = 0.05f;
 
     /**
      * \brief Constructor
@@ -43,9 +45,12 @@ public:
      * \author João Vitor Espig (JotaEspig)
      **/
     void add_drawable(std::shared_ptr<Drawable> d);
-
+    /**
+     * \brief add a light to the scene
+     * \author Mickael Reichert (mickaelrei)
+     * \author João Vitor Espig (JotaEspig)
+     **/
     void add_light(const std::shared_ptr<Light> &light);
-
     /**
      * \brief updates the camera in the shaders
      * \author João Vitor Espig (JotaEspig)
@@ -65,7 +70,7 @@ public:
 private:
     /** vector of shaders from drawable objects **/
     std::vector<gl::Shader> shaders;
-
+    /** lights of the scene **/
     std::vector<std::shared_ptr<Light>> lights;
 };
 

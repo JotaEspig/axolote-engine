@@ -40,6 +40,7 @@ in vec3 axolote_current_pos;
 // Scene info
 uniform vec3 axolote_camera_pos;
 uniform float axolote_ambient_light;
+uniform float axolote_ambient_light_intensity;
 
 // Scene lights
 const int axolote_NUM_MAX_LIGHTS = 50;
@@ -84,7 +85,7 @@ vec3 axolote_calculate_point_light(axolote_PointLight light) {
     diffuse *= attenuation;
     specular *= attenuation;
 
-    vec3 diffuse_light_color = light.color.rgb * (diffuse + axolote_ambient_light);
+    vec3 diffuse_light_color = light.color.rgb * (diffuse + axolote_ambient_light_intensity);
 
     float specular_map = axolote_get_specular_map();
     float specular_light_color = specular_map * specular;
@@ -104,7 +105,7 @@ vec3 axolote_calculate_directional_light(axolote_DirectionalLight light) {
         = pow(max(dot(view_direction, reflection_direction), 0.0f), 16);
     float specular = spec_amount * specular_light;
 
-    vec3 diffuse_light_color = light.color.rgb * (diffuse + axolote_ambient_light);
+    vec3 diffuse_light_color = light.color.rgb * (diffuse + axolote_ambient_light_intensity);
 
     float specular_map = axolote_get_specular_map();
     float specular_light_color = specular_map * specular;
@@ -171,9 +172,9 @@ vec3 axolote_calculate_light() {
     }
 
     if (color == vec3(0.0f)) {
-        color = vec3(1.0f) * axolote_ambient_light;
+        color = vec3(1.0f) * axolote_ambient_light_intensity;
     }
-    return color;
+    return color + (axolote_ambient_light * axolote_ambient_light_intensity);
 }
 
 void main() {
