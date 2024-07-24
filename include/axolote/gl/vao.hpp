@@ -8,6 +8,10 @@
  **/
 #pragma once
 
+#include <iostream>
+#include <memory>
+#include <utility>
+
 #include "axolote/gl/vbo.hpp"
 
 namespace axolote {
@@ -20,15 +24,19 @@ namespace gl {
  **/
 class VAO {
 public:
-    /** OpenGL VAO id **/
-    GLuint id;
+    /**
+     * \brief Creates a VAO object
+     * \author João Vitor Espig (JotaEspig)
+     * \return shared pointer to VAO object
+     **/
+    template <typename... Args>
+    static std::shared_ptr<VAO> create(Args &&...args);
 
     /**
-     * \brief Constructor
+     * \brief id getter
      * \author João Vitor Espig (JotaEspig)
      **/
-    VAO();
-
+    GLuint id() const;
     /**
      * \brief links an attribute
      * \author João Vitor Espig (JotaEspig)
@@ -40,8 +48,8 @@ public:
      * \param offset - offset to attribute according to VBO object
      **/
     void link_attrib(
-        VBO &vbo, GLuint layout, GLuint num_components, GLenum type,
-        GLsizeiptr size, void *offset
+        std::shared_ptr<VBO> vbo, GLuint layout, GLuint num_components,
+        GLenum type, GLsizeiptr size, void *offset
     );
     /**
      * \brief Divides correctly attrib
@@ -50,7 +58,7 @@ public:
      * \param layout - index
      * \param divisor - divisor
      **/
-    void attrib_divisor(VBO &vbo, GLuint index, GLuint divisor);
+    void attrib_divisor(std::shared_ptr<VBO> vbo, GLuint index, GLuint divisor);
     /**
      * \brief binds
      * \author João Vitor Espig (JotaEspig)
@@ -66,7 +74,32 @@ public:
      * \author João Vitor Espig (JotaEspig)
      **/
     void destroy();
+
+private:
+    struct Deleter {
+        void operator()(VAO *vao) {
+            vao->destroy();
+            delete vao;
+            std::cout << "VAO deleted" << std::endl;
+        }
+    };
+
+    /** OpenGL VAO id **/
+    GLuint _id;
+
+    /**
+     * \brief Constructor
+     * \author João Vitor Espig (JotaEspig)
+     **/
+    VAO();
 };
+
+template <typename... Args>
+std::shared_ptr<VAO> VAO::create(Args &&...args) {
+    return std::shared_ptr<VAO>{
+        new VAO{std::forward<Args>(args)...}, VAO::Deleter{}
+    };
+}
 
 } // namespace gl
 

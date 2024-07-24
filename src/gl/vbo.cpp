@@ -5,12 +5,12 @@ namespace axolote {
 
 namespace gl {
 
-VBO::VBO() {
-    glGenBuffers(1, &id);
+GLuint VBO::id() const {
+    return _id;
 }
 
 void VBO::bind() {
-    glBindBuffer(GL_ARRAY_BUFFER, id);
+    glBindBuffer(GL_ARRAY_BUFFER, _id);
 }
 
 void VBO::unbind() {
@@ -23,7 +23,11 @@ void VBO::buffer_data(std::size_t size, const void *data, GLenum usage) {
 }
 
 void VBO::destroy() {
-    glDeleteBuffers(1, &id);
+    glDeleteBuffers(1, &_id);
+}
+
+VBO::VBO() {
+    glGenBuffers(1, &_id);
 }
 
 } // namespace gl

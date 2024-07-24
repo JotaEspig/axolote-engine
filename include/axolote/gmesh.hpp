@@ -5,6 +5,7 @@
  **/
 #pragma once
 
+#include <memory>
 #include <vector>
 
 #include <glm/glm.hpp>
@@ -28,11 +29,11 @@ namespace axolote {
  **/
 struct GMesh : public Mesh, public Drawable {
     /** VAO **/
-    gl::VAO vao;
+    std::shared_ptr<gl::VAO> vao = gl::VAO::create();
     /** VBO **/
-    gl::VBO vbo;
+    std::shared_ptr<gl::VBO> vbo;
     /** EBO **/
-    gl::EBO ebo;
+    std::shared_ptr<gl::EBO> ebo;
     /** Shader **/
     gl::Shader shader;
 
