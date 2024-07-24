@@ -38,12 +38,12 @@ void VAO::unbind() {
     glBindVertexArray(0);
 }
 
-void VAO::destroy() {
-    glDeleteVertexArrays(1, &_id);
-}
-
 VAO::VAO() {
     glGenVertexArrays(1, &_id);
+}
+
+void VAO::destroy() {
+    glDeleteVertexArrays(1, &_id);
 }
 
 } // namespace gl

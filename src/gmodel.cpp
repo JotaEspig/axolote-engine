@@ -3,7 +3,6 @@
 #include <glm/glm.hpp>
 
 #include "axolote/gl/shader.hpp"
-#include "axolote/gmesh.hpp"
 #include "axolote/gmodel.hpp"
 #include "axolote/model.hpp"
 
@@ -18,16 +17,24 @@ GModel::GModel(std::string path, const glm::vec3 &color) {
     load_model(path, color);
 }
 
-void GModel::bind_shader(const gl::Shader &shader) {
+void GModel::load_model(std::string path, const glm::vec3 &color) {
+    meshes.clear();
+    Model m{path, color};
+    for (const Mesh &mesh : m.meshes) {
+        meshes.push_back(mesh);
+    }
+}
+
+void GModel::bind_shader(std::shared_ptr<gl::Shader> shader) {
     for (GMesh &e : meshes)
         e.bind_shader(shader);
 };
 
-gl::Shader GModel::get_shader() const {
-    for (const GMesh &e : meshes) {
+std::shared_ptr<gl::Shader> GModel::get_shader() const {
+    for (GMesh e : meshes) {
         return e.get_shader();
     }
-    return gl::Shader();
+    return nullptr;
 }
 
 void GModel::update(double dt) {
@@ -41,14 +48,6 @@ void GModel::draw() {
 void GModel::draw(const glm::mat4 &mat) {
     for (GMesh e : meshes)
         e.draw(mat);
-}
-
-void GModel::load_model(std::string path, const glm::vec3 &color) {
-    meshes.clear();
-    Model m{path, color};
-    for (const Mesh &mesh : m.meshes) {
-        meshes.push_back(mesh);
-    }
 }
 
 } // namespace axolote

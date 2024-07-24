@@ -1,5 +1,7 @@
 #include <iostream>
 #include <string>
+#include <vector>
+#include <memory>
 
 #include <assimp/Importer.hpp>
 #include <assimp/postprocess.h>
@@ -22,7 +24,7 @@ Model::Model(std::string path, const glm::vec3 &color) {
 void Model::load_model(std::string path, const glm::vec3 &color) {
     meshes.clear();
 
-    std::vector<gl::Texture> loaded_textures;
+    std::vector<std::shared_ptr<gl::Texture>> loaded_textures;
     std::vector<std::string> loaded_textures_names;
 
     Assimp::Importer import;

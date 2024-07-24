@@ -26,7 +26,7 @@ struct Mesh {
     /** polygon mesh indices **/
     std::vector<GLuint> indices;
     /** textures to be rendered **/
-    std::vector<gl::Texture> textures;
+    std::vector<std::shared_ptr<gl::Texture>> textures;
 
     /**
      * \brief Constructor
@@ -43,7 +43,7 @@ struct Mesh {
     Mesh(
         const std::vector<Vertex> &_vertices,
         const std::vector<GLuint> &_indices,
-        const std::vector<gl::Texture> &_textures
+        const std::vector<std::shared_ptr<gl::Texture>> &_textures
     );
 };
 

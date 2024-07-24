@@ -22,12 +22,12 @@ void VBO::buffer_data(std::size_t size, const void *data, GLenum usage) {
     glBufferData(GL_ARRAY_BUFFER, size, data, usage);
 }
 
-void VBO::destroy() {
-    glDeleteBuffers(1, &_id);
-}
-
 VBO::VBO() {
     glGenBuffers(1, &_id);
+}
+
+void VBO::destroy() {
+    glDeleteBuffers(1, &_id);
 }
 
 } // namespace gl

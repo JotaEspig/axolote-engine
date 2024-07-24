@@ -61,11 +61,6 @@ public:
     void buffer_data(
         std::size_t size, const void *data, GLenum usage = GL_STATIC_DRAW
     );
-    /**
-     * \brief destroys
-     * \author João Vitor Espig (JotaEspig)
-     **/
-    void destroy();
 
 private:
     struct Deleter {
@@ -91,6 +86,12 @@ private:
      **/
     template <class T>
     VBO(const std::vector<T> &vertices);
+
+    /**
+     * \brief destroys
+     * \author João Vitor Espig (JotaEspig)
+     **/
+    void destroy();
 };
 
 template <typename... Args>

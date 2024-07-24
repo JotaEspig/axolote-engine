@@ -5,6 +5,10 @@
  **/
 #pragma once
 
+#include <memory>
+#include <utility>
+#include <iostream>
+
 #include <glm/glm.hpp>
 
 #include "axolote/glad/glad.h"
@@ -19,22 +23,19 @@ namespace gl {
  **/
 class Shader {
 public:
-    /** OpenGL shader id **/
-    GLuint id;
+    /**
+     * \brief Creates a Shader object
+     * \author João Vitor Espig (JotaEspig)
+     * \return shared pointer to Shader object
+     **/
+    template <typename... Args>
+    static std::shared_ptr<Shader> create(Args &&...args);
 
     /**
-     * \brief Constructor
+     * \brief id getter
      * \author João Vitor Espig (JotaEspig)
      **/
-    Shader();
-    /**
-     * \brief Constructor
-     * \author João Vitor Espig (JotaEspig)
-     * \param vertex_file - vertex glsl file
-     * \param fragment_file - fragment glsl file
-     **/
-    Shader(const char *vertex_file, const char *fragment_file);
-
+    GLuint id() const;
     /**
      * \brief sets a value in an integer uniform
      * \author João Vitor Espig (JotaEspig)
@@ -83,12 +84,45 @@ public:
      * \author João Vitor Espig (JotaEspig)
      **/
     void activate();
+
+private:
+    struct Deleter {
+        void operator()(Shader *shader) {
+            shader->destroy();
+            delete shader;
+            std::cout << "Shader destroyed" << std::endl;
+        }
+    };
+
+    /** OpenGL shader id **/
+    GLuint _id;
+
+    /**
+     * \brief Constructor
+     * \author João Vitor Espig (JotaEspig)
+     **/
+    Shader();
+    /**
+     * \brief Constructor
+     * \author João Vitor Espig (JotaEspig)
+     * \param vertex_file - vertex glsl file
+     * \param fragment_file - fragment glsl file
+     **/
+    Shader(const char *vertex_file, const char *fragment_file);
+
     /**
      * \brief destroys shader
      * \author João Vitor Espig (JotaEspig)
      **/
     void destroy();
 };
+
+template <typename... Args>
+std::shared_ptr<Shader> Shader::create(Args &&...args) {
+    return std::shared_ptr<Shader>{
+        new Shader{std::forward<Args>(args)...}, Shader::Deleter{}
+    };
+}
 
 } // namespace gl
 

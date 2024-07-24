@@ -60,11 +60,6 @@ public:
     void buffer_data(
         std::size_t size, const void *data, GLenum usage = GL_STATIC_DRAW
     );
-    /**
-     * \brief destroys
-     * \author João Vitor Espig (JotaEspig)
-     **/
-    void destroy();
 
 private:
     struct Deleter {
@@ -89,6 +84,12 @@ private:
      * \param indices - array of indices
      **/
     EBO(const std::vector<GLuint> &indices);
+
+    /**
+     * \brief destroys
+     * \author João Vitor Espig (JotaEspig)
+     **/
+    void destroy();
 };
 
 template <typename... Args>

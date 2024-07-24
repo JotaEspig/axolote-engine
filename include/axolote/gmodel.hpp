@@ -5,6 +5,7 @@
  **/
 #pragma once
 
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -53,12 +54,12 @@ public:
      * \brief binds a shader into the meshes
      * \author João Vitor Espig (JotaEspig)
      **/
-    void bind_shader(const gl::Shader &shader_program) override;
+    void bind_shader(std::shared_ptr<gl::Shader> shader) override;
     /**
      * \brief binds a shader into the meshes
      * \author João Vitor Espig (JotaEspig)
      **/
-    gl::Shader get_shader() const override;
+    std::shared_ptr<gl::Shader> get_shader() const override;
     /**
      * \param dt - delta time
      **/
@@ -77,5 +78,4 @@ public:
      **/
     void draw(const glm::mat4 &mat) override;
 };
-
 } // namespace axolote

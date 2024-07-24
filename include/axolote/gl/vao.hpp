@@ -69,11 +69,6 @@ public:
      * \author João Vitor Espig (JotaEspig)
      **/
     void unbind();
-    /**
-     * \brief destroys
-     * \author João Vitor Espig (JotaEspig)
-     **/
-    void destroy();
 
 private:
     struct Deleter {
@@ -92,6 +87,12 @@ private:
      * \author João Vitor Espig (JotaEspig)
      **/
     VAO();
+
+    /**
+     * \brief destroys
+     * \author João Vitor Espig (JotaEspig)
+     **/
+    void destroy();
 };
 
 template <typename... Args>

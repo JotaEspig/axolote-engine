@@ -13,10 +13,10 @@ public:
 
 void App::main_loop() {
     // Loads the default shaders
-    axolote::gl::Shader shader{
+    auto shader = axolote::gl::Shader::create(
         "./resources/shaders/def_vertex_shader.glsl",
         "./resources/shaders/def_fragment_shader.glsl"
-    };
+    );
 
     auto saul_goodman = std::make_shared<axolote::Object3D>();
     saul_goodman->load_model("./resources/models/saul-goodman/model.obj");

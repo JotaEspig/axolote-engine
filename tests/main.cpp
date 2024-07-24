@@ -5,7 +5,6 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include <variant>
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/string_cast.hpp>
 
@@ -62,7 +61,7 @@ void App::process_input(double dt) {
 void App::main_loop() {
     std::string original_title = title();
 
-    axolote::gl::Shader shader_program(
+    auto shader_program = axolote::gl::Shader::create(
         "./resources/shaders/def_vertex_shader.glsl",
         "./resources/shaders/def_fragment_shader.glsl"
     );
@@ -122,7 +121,6 @@ void App::main_loop() {
 
     set_scene(scene);
     double before = get_time();
-    std::variant<int, float> a;
     while (!should_close()) {
         clear();
 

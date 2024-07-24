@@ -24,7 +24,7 @@ namespace axolote {
 class Object3D : public Drawable {
 public:
     /** pointer to gmodel **/
-    std::shared_ptr<GModel> gmodel{new GModel{}};
+    std::shared_ptr<GModel> gmodel = std::make_shared<GModel>();
     /** is the object transparent **/
     bool is_transparent = false;
 
@@ -49,7 +49,7 @@ public:
      **/
     Object3D(
         const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices,
-        const std::vector<gl::Texture> &textures, const glm::mat4 &mat
+        const std::vector<std::shared_ptr<gl::Texture>> &textures, const glm::mat4 &mat
     );
     /**
      * \brief initializes an Object3D from model file
@@ -87,12 +87,12 @@ public:
      * \brief binds a shader into the meshes
      * \author João Vitor Espig (JotaEspig)
      **/
-    void bind_shader(const gl::Shader &shader_program) override;
+    void bind_shader(std::shared_ptr<gl::Shader> shader_program) override;
     /**
      * \brief binds a shader into the meshes
      * \author João Vitor Espig (JotaEspig)
      **/
-    gl::Shader get_shader() const override;
+    std::shared_ptr<gl::Shader> get_shader() const override;
     /**
      * \param dt - delta time
      **/

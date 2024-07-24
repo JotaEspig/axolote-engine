@@ -1,26 +1,53 @@
 #include <stdexcept>
 #include <string>
 
-
 #include <stb/stb_image.h>
 
-#include "axolote/glad/glad.h"
 #include "axolote/gl/texture.hpp"
+#include "axolote/glad/glad.h"
 
 namespace axolote {
 
 namespace gl {
 
+GLuint Texture::id() const {
+    return _id;
+}
+
+std::string Texture::type() const {
+    return _type;
+}
+
+GLuint Texture::unit() const {
+    return _unit;
+}
+
+bool Texture::is_loaded() const {
+    return _loaded;
+}
+
+void Texture::activate() {
+    glActiveTexture(GL_TEXTURE0 + _unit);
+}
+
+void Texture::bind() {
+    glBindTexture(GL_TEXTURE_2D, _id);
+}
+
+void Texture::unbind() {
+    glBindTexture(GL_TEXTURE_2D, 0);
+}
+
 Texture::Texture() :
-  loaded{false} {
+  _loaded{false} {
 }
 
 Texture::Texture(
-    const char *texture_filename, std::string tex_type, GLuint _unit
+    const char *texture_filename, std::string tex_type, GLuint unit
 ) :
-  type{tex_type},
-  unit{_unit},
-  loaded{false} {
+  _type{tex_type},
+  _unit{unit},
+  _loaded{false} {
     stbi_set_flip_vertically_on_load(true);
     int width_img, height_img, num_channels_img;
     unsigned char *data = stbi_load(
@@ -29,7 +56,7 @@ Texture::Texture(
     if (!data)
         return;
 
-    glGenTextures(1, &id);
+    glGenTextures(1, &_id);
     activate();
     bind();
 
@@ -59,23 +86,11 @@ Texture::Texture(
     glGenerateMipmap(GL_TEXTURE_2D);
 
     stbi_image_free(data);
-    loaded = true;
-}
-
-void Texture::activate() {
-    glActiveTexture(GL_TEXTURE0 + unit);
-}
-
-void Texture::bind() {
-    glBindTexture(GL_TEXTURE_2D, id);
-}
-
-void Texture::unbind() {
-    glBindTexture(GL_TEXTURE_2D, 0);
+    _loaded = true;
 }
 
 void Texture::destroy() {
-    glDeleteTextures(1, &id);
+    glDeleteTextures(1, &_id);
 }
 
 } // namespace gl

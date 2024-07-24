@@ -24,7 +24,8 @@ Object3D::Object3D(const glm::mat4 &mat) {
 
 Object3D::Object3D(
     const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices,
-    const std::vector<gl::Texture> &textures, const glm::mat4 &mat
+    const std::vector<std::shared_ptr<gl::Texture>> &textures,
+    const glm::mat4 &mat
 ) :
   gmodel{std::make_shared<GModel>()} {
     set_matrix(mat);
@@ -51,11 +52,11 @@ glm::mat4 Object3D::get_matrix() const {
     return _model_matrix;
 }
 
-void Object3D::bind_shader(const gl::Shader &shader_program) {
+void Object3D::bind_shader(std::shared_ptr<gl::Shader> shader_program) {
     gmodel->bind_shader(shader_program);
 }
 
-gl::Shader Object3D::get_shader() const {
+std::shared_ptr<gl::Shader> Object3D::get_shader() const {
     return gmodel->get_shader();
 }
 
@@ -64,7 +65,7 @@ void Object3D::update(double dt) {
 }
 
 void Object3D::draw() {
-    get_shader().set_uniform_matrix4("axolote_normal_matrix", _normal_matrix);
+    get_shader()->set_uniform_matrix4("axolote_normal_matrix", _normal_matrix);
     gmodel->draw(_model_matrix);
 }
 
