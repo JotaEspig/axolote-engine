@@ -1,8 +1,10 @@
 #include <memory>
 
+#include "axolote/glad/glad.h"
+
 #include "axolote/gl/vao.hpp"
 #include "axolote/gl/vbo.hpp"
-#include "axolote/glad/glad.h"
+#include "axolote/utils.hpp"
 
 namespace axolote {
 
@@ -38,12 +40,19 @@ void VAO::unbind() {
     glBindVertexArray(0);
 }
 
-VAO::VAO() {
-    glGenVertexArrays(1, &_id);
+void VAO::destroy() {
+    debug("VAO destroyed: %u\n", _id);
+    glDeleteVertexArrays(1, &_id);
 }
 
-void VAO::destroy() {
-    glDeleteVertexArrays(1, &_id);
+VAO::VAO() {
+    glGenVertexArrays(1, &_id);
+    debug("VAO created: %u\n", _id);
+}
+
+void VAO::Deleter::operator()(VAO *vao) {
+    vao->destroy();
+    delete vao;
 }
 
 } // namespace gl

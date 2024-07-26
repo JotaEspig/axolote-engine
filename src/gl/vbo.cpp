@@ -1,5 +1,7 @@
-#include "axolote/gl/vbo.hpp"
 #include "axolote/glad/glad.h"
+
+#include "axolote/gl/vbo.hpp"
+#include "axolote/utils.hpp"
 
 namespace axolote {
 
@@ -22,12 +24,19 @@ void VBO::buffer_data(std::size_t size, const void *data, GLenum usage) {
     glBufferData(GL_ARRAY_BUFFER, size, data, usage);
 }
 
-VBO::VBO() {
-    glGenBuffers(1, &_id);
+void VBO::destroy() {
+    debug("VBO destroyed: %u\n", _id);
+    glDeleteBuffers(1, &_id);
 }
 
-void VBO::destroy() {
-    glDeleteBuffers(1, &_id);
+VBO::VBO() {
+    glGenBuffers(1, &_id);
+    debug("VBO created: %u\n", _id);
+}
+
+void VBO::Deleter::operator()(VBO *vbo) {
+    vbo->destroy();
+    delete vbo;
 }
 
 } // namespace gl

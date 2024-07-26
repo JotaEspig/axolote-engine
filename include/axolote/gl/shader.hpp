@@ -7,11 +7,12 @@
 
 #include <memory>
 #include <utility>
-#include <iostream>
 
 #include <glm/glm.hpp>
 
 #include "axolote/glad/glad.h"
+
+#include "axolote/gl/opengl_object.hpp"
 
 namespace axolote {
 
@@ -21,7 +22,7 @@ namespace gl {
  * \brief OpenGL shader handler
  * \author João Vitor Espig (JotaEspig)
  **/
-class Shader {
+class Shader : public OpenGLObject {
 public:
     /**
      * \brief Creates a Shader object
@@ -35,7 +36,7 @@ public:
      * \brief id getter
      * \author João Vitor Espig (JotaEspig)
      **/
-    GLuint id() const;
+    GLuint id() const override;
     /**
      * \brief sets a value in an integer uniform
      * \author João Vitor Espig (JotaEspig)
@@ -84,14 +85,15 @@ public:
      * \author João Vitor Espig (JotaEspig)
      **/
     void activate();
+    /**
+     * \brief destroys shader
+     * \author João Vitor Espig (JotaEspig)
+     **/
+    void destroy() override;
 
 private:
     struct Deleter {
-        void operator()(Shader *shader) {
-            shader->destroy();
-            delete shader;
-            std::cout << "Shader destroyed" << std::endl;
-        }
+        void operator()(Shader *shader);
     };
 
     /** OpenGL shader id **/
@@ -109,12 +111,6 @@ private:
      * \param fragment_file - fragment glsl file
      **/
     Shader(const char *vertex_file, const char *fragment_file);
-
-    /**
-     * \brief destroys shader
-     * \author João Vitor Espig (JotaEspig)
-     **/
-    void destroy();
 };
 
 template <typename... Args>

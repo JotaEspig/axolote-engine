@@ -8,10 +8,10 @@
  **/
 #pragma once
 
-#include <iostream>
 #include <memory>
 #include <utility>
 
+#include "axolote/gl/opengl_object.hpp"
 #include "axolote/gl/vbo.hpp"
 
 namespace axolote {
@@ -22,7 +22,7 @@ namespace gl {
  * \brief OpenGL VAO handler
  * \author João Vitor Espig (JotaEspig)
  **/
-class VAO {
+class VAO : public OpenGLObject {
 public:
     /**
      * \brief Creates a VAO object
@@ -36,7 +36,7 @@ public:
      * \brief id getter
      * \author João Vitor Espig (JotaEspig)
      **/
-    GLuint id() const;
+    GLuint id() const override;
     /**
      * \brief links an attribute
      * \author João Vitor Espig (JotaEspig)
@@ -69,14 +69,15 @@ public:
      * \author João Vitor Espig (JotaEspig)
      **/
     void unbind();
+    /**
+     * \brief destroys
+     * \author João Vitor Espig (JotaEspig)
+     **/
+    void destroy() override;
 
 private:
     struct Deleter {
-        void operator()(VAO *vao) {
-            vao->destroy();
-            delete vao;
-            std::cout << "VAO deleted" << std::endl;
-        }
+        void operator()(VAO *vao);
     };
 
     /** OpenGL VAO id **/
@@ -87,12 +88,6 @@ private:
      * \author João Vitor Espig (JotaEspig)
      **/
     VAO();
-
-    /**
-     * \brief destroys
-     * \author João Vitor Espig (JotaEspig)
-     **/
-    void destroy();
 };
 
 template <typename... Args>

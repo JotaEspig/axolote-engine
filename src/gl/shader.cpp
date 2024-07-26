@@ -4,8 +4,9 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "axolote/gl/shader.hpp"
 #include "axolote/glad/glad.h"
+
+#include "axolote/gl/shader.hpp"
 #include "axolote/utils.hpp"
 
 static GLint
@@ -66,6 +67,11 @@ void Shader::activate() {
     glUseProgram(_id);
 }
 
+void Shader::destroy() {
+    debug("Shader destroyed: %u\n", _id);
+    glDeleteProgram(_id);
+}
+
 Shader::Shader() {
 }
 
@@ -98,12 +104,14 @@ Shader::Shader(const char *vertex_file, const char *fragment_file) {
 
     glDeleteShader(vertex_shader);
     glDeleteShader(fragment_shader);
+
+    debug("Shader created: %u\n", _id);
 }
 
-void Shader::destroy() {
-    glDeleteProgram(_id);
+void Shader::Deleter::operator()(Shader *shader) {
+    shader->destroy();
+    delete shader;
 }
-
 
 } // namespace gl
 

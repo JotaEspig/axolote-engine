@@ -8,7 +8,6 @@
  **/
 #pragma once
 
-#include <iostream>
 #include <memory>
 #include <utility>
 #include <vector>
@@ -16,6 +15,8 @@
 #include <glm/glm.hpp>
 
 #include "axolote/glad/glad.h"
+
+#include "axolote/gl/opengl_object.hpp"
 
 namespace axolote {
 
@@ -25,7 +26,7 @@ namespace gl {
  * \brief OpenGL VBO handler
  * \author João Vitor Espig (JotaEspig)
  **/
-class VBO {
+class VBO : public OpenGLObject {
 public:
     /**
      * \brief Creates a VBO object
@@ -38,7 +39,7 @@ public:
      * \brief id getter
      * \author João Vitor Espig (JotaEspig)
      **/
-    GLuint id() const;
+    GLuint id() const override;
     /**
      * \brief binds
      * \author João Vitor Espig (JotaEspig)
@@ -61,14 +62,15 @@ public:
     void buffer_data(
         std::size_t size, const void *data, GLenum usage = GL_STATIC_DRAW
     );
+    /**
+     * \brief destroys
+     * \author João Vitor Espig (JotaEspig)
+     **/
+    void destroy() override;
 
 private:
     struct Deleter {
-        void operator()(VBO *vbo) {
-            vbo->destroy();
-            delete vbo;
-            std::cout << "VBO deleted" << std::endl;
-        }
+        void operator()(VBO *vbo);
     };
 
     /** OpenGL VBO id **/
@@ -86,12 +88,6 @@ private:
      **/
     template <class T>
     VBO(const std::vector<T> &vertices);
-
-    /**
-     * \brief destroys
-     * \author João Vitor Espig (JotaEspig)
-     **/
-    void destroy();
 };
 
 template <typename... Args>

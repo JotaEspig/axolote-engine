@@ -3,8 +3,10 @@
 
 #include <stb/stb_image.h>
 
-#include "axolote/gl/texture.hpp"
 #include "axolote/glad/glad.h"
+
+#include "axolote/gl/texture.hpp"
+#include "axolote/utils.hpp"
 
 namespace axolote {
 
@@ -36,6 +38,11 @@ void Texture::bind() {
 
 void Texture::unbind() {
     glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void Texture::destroy() {
+    debug("Texture destroyed: %u\n", _id);
+    glDeleteTextures(1, &_id);
 }
 
 Texture::Texture() :
@@ -87,10 +94,13 @@ Texture::Texture(
 
     stbi_image_free(data);
     _loaded = true;
+
+    debug("Texture created: %u\n", _id);
 }
 
-void Texture::destroy() {
-    glDeleteTextures(1, &_id);
+void Texture::Deleter::operator()(Texture *texture) {
+    texture->destroy();
+    delete texture;
 }
 
 } // namespace gl

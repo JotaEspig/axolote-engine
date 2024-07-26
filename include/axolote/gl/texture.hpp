@@ -5,11 +5,12 @@
  **/
 #pragma once
 
-#include <iostream>
 #include <memory>
 #include <string>
 
 #include "axolote/glad/glad.h"
+
+#include "axolote/gl/opengl_object.hpp"
 
 namespace axolote {
 
@@ -19,7 +20,7 @@ namespace gl {
  * \brief texture operations
  * \author João Vitor Espig (JotaEspig)
  **/
-class Texture {
+class Texture : public OpenGLObject {
 public:
     /**
      * \brief Creates a texture
@@ -33,7 +34,7 @@ public:
      * \brief id getter
      * \author João Vitor Espig (JotaEspig)
      **/
-    GLuint id() const;
+    GLuint id() const override;
     /**
      * \brief type getter
      * \author João Vitor Espig (JotaEspig)
@@ -64,14 +65,15 @@ public:
      * \author João Vitor Espig (JotaEspig)
      **/
     void unbind();
+    /**
+     * \brief destroys texture
+     * \author João Vitor Espig (JotaEspig)
+     **/
+    void destroy() override;
 
 private:
     struct Deleter {
-        void operator()(Texture *texture) {
-            texture->destroy();
-            delete texture;
-            std::cout << "Texture destroyed" << std::endl;
-        }
+        void operator()(Texture *texture);
     };
 
     /** OpenGL texture id **/
@@ -96,12 +98,6 @@ private:
      * \param _unit - texture unit (used inside OpenGL shaders)
      **/
     Texture(const char *texture_filename, std::string tex_type, GLuint unit);
-
-    /**
-     * \brief destroys texture
-     * \author João Vitor Espig (JotaEspig)
-     **/
-    void destroy();
 };
 
 template <typename... Args>
