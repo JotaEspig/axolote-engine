@@ -8,11 +8,15 @@
  **/
 #pragma once
 
+#include <memory>
+#include <utility>
 #include <vector>
 
 #include <glm/glm.hpp>
 
 #include "axolote/glad/glad.h"
+
+#include "axolote/gl/opengl_object.hpp"
 
 namespace axolote {
 
@@ -22,23 +26,20 @@ namespace gl {
  * \brief OpenGL VBO handler
  * \author João Vitor Espig (JotaEspig)
  **/
-class VBO {
+class VBO : public OpenGLObject {
 public:
-    /** OpenGL VBO id **/
-    GLuint id;
-
     /**
-     * \brief Constructor
+     * \brief Creates a VBO object
+     * \author João Vitor Espig (JotaEspig)
+     * \return shared pointer to VBO object
+     **/
+    template <typename... Args>
+    static std::shared_ptr<VBO> create(Args &&...args);
+    /**
+     * \brief id getter
      * \author João Vitor Espig (JotaEspig)
      **/
-    VBO();
-    /**
-     * \brief Constructor
-     * \author João Vitor Espig (JotaEspig)
-     * \param vertices - array of vertex
-     **/
-    template <class T>
-    VBO(const std::vector<T> &vertices);
+    GLuint id() const override;
     /**
      * \brief binds
      * \author João Vitor Espig (JotaEspig)
@@ -65,15 +66,43 @@ public:
      * \brief destroys
      * \author João Vitor Espig (JotaEspig)
      **/
-    void destroy();
+    void destroy() override;
+
+private:
+    struct Deleter {
+        void operator()(VBO *vbo);
+    };
+
+    /** OpenGL VBO id **/
+    GLuint _id;
+
+    /**
+     * \brief Constructor
+     * \author João Vitor Espig (JotaEspig)
+     **/
+    VBO();
+    /**
+     * \brief Constructor
+     * \author João Vitor Espig (JotaEspig)
+     * \param vertices - array of vertex
+     **/
+    template <class T>
+    VBO(const std::vector<T> &vertices);
 };
+
+template <typename... Args>
+std::shared_ptr<VBO> VBO::create(Args &&...args) {
+    return std::shared_ptr<VBO>{
+        new VBO{std::forward<Args>(args)...}, VBO::Deleter{}
+    };
+}
 
 template <class T>
 VBO::VBO(const std::vector<T> &vertices) :
   VBO{} {
     bind();
     buffer_data(vertices.size() * sizeof(T), vertices.data(), GL_STATIC_DRAW);
-  }
+}
 
 } // namespace gl
 

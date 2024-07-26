@@ -5,9 +5,14 @@
  **/
 #pragma once
 
+#include <memory>
+#include <utility>
+
 #include <glm/glm.hpp>
 
 #include "axolote/glad/glad.h"
+
+#include "axolote/gl/opengl_object.hpp"
 
 namespace axolote {
 
@@ -17,24 +22,21 @@ namespace gl {
  * \brief OpenGL shader handler
  * \author João Vitor Espig (JotaEspig)
  **/
-class Shader {
+class Shader : public OpenGLObject {
 public:
-    /** OpenGL shader id **/
-    GLuint id;
+    /**
+     * \brief Creates a Shader object
+     * \author João Vitor Espig (JotaEspig)
+     * \return shared pointer to Shader object
+     **/
+    template <typename... Args>
+    static std::shared_ptr<Shader> create(Args &&...args);
 
     /**
-     * \brief Constructor
+     * \brief id getter
      * \author João Vitor Espig (JotaEspig)
      **/
-    Shader();
-    /**
-     * \brief Constructor
-     * \author João Vitor Espig (JotaEspig)
-     * \param vertex_file - vertex glsl file
-     * \param fragment_file - fragment glsl file
-     **/
-    Shader(const char *vertex_file, const char *fragment_file);
-
+    GLuint id() const override;
     /**
      * \brief sets a value in an integer uniform
      * \author João Vitor Espig (JotaEspig)
@@ -87,8 +89,36 @@ public:
      * \brief destroys shader
      * \author João Vitor Espig (JotaEspig)
      **/
-    void destroy();
+    void destroy() override;
+
+private:
+    struct Deleter {
+        void operator()(Shader *shader);
+    };
+
+    /** OpenGL shader id **/
+    GLuint _id;
+
+    /**
+     * \brief Constructor
+     * \author João Vitor Espig (JotaEspig)
+     **/
+    Shader();
+    /**
+     * \brief Constructor
+     * \author João Vitor Espig (JotaEspig)
+     * \param vertex_file - vertex glsl file
+     * \param fragment_file - fragment glsl file
+     **/
+    Shader(const char *vertex_file, const char *fragment_file);
 };
+
+template <typename... Args>
+std::shared_ptr<Shader> Shader::create(Args &&...args) {
+    return std::shared_ptr<Shader>{
+        new Shader{std::forward<Args>(args)...}, Shader::Deleter{}
+    };
+}
 
 } // namespace gl
 

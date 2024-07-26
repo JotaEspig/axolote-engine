@@ -1,3 +1,4 @@
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -15,7 +16,7 @@ namespace axolote {
 
 void process_node(
     aiNode *node, const aiScene *scene, std::vector<Mesh> &meshes,
-    glm::vec3 color, std::vector<gl::Texture> &loaded_textures,
+    glm::vec3 color, std::vector<std::shared_ptr<gl::Texture>> &loaded_textures,
     std::vector<std::string> &loaded_textures_names, std::string directory
 ) {
     for (unsigned int i = 0; i < node->mNumMeshes; i++) {
@@ -35,12 +36,12 @@ void process_node(
 
 Mesh process_mesh(
     aiMesh *mesh, const aiScene *scene, glm::vec3 color,
-    std::vector<gl::Texture> &loaded_textures,
+    std::vector<std::shared_ptr<gl::Texture>> &loaded_textures,
     std::vector<std::string> &loaded_textures_names, std::string directory
 ) {
     std::vector<Vertex> vertices;
     std::vector<GLuint> indices;
-    std::vector<gl::Texture> textures;
+    std::vector<std::shared_ptr<gl::Texture>> textures;
 
     for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
         Vertex vertex;
@@ -75,26 +76,28 @@ Mesh process_mesh(
     }
 
     aiMaterial *mat = scene->mMaterials[mesh->mMaterialIndex];
-    std::vector<gl::Texture> diffuse_texs = load_material_textures(
-        mat, aiTextureType_DIFFUSE, "diffuse", loaded_textures,
-        loaded_textures_names, directory
-    );
+    std::vector<std::shared_ptr<gl::Texture>> diffuse_texs
+        = load_material_textures(
+            mat, aiTextureType_DIFFUSE, "diffuse", loaded_textures,
+            loaded_textures_names, directory
+        );
     textures.insert(textures.end(), diffuse_texs.begin(), diffuse_texs.end());
-    std::vector<gl::Texture> specular_texs = load_material_textures(
-        mat, aiTextureType_SPECULAR, "specular", loaded_textures,
-        loaded_textures_names, directory
-    );
+    std::vector<std::shared_ptr<gl::Texture>> specular_texs
+        = load_material_textures(
+            mat, aiTextureType_SPECULAR, "specular", loaded_textures,
+            loaded_textures_names, directory
+        );
     textures.insert(textures.end(), specular_texs.begin(), specular_texs.end());
 
     return Mesh(vertices, indices, textures);
 }
 
-std::vector<gl::Texture> load_material_textures(
+std::vector<std::shared_ptr<gl::Texture>> load_material_textures(
     aiMaterial *mat, aiTextureType type, std::string type_name,
-    std::vector<gl::Texture> &loaded_textures,
+    std::vector<std::shared_ptr<gl::Texture>> &loaded_textures,
     std::vector<std::string> &loaded_textures_names, std::string directory
 ) {
-    std::vector<gl::Texture> textures;
+    std::vector<std::shared_ptr<gl::Texture>> textures;
     for (unsigned int i = 0; i < mat->GetTextureCount(type); i++) {
         aiString str;
         mat->GetTexture(type, i, &str);
@@ -110,9 +113,10 @@ std::vector<gl::Texture> load_material_textures(
         if (skip)
             continue;
 
-        gl::Texture texture(
+        auto texture = gl::Texture::create(
             (directory + std::string(str.C_Str())).c_str(), type_name, i
         );
+
         loaded_textures.push_back(texture);
         loaded_textures_names.push_back(std::string(str.C_Str()));
         textures.push_back(texture);

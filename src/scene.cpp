@@ -61,13 +61,13 @@ void Scene::update_camera(float aspect_ratio) {
     glm::mat4 projection = glm::perspective(
         glm::radians(camera.fov), aspect_ratio, camera.min_dist, camera.max_dist
     );
-    for (gl::Shader &s : _shaders) {
-        s.activate();
-        s.set_uniform_float3(
+    for (std::shared_ptr<gl::Shader> s : _shaders) {
+        s->activate();
+        s->set_uniform_float3(
             "axolote_camera_pos", camera.pos.x, camera.pos.y, camera.pos.z
         );
-        s.set_uniform_matrix4("axolote_projection", projection);
-        s.set_uniform_matrix4("axolote_view", view);
+        s->set_uniform_matrix4("axolote_projection", projection);
+        s->set_uniform_matrix4("axolote_view", view);
     }
 }
 
@@ -122,22 +122,22 @@ void Scene::update(double time) {
             break;
         }
 
-        for (auto &shader : _shaders) {
+        for (std::shared_ptr<gl::Shader> shader : _shaders) {
             light->bind(shader, prefix);
         }
     }
 
     // Set number of each light type for every shader
     for (auto &shader : _shaders) {
-        shader.set_uniform_float("axolote_ambient_light", 1);
-        shader.set_uniform_float(
+        shader->set_uniform_float("axolote_ambient_light", 1);
+        shader->set_uniform_float(
             "axolote_ambient_light_intensity", ambient_light_intensity
         );
-        shader.set_uniform_int("axolote_num_point_lights", num_point_lights);
-        shader.set_uniform_int(
+        shader->set_uniform_int("axolote_num_point_lights", num_point_lights);
+        shader->set_uniform_int(
             "axolote_num_directional_lights", num_directional_lights
         );
-        shader.set_uniform_int("axolote_num_spot_lights", num_spot_lights);
+        shader->set_uniform_int("axolote_num_spot_lights", num_spot_lights);
     }
 }
 

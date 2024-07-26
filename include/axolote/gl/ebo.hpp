@@ -8,9 +8,13 @@
  **/
 #pragma once
 
+#include <memory>
+#include <utility>
 #include <vector>
 
 #include "axolote/glad/glad.h"
+
+#include "axolote/gl/opengl_object.hpp"
 
 namespace axolote {
 
@@ -20,23 +24,22 @@ namespace gl {
  * \brief OpenGL EBO handler
  * \author João Vitor Espig (JotaEspig)
  **/
-class EBO {
+class EBO : public OpenGLObject {
 public:
-    /** OpenGL EBO id **/
-    GLuint id;
+    /**
+     * \brief Creates a EBO object
+     * \author João Vitor Espig (JotaEspig)
+     * \return shared pointer to EBO object
+     **/
+    template <typename... Args>
+    static std::shared_ptr<EBO> create(Args &&...args);
 
     /**
-     * \brief Constructor
+     * \brief id getter
      * \author João Vitor Espig (JotaEspig)
+     * \return id
      **/
-    EBO();
-    /**
-     * \brief Constructor
-     * \author João Vitor Espig (JotaEspig)
-     * \param indices - array of indices
-     **/
-    EBO(const std::vector<GLuint> &indices);
-
+    GLuint id() const override;
     /**
      * \brief binds
      * \author João Vitor Espig (JotaEspig)
@@ -63,8 +66,35 @@ public:
      * \brief destroys
      * \author João Vitor Espig (JotaEspig)
      **/
-    void destroy();
+    void destroy() override;
+
+private:
+    struct Deleter {
+        void operator()(EBO *ebo);
+    };
+
+    /** OpenGL EBO id **/
+    GLuint _id;
+
+    /**
+     * \brief Constructor
+     * \author João Vitor Espig (JotaEspig)
+     **/
+    EBO();
+    /**
+     * \brief Constructor
+     * \author João Vitor Espig (JotaEspig)
+     * \param indices - array of indices
+     **/
+    EBO(const std::vector<GLuint> &indices);
 };
+
+template <typename... Args>
+std::shared_ptr<EBO> EBO::create(Args &&...args) {
+    return std::shared_ptr<EBO>{
+        new EBO{std::forward<Args>(args)...}, Deleter{}
+    };
+}
 
 } // namespace gl
 

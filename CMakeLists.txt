@@ -13,6 +13,12 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${FLAGS}")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} ${FLAGS} -g3 -fsanitize=address,undefined")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} ${FLAGS} -O3")
 
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+    message("DEBUG MODE ON")
+    add_definitions(-DDEBUG)
+else()
+endif()
+
 # Find packages
 set(OpenGL_GL_PREFERENCE GLVND)
 find_package(OpenGL REQUIRED)

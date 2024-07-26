@@ -6,6 +6,7 @@
 #pragma once
 
 #include <string>
+#include <memory>
 
 #include "axolote/gl/shader.hpp"
 
@@ -37,7 +38,8 @@ public:
      * \brief Bind light to shader
      * \author Mickael Reichert (mickaelrei)
      **/
-    virtual void bind(gl::Shader &shader, const std::string &prefix);
+    virtual void
+    bind(std::shared_ptr<gl::Shader> shader, const std::string &prefix);
     /**
      * \brief Update light
      * \author João Vitor Espig
@@ -82,7 +84,8 @@ public:
      * \brief Bind light to shader
      * \author Mickael Reichert (mickaelrei)
      **/
-    void bind(gl::Shader &shader, const std::string &prefix) override;
+    void bind(std::shared_ptr<gl::Shader> shader, const std::string &prefix)
+        override;
 };
 
 /**
@@ -104,7 +107,8 @@ public:
      * \brief Bind light to shader
      * \author Mickael Reichert (mickaelrei)
      **/
-    void bind(gl::Shader &shader, const std::string &prefix) override;
+    void bind(std::shared_ptr<gl::Shader> shader, const std::string &prefix)
+        override;
 };
 
 /**
@@ -141,7 +145,8 @@ public:
      * \brief Bind light to shader
      * \author Mickael Reichert (mickaelrei)
      **/
-    void bind(gl::Shader &shader, const std::string &prefix) override;
+    void bind(std::shared_ptr<gl::Shader> shader, const std::string &prefix)
+        override;
 };
 
 } // namespace axolote

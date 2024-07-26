@@ -11,6 +11,7 @@
  **/
 #pragma once
 
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -29,7 +30,7 @@ namespace axolote {
  **/
 void process_node(
     aiNode *node, const aiScene *scene, std::vector<Mesh> &meshes,
-    glm::vec3 color, std::vector<gl::Texture> &loaded_textures,
+    glm::vec3 color, std::vector<std::shared_ptr<gl::Texture>> &loaded_textures,
     std::vector<std::string> &loaded_textures_names, std::string directory
 );
 
@@ -38,16 +39,16 @@ void process_node(
  **/
 Mesh process_mesh(
     aiMesh *mesh, const aiScene *scene, glm::vec3 color,
-    std::vector<gl::Texture> &loaded_textures,
+    std::vector<std::shared_ptr<gl::Texture>> &loaded_textures,
     std::vector<std::string> &loaded_textures_names, std::string directory
 );
 
 /**
  * \author João Vitor Espig (JotaEspig)
  **/
-std::vector<gl::Texture> load_material_textures(
+std::vector<std::shared_ptr<gl::Texture>> load_material_textures(
     aiMaterial *mat, aiTextureType type, std::string type_name,
-    std::vector<gl::Texture> &loaded_textures,
+    std::vector<std::shared_ptr<gl::Texture>> &loaded_textures,
     std::vector<std::string> &loaded_textures_names, std::string directory
 );
 

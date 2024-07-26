@@ -96,7 +96,7 @@ private:
     /** sorted drawables objects **/
     std::vector<std::shared_ptr<Object3D>> _sorted_drawables_objects;
     /** vector of shaders from drawable objects **/
-    std::vector<gl::Shader> _shaders;
+    std::vector<std::shared_ptr<gl::Shader>> _shaders;
     /** lights of the scene **/
     std::vector<std::shared_ptr<Light>> _lights;
 };

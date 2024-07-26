@@ -5,6 +5,8 @@
  **/
 #pragma once
 
+#include <memory>
+
 #include <glm/glm.hpp>
 
 #include "axolote/gl/shader.hpp"
@@ -21,12 +23,12 @@ public:
      * \brief virtual function bind_shader
      * \author João Vitor Espig (JotaEspig)
      **/
-    virtual void bind_shader(const gl::Shader &shader_program) = 0;
+    virtual void bind_shader(std::shared_ptr<gl::Shader> shader) = 0;
     /**
      * \brief virtual function get_shader
      * \author João Vitor Espig (JotaEspig)
      **/
-    virtual gl::Shader get_shader() const = 0;
+    virtual std::shared_ptr<gl::Shader> get_shader() const = 0;
     /**
      * \brief virtual function update
      * \author João Vitor Espig (JotaEspig)

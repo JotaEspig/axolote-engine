@@ -5,6 +5,7 @@
  **/
 #pragma once
 
+#include <memory>
 #include <vector>
 
 #include <glm/glm.hpp>
@@ -26,16 +27,8 @@ namespace axolote {
  * The difference between GMesh and Mesh is that GMesh you can draw.
  * You should use GMesh if you want a default implementation for drawing
  **/
-struct GMesh : public Mesh, public Drawable {
-    /** VAO **/
-    gl::VAO vao;
-    /** VBO **/
-    gl::VBO vbo;
-    /** EBO **/
-    gl::EBO ebo;
-    /** Shader **/
-    gl::Shader shader;
-
+class GMesh : public Mesh, public Drawable {
+public:
     /**
      * \brief Constructor
      * \author João Vitor Espig (JotaEspig)
@@ -56,20 +49,35 @@ struct GMesh : public Mesh, public Drawable {
      **/
     GMesh(
         const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices,
-        const std::vector<gl::Texture> &textures
+        const std::vector<std::shared_ptr<gl::Texture>> &textures
     );
 
+    /**
+     * \brief VAO getter
+     * \author João Vitor Espig (JotaEspig)
+     **/
+    std::shared_ptr<gl::VAO> vao() const;
+    /**
+     * \brief VBO getter
+     * \author João Vitor Espig (JotaEspig)
+     **/
+    std::shared_ptr<gl::VBO> vbo() const;
+    /**
+     * \brief EBO getter
+     * \author João Vitor Espig (JotaEspig)
+     **/
+    std::shared_ptr<gl::EBO> ebo() const;
     /**
      * \brief binds a shader into gmesh
      * \author João Vitor Espig (JotaEspig)
      * \param shader_program - Shader
      **/
-    void bind_shader(const gl::Shader &shader_program) override;
+    void bind_shader(std::shared_ptr<gl::Shader> shader_program) override;
     /**
      * \brief binds a shader into gmesh
      * \author João Vitor Espig (JotaEspig)
      **/
-    gl::Shader get_shader() const override;
+    std::shared_ptr<gl::Shader> get_shader() const override;
     /**
      * \param dt - delta time
      **/
@@ -97,11 +105,16 @@ struct GMesh : public Mesh, public Drawable {
      * \param mat - model transformation matrix
      **/
     void draw(const glm::mat4 &mat) override;
-    /**
-     * \brief Destroys OpenGL objects created
-     * \author João Vitor Espig (JotaEspig)
-     **/
-    void destroy();
+
+private:
+    /** VAO **/
+    std::shared_ptr<gl::VAO> _vao;
+    /** VBO **/
+    std::shared_ptr<gl::VBO> _vbo;
+    /** EBO **/
+    std::shared_ptr<gl::EBO> _ebo;
+    /** Shader **/
+    std::shared_ptr<gl::Shader> _shader;
 };
 
 } // namespace axolote

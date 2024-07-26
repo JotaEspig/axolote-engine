@@ -1,3 +1,5 @@
+#include <cstddef>
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -8,7 +10,6 @@
 #include "axolote/gl/ebo.hpp"
 #include "axolote/gl/shader.hpp"
 #include "axolote/gl/texture.hpp"
-#include "axolote/gl/vao.hpp"
 #include "axolote/gl/vbo.hpp"
 #include "axolote/gmesh.hpp"
 #include "axolote/mesh.hpp"
@@ -27,36 +28,52 @@ GMesh::GMesh(const Mesh &mesh) :
 
 GMesh::GMesh(
     const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices,
-    const std::vector<gl::Texture> &textures
+    const std::vector<std::shared_ptr<gl::Texture>> &textures
 ) :
   Mesh(vertices, indices, textures) {
-    vao.bind();
-    vbo = gl::VBO(vertices);
-    vbo.bind();
-    ebo = gl::EBO(indices);
-    ebo.bind();
+    _vao = gl::VAO::create();
+    _vao->bind();
+    _vbo = gl::VBO::create(vertices);
+    _vbo->bind();
+    _ebo = gl::EBO::create(indices);
+    _ebo->bind();
 
-    vao.link_attrib(vbo, 0, 3, GL_FLOAT, sizeof(Vertex), (void *)0);
-    vao.link_attrib(
-        vbo, 1, 3, GL_FLOAT, sizeof(Vertex), (void *)(3 * sizeof(float))
+    _vao->link_attrib(
+        _vbo, 0, 3, GL_FLOAT, sizeof(Vertex),
+        (void *)(offsetof(Vertex, position))
     );
-    vao.link_attrib(
-        vbo, 2, 2, GL_FLOAT, sizeof(Vertex), (void *)(6 * sizeof(float))
+    _vao->link_attrib(
+        _vbo, 1, 3, GL_FLOAT, sizeof(Vertex), (void *)(offsetof(Vertex, color))
     );
-    vao.link_attrib(
-        vbo, 3, 3, GL_FLOAT, sizeof(Vertex), (void *)(8 * sizeof(float))
+    _vao->link_attrib(
+        _vbo, 2, 2, GL_FLOAT, sizeof(Vertex), (void *)(offsetof(Vertex, tex_UV))
     );
-    vao.unbind();
-    vbo.unbind();
-    ebo.unbind();
+    _vao->link_attrib(
+        _vbo, 3, 3, GL_FLOAT, sizeof(Vertex), (void *)(offsetof(Vertex, normal))
+    );
+    _vao->unbind();
+    _vbo->unbind();
+    _ebo->unbind();
 }
 
-void GMesh::bind_shader(const gl::Shader &shader_program) {
-    shader = shader_program;
+std::shared_ptr<gl::VAO> GMesh::vao() const {
+    return _vao;
 }
 
-gl::Shader GMesh::get_shader() const {
-    return shader;
+std::shared_ptr<gl::VBO> GMesh::vbo() const {
+    return _vbo;
+}
+
+std::shared_ptr<gl::EBO> GMesh::ebo() const {
+    return _ebo;
+}
+
+void GMesh::bind_shader(std::shared_ptr<gl::Shader> shader_program) {
+    _shader = shader_program;
+}
+
+std::shared_ptr<gl::Shader> GMesh::get_shader() const {
+    return _shader;
 }
 
 void GMesh::update(double dt) {
@@ -64,14 +81,14 @@ void GMesh::update(double dt) {
 }
 
 void GMesh::default_draw_binds(const glm::mat4 &mat) {
-    shader.activate();
-    vao.bind();
+    _shader->activate();
+    _vao->bind();
 
-    shader.set_uniform_int("axolote_is_specular_map_set", 0);
+    _shader->set_uniform_int("axolote_is_specular_map_set", 0);
     if (textures.size() > 0)
-        shader.set_uniform_int("axolote_is_tex_set", 1);
+        _shader->set_uniform_int("axolote_is_tex_set", 1);
     else
-        shader.set_uniform_int("axolote_is_tex_set", 0);
+        _shader->set_uniform_int("axolote_is_tex_set", 0);
 
     unsigned int num_diffuse = 0;
     unsigned int num_specular = 0;
@@ -79,31 +96,31 @@ void GMesh::default_draw_binds(const glm::mat4 &mat) {
     // to use a texture from another Mesh
     // TODO search if there's a better solution than this
     // i.e. set to 99 (a unused texture id)
-    shader.set_uniform_int("axolote_diffuse0", 99);
-    shader.set_uniform_int("axolote_specular0", 99);
+    _shader->set_uniform_int("axolote_diffuse0", 99);
+    _shader->set_uniform_int("axolote_specular0", 99);
 
-    for (gl::Texture t : textures) {
+    for (std::shared_ptr<gl::Texture> t : textures) {
         std::string num;
-        std::string type = t.type;
+        std::string type = t->type();
         if (type == "diffuse")
             num = std::to_string(num_diffuse++);
         else if (type == "specular") {
             num = std::to_string(num_specular++);
-            shader.set_uniform_int("axolote_is_specular_map_set", 1);
+            _shader->set_uniform_int("axolote_is_specular_map_set", 1);
         }
 
-        t.bind();
-        t.activate();
-        shader.set_uniform_int(("axolote_" + type + num).c_str(), t.unit);
+        t->bind();
+        t->activate();
+        _shader->set_uniform_int(("axolote_" + type + num).c_str(), t->unit());
     }
 
-    shader.set_uniform_matrix4("axolote_model", mat);
+    _shader->set_uniform_matrix4("axolote_model", mat);
 }
 
 void GMesh::default_draw_unbinds() {
-    vao.unbind();
-    for (gl::Texture t : textures) {
-        t.unbind();
+    _vao->unbind();
+    for (std::shared_ptr<gl::Texture> t : textures) {
+        t->unbind();
     }
 }
 
@@ -113,16 +130,10 @@ void GMesh::draw() {
 
 void GMesh::draw(const glm::mat4 &mat) {
     default_draw_binds(mat);
-    vao.bind();
+    _vao->bind();
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
-    vao.unbind();
+    _vao->unbind();
     default_draw_unbinds();
-}
-
-void GMesh::destroy() {
-    vao.destroy();
-    vbo.destroy();
-    ebo.destroy();
 }
 
 } // namespace axolote
