@@ -54,37 +54,37 @@ struct Camera {
      * \author João Vitor Espig (JotaEspig)
      * \param delta_t - time difference from last frame
      **/
-    void forward(float delta_t = 1.0f);
+    void forward(double delta_t = 1.0f);
     /**
      * \brief moves camera position leftward
      * \author João Vitor Espig (JotaEspig)
      * \param delta_t - time difference from last frame
      **/
-    void leftward(float delta_t = 1.0f);
+    void leftward(double delta_t = 1.0f);
     /**
      * \brief moves camera position rightward
      * \author João Vitor Espig (JotaEspig)
      * \param delta_t - time difference from last frame
      **/
-    void rightward(float delta_t = 1.0f);
+    void rightward(double delta_t = 1.0f);
     /**
      * \brief moves camera position backward
      * \author João Vitor Espig (JotaEspig)
      * \param delta_t - time difference from last frame
      **/
-    void backward(float delta_t = 1.0f);
+    void backward(double delta_t = 1.0f);
     /**
      * \brief moves camera position upward
      * \author João Vitor Espig (JotaEspig)
      * \param delta_t - time difference from last frame
      **/
-    void upward(float delta_t = 1.0f);
+    void upward(double delta_t = 1.0f);
     /**
      * \brief moves camera position downward
      * \author João Vitor Espig (JotaEspig)
      * \param delta_t - time difference from last frame
      **/
-    void downward(float delta_t = 1.0f);
+    void downward(double delta_t = 1.0f);
     /**
      * \brief do view movement
      * \author João Vitor Espig (JotaEspig)

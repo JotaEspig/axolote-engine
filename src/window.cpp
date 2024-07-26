@@ -117,7 +117,7 @@ void Window::set_cursor_position(double x, double y) {
     glfwSetCursorPos(_window, x, y);
 }
 
-void Window::process_input(float delta_t) {
+void Window::process_input(double delta_t) {
     minimal_process_input(delta_t);
 
     // More keybinds
@@ -145,7 +145,7 @@ void Window::process_input(float delta_t) {
     }
 }
 
-void Window::minimal_process_input(float delta_t) {
+void Window::minimal_process_input(double delta_t) {
     if (get_key_state(Key::ESCAPE) == KeyState::PRESSED)
         set_should_close(true);
     if (get_key_state(Key::W) == KeyState::PRESSED)
@@ -179,7 +179,7 @@ void Window::update_camera(float aspect_ratio) {
     _current_scene->update_camera(aspect_ratio);
 }
 
-void Window::update(float delta_t) {
+void Window::update(double delta_t) {
     _current_scene->update(delta_t);
 }
 

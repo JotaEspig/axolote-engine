@@ -80,7 +80,7 @@ public:
      * \brief updates the drawables
      * \author João Vitor Espig (JotaEspig)
      **/
-    void update(double time);
+    void update(double delta_t);
     /**
      * \brief draw the drawables
      * \author João Vitor Espig (JotaEspig)

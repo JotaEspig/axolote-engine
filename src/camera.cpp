@@ -16,33 +16,34 @@ Camera::Camera(const glm::vec3 &position) :
   pos{position} {
 }
 
-void Camera::forward(float delta_t) {
-    pos += delta_t * speed * orientation;
+void Camera::forward(double delta_t) {
+    pos += (float)delta_t * speed * orientation;
     has_moved = true;
 }
 
-void Camera::backward(float delta_t) {
-    pos += delta_t * speed * -orientation;
+void Camera::backward(double delta_t) {
+    pos += (float)delta_t * speed * -orientation;
     has_moved = true;
 }
 
-void Camera::leftward(float delta_t) {
-    pos += delta_t * speed * -glm::normalize(glm::cross(orientation, up));
+void Camera::leftward(double delta_t) {
+    pos += (float)delta_t * speed
+           * -glm::normalize(glm::cross(orientation, up));
     has_moved = true;
 }
 
-void Camera::rightward(float delta_t) {
-    pos += delta_t * speed * glm::normalize(glm::cross(orientation, up));
+void Camera::rightward(double delta_t) {
+    pos += (float)delta_t * speed * glm::normalize(glm::cross(orientation, up));
     has_moved = true;
 }
 
-void Camera::upward(float delta_t) {
-    pos += delta_t * speed * up;
+void Camera::upward(double delta_t) {
+    pos += (float)delta_t * speed * up;
     has_moved = true;
 }
 
-void Camera::downward(float delta_t) {
-    pos += delta_t * speed * -up;
+void Camera::downward(double delta_t) {
+    pos += (float)delta_t * speed * -up;
     has_moved = true;
 }
 
@@ -52,10 +53,10 @@ void Camera::move_vision(
     if (first_click)
         first_click = false;
 
-    float rot_x = delta_t * sensitivity * (y - (height / 2)) / height;
-    float rot_y = delta_t * sensitivity * (x - (width / 2)) / width;
+    double rot_x = delta_t * sensitivity * (y - (height / 2)) / height;
+    double rot_y = delta_t * sensitivity * (x - (width / 2)) / width;
     glm::vec3 new_orientation = glm::rotate(
-        orientation, glm::radians(-rot_x),
+        orientation, (float)glm::radians(-rot_x),
         glm::normalize(glm::cross(orientation, up))
     );
 
@@ -64,7 +65,7 @@ void Camera::move_vision(
         orientation = new_orientation;
     }
 
-    orientation = glm::rotate(orientation, glm::radians(-rot_y), up);
+    orientation = glm::rotate(orientation, (float)glm::radians(-rot_y), up);
 }
 
 } // namespace axolote

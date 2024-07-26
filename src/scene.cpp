@@ -71,7 +71,7 @@ void Scene::update_camera(float aspect_ratio) {
     }
 }
 
-void Scene::update(double time) {
+void Scene::update(double delta_t) {
     if (camera.has_moved) {
         std::sort(
             _sorted_drawables_objects.begin(), _sorted_drawables_objects.end(),
@@ -92,17 +92,17 @@ void Scene::update(double time) {
     }
 
     for (std::shared_ptr<Object3D> d : _sorted_drawables_objects) {
-        d->update(time);
+        d->update(delta_t);
     }
     for (std::shared_ptr<Drawable> d : _drawable_objects)
-        d->update(time);
+        d->update(delta_t);
 
     // Bind lighs to every shader and calculate how much of each type
     int num_point_lights = 0;
     int num_directional_lights = 0;
     int num_spot_lights = 0;
     for (auto &light : _lights) {
-        light->update(time);
+        light->update(delta_t);
         std::string prefix;
 
         switch (light->type) {

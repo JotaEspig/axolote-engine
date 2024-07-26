@@ -249,7 +249,7 @@ public:
      * Preconfigured way to process SPACE, SHIFT, CTRL and mouse movement
      * (this method can be overrided)
      **/
-    void process_input(float delta_t = 1.0f);
+    void process_input(double delta_t = 1.0f);
     /**
      * \brief process the simplest user input (AWSD)
      * \author João Vitor Espig (JotaEspig)
@@ -258,7 +258,7 @@ public:
      * Preconfigured way to process A, W, S and D keys
      * (this method can be overrided)
      **/
-    void minimal_process_input(float delta_t = 1.0f);
+    void minimal_process_input(double delta_t = 1.0f);
     /**
      * \brief checks if window should close
      * \author João Vitor Espig (JotaEspig)
@@ -287,7 +287,7 @@ public:
     /**
      * \param delta_t - time difference from last frame
      **/
-    void update(float delta_t);
+    void update(double delta_t);
     /**
      * \brief Render the current scene
      * \author João Vitor Espig (JotaEspig)
