@@ -1,7 +1,7 @@
 #include <iostream>
+#include <memory>
 #include <string>
 #include <vector>
-#include <memory>
 
 #include <assimp/Importer.hpp>
 #include <assimp/postprocess.h>

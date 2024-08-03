@@ -24,7 +24,8 @@ std::string get_file_content(const char *filename);
  **/
 template <typename... Args>
 void debug(const char *format, Args &&...args) {
-    std::string new_format = std::string("\033[0;91mDEBUG: \033[0m") + format;
+    std::string new_format
+        = std::string("\033[0;91mDEBUG: \033[0m") + format + "\n";
     printf(new_format.c_str(), std::forward<Args>(args)...);
 }
 #else

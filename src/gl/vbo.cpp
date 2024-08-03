@@ -25,13 +25,13 @@ void VBO::buffer_data(std::size_t size, const void *data, GLenum usage) {
 }
 
 void VBO::destroy() {
-    debug("VBO destroyed: %u\n", _id);
+    debug("VBO destroyed: %u", _id);
     glDeleteBuffers(1, &_id);
 }
 
 VBO::VBO() {
     glGenBuffers(1, &_id);
-    debug("VBO created: %u\n", _id);
+    debug("VBO created: %u", _id);
 }
 
 void VBO::Deleter::operator()(VBO *vbo) {

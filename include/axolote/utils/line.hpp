@@ -11,6 +11,8 @@
 
 namespace axolote {
 
+namespace utils {
+
 /**
  * \brief Defines a drawable line
  * \author João Vitor Espig (JotaEspig)
@@ -79,5 +81,7 @@ private:
     float get_rotation_around_x() const;
     float get_rotation_around_y() const;
 };
+
+} // namespace utils
 
 } // namespace axolote

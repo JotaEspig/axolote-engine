@@ -41,7 +41,7 @@ void Texture::unbind() {
 }
 
 void Texture::destroy() {
-    debug("Texture destroyed: %u\n", _id);
+    debug("Texture destroyed: %u", _id);
     glDeleteTextures(1, &_id);
 }
 
@@ -95,7 +95,7 @@ Texture::Texture(
     stbi_image_free(data);
     _loaded = true;
 
-    debug("Texture created: %u\n", _id);
+    debug("Texture created: %u", _id);
 }
 
 void Texture::Deleter::operator()(Texture *texture) {

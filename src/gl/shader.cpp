@@ -68,7 +68,7 @@ void Shader::activate() {
 }
 
 void Shader::destroy() {
-    debug("Shader destroyed: %u\n", _id);
+    debug("Shader destroyed: %u", _id);
     glDeleteProgram(_id);
 }
 
@@ -105,7 +105,7 @@ Shader::Shader(const char *vertex_file, const char *fragment_file) {
     glDeleteShader(vertex_shader);
     glDeleteShader(fragment_shader);
 
-    debug("Shader created: %u\n", _id);
+    debug("Shader created: %u", _id);
 }
 
 void Shader::Deleter::operator()(Shader *shader) {

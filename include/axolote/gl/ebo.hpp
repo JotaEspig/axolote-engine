@@ -41,6 +41,12 @@ public:
      **/
     GLuint id() const override;
     /**
+     * \brief size getter
+     * \author João Vitor Espig (JotaEspig)
+     * \return size
+     **/
+    std::size_t size() const;
+    /**
      * \brief binds
      * \author João Vitor Espig (JotaEspig)
      **/
@@ -75,6 +81,8 @@ private:
 
     /** OpenGL EBO id **/
     GLuint _id;
+    /** amount of indices **/
+    std::size_t _size;
 
     /**
      * \brief Constructor

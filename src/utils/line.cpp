@@ -10,6 +10,8 @@
 
 namespace axolote {
 
+namespace utils {
+
 Line::Line(
     const glm::vec3 &point, const glm::vec3 &direction_vector, float length,
     float thickness, const glm::vec3 &color, float line_quality
@@ -122,5 +124,7 @@ float Line::get_rotation_around_x() const {
 float Line::get_rotation_around_y() const {
     return std::atan2(dir_vec.x, dir_vec.z);
 }
+
+} // namespace utils
 
 } // namespace axolote
