@@ -1,10 +1,10 @@
 #version 330 core
 layout(location = 0) in vec3 axolote_aPos;
-layout(location = 1) in vec3 axolote_aColor;
+layout(location = 1) in vec4 axolote_aColor;
 layout(location = 2) in vec2 axolote_aTex;
 layout(location = 3) in vec3 axolote_aNormal;
 
-out vec3 axolote_color;
+out vec4 axolote_color;
 out vec2 axolote_tex_coord;
 out vec3 axolote_normal;
 out vec3 axolote_current_pos;

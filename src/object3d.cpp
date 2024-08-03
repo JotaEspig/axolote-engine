@@ -33,13 +33,13 @@ Object3D::Object3D(
 }
 
 Object3D::Object3D(
-    std::string path, const glm::vec3 &color, const glm::mat4 &mat
+    std::string path, const glm::vec4 &color, const glm::mat4 &mat
 ) {
     set_matrix(mat);
     load_model(path, color);
 }
 
-void Object3D::load_model(std::string path, const glm::vec3 &color) {
+void Object3D::load_model(std::string path, const glm::vec4 &color) {
     gmodel->load_model(path, color);
 }
 

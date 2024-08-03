@@ -17,11 +17,11 @@ namespace axolote {
 Model::Model() {
 }
 
-Model::Model(std::string path, const glm::vec3 &color) {
+Model::Model(std::string path, const glm::vec4 &color) {
     load_model(path, color);
 }
 
-void Model::load_model(std::string path, const glm::vec3 &color) {
+void Model::load_model(std::string path, const glm::vec4 &color) {
     meshes.clear();
 
     std::vector<std::shared_ptr<gl::Texture>> loaded_textures;

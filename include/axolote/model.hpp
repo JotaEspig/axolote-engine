@@ -35,7 +35,7 @@ public:
      * \param color - default Model color
      **/
     Model(
-        std::string path, const glm::vec3 &color = glm::vec3(0.0f, 0.0f, 0.0f)
+        std::string path, const glm::vec4 &color = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)
     );
 
     /**
@@ -44,7 +44,7 @@ public:
      * \param path - path to file
      * \param color - default color for model
      **/
-    void load_model(std::string path, const glm::vec3 &color);
+    void load_model(std::string path, const glm::vec4 &color);
 };
 
 } // namespace axolote

@@ -9,6 +9,7 @@
 
 #define GLFW_INCLUDE_NONE
 
+#include "axolote/utils/grid.hpp"
 #include "axolote/camera.hpp"
 #include "axolote/gl/ebo.hpp"
 #include "axolote/gl/shader.hpp"

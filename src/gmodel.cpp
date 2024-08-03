@@ -13,11 +13,11 @@ namespace axolote {
 GModel::GModel() {
 }
 
-GModel::GModel(std::string path, const glm::vec3 &color) {
+GModel::GModel(std::string path, const glm::vec4 &color) {
     load_model(path, color);
 }
 
-void GModel::load_model(std::string path, const glm::vec3 &color) {
+void GModel::load_model(std::string path, const glm::vec4 &color) {
     meshes.clear();
     Model m{path, color};
     for (const Mesh &mesh : m.meshes) {

@@ -17,7 +17,7 @@ struct Vertex {
     /** position vector **/
     glm::vec3 position;
     /** color vector **/
-    glm::vec3 color;
+    glm::vec4 color;
     /** textures coordinates **/
     glm::vec2 tex_UV;
     /** normal vector **/

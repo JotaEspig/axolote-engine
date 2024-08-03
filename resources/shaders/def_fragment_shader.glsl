@@ -32,7 +32,7 @@ struct axolote_SpotLight {
 out vec4 FragColor;
 
 // Input variables
-in vec3 axolote_color;
+in vec4 axolote_color;
 in vec2 axolote_tex_coord;
 in vec3 axolote_normal;
 in vec3 axolote_current_pos;
@@ -178,19 +178,19 @@ vec3 axolote_calculate_light() {
 }
 
 void main() {
-    vec4 temp_frag_color = vec4(axolote_color, 1.0f);
+    vec4 temp_frag_color = axolote_color;
     if (axolote_is_tex_set) {
         temp_frag_color = texture(axolote_diffuse0, axolote_tex_coord);
     }
 
     bool should_use_light = axolote_num_point_lights
                             + axolote_num_directional_lights
-                            + axolote_num_spot_lights <= 0;
+                            + axolote_num_spot_lights > 0;
     if (should_use_light) {
-        FragColor = temp_frag_color;
-    }
-    else {
         vec3 light_influence_color = axolote_calculate_light();
         FragColor = temp_frag_color * vec4(light_influence_color, 1.0f);
+    }
+    else {
+        FragColor = temp_frag_color;
     }
 }

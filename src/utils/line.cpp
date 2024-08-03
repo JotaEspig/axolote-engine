@@ -14,7 +14,7 @@ namespace utils {
 
 Line::Line(
     const glm::vec3 &point, const glm::vec3 &direction_vector, float length,
-    float thickness, const glm::vec3 &color, float line_quality
+    float thickness, const glm::vec4 &color, float line_quality
 ) :
   a{point},
   dir_vec{glm::normalize(direction_vector)},

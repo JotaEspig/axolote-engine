@@ -16,7 +16,7 @@ namespace axolote {
 
 void process_node(
     aiNode *node, const aiScene *scene, std::vector<Mesh> &meshes,
-    glm::vec3 color, std::vector<std::shared_ptr<gl::Texture>> &loaded_textures,
+    glm::vec4 color, std::vector<std::shared_ptr<gl::Texture>> &loaded_textures,
     std::vector<std::string> &loaded_textures_names, std::string directory
 ) {
     for (unsigned int i = 0; i < node->mNumMeshes; i++) {
@@ -35,7 +35,7 @@ void process_node(
 }
 
 Mesh process_mesh(
-    aiMesh *mesh, const aiScene *scene, glm::vec3 color,
+    aiMesh *mesh, const aiScene *scene, glm::vec4 color,
     std::vector<std::shared_ptr<gl::Texture>> &loaded_textures,
     std::vector<std::string> &loaded_textures_names, std::string directory
 ) {

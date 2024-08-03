@@ -59,11 +59,16 @@ void App::process_input(double dt) {
 }
 
 void App::main_loop() {
+    set_color(0xff, 0xff, 0xff);
     std::string original_title = title();
 
     auto shader_program = axolote::gl::Shader::create(
         "./resources/shaders/def_vertex_shader.glsl",
         "./resources/shaders/def_fragment_shader.glsl"
+    );
+    auto grid_shader = axolote::gl::Shader::create(
+        "./resources/shaders/def_grid_vertex_shader.glsl",
+        "./resources/shaders/def_grid_fragment_shader.glsl"
     );
 
     // Scene object
@@ -88,36 +93,33 @@ void App::main_loop() {
     App::flashlight = spot_light;
 
     auto earth = std::make_shared<axolote::Object3D>(
-        "./resources/models/sphere/sphere.obj", glm::vec3{0.0f, 0.0f, 1.0f},
+        "./resources/models/sphere/sphere.obj",
+        glm::vec4{0.0f, 0.0f, 1.0f, 0.6f},
         glm::scale(glm::mat4{1.0f}, 6.0f * glm::vec3{1.0f, 1.0f, 1.0f})
     );
     earth->bind_shader(shader_program);
-    scene->add_drawable(earth);
+    scene->add_sorted_drawable(earth);
 
     auto moon = std::make_shared<axolote::Object3D>(
-        "./resources/models/sphere/sphere.obj", glm::vec3{1.0f, 1.0f, 1.0f},
+        "./resources/models/sphere/sphere.obj", glm::vec4{1.0f},
         glm::translate(glm::mat4{1.0f}, glm::vec3{15.f, 2.f, 0.f})
     );
     moon->bind_shader(shader_program);
     scene->add_drawable(moon);
 
     auto m26 = std::make_shared<axolote::Object3D>(
-        "./resources/models/m26/m26pershing_coh.obj",
-        glm::vec3{1.0f, 1.0f, 1.0f},
+        "./resources/models/m26/m26pershing_coh.obj", glm::vec4{1.0f},
         glm::translate(glm::mat4{1.0f}, glm::vec3{0.f, -7.f, 0.f})
     );
     m26->is_transparent = true;
     m26->bind_shader(shader_program);
     scene->add_sorted_drawable(m26);
 
-    auto obj = std::make_shared<axolote::Object3D>(
-        "./resources/models/fish/13007_Blue-Green_Reef_Chromis_v2_l3.obj",
-        glm::vec3{1.0f, 1.0f, 1.0f},
-        glm::translate(glm::mat4{1.0f}, glm::vec3{4.f, 0.f, 0.f})
+    auto grid = std::make_shared<axolote::utils::Grid>(
+        100, 10, true, glm::vec4{1.0f, 0.f, 0.f, 0.5f}
     );
-    obj->is_transparent = true;
-    obj->bind_shader(shader_program);
-    scene->add_sorted_drawable(obj);
+    grid->bind_shader(grid_shader);
+    scene->add_drawable(grid);
 
     set_scene(scene);
     double before = get_time();
@@ -145,6 +147,8 @@ void App::main_loop() {
         update(dt);
         render();
 
+        grid->camera_pos = current_scene()->camera.pos;
+
         flush();
     }
 }
@@ -155,7 +159,6 @@ int main() {
     app.set_title("Main test");
     app.set_width(600);
     app.set_height(600);
-    app.set_color(0x10, 0x10, 0x10);
     app.main_loop();
     return 0;
 }

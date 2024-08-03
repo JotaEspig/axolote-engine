@@ -60,7 +60,7 @@ public:
      *
      * It calls load_model method
      **/
-    Object3D(std::string path, const glm::vec3 &color, const glm::mat4 &mat);
+    Object3D(std::string path, const glm::vec4 &color, const glm::mat4 &mat);
 
     /**
      * \brief loads a model from file
@@ -71,7 +71,7 @@ public:
      * It uses constructor from Model
      **/
     void load_model(
-        std::string path, const glm::vec3 &color = glm::vec3(0.0f, 0.0f, 0.0f)
+        std::string path, const glm::vec4 &color = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)
     );
     /**
      * \brief sets model matrix

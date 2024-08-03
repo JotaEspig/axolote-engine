@@ -31,7 +31,7 @@ public:
     /** line thickness **/
     float thickness;
     /** line color **/
-    glm::vec3 color;
+    glm::vec4 color;
     /** quality of line **/
     float line_quality;
 
@@ -47,7 +47,7 @@ public:
      **/
     Line(
         const glm::vec3 &point, const glm::vec3 &direction_vector, float length,
-        float thickness, const glm::vec3 &color, float line_quality = 20.0f
+        float thickness, const glm::vec4 &color, float line_quality = 20.0f
     );
 
     /**
