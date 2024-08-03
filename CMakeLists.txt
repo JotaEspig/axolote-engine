@@ -55,20 +55,21 @@ set(
     ${SOURCE_DIR}/camera.cpp
     ${SOURCE_DIR}/glad/glad.c
     ${SOURCE_DIR}/gl/ebo.cpp
+    ${SOURCE_DIR}/gl/shader.cpp
+    ${SOURCE_DIR}/gl/texture.cpp
+    ${SOURCE_DIR}/gl/vao.cpp
+    ${SOURCE_DIR}/gl/vbo.cpp
     ${SOURCE_DIR}/gmesh.cpp
     ${SOURCE_DIR}/gmodel.cpp
+    ${SOURCE_DIR}/light.cpp
     ${SOURCE_DIR}/mesh.cpp
     ${SOURCE_DIR}/model.cpp
     ${SOURCE_DIR}/object3d.cpp
     ${SOURCE_DIR}/scene.cpp
-    ${SOURCE_DIR}/gl/shader.cpp
-    ${SOURCE_DIR}/gl/texture.cpp
     ${SOURCE_DIR}/utils.cpp
-    ${SOURCE_DIR}/gl/vao.cpp
-    ${SOURCE_DIR}/gl/vbo.cpp
-    ${SOURCE_DIR}/window.cpp
-    ${SOURCE_DIR}/light.cpp
+    ${SOURCE_DIR}/utils/grid.cpp
     ${SOURCE_DIR}/utils/line.cpp
+    ${SOURCE_DIR}/window.cpp
 
     ${CMAKE_SOURCE_DIR}/external/stb/stb.cpp
 )
