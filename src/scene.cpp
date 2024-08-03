@@ -51,8 +51,20 @@ Scene::sorted_drawables_objects() const {
     return _sorted_drawables_objects;
 }
 
-void Scene::add_light(const std::shared_ptr<Light> &light) {
+void Scene::add_light(std::shared_ptr<Light> light) {
     _lights.push_back(light);
+}
+
+const std::vector<std::shared_ptr<Light>> &Scene::lights() const {
+    return _lights;
+}
+
+void Scene::set_grid(std::shared_ptr<utils::Grid> grid) {
+    _grid = grid;
+}
+
+std::shared_ptr<utils::Grid> Scene::grid() const {
+    return _grid;
 }
 
 void Scene::update_camera(float aspect_ratio) {
@@ -61,7 +73,17 @@ void Scene::update_camera(float aspect_ratio) {
     glm::mat4 projection = glm::perspective(
         glm::radians(camera.fov), aspect_ratio, camera.min_dist, camera.max_dist
     );
+
     for (std::shared_ptr<gl::Shader> s : _shaders) {
+        s->activate();
+        s->set_uniform_float3(
+            "axolote_camera_pos", camera.pos.x, camera.pos.y, camera.pos.z
+        );
+        s->set_uniform_matrix4("axolote_projection", projection);
+        s->set_uniform_matrix4("axolote_view", view);
+    }
+    if (_grid) {
+        std::shared_ptr<gl::Shader> s = _grid->get_shader();
         s->activate();
         s->set_uniform_float3(
             "axolote_camera_pos", camera.pos.x, camera.pos.y, camera.pos.z
@@ -96,6 +118,8 @@ void Scene::update(double delta_t) {
     }
     for (std::shared_ptr<Drawable> d : _drawable_objects)
         d->update(delta_t);
+    if (_grid)
+        _grid->update(delta_t);
 
     // Bind lighs to every shader and calculate how much of each type
     int num_point_lights = 0;
@@ -146,6 +170,8 @@ void Scene::render() {
         d->draw();
     for (std::shared_ptr<Object3D> d : _sorted_drawables_objects)
         d->draw();
+    if (_grid)
+        _grid->draw();
 }
 
 } // namespace axolote

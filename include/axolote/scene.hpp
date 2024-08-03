@@ -12,6 +12,7 @@
 #include "axolote/drawable.hpp"
 #include "axolote/light.hpp"
 #include "axolote/object3d.hpp"
+#include "axolote/utils/grid.hpp"
 
 namespace axolote {
 
@@ -70,7 +71,22 @@ public:
      * \author Mickael Reichert (mickaelrei)
      * \author João Vitor Espig (JotaEspig)
      **/
-    void add_light(const std::shared_ptr<Light> &light);
+    void add_light(std::shared_ptr<Light> light);
+    /**
+     * \brief get the lights of the scene
+     * \author João Vitor Espig (JotaEspig)
+     **/
+    const std::vector<std::shared_ptr<Light>> &lights() const;
+    /**
+     * \brief set the grid of the scene
+     * \author João Vitor Espig (JotaEspig)
+     **/
+    void set_grid(std::shared_ptr<utils::Grid> grid);
+    /**
+     * \brief get the grid of the scene
+     * \author João Vitor Espig (JotaEspig)
+     **/
+    std::shared_ptr<utils::Grid> grid() const;
     /**
      * \brief updates the camera in the shaders
      * \author João Vitor Espig (JotaEspig)
@@ -95,6 +111,8 @@ private:
     std::vector<std::shared_ptr<Drawable>> _drawable_objects;
     /** sorted drawables objects **/
     std::vector<std::shared_ptr<Object3D>> _sorted_drawables_objects;
+    /** grid **/
+    std::shared_ptr<utils::Grid> _grid;
     /** vector of shaders from drawable objects **/
     std::vector<std::shared_ptr<gl::Shader>> _shaders;
     /** lights of the scene **/

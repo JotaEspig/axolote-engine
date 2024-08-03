@@ -119,7 +119,7 @@ void App::main_loop() {
         70, 5, true, glm::vec4{1.0f, 0.f, 0.f, 1.0f}
     );
     grid->bind_shader(grid_shader);
-    scene->add_drawable(grid);
+    scene->set_grid(grid);
 
     set_scene(scene);
     double before = get_time();
