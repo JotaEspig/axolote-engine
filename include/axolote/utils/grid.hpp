@@ -31,6 +31,8 @@ public:
     std::uint8_t size = 10;
     /** grid build mesh step **/
     std::uint8_t step = 1;
+    /** fading factor **/
+    float fading_factor = 30.0f;
     /** grid color **/
     glm::vec4 color{1.0f};
     /** camera pos **/

@@ -7,13 +7,14 @@ out vec4 FragColor;
 in vec4 axolote_color;
 in vec3 axolote_vertex_position;
 
-uniform vec3 axolote_camera_pos;
 uniform int axolote_grid_size;
+uniform float axolote_grid_fading_factor;
 
 void main() {
     // the closest to the center the brighter
-    float distance = distance(axolote_camera_pos, axolote_vertex_position);
+    float distance = length(axolote_vertex_position);
     float normalized_distance = distance / axolote_grid_size;
-    float opacity = 1 - clamp(pow(normalized_distance, 1.5), 0, 1);
+    float quadratic = axolote_grid_fading_factor * normalized_distance * normalized_distance;
+    float opacity = 1 / (1 + quadratic);
     FragColor = vec4(axolote_color.rgb, opacity);
 }
