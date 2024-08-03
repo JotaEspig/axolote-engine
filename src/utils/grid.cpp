@@ -115,6 +115,7 @@ void Grid::draw() {
     _shader->activate();
     _vao->bind();
     _shader->set_uniform_matrix4("axolote_model", model_mat);
+    _shader->set_uniform_int("axolote_grid_size", size);
     glDrawElements(GL_LINES, _ebo->size(), GL_UNSIGNED_INT, 0);
     _vao->unbind();
     glLineWidth(1.0f);

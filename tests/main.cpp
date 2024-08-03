@@ -116,7 +116,7 @@ void App::main_loop() {
     scene->add_sorted_drawable(m26);
 
     auto grid = std::make_shared<axolote::utils::Grid>(
-        100, 10, true, glm::vec4{1.0f, 0.f, 0.f, 0.5f}
+        100, 10, true, glm::vec4{1.0f, 0.f, 0.f, 1.0f}
     );
     grid->bind_shader(grid_shader);
     scene->add_drawable(grid);
