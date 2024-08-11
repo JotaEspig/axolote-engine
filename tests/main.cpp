@@ -101,7 +101,8 @@ void App::main_loop() {
     scene->add_sorted_drawable(earth);
 
     auto moon = std::make_shared<axolote::Object3D>(
-        "./resources/models/sphere/sphere.obj", glm::vec4{1.0f},
+        "./resources/models/sphere/sphere.obj",
+        glm::vec4{0.9f, 0.9f, 0.9f, 1.0f},
         glm::translate(glm::mat4{1.0f}, glm::vec3{15.f, 2.f, 0.f})
     );
     moon->bind_shader(shader_program);
@@ -118,6 +119,7 @@ void App::main_loop() {
     auto grid = std::make_shared<axolote::utils::Grid>(
         70, 5, true, glm::vec4{1.0f, 0.f, 0.f, 1.0f}
     );
+    grid->fading_factor = 70.0f;
     grid->bind_shader(grid_shader);
     scene->set_grid(grid);
 
