@@ -166,12 +166,12 @@ void Scene::update(double delta_t) {
 }
 
 void Scene::render() {
+    if (_grid)
+        _grid->draw();
     for (std::shared_ptr<Drawable> d : _drawable_objects)
         d->draw();
     for (std::shared_ptr<Object3D> d : _sorted_drawables_objects)
         d->draw();
-    if (_grid)
-        _grid->draw();
 }
 
 } // namespace axolote
