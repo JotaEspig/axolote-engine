@@ -80,7 +80,7 @@ vec3 axolote_calculate_point_light(axolote_PointLight light) {
     // Apply attenuation to the light
     float distance = length(light.pos - axolote_current_pos);
     float attenuation = 1.0f / (light.constant + light.linear * distance
-                                + light.quadratic * distance * distance);
+                + light.quadratic * distance * distance);
 
     diffuse *= attenuation;
     specular *= attenuation;
@@ -129,7 +129,7 @@ vec3 axolote_calculate_spot_light(axolote_SpotLight light) {
     // Apply attenuation to the light
     float distance = length(light.pos - axolote_current_pos);
     float attenuation = 1.0f / (light.constant + light.linear * distance
-                                + light.quadratic * distance * distance);
+                + light.quadratic * distance * distance);
 
     diffuse *= attenuation;
     specular *= attenuation;
@@ -181,11 +181,14 @@ void main() {
     vec4 temp_frag_color = axolote_color;
     if (axolote_is_tex_set) {
         temp_frag_color = texture(axolote_diffuse0, axolote_tex_coord);
+        if (temp_frag_color.a < 0.1f) {
+            discard;
+        }
     }
 
     bool should_use_light = axolote_num_point_lights
-                            + axolote_num_directional_lights
-                            + axolote_num_spot_lights > 0;
+            + axolote_num_directional_lights
+            + axolote_num_spot_lights > 0;
     if (should_use_light) {
         vec3 light_influence_color = axolote_calculate_light();
         FragColor = temp_frag_color * vec4(light_influence_color, 1.0f);
