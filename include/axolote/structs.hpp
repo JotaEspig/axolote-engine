@@ -15,7 +15,7 @@ namespace axolote {
  **/
 struct Vertex {
     /** position vector **/
-    glm::vec3 position;
+    glm::vec3 pos;
     /** color vector **/
     glm::vec4 color;
     /** textures coordinates **/

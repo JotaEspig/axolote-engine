@@ -45,9 +45,9 @@ Mesh process_mesh(
 
     for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
         Vertex vertex;
-        vertex.position.x = mesh->mVertices[i].x;
-        vertex.position.y = mesh->mVertices[i].y;
-        vertex.position.z = mesh->mVertices[i].z;
+        vertex.pos.x = mesh->mVertices[i].x;
+        vertex.pos.y = mesh->mVertices[i].y;
+        vertex.pos.z = mesh->mVertices[i].z;
 
         vertex.color = color;
 

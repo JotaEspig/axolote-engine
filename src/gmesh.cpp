@@ -40,7 +40,7 @@ GMesh::GMesh(
 
     _vao->link_attrib(
         _vbo, 0, 3, GL_FLOAT, sizeof(Vertex),
-        (void *)(offsetof(Vertex, position))
+        (void *)(offsetof(Vertex, pos))
     );
     _vao->link_attrib(
         _vbo, 1, 4, GL_FLOAT, sizeof(Vertex), (void *)(offsetof(Vertex, color))
