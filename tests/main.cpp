@@ -132,7 +132,6 @@ void App::main_loop() {
 
     set_scene(scene);
     double before = get_time();
-    glDisable(GL_CULL_FACE);
     while (!should_close()) {
         clear();
 

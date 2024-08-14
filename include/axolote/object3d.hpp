@@ -27,6 +27,8 @@ public:
     std::shared_ptr<GModel> gmodel = std::make_shared<GModel>();
     /** is the object transparent **/
     bool is_transparent = false;
+    /** is the object affected by lights **/
+    bool is_affected_by_lights = true;
 
     /**
      * \brief Constructor
@@ -49,7 +51,8 @@ public:
      **/
     Object3D(
         const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices,
-        const std::vector<std::shared_ptr<gl::Texture>> &textures, const glm::mat4 &mat
+        const std::vector<std::shared_ptr<gl::Texture>> &textures,
+        const glm::mat4 &mat
     );
     /**
      * \brief initializes an Object3D from model file
@@ -71,7 +74,8 @@ public:
      * It uses constructor from Model
      **/
     void load_model(
-        std::string path, const glm::vec4 &color = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)
+        std::string path,
+        const glm::vec4 &color = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)
     );
     /**
      * \brief sets model matrix

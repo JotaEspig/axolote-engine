@@ -37,6 +37,10 @@ in vec2 axolote_tex_coord;
 in vec3 axolote_normal;
 in vec3 axolote_current_pos;
 
+// Object info
+uniform bool axolote_is_affected_by_lights;
+uniform bool axolote_is_affected_by_lights_set;
+
 // Scene info
 uniform vec3 axolote_camera_pos;
 uniform float axolote_ambient_light;
@@ -189,6 +193,11 @@ void main() {
     bool should_use_light = axolote_num_point_lights
             + axolote_num_directional_lights
             + axolote_num_spot_lights > 0;
+
+    // Prevents previous uniform from being used
+    if (axolote_is_affected_by_lights_set)
+        should_use_light = should_use_light && axolote_is_affected_by_lights;
+
     if (should_use_light) {
         vec3 light_influence_color = axolote_calculate_light();
         FragColor = temp_frag_color * vec4(light_influence_color, 1.0f);

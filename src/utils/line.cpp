@@ -21,7 +21,9 @@ Line::Line(
   length{length},
   thickness{thickness},
   color{color},
-  line_quality{line_quality} {
+  line_quality{line_quality}
+{
+    is_affected_by_lights = false;
     build_mesh();
 }
 
