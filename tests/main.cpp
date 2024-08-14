@@ -116,6 +116,13 @@ void App::main_loop() {
     m26->bind_shader(shader_program);
     scene->add_sorted_drawable(m26);
 
+    auto line = std::make_shared<axolote::utils::Line>(
+        glm::vec3{10.0f, 10.0f, 0.0f}, glm::vec3{1.0f, 1.0f, 1.0f}, 5.0f, 1.0f,
+        glm::vec4{0.0f, 1.0f, 0.0f, 1.0f}, 5
+    );
+    line->bind_shader(shader_program);
+    scene->add_drawable(line);
+
     auto grid = std::make_shared<axolote::utils::Grid>(
         70, 5, true, glm::vec4{1.0f, 0.f, 0.f, 1.0f}
     );
@@ -125,6 +132,7 @@ void App::main_loop() {
 
     set_scene(scene);
     double before = get_time();
+    glDisable(GL_CULL_FACE);
     while (!should_close()) {
         clear();
 

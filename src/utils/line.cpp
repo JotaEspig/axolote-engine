@@ -85,6 +85,17 @@ void Line::build_mesh() {
         ++counter;
     }
 
+    for (unsigned long i = 0; i < vs.size(); i += 3) {
+        glm::vec3 normal
+            = glm::cross(vs[i + 1].pos - vs[i].pos, vs[i + 2].pos - vs[i].pos);
+        vs[i].normal += normal;
+        vs[i + 1].normal += normal;
+        vs[i + 2].normal += normal;
+    }
+
+    for (auto &v : vs)
+        v.normal = glm::normalize(v.normal);
+
     gmodel->meshes.push_back({vs, es, {}});
 }
 
