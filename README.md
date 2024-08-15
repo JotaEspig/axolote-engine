@@ -21,10 +21,21 @@ Clone the repository:
 git clone https://github.com/JotaEspig/axolote-engine
 cd axolote-engine
 ```
+
+### Linux
+
 Compile the project:
 ```bash
 cmake .
 make -j4
+```
+
+### Windows
+
+Compile the project:
+```bash
+cmake -DCMAKE_TOOLCHAIN_FILE=C:/path/to/vcpkg/scripts/buildsystems/vcpkg.cmake .
+cmake --build .
 ```
 
 ## Installation

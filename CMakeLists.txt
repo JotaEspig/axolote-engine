@@ -1,8 +1,10 @@
 cmake_minimum_required(VERSION 2.8.5...3.27.5)
 project(axolote-engine)
 
+#include(D:/vcpkg/scripts/buildsystems/vcpkg.cmake)
+
 # Debug mode
-set(FLAGS "-Wall -Wextra")
+set(FLAGS "-Wall")
 if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
 endif ()
@@ -24,7 +26,8 @@ endif()
 # Find packages
 set(OpenGL_GL_PREFERENCE GLVND)
 find_package(OpenGL REQUIRED)
-find_package(glfw3 REQUIRED)
+find_package(assimp CONFIG REQUIRED)
+find_package(glfw3 CONFIG REQUIRED)
 find_package(glm REQUIRED)
 find_package(Doxygen OPTIONAL_COMPONENTS dot)
 
@@ -87,7 +90,7 @@ target_link_directories(
 target_link_libraries(
     axolote
     PRIVATE
-    ${OPENGL_LIBRARIES} glfw assimp stdc++
+    ${OPENGL_LIBRARIES} glfw assimp::assimp
 )
 
 # Header files
@@ -123,7 +126,7 @@ target_link_libraries(
     main-test
     PRIVATE
     axolote
-    ${OPENGL_LIBRARIES} glfw stdc++
+    ${OPENGL_LIBRARIES} glfw
 )
 
 # Header files
@@ -154,7 +157,7 @@ target_link_libraries(
     window-test
     PRIVATE
     axolote
-    ${OPENGL_LIBRARIES} glfw stdc++
+    ${OPENGL_LIBRARIES} glfw
 )
 
 # Header files
@@ -185,7 +188,7 @@ target_link_libraries(
     models-and-shaders-test
     PRIVATE
     axolote
-    ${OPENGL_LIBRARIES} glfw stdc++
+    ${OPENGL_LIBRARIES} glfw
 )
 
 # Header files
