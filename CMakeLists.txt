@@ -1,15 +1,18 @@
-cmake_minimum_required(VERSION 2.8.5...3.27.5)
+cmake_minimum_required(VERSION 3.0.0)
 project(axolote-engine)
-
-#include(D:/vcpkg/scripts/buildsystems/vcpkg.cmake)
 
 # Debug mode
 set(FLAGS "-Wall")
+if (CMAKE_COMPILER_IS_GNUXX)
+    set(FLAGS "${FLAGS} -Wextra")
+endif (CMAKE_COMPILER_IS_GNUXX)
+
 if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
 endif ()
 
 # CMake settings
+set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${FLAGS}")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} ${FLAGS} -g3 -fsanitize=address,undefined")
@@ -78,7 +81,8 @@ set(
 )
 
 # Adding axolote shared library
-add_library(axolote SHARED ${SOURCE_FILES})
+add_library(axolote SHARED)
+target_sources(axolote PUBLIC ${SOURCE_FILES})
 
 # Libraries
 target_link_directories(
@@ -99,6 +103,7 @@ target_include_directories(
     PRIVATE
     ${CMAKE_SOURCE_DIR}/include
     ${CMAKE_SOURCE_DIR}/external/include
+    ${ASSIMP_INCLUDE_DIRS}
 )
 
 
@@ -115,6 +120,7 @@ set(
 
 # Adding executables for testing
 add_executable(main-test ${MAIN_TEST_SOURCE_FILES})
+add_dependencies(main-test axolote)
 
 # Libraries
 target_link_directories(
@@ -126,7 +132,7 @@ target_link_libraries(
     main-test
     PRIVATE
     axolote
-    ${OPENGL_LIBRARIES} glfw
+    ${OPENGL_LIBRARIES} glfw assimp::assimp
 )
 
 # Header files
@@ -134,6 +140,8 @@ target_include_directories(
     main-test
     PRIVATE
     ${CMAKE_SOURCE_DIR}/include
+    ${CMAKE_SOURCE_DIR}/external/include
+    ${ASSIMP_INCLUDE_DIRS}
 )
 
 # ------ WINDOW ------
@@ -146,6 +154,7 @@ set(
 
 # Adding executables for testing
 add_executable(window-test ${WINDOW_TEST_SOURCE_FILES})
+add_dependencies(window-test axolote)
 
 # Libraries
 target_link_directories(
@@ -157,7 +166,7 @@ target_link_libraries(
     window-test
     PRIVATE
     axolote
-    ${OPENGL_LIBRARIES} glfw
+    ${OPENGL_LIBRARIES} glfw assimp::assimp
 )
 
 # Header files
@@ -165,6 +174,8 @@ target_include_directories(
     window-test
     PRIVATE
     ${CMAKE_SOURCE_DIR}/include
+    ${CMAKE_SOURCE_DIR}/external/include
+    ${ASSIMP_INCLUDE_DIRS}
 )
 
 # ------ MODELS_AND_SHADERS ------
@@ -177,6 +188,7 @@ set(
 
 # Adding executables for testing
 add_executable(models-and-shaders-test ${MODELS_AND_SHADERS_TEST_SOURCE_FILES})
+add_dependencies(models-and-shaders-test axolote)
 
 # Libraries
 target_link_directories(
@@ -188,7 +200,7 @@ target_link_libraries(
     models-and-shaders-test
     PRIVATE
     axolote
-    ${OPENGL_LIBRARIES} glfw
+    ${OPENGL_LIBRARIES} glfw assimp::assimp
 )
 
 # Header files
@@ -196,4 +208,6 @@ target_include_directories(
     models-and-shaders-test
     PRIVATE
     ${CMAKE_SOURCE_DIR}/include
+    ${CMAKE_SOURCE_DIR}/external/include
+    ${ASSIMP_INCLUDE_DIRS}
 )

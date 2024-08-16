@@ -14,6 +14,7 @@ lib/
 bin/
 obj/
 logs/
+build/
 .vscode/
 .clangd/
 .cache/

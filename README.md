@@ -14,19 +14,58 @@ Graphics engine made in C++ using OpenGL version 3.3+. The idea of the project c
 * GLM
 * Doxygen (Optional)
 
+### Linux
+
+Ubuntu:
+```bash
+sudo apt-get install cmake
+sudo apt-get install libglm-dev
+sudo apt-get install libglfw3-dev libglfw3
+sudo apt-get install libassimp-dev
+```
+
+Arch:
+```bash
+sudo pacman -S cmake
+sudo pacman -S glm
+sudo pamcan -S glfw
+sudo pacman -S assimp
+```
+
+### Windows
+
+Install normally the cmake, see [https://cmake.org/download/](https://cmake.org/download/).
+
+The other dependencies will be installed via vcpkg.
+Install the vcpkg:
+```bash
+git clone https://github.com/microsoft/vcpkg.git
+cd vcpkg
+bootstrap-vcpkg.bat
+vcpkg.exe integrate install
+```
+
+Install the dependencies
+```bash
+vcpkg.exe install glm
+vcpkg.exe install glfw3
+vcpkg.exe install assimp
+```
+
 ## Compiling
 
 Clone the repository:
 ```bash
 git clone https://github.com/JotaEspig/axolote-engine
 cd axolote-engine
+mkdir build && cd build
 ```
 
 ### Linux
 
 Compile the project:
 ```bash
-cmake .
+cmake ..
 make -j4
 ```
 
@@ -34,8 +73,8 @@ make -j4
 
 Compile the project:
 ```bash
-cmake -DCMAKE_TOOLCHAIN_FILE=C:/path/to/vcpkg/scripts/buildsystems/vcpkg.cmake .
-cmake --build .
+cmake -G "Visual Studio 17 2022" -DCMAKE_TOOLCHAIN_FILE=C:/path/to/vcpkg/scripts/buildsystems/vcpkg.cmake ..
+cmake --build . --config Release
 ```
 
 ## Installation
