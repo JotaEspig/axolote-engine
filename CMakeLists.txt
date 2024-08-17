@@ -81,8 +81,7 @@ set(
 )
 
 # Adding axolote shared library
-add_library(axolote SHARED)
-target_sources(axolote PUBLIC ${SOURCE_FILES})
+add_library(axolote SHARED ${SOURCE_FILES})
 
 # Libraries
 target_link_directories(
