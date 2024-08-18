@@ -34,7 +34,8 @@ sudo pacman -S assimp
 
 ### Windows
 
-Install normally the cmake, see [https://cmake.org/download/](https://cmake.org/download/).
+Download the CMake installer in [https://cmake.org/download/](https://cmake.org/download/)
+and install it.
 
 The other dependencies will be installed via vcpkg.
 Install the vcpkg:
@@ -58,7 +59,8 @@ Clone the repository:
 ```bash
 git clone https://github.com/JotaEspig/axolote-engine
 cd axolote-engine
-mkdir build && cd build
+mkdir build
+cd build
 ```
 
 ### Linux
@@ -71,7 +73,7 @@ make -j4
 
 ### Windows
 
-Compile the project:
+Compile the project (pay attetion to the path of the vcpkg.cmake file):
 ```bash
 cmake -G "Visual Studio 17 2022" -DCMAKE_TOOLCHAIN_FILE=C:/path/to/vcpkg/scripts/buildsystems/vcpkg.cmake ..
 cmake --build . --config Release
@@ -87,9 +89,21 @@ see [getting-started.md](getting-started.md).
 
 ## Executing some tests
 
-After compiling the project:
+After compiling the project, go back to the root directory of the project and
+run the following commands:
+
+For Linux
 ```bash
-./tests/bin/tests
+./bin/window-test
+./bin/models-and-shaders-test
+./bin/main-test
+```
+
+For Windows
+```bash
+.\bin\Release\window-test.exe
+.\bin\Release\models-and-shaders-test.exe
+.\bin\Release\main-test.exe
 ```
 
 ## Documentation
@@ -98,7 +112,9 @@ If you have Doxygen, you can read the documentation using:
 ```bash
 git clone https://github.com/JotaEspig/axolote-engine
 cd axolote-engine
-cmake .
+mkdir build
+cd build
+cmake ..
 make docs
 ```
 
