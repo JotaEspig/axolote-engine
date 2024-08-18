@@ -1,3 +1,34 @@
+## v0.7.0 (2024-08-18)
+
+### Feat
+
+- added option to disable lights per object
+- **line**: added normals into line
+- **grid**: implemented grid into the scene
+- **grid**: implemented fading
+- using interface to define a opengl object
+- add debug print function
+- opengl objects are now destroyed
+- implemented sorted way to draw objects
+- **lights**: added smooth edges for spot light
+- **lights**: implemented simple spot light
+- **lights**: implemented directional light
+
+### Fix
+
+- grid draw order
+- texture opacity discard
+
+### Refactor
+
+- renamed Vertex.position to just pos
+- **grid**: configurable fading
+- using doubles instead of floats in update methods
+- changed small things in debug
+- **lights**: separated ambient light and ambient light intensity
+- saving normal matrix in Object3D class
+- **shaders**: renamed all variables, uniforms, functions, etc related to axolote engine
+
 ## v0.6.5 (2024-06-17)
 
 ### Fix
