@@ -1,7 +1,6 @@
-cmake_minimum_required(VERSION 3.0.0)
+cmake_minimum_required(VERSION 3.15)
 project(axolote-engine)
 
-# Debug mode
 set(FLAGS "-Wall")
 if (CMAKE_COMPILER_IS_GNUXX)
     set(FLAGS "${FLAGS} -Wextra")
@@ -51,7 +50,9 @@ endif (DOXYGEN_FOUND)
 
 
 # =-=-=-=-=-=-= LIBRARY =-=-=-=-=-=-=
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib)
+if (UNIX)
+    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib)
+endif (UNIX)
 
 # Source files
 set(SOURCE_DIR ${CMAKE_SOURCE_DIR}/src)
@@ -84,22 +85,16 @@ set(
 add_library(axolote SHARED ${SOURCE_FILES})
 
 # Libraries
-target_link_directories(
-    axolote
-    PRIVATE
-    ${CMAKE_SOURCE_DIR}/external/assimp
-    ${OPENGL_INCLUDE_DIRS}
-)
 target_link_libraries(
     axolote
-    PRIVATE
+    PUBLIC
     ${OPENGL_LIBRARIES} glfw assimp::assimp
 )
 
 # Header files
 target_include_directories(
     axolote
-    PRIVATE
+    PUBLIC
     ${CMAKE_SOURCE_DIR}/include
     ${CMAKE_SOURCE_DIR}/external/include
     ${ASSIMP_INCLUDE_DIRS}
@@ -122,14 +117,17 @@ add_executable(main-test ${MAIN_TEST_SOURCE_FILES})
 add_dependencies(main-test axolote)
 
 # Libraries
-target_link_directories(
-    main-test
-    PRIVATE
-    ./lib
-)
+if (UNIX)
+    target_link_directories(
+        main-test
+        PUBLIC
+        ./lib
+    )
+endif (UNIX)
+
 target_link_libraries(
     main-test
-    PRIVATE
+    PUBLIC
     axolote
     ${OPENGL_LIBRARIES} glfw assimp::assimp
 )
@@ -137,11 +135,20 @@ target_link_libraries(
 # Header files
 target_include_directories(
     main-test
-    PRIVATE
+    PUBLIC
     ${CMAKE_SOURCE_DIR}/include
     ${CMAKE_SOURCE_DIR}/external/include
     ${ASSIMP_INCLUDE_DIRS}
 )
+
+if (WIN32 OR MSVC)
+    add_custom_command(TARGET main-test POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy
+        $<TARGET_RUNTIME_DLLS:main-test>
+        $<TARGET_FILE_DIR:main-test>
+        COMMAND_EXPAND_LISTS
+    )
+endif ()
 
 # ------ WINDOW ------
 
@@ -156,14 +163,17 @@ add_executable(window-test ${WINDOW_TEST_SOURCE_FILES})
 add_dependencies(window-test axolote)
 
 # Libraries
-target_link_directories(
-    window-test
-    PRIVATE
-    ./lib
-)
+if (UNIX)
+    target_link_directories(
+        window-test
+        PUBLIC
+        ./lib
+    )
+endif (UNIX)
+
 target_link_libraries(
     window-test
-    PRIVATE
+    PUBLIC
     axolote
     ${OPENGL_LIBRARIES} glfw assimp::assimp
 )
@@ -171,11 +181,20 @@ target_link_libraries(
 # Header files
 target_include_directories(
     window-test
-    PRIVATE
+    PUBLIC
     ${CMAKE_SOURCE_DIR}/include
     ${CMAKE_SOURCE_DIR}/external/include
     ${ASSIMP_INCLUDE_DIRS}
 )
+
+if (WIN32 OR MSVC)
+    add_custom_command(TARGET window-test POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy
+        $<TARGET_RUNTIME_DLLS:window-test>
+        $<TARGET_FILE_DIR:window-test>
+        COMMAND_EXPAND_LISTS
+    )
+endif ()
 
 # ------ MODELS_AND_SHADERS ------
 
@@ -190,14 +209,17 @@ add_executable(models-and-shaders-test ${MODELS_AND_SHADERS_TEST_SOURCE_FILES})
 add_dependencies(models-and-shaders-test axolote)
 
 # Libraries
-target_link_directories(
-    models-and-shaders-test
-    PRIVATE
-    ./lib
-)
+if (UNIX)
+    target_link_directories(
+        models-and-shaders-test
+        PUBLIC
+        ./lib
+    )
+endif (UNIX)
+
 target_link_libraries(
     models-and-shaders-test
-    PRIVATE
+    PUBLIC
     axolote
     ${OPENGL_LIBRARIES} glfw assimp::assimp
 )
@@ -205,8 +227,18 @@ target_link_libraries(
 # Header files
 target_include_directories(
     models-and-shaders-test
-    PRIVATE
+    PUBLIC
     ${CMAKE_SOURCE_DIR}/include
     ${CMAKE_SOURCE_DIR}/external/include
     ${ASSIMP_INCLUDE_DIRS}
 )
+
+
+if (WIN32 OR MSVC)
+    add_custom_command(TARGET models-and-shaders-test POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy
+        $<TARGET_RUNTIME_DLLS:models-and-shaders-test>
+        $<TARGET_FILE_DIR:models-and-shaders-test>
+        COMMAND_EXPAND_LISTS
+    )
+endif ()
