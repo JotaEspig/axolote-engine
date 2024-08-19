@@ -83,6 +83,7 @@ set(
 
 # Adding axolote shared library
 add_library(axolote SHARED ${SOURCE_FILES})
+target_compile_definitions(axolote PUBLIC GLAD_GLAPI_EXPORT PRIVATE GLAD_GLAPI_EXPORT_BUILD)
 
 # Libraries
 target_link_libraries(
@@ -115,6 +116,7 @@ set(
 # Adding executables for testing
 add_executable(main-test ${MAIN_TEST_SOURCE_FILES})
 add_dependencies(main-test axolote)
+target_compile_definitions(main-test PUBLIC GLAD_GLAPI_EXPORT)
 
 # Libraries
 if (UNIX)
@@ -161,6 +163,7 @@ set(
 # Adding executables for testing
 add_executable(window-test ${WINDOW_TEST_SOURCE_FILES})
 add_dependencies(window-test axolote)
+target_compile_definitions(window-test PUBLIC GLAD_GLAPI_EXPORT)
 
 # Libraries
 if (UNIX)
@@ -207,6 +210,7 @@ set(
 # Adding executables for testing
 add_executable(models-and-shaders-test ${MODELS_AND_SHADERS_TEST_SOURCE_FILES})
 add_dependencies(models-and-shaders-test axolote)
+target_compile_definitions(models-and-shaders-test PUBLIC GLAD_GLAPI_EXPORT)
 
 # Libraries
 if (UNIX)
