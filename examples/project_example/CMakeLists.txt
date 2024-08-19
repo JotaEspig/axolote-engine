@@ -62,8 +62,8 @@ set(
 
 # Adding executables
 add_executable(exe-test ${SOURCE_FILES})
-
 add_dependencies(exe-test axolote)
+target_compile_definitions(exe-test PUBLIC GLAD_GLAPI_EXPORT)
 
 # Libraries
 target_link_directories(
