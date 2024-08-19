@@ -73,7 +73,8 @@ make -j4
 
 ### Windows
 
-Compile the project (pay attetion to the path of the vcpkg.cmake file):
+Compile the project (pay attetion to the path of the vcpkg.cmake file,
+you must change it to your path where you cloned the vcpkg repository):
 ```bash
 cmake -G "Visual Studio 17 2022" -DCMAKE_TOOLCHAIN_FILE=C:/path/to/vcpkg/scripts/buildsystems/vcpkg.cmake ..
 cmake --build . --config Release
