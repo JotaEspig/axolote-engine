@@ -51,7 +51,7 @@ void Window::init() {
     }
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     _window = glfwCreateWindow(
         INITIAL_SIZE, INITIAL_SIZE, _title.c_str(), NULL, NULL
     );
