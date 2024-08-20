@@ -12,8 +12,26 @@
 
 #define DT_MULTIPLIER 200000
 
+class MyDirLight : public axolote::DirectionalLight {
+public:
+    float absolute_time = 0.0;
+
+    MyDirLight(const glm::vec3 &color, bool is_set, const glm::vec3 &dir) :
+      axolote::DirectionalLight{color, is_set, dir} {
+    }
+
+    void update(double dt) override {
+        absolute_time += dt / (DT_MULTIPLIER * 10);
+        dir = glm::vec3{
+            glm::cos((float)absolute_time), 0.0f, glm::sin((float)absolute_time)
+        };
+    }
+};
+
 class App : public axolote::Window {
 public:
+    std::shared_ptr<axolote::SpotLight> flashlight;
+
     void process_input(double dt);
     void main_loop();
 };
@@ -29,90 +47,88 @@ void App::process_input(double dt) {
         set_vsync(!vsync());
         set_key_pressed(Key::V, false);
     }
+
+    KeyState l_key_state = get_key_state(Key::L);
+    if (l_key_state == KeyState::PRESSED && !is_key_pressed(Key::L)) {
+        set_key_pressed(Key::L, true);
+    }
+    else if (l_key_state == KeyState::RELEASED && is_key_pressed(Key::L)) {
+        flashlight->is_set = !flashlight->is_set;
+        set_key_pressed(Key::L, false);
+    }
 }
 
 void App::main_loop() {
+    set_color(0xff, 0xff, 0xff);
     std::string original_title = title();
 
-    axolote::gl::Shader shader_program(
+    auto shader_program = axolote::gl::Shader::create(
         "./resources/shaders/def_vertex_shader.glsl",
         "./resources/shaders/def_fragment_shader.glsl"
+    );
+    auto grid_shader = axolote::gl::Shader::create(
+        "./resources/shaders/def_grid_vertex_shader.glsl",
+        "./resources/shaders/def_grid_fragment_shader.glsl"
     );
 
     // Scene object
     std::shared_ptr<axolote::Scene> scene{new axolote::Scene{}};
-    scene->camera.pos = {0.0f, 0.0f, 1.0f};
-    scene->camera.speed = 1.0f;
+    scene->camera.pos = {0.0f, 0.0f, 3.0f};
+    scene->camera.speed = 3.0f;
     scene->camera.sensitivity = 10000.0f;
 
-    auto saul = std::make_shared<axolote::Object3D>();
-    saul->load_model("./resources/models/saul-goodman/model.obj");
-    saul->model_mat
-        = glm::translate(glm::mat4{1.0f}, glm::vec3{-2.0f, 0.0f, 0.0f});
-    saul->bind_shader(shader_program);
-    scene->add_drawable(saul);
-
-    // x-axis line
-    std::shared_ptr<axolote::Line> l_x{new axolote::Line{
-        {0.0f, 0.0f, 0.0f}, {1.0f, 0.0f, 0.0f}, 1.0f, 0.01f, {1.0f, 0.0f, 0.0f}
-    }};
-    l_x->bind_shader(shader_program);
-    scene->add_drawable(l_x);
-
-    // y-axis line
-    std::shared_ptr<axolote::Line> l_y{new axolote::Line{
-        {0.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}, 1.0f, 0.01f, {0.0f, 1.0f, 0.0f}
-    }};
-    l_y->bind_shader(shader_program);
-    scene->add_drawable(l_y);
-
-    // z-axis line
-    std::shared_ptr<axolote::Line> l_z{new axolote::Line{
-        {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 1.0f}, 1.0f, 0.01f, {0.0f, 0.0f, 1.0f}
-    }};
-    l_z->bind_shader(shader_program);
-    scene->add_drawable(l_z);
-
-    // xy-axis line
-    std::shared_ptr<axolote::Line> l_xy{new axolote::Line{
-        {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 0.0f}, 0.3f, 0.01f, {1.0f, 1.0f, 0.0f}
-    }};
-    l_xy->bind_shader(shader_program);
-    scene->add_drawable(l_xy);
-
-    // xz-axis line
-    std::shared_ptr<axolote::Line> l_xz{new axolote::Line{
-        {0.0f, 0.0f, 0.0f}, {1.0f, 0.0f, 1.0f}, 0.3f, 0.01f, {1.0f, 0.0f, 1.0f}
-    }};
-    l_xz->bind_shader(shader_program);
-    scene->add_drawable(l_xz);
-
-    // yz-axis line
-    std::shared_ptr<axolote::Line> l_yz{new axolote::Line{
-        {0.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 1.0f}, 0.3f, 0.01f, {0.0f, 1.0f, 1.0f}
-    }};
-    l_yz->bind_shader(shader_program);
-    scene->add_drawable(l_yz);
-
-    // xyz-axis line
-    std::shared_ptr<axolote::Line> l_xyz{new axolote::Line{
-        {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0.3f, 0.01f, {1.0f, 1.0f, 1.0f}
-    }};
-    l_xyz->bind_shader(shader_program);
-    scene->add_drawable(l_xyz);
-
-    std::shared_ptr<axolote::Line> l_test{new axolote::Line{
-        {-0.4f, 0.0f, 0.0f}, {1.0f, 0.0f, 1.0f}, 0.3f, 0.01f, {1.0f, 0.5f, 0.0f}
-    }};
-    l_test->bind_shader(shader_program);
-    scene->add_drawable(l_test);
-
-    auto sphere = std::make_shared<axolote::Object3D>(
-        "./resources/models/sphere/sphere.obj", glm::vec3{1.0f, 1.0f, 1.0f},
-        glm::mat4{1.0f}
+    auto dir_light = std::make_shared<MyDirLight>(
+        glm::vec3{1.f, 1.f, 1.f}, true, glm::vec3{1.0f, 0.0f, 0.0f}
     );
-    sphere->bind_shader(shader_program);
-    scene->add_drawable(sphere);
+    scene->add_light(dir_light);
+
+    auto spot_light = std::make_shared<axolote::SpotLight>(
+        glm::vec3{1.0f}, true, glm::vec3{0.0f, 5.0f, 0.0f},
+        glm::vec3{0.0f, -1.0f, 0.0f}, glm::cos(glm::radians(12.5f)),
+        glm::cos(glm::radians(20.0f))
+    );
+    spot_light->linear = 0.09f;
+    spot_light->quadratic = 0.032f;
+    scene->add_light(spot_light);
+    App::flashlight = spot_light;
+
+    auto earth = std::make_shared<axolote::Object3D>(
+        "./resources/models/sphere/sphere.obj",
+        glm::vec4{0.0f, 0.0f, 1.0f, 0.6f},
+        glm::scale(glm::mat4{1.0f}, 6.0f * glm::vec3{1.0f, 1.0f, 1.0f})
+    );
+    earth->bind_shader(shader_program);
+    scene->add_sorted_drawable(earth);
+
+    auto moon = std::make_shared<axolote::Object3D>(
+        "./resources/models/sphere/sphere.obj",
+        glm::vec4{0.9f, 0.9f, 0.9f, 1.0f},
+        glm::translate(glm::mat4{1.0f}, glm::vec3{15.f, 2.f, 0.f})
+    );
+    moon->bind_shader(shader_program);
+    scene->add_drawable(moon);
+
+    auto m26 = std::make_shared<axolote::Object3D>(
+        "./resources/models/m26/m26pershing_coh.obj", glm::vec4{1.0f},
+        glm::translate(glm::mat4{1.0f}, glm::vec3{0.f, -7.f, 0.f})
+    );
+    m26->is_transparent = true;
+    m26->bind_shader(shader_program);
+    scene->add_sorted_drawable(m26);
+
+    auto line = std::make_shared<axolote::utils::Line>(
+        glm::vec3{10.0f, 10.0f, 0.0f}, glm::vec3{1.0f, 1.0f, 1.0f}, 5.0f, 1.0f,
+        glm::vec4{0.0f, 1.0f, 0.0f, 1.0f}, 5
+    );
+    line->bind_shader(shader_program);
+    scene->add_drawable(line);
+
+    auto grid = std::make_shared<axolote::utils::Grid>(
+        70, 5, true, glm::vec4{1.0f, 0.f, 0.f, 1.0f}
+    );
+    grid->fading_factor = 70.0f;
+    grid->bind_shader(grid_shader);
+    scene->set_grid(grid);
 
     set_scene(scene);
     double before = get_time();
@@ -132,14 +148,15 @@ void App::main_loop() {
 
         dt *= DT_MULTIPLIER;
 
-        l_xyz->set_end(glm::vec3{
-            std::cos((float)now) * .2f, std::sin((float)now) * .3f,
-            std::cos((float)now * 0.2f) * .15f
-        });
+        // Flashlight
+        spot_light->pos = current_scene()->camera.pos;
+        spot_light->dir = current_scene()->camera.orientation;
 
         update_camera((float)width() / height());
         update(dt);
         render();
+
+        grid->camera_pos = current_scene()->camera.pos;
 
         flush();
     }
@@ -148,10 +165,9 @@ void App::main_loop() {
 int main() {
     std::cout << "Axolote Engine" << std::endl;
     App app{};
-    app.set_title("Uepa");
+    app.set_title("Main test");
     app.set_width(600);
     app.set_height(600);
-    app.set_color(0x10, 0x10, 0x10);
     app.main_loop();
     return 0;
 }

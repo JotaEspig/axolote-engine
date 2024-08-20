@@ -13,15 +13,16 @@ public:
 
 void App::main_loop() {
     // Loads the default shaders
-    axolote::gl::Shader shader{
+    auto shader = axolote::gl::Shader::create(
         "./resources/shaders/def_vertex_shader.glsl",
         "./resources/shaders/def_fragment_shader.glsl"
-    };
+    );
 
     auto saul_goodman = std::make_shared<axolote::Object3D>();
     saul_goodman->load_model("./resources/models/saul-goodman/model.obj");
-    saul_goodman->model_mat
-        = glm::translate(glm::mat4{1.0f}, glm::vec3{0.0f, 0.0f, -2.0f});
+    saul_goodman->set_matrix(
+        glm::translate(glm::mat4{1.0f}, glm::vec3{0.0f, 0.0f, -2.0f})
+    );
     saul_goodman->bind_shader(shader);
 
     // Creating a scene, configurating the camera and adding a drawable object
@@ -30,8 +31,8 @@ void App::main_loop() {
     scene->camera.sensitivity = 5000.0f;
     scene->add_drawable(saul_goodman);
 
-    // You must set a scene for the engine renders, otherwise it will give you a
-    // segfault :)
+    // You must set a scene for the engine to render it, otherwise it will give
+    // you a segfault :)
     set_scene(scene);
 
     float delta_t = 1.0f / 60.0f;
