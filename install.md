@@ -7,13 +7,32 @@ To install it in your project you can use the `install.sh` script
 ./install.sh <path-to-project>
 ```
 
-It will create a folder called ´external´ and it will store the needed files there
+It will create a folder called ´external´ and another folder called `resources`
+and it will store the needed files there
 
 And then, for compiling your project, you should link the libraries and header files correctly. See the
 [CMakeLists.txt](examples/project_example/CMakeLists.txt) file in the `examples/project_example`
 directory.
 
 ## Windows
+
+### Script
+
+Warning: The script may not work and may throw some errors, but you can try.
+
+To install it in your project you can use the `install_windows.ps1` script
+```bash
+powershell -ExecutionPolicy Bypass -File .\install_windows.ps1 <path-to-install>
+```
+
+It will create a folder called ´external´ and another folder called `resources`
+and it will store the needed files there.
+
+And then, for compiling your project, you should link the libraries and header files correctly. See the
+[CMakeLists.txt](examples/project_example/CMakeLists.txt) file in the `examples/project_example`
+directory.
+
+### Manual
 
 For a better understanding, see the folder `examples/project_example`.
 
