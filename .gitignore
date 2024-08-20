@@ -20,5 +20,6 @@ build/
 .cache/
 
 # files
+compile_commands.json
 *.so
 !libassimp.so
