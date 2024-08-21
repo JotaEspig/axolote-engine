@@ -70,6 +70,9 @@ void App::main_loop() {
         "./resources/shaders/def_grid_vertex_shader.glsl",
         "./resources/shaders/def_grid_fragment_shader.glsl"
     );
+    auto screen_shader = axolote::gl::Shader::create(
+        "./resources/shaders/def_vertex_shader.glsl", "./tests/screen_frag.glsl"
+    );
 
     // Scene object
     std::shared_ptr<axolote::Scene> scene{new axolote::Scene{}};
@@ -108,9 +111,11 @@ void App::main_loop() {
     moon->bind_shader(shader_program);
     scene->add_drawable(moon);
 
+    // TODO: theres a bug that happens sometimes, the m26 texture is the
+    // framebuffer texture ????
     auto m26 = std::make_shared<axolote::Object3D>(
         "./resources/models/m26/m26pershing_coh.obj", glm::vec4{1.0f},
-        glm::translate(glm::mat4{1.0f}, glm::vec3{0.f, -7.f, 0.f})
+        glm::translate(glm::mat4{1.0f}, glm::vec3{0.f, -10.f, 0.f})
     );
     m26->is_transparent = true;
     m26->bind_shader(shader_program);
@@ -130,6 +135,80 @@ void App::main_loop() {
     grid->bind_shader(grid_shader);
     scene->set_grid(grid);
 
+    std::vector<axolote::Vertex> quad_vec{
+        {{-1.0f, 1.0f, 0.0f}, {}, {0.0f, 1.0f}, {}},
+        {{-1.0f, -1.0f, 0.0f}, {}, {0.0f, 0.0f}, {}},
+        {{1.0f, -1.0f, 0.0f}, {}, {1.0f, 0.0f}, {}},
+        {{1.0f, 1.0f, 0.0f}, {}, {1.0f, 1.0f}, {}}
+    };
+    std::vector<axolote::Vertex> red_quad_vec{
+        {{-1.0f, 1.0f, 0.0f}, {1.0f, 0.0f, 0.0f, 1.0f}, {0.0f, 1.0f}, {}},
+        {{-1.0f, -1.0f, 0.0f}, {1.0f, 0.0f, 0.0f, 1.0f}, {0.0f, 0.0f}, {}},
+        {{1.0f, -1.0f, 0.0f}, {1.0f, 0.0f, 0.0f, 1.0f}, {1.0f, 0.0f}, {}},
+        {{1.0f, 1.0f, 0.0f}, {1.0f, 0.0f, 0.0f, 1.0f}, {1.0f, 1.0f}, {}}
+    };
+    std::vector<GLuint> quad_indices{0, 1, 2, 0, 2, 3};
+
+    // Funny things with fbo
+    GLuint fbo;
+    auto tex = axolote::gl::Texture::create();
+    {
+        glGenFramebuffers(1, &fbo);
+
+        // Bind
+        glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+
+        GLuint id = tex->id();
+        glBindTexture(GL_TEXTURE_2D, id);
+
+        int w = 600;
+        int h = 600;
+        glTexImage2D(
+            GL_TEXTURE_2D, 0, GL_RGB, w, h, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL
+        );
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+        glFramebufferTexture2D(
+            GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, id, 0
+        );
+
+        GLuint rbo;
+        glGenRenderbuffers(1, &rbo);
+        glBindRenderbuffer(GL_RENDERBUFFER, rbo);
+        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, w, h);
+        glBindRenderbuffer(GL_RENDERBUFFER, 0);
+
+        glFramebufferRenderbuffer(
+            GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo
+        );
+
+        // Check if the framebuffer is ready to go
+        bool is_ready = glCheckFramebufferStatus(GL_FRAMEBUFFER)
+                        == GL_FRAMEBUFFER_COMPLETE;
+        if (!is_ready) {
+            std::cerr << "Framebuffer is not complete!" << std::endl;
+        }
+
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        glBindTexture(GL_TEXTURE_2D, 0);
+    }
+
+    // TODO: check how to use the textute correctly when resizing the window
+    auto quad = std::make_shared<axolote::GMesh>(
+        quad_vec, quad_indices,
+        std::vector<std::shared_ptr<axolote::gl::Texture>>{tex}
+    );
+    quad->bind_shader(screen_shader);
+    auto red_quad = std::make_shared<axolote::GMesh>(
+        red_quad_vec, quad_indices,
+        std::vector<std::shared_ptr<axolote::gl::Texture>>{}
+    );
+    red_quad->bind_shader(shader_program);
+
+    std::cout << "Starting main loop" << std::endl;
+
     set_scene(scene);
     double before = get_time();
     while (!should_close()) {
@@ -147,6 +226,50 @@ void App::main_loop() {
         set_title(sstr.str());
 
         dt *= DT_MULTIPLIER;
+        {
+            glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+            glClearColor(color().r, color().g, color().b, 1.0f);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            render();
+
+            // second pass
+            glBindFramebuffer(GL_FRAMEBUFFER, 0); // back to default
+            glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+            glClear(GL_COLOR_BUFFER_BIT);
+
+            auto camera = current_scene()->camera;
+            glm::mat4 view = glm::lookAt(
+                camera.pos, camera.pos + camera.orientation, camera.up
+            );
+            glm::mat4 projection = glm::perspective(
+                glm::radians(camera.fov), (float)width() / height(),
+                camera.min_dist, camera.max_dist
+            );
+
+            auto s = quad->get_shader();
+            s->activate();
+            s->set_uniform_float3(
+                "axolote_camera_pos", camera.pos.x, camera.pos.y, camera.pos.z
+            );
+            s->set_uniform_matrix4("axolote_projection", projection);
+            s->set_uniform_matrix4("axolote_view", view);
+            glm::mat4 model = glm::mat4{1.0f};
+            model = glm::translate(model, glm::vec3{0.0f, 0.0f, 10.0f});
+            glDisable(GL_CULL_FACE);
+            quad->draw(model);
+
+            s = red_quad->get_shader();
+            s->activate();
+            s->set_uniform_float3(
+                "axolote_camera_pos", camera.pos.x, camera.pos.y, camera.pos.z
+            );
+            s->set_uniform_matrix4("axolote_projection", projection);
+            s->set_uniform_matrix4("axolote_view", view);
+            model = glm::translate(model, glm::vec3{0.0f, 0.0f, -0.01f});
+            model = glm::scale(model, glm::vec3{1.2f, 1.2f, 1.2f});
+            red_quad->draw(model);
+            glEnable(GL_CULL_FACE);
+        }
 
         // Flashlight
         spot_light->pos = current_scene()->camera.pos;
