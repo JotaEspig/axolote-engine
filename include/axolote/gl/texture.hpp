@@ -83,7 +83,7 @@ private:
     /** OpenGL texture unit **/
     GLuint _unit;
     /** texture is loaded **/
-    bool _loaded;
+    bool _loaded = false;
 
     /**
      * \brief Constructor

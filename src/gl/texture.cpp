@@ -45,16 +45,17 @@ void Texture::destroy() {
     glDeleteTextures(1, &_id);
 }
 
-Texture::Texture() :
-  _loaded{false} {
+Texture::Texture() {
+    glGenTextures(1, &_id);
+    debug("Texture created: %u", _id);
 }
 
 Texture::Texture(
     const char *texture_filename, std::string tex_type, GLuint unit
 ) :
-  _type{tex_type},
-  _unit{unit},
-  _loaded{false} {
+  Texture{} {
+    _type = tex_type;
+    _unit = unit;
     stbi_set_flip_vertically_on_load(true);
     int width_img, height_img, num_channels_img;
     unsigned char *data = stbi_load(
@@ -63,7 +64,6 @@ Texture::Texture(
     if (!data)
         return;
 
-    glGenTextures(1, &_id);
     activate();
     bind();
 
@@ -94,8 +94,6 @@ Texture::Texture(
 
     stbi_image_free(data);
     _loaded = true;
-
-    debug("Texture created: %u", _id);
 }
 
 void Texture::Deleter::operator()(Texture *texture) {
