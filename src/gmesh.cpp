@@ -39,8 +39,7 @@ GMesh::GMesh(
     _ebo->bind();
 
     _vao->link_attrib(
-        _vbo, 0, 3, GL_FLOAT, sizeof(Vertex),
-        (void *)(offsetof(Vertex, pos))
+        _vbo, 0, 3, GL_FLOAT, sizeof(Vertex), (void *)(offsetof(Vertex, pos))
     );
     _vao->link_attrib(
         _vbo, 1, 4, GL_FLOAT, sizeof(Vertex), (void *)(offsetof(Vertex, color))
@@ -108,6 +107,10 @@ void GMesh::default_draw_binds(const glm::mat4 &mat) {
             num = std::to_string(num_specular++);
             _shader->set_uniform_int("axolote_is_specular_map_set", 1);
         }
+        else {
+            num = std::to_string(num_diffuse++);
+            type = "diffuse";
+        }
 
         t->bind();
         t->activate();
@@ -122,6 +125,8 @@ void GMesh::default_draw_unbinds() {
     for (std::shared_ptr<gl::Texture> t : textures) {
         t->unbind();
     }
+    _shader->set_uniform_int("axolote_diffuse0", 99);
+    _shader->set_uniform_int("axolote_specular0", 99);
 }
 
 void GMesh::draw() {
