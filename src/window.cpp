@@ -204,6 +204,10 @@ void Window::set_vsync(bool vsync) {
     glfwSwapInterval(vsync);
 }
 
+std::string Window::get_path(std::string path) const {
+    return _root_path + "/" + path;
+}
+
 std::string Window::title() const {
     return _title;
 }

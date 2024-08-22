@@ -125,6 +125,7 @@ set(
 add_executable(main-test ${MAIN_TEST_SOURCE_FILES})
 add_dependencies(main-test axolote)
 target_compile_definitions(main-test PUBLIC GLAD_GLAPI_EXPORT)
+target_compile_definitions(main-test PUBLIC PROJECT_ROOT_FOLDER="${CMAKE_SOURCE_DIR}")
 
 # Libraries
 if (UNIX)
@@ -172,6 +173,7 @@ set(
 add_executable(window-test ${WINDOW_TEST_SOURCE_FILES})
 add_dependencies(window-test axolote)
 target_compile_definitions(window-test PUBLIC GLAD_GLAPI_EXPORT)
+target_compile_definitions(window-test PUBLIC PROJECT_ROOT_FOLDER="${CMAKE_SOURCE_DIR}")
 
 # Libraries
 if (UNIX)
@@ -219,6 +221,7 @@ set(
 add_executable(models-and-shaders-test ${MODELS_AND_SHADERS_TEST_SOURCE_FILES})
 add_dependencies(models-and-shaders-test axolote)
 target_compile_definitions(models-and-shaders-test PUBLIC GLAD_GLAPI_EXPORT)
+target_compile_definitions(models-and-shaders-test PUBLIC PROJECT_ROOT_FOLDER="${CMAKE_SOURCE_DIR}")
 
 # Libraries
 if (UNIX)

@@ -314,6 +314,12 @@ public:
      **/
     void set_vsync(bool vsync);
     /**
+     * \brief get path relative to executable directory (_root_path)
+     * \author João Vitor Espig (JotaEspig)
+     * \param path - relative path
+     **/
+    std::string get_path(std::string path) const;
+    /**
      * \brief title getter
      * \author João Vitor Espig (JotaEspig)
      **/
@@ -376,6 +382,8 @@ public:
 protected:
     /** window title **/
     std::string _title;
+    /** Absolute path to executable directory **/
+    std::string _root_path;
     /** window background color **/
     Color _color;
 

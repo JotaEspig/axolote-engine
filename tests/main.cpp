@@ -59,24 +59,27 @@ void App::process_input(double dt) {
 }
 
 void App::main_loop() {
+    // Set root path using definition from CMake
+    _root_path = PROJECT_ROOT_FOLDER;
+
     set_color(0xff, 0xff, 0xff);
     std::string original_title = title();
 
     auto shader_program = axolote::gl::Shader::create(
-        "./resources/shaders/object3d_base_vertex_shader.glsl",
-        "./resources/shaders/object3d_base_fragment_shader.glsl"
+        get_path("resources/shaders/object3d_base_vertex_shader.glsl"),
+        get_path("./resources/shaders/object3d_base_fragment_shader.glsl")
     );
     auto gmesh_shader = axolote::gl::Shader::create(
-        "./resources/shaders/gmesh_base_vertex_shader.glsl",
-        "./resources/shaders/gmesh_base_fragment_shader.glsl"
+        get_path("/resources/shaders/gmesh_base_vertex_shader.glsl"),
+        get_path("/resources/shaders/gmesh_base_fragment_shader.glsl")
     );
     auto grid_shader = axolote::gl::Shader::create(
-        "./resources/shaders/grid_base_vertex_shader.glsl",
-        "./resources/shaders/grid_base_fragment_shader.glsl"
+        get_path("/resources/shaders/grid_base_vertex_shader.glsl"),
+        get_path("/resources/shaders/grid_base_fragment_shader.glsl")
     );
     auto screen_shader = axolote::gl::Shader::create(
-        "./resources/shaders/object3d_base_vertex_shader.glsl",
-        "./tests/screen_frag.glsl"
+        get_path("/resources/shaders/object3d_base_vertex_shader.glsl"),
+        get_path("/tests/screen_frag.glsl")
     );
 
     // Scene object
@@ -102,7 +105,7 @@ void App::main_loop() {
     App::flashlight = spot_light;
 
     auto earth = std::make_shared<axolote::Object3D>(
-        "./resources/models/sphere/sphere.obj",
+        get_path("resources/models/sphere/sphere.obj"),
         glm::vec4{0.0f, 0.0f, 1.0f, 0.6f},
         glm::scale(glm::mat4{1.0f}, 6.0f * glm::vec3{1.0f, 1.0f, 1.0f})
     );
@@ -110,7 +113,7 @@ void App::main_loop() {
     scene->add_sorted_drawable(earth);
 
     auto moon = std::make_shared<axolote::Object3D>(
-        "./resources/models/sphere/sphere.obj",
+        get_path("resources/models/sphere/sphere.obj"),
         glm::vec4{0.9f, 0.9f, 0.9f, 1.0f},
         glm::translate(glm::mat4{1.0f}, glm::vec3{15.f, 2.f, 0.f})
     );
@@ -118,7 +121,7 @@ void App::main_loop() {
     scene->add_drawable(moon);
 
     auto m26 = std::make_shared<axolote::Object3D>(
-        "./resources/models/m26/m26pershing_coh.obj", glm::vec4{1.0f},
+        get_path("resources/models/m26/m26pershing_coh.obj"), glm::vec4{1.0f},
         glm::translate(glm::mat4{1.0f}, glm::vec3{0.f, -10.f, 0.f})
     );
     m26->is_transparent = true;
@@ -207,7 +210,7 @@ void App::main_loop() {
     quad->bind_shader(screen_shader);
 
     auto eder_tex = axolote::gl::Texture::create(
-        "./resources/textures/eder.jpg", "diffuse", (GLuint)0
+        get_path("resources/textures/eder.jpg"), "diffuse", (GLuint)0
     );
     auto eder_quad = std::make_shared<axolote::GMesh>(
         eder_quad_vec, quad_indices,
