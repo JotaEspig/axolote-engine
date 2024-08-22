@@ -66,6 +66,10 @@ void App::main_loop() {
         "./resources/shaders/object3d_base_vertex_shader.glsl",
         "./resources/shaders/object3d_base_fragment_shader.glsl"
     );
+    auto gmesh_shader = axolote::gl::Shader::create(
+        "./resources/shaders/gmesh_base_vertex_shader.glsl",
+        "./resources/shaders/gmesh_base_fragment_shader.glsl"
+    );
     auto grid_shader = axolote::gl::Shader::create(
         "./resources/shaders/grid_base_vertex_shader.glsl",
         "./resources/shaders/grid_base_fragment_shader.glsl"
@@ -140,7 +144,7 @@ void App::main_loop() {
         {{1.0f, -1.0f, 0.0f}, {}, {1.0f, 0.0f}, {}},
         {{1.0f, 1.0f, 0.0f}, {}, {1.0f, 1.0f}, {}}
     };
-    std::vector<axolote::Vertex> red_quad_vec{
+    std::vector<axolote::Vertex> eder_quad_vec{
         {{-1.0f, 1.0f, 0.0f}, {1.0f, 0.0f, 0.0f, 1.0f}, {0.0f, 1.0f}, {}},
         {{-1.0f, -1.0f, 0.0f}, {1.0f, 0.0f, 0.0f, 1.0f}, {0.0f, 0.0f}, {}},
         {{1.0f, -1.0f, 0.0f}, {1.0f, 0.0f, 0.0f, 1.0f}, {1.0f, 0.0f}, {}},
@@ -204,13 +208,11 @@ void App::main_loop() {
     auto eder_tex = axolote::gl::Texture::create(
         "./resources/textures/eder.jpg", "diffuse", (GLuint)0
     );
-    auto red_quad = std::make_shared<axolote::Object3D>(
-        red_quad_vec, quad_indices,
-        std::vector<std::shared_ptr<axolote::gl::Texture>>{eder_tex},
-        glm::mat4{1.0f}
+    auto eder_quad = std::make_shared<axolote::GMesh>(
+        eder_quad_vec, quad_indices,
+        std::vector<std::shared_ptr<axolote::gl::Texture>>{eder_tex}
     );
-    red_quad->is_affected_by_lights = false;
-    red_quad->bind_shader(shader_program);
+    eder_quad->bind_shader(gmesh_shader);
 
     std::cout << "Starting main loop" << std::endl;
 
@@ -263,7 +265,7 @@ void App::main_loop() {
             glDisable(GL_CULL_FACE);
             quad->draw(model);
 
-            s = red_quad->get_shader();
+            s = eder_quad->get_shader();
             s->activate();
             s->set_uniform_float3(
                 "axolote_camera_pos", camera.pos.x, camera.pos.y, camera.pos.z
@@ -271,9 +273,8 @@ void App::main_loop() {
             s->set_uniform_matrix4("axolote_projection", projection);
             s->set_uniform_matrix4("axolote_view", view);
             model = glm::translate(model, glm::vec3{0.0f, 0.0f, -0.01f});
-            model = glm::scale(model, glm::vec3{1.2f, 1.2f, 1.2f});
-            red_quad->set_matrix(model);
-            red_quad->draw(model);
+            model = glm::scale(model, glm::vec3{1.1f, 1.1f, 1.1f});
+            eder_quad->draw(model);
             glEnable(GL_CULL_FACE);
         }
 
