@@ -51,7 +51,7 @@ Texture::Texture() {
 }
 
 Texture::Texture(
-    const char *texture_filename, std::string tex_type, GLuint unit
+    std::string texture_filename, std::string tex_type, GLuint unit
 ) :
   Texture{} {
     _type = tex_type;
@@ -59,7 +59,7 @@ Texture::Texture(
     stbi_set_flip_vertically_on_load(true);
     int width_img, height_img, num_channels_img;
     unsigned char *data = stbi_load(
-        texture_filename, &width_img, &height_img, &num_channels_img, 0
+        texture_filename.c_str(), &width_img, &height_img, &num_channels_img, 0
     );
     if (!data)
         return;

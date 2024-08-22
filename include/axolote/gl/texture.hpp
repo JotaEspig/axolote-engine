@@ -97,7 +97,7 @@ private:
      * \param tex_type - type of text ("diffuse" or "specular")
      * \param _unit - texture unit (used inside OpenGL shaders)
      **/
-    Texture(const char *texture_filename, std::string tex_type, GLuint unit);
+    Texture(std::string texture_filename, std::string tex_type, GLuint unit);
 };
 
 template <typename... Args>

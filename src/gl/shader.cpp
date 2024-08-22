@@ -75,9 +75,9 @@ void Shader::destroy() {
 Shader::Shader() {
 }
 
-Shader::Shader(const char *vertex_file, const char *fragment_file) {
-    std::string vertex_code = get_file_content(vertex_file);
-    std::string fragment_code = get_file_content(fragment_file);
+Shader::Shader(std::string vertex_file, std::string fragment_file) {
+    std::string vertex_code = get_file_content(vertex_file.c_str());
+    std::string fragment_code = get_file_content(fragment_file.c_str());
     const char *vertex_src = vertex_code.c_str();
     const char *fragment_src = fragment_code.c_str();
 

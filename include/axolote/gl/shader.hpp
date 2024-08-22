@@ -6,6 +6,7 @@
 #pragma once
 
 #include <memory>
+#include <string>
 #include <utility>
 
 #include <glm/glm.hpp>
@@ -110,7 +111,7 @@ private:
      * \param vertex_file - vertex glsl file
      * \param fragment_file - fragment glsl file
      **/
-    Shader(const char *vertex_file, const char *fragment_file);
+    Shader(std::string vertex_file, std::string fragment_file);
 };
 
 template <typename... Args>
