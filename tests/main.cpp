@@ -77,7 +77,7 @@ void App::main_loop() {
 
     // Scene object
     std::shared_ptr<axolote::Scene> scene{new axolote::Scene{}};
-    scene->camera.pos = {0.0f, 0.0f, 3.0f};
+    scene->camera.pos = {0.0f, 0.0f, 12.35f};
     scene->camera.speed = 3.0f;
     scene->camera.sensitivity = 10000.0f;
 
@@ -200,10 +200,16 @@ void App::main_loop() {
         std::vector<std::shared_ptr<axolote::gl::Texture>>{tex}
     );
     quad->bind_shader(screen_shader);
-    auto red_quad = std::make_shared<axolote::GMesh>(
-        red_quad_vec, quad_indices,
-        std::vector<std::shared_ptr<axolote::gl::Texture>>{}
+
+    auto eder_tex = axolote::gl::Texture::create(
+        "./resources/textures/eder.jpg", "diffuse", (GLuint)0
     );
+    auto red_quad = std::make_shared<axolote::Object3D>(
+        red_quad_vec, quad_indices,
+        std::vector<std::shared_ptr<axolote::gl::Texture>>{eder_tex},
+        glm::mat4{1.0f}
+    );
+    red_quad->is_affected_by_lights = false;
     red_quad->bind_shader(shader_program);
 
     std::cout << "Starting main loop" << std::endl;
@@ -266,6 +272,7 @@ void App::main_loop() {
             s->set_uniform_matrix4("axolote_view", view);
             model = glm::translate(model, glm::vec3{0.0f, 0.0f, -0.01f});
             model = glm::scale(model, glm::vec3{1.2f, 1.2f, 1.2f});
+            red_quad->set_matrix(model);
             red_quad->draw(model);
             glEnable(GL_CULL_FACE);
         }
