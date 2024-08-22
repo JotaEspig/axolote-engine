@@ -112,8 +112,6 @@ void App::main_loop() {
     moon->bind_shader(shader_program);
     scene->add_drawable(moon);
 
-    // TODO: theres a bug that happens sometimes, the m26 texture is the
-    // framebuffer texture ????
     auto m26 = std::make_shared<axolote::Object3D>(
         "./resources/models/m26/m26pershing_coh.obj", glm::vec4{1.0f},
         glm::translate(glm::mat4{1.0f}, glm::vec3{0.f, -10.f, 0.f})

@@ -81,7 +81,7 @@ private:
     /** texture type **/
     std::string _type;
     /** OpenGL texture unit **/
-    GLuint _unit;
+    GLuint _unit = 0;
     /** texture is loaded **/
     bool _loaded = false;
 
