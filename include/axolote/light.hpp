@@ -5,8 +5,8 @@
  **/
 #pragma once
 
-#include <string>
 #include <memory>
+#include <string>
 
 #include "axolote/gl/shader.hpp"
 
@@ -96,6 +96,8 @@ class DirectionalLight : public Light {
 public:
     /** Light direction **/
     glm::vec3 dir;
+    /** Light intensity **/
+    float intensity = 1.0f;
 
     /**
      * \brief Constructor

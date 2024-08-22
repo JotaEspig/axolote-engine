@@ -10,7 +10,7 @@ out vec3 axolote_current_pos;
 
 uniform mat4 axolote_model;
 
-// Warning: These 2 uniforms are NOT set in the
+// WARNING: These 2 uniforms are NOT set in the
 // GMesh class, you have to set them manually
 uniform mat4 axolote_projection;
 uniform mat4 axolote_view;

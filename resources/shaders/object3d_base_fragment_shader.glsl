@@ -14,6 +14,7 @@ struct axolote_DirectionalLight {
     vec3 color;
     bool is_set;
     vec3 dir;
+    float intensity;
 };
 
 struct axolote_SpotLight {
@@ -114,7 +115,7 @@ vec3 axolote_calculate_directional_light(axolote_DirectionalLight light) {
     float specular_map = axolote_get_specular_map();
     float specular_light_color = specular_map * specular;
 
-    return (diffuse_light_color + specular_light_color) * light.color.rgb;
+    return (diffuse_light_color + specular_light_color) * light.color.rgb * light.intensity;
 }
 
 vec3 axolote_calculate_spot_light(axolote_SpotLight light) {

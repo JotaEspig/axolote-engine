@@ -10,7 +10,9 @@ Light::Light(const glm::vec3 &color, bool is_set, Type type) :
   type{type} {
 }
 
-void Light::bind(std::shared_ptr<gl::Shader> shader, const std::string &prefix) {
+void Light::bind(
+    std::shared_ptr<gl::Shader> shader, const std::string &prefix
+) {
     std::string color_name = prefix + ".color";
     shader->set_uniform_float3(color_name.c_str(), color.x, color.y, color.z);
 
@@ -30,7 +32,9 @@ PointLight::PointLight(
   radius{radius} {
 }
 
-void PointLight::bind(std::shared_ptr<gl::Shader> shader, const std::string &prefix) {
+void PointLight::bind(
+    std::shared_ptr<gl::Shader> shader, const std::string &prefix
+) {
     // Base bindings
     Light::bind(shader, prefix);
 
@@ -58,13 +62,17 @@ DirectionalLight::DirectionalLight(
   dir{dir} {
 }
 
-void DirectionalLight::bind(std::shared_ptr<gl::Shader> shader, const std::string &prefix) {
+void DirectionalLight::bind(
+    std::shared_ptr<gl::Shader> shader, const std::string &prefix
+) {
     // Base bindings
     Light::bind(shader, prefix);
 
     // Specific bindings
     std::string dir_name = prefix + ".dir";
     shader->set_uniform_float3(dir_name.c_str(), dir.x, dir.y, dir.z);
+    std::string intensity_name = prefix + ".intensity";
+    shader->set_uniform_float(intensity_name.c_str(), intensity);
 }
 
 SpotLight::SpotLight(
@@ -78,7 +86,9 @@ SpotLight::SpotLight(
   outer_cut_off{outer_cut_off} {
 }
 
-void SpotLight::bind(std::shared_ptr<gl::Shader> shader, const std::string &prefix) {
+void SpotLight::bind(
+    std::shared_ptr<gl::Shader> shader, const std::string &prefix
+) {
     // Base bindings
     Light::bind(shader, prefix);
 

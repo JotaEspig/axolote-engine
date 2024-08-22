@@ -88,6 +88,7 @@ void App::main_loop() {
     auto dir_light = std::make_shared<MyDirLight>(
         glm::vec3{1.f, 1.f, 1.f}, true, glm::vec3{1.0f, 0.0f, 0.0f}
     );
+    dir_light->intensity = 0.9f;
     scene->add_light(dir_light);
 
     auto spot_light = std::make_shared<axolote::SpotLight>(
