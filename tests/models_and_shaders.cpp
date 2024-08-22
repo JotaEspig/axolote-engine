@@ -14,8 +14,8 @@ public:
 void App::main_loop() {
     // Loads the default shaders
     auto shader = axolote::gl::Shader::create(
-        "./resources/shaders/def_vertex_shader.glsl",
-        "./resources/shaders/def_fragment_shader.glsl"
+        "./resources/shaders/object3d_base_vertex_shader.glsl",
+        "./resources/shaders/object3d_base_fragment_shader.glsl"
     );
 
     auto saul_goodman = std::make_shared<axolote::Object3D>();

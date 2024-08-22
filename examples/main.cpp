@@ -63,12 +63,12 @@ void App::main_loop() {
     std::string original_title = title();
 
     auto shader_program = axolote::gl::Shader::create(
-        "./resources/shaders/def_vertex_shader.glsl",
-        "./resources/shaders/def_fragment_shader.glsl"
+        "./resources/shaders/object3d_base_vertex_shader.glsl",
+        "./resources/shaders/object3d_base_fragment_shader.glsl"
     );
     auto grid_shader = axolote::gl::Shader::create(
-        "./resources/shaders/def_grid_vertex_shader.glsl",
-        "./resources/shaders/def_grid_fragment_shader.glsl"
+        "./resources/shaders/grid_base_vertex_shader.glsl",
+        "./resources/shaders/grid_base_fragment_shader.glsl"
     );
 
     // Scene object

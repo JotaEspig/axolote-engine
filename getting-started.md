@@ -12,9 +12,10 @@ To open a window you must create a class that inherits from `axolote::Window` an
 Please take note that we are processing input from the keyboard and mouse.
 Look at the `poll_events` and `process_input` methods. `poll_events` it's a must call to work with input.
 And `process_input` it's the default implementation to process user input, using this implementation you have:
- - W, A, S, D, Left Shift and Space -> Move around
- - Holding mouse right button and dragging it -> Camera movement
- - ESC -> Quit
+
+-   W, A, S, D, Left Shift and Space -> Move around
+-   Holding mouse right button and dragging it -> Camera movement
+-   ESC -> Quit
 
 ```cpp
 #include <iostream>
@@ -88,8 +89,8 @@ public:
 void App::main_loop() {
     // Loads the default shaders
     auto shader = axolote::gl::Shader::create(
-        "./resources/shaders/def_vertex_shader.glsl",
-        "./resources/shaders/def_fragment_shader.glsl"
+        "./resources/shaders/object3d_base_vertex_shader.glsl",
+        "./resources/shaders/object3d_base_fragment_shader.glsl"
     );
 
     auto saul_goodman = std::make_shared<axolote::Object3D>();
@@ -148,6 +149,7 @@ You can see some examples in the [examples](examples) folder.
 You can run it as well:
 
 Linux
+
 ```bash
 ./bin/window-test
 ./bin/models-and-shaders-test
@@ -155,6 +157,7 @@ Linux
 ```
 
 Windows:
+
 ```bash
 .\bin\Release\window-test.exe
 .\bin\Release\models-and-shaders-test.exe
@@ -164,6 +167,7 @@ Windows:
 ## Documentation
 
 If you have Doxygen, you can read the documentation using:
+
 ```bash
 git clone https://github.com/JotaEspig/axolote-engine
 cd axolote-engine
