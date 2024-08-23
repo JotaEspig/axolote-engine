@@ -29,6 +29,7 @@ public:
     bool is_transparent = false;
     /** is the object affected by lights **/
     bool is_affected_by_lights = true;
+    std::string name;
 
     /**
      * \brief Constructor

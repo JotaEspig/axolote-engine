@@ -109,6 +109,8 @@ void App::main_loop() {
         glm::vec4{0.0f, 0.0f, 1.0f, 0.6f},
         glm::scale(glm::mat4{1.0f}, 6.0f * glm::vec3{1.0f, 1.0f, 1.0f})
     );
+    earth->name = "earth";
+    earth->is_transparent = true;
     earth->bind_shader(shader_program);
     scene->add_sorted_drawable(earth);
 
@@ -124,6 +126,7 @@ void App::main_loop() {
         get_path("resources/models/m26/m26pershing_coh.obj"), glm::vec4{1.0f},
         glm::translate(glm::mat4{1.0f}, glm::vec3{0.f, -10.f, 0.f})
     );
+    m26->name = "m26";
     m26->is_transparent = true;
     m26->bind_shader(shader_program);
     scene->add_sorted_drawable(m26);
@@ -265,7 +268,12 @@ void App::main_loop() {
             s->set_uniform_matrix4("axolote_projection", projection);
             s->set_uniform_matrix4("axolote_view", view);
             glm::mat4 model = glm::mat4{1.0f};
-            model = glm::translate(model, glm::vec3{0.0f, 0.0f, 10.0f});
+            // make the model orbit around the the center using radius 10
+            model = glm::rotate(
+                model, (float)get_time() * 0.1f, glm::vec3{0.0f, 1.0f, 0.0f}
+            );
+            model = glm::translate(model, glm::vec3{10.0f, 0.0f, 0.0f});
+
             glDisable(GL_CULL_FACE);
             quad->draw(model);
 
@@ -293,6 +301,13 @@ void App::main_loop() {
         grid->camera_pos = current_scene()->camera.pos;
 
         flush();
+
+        // Print order of drawing objects and its positions
+        // std::cout << "\n\n";
+        // for (auto d : current_scene()->sorted_drawables_objects()) {
+        // std::cout << d->name << " -> " << glm::to_string(d->get_matrix())
+        //<< std::endl;
+        //}
     }
 }
 
