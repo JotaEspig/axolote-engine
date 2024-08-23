@@ -20,6 +20,9 @@ namespace axolote {
 /**
  * \brief defines a 3D Object
  * \author João Vitor Espig (JotaEspig)
+ *
+ * \remarks This class is probably the class you want to use to create any 3D
+ * object
  **/
 class Object3D : public Drawable {
 public:

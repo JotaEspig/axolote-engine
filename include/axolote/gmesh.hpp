@@ -26,6 +26,8 @@ namespace axolote {
  *
  * The difference between GMesh and Mesh is that GMesh you can draw.
  * You should use GMesh if you want a default implementation for drawing
+ *
+ * \remark You should use this class only when you want a low-level control
  **/
 class GMesh : public Mesh, public Drawable {
 public:

@@ -22,6 +22,9 @@ namespace axolote {
  * \author João Vitor Espig (JotaEspig)
  *
  * You should use GModel if you want a default implementation for drawing
+ *
+ * \remarks This class is a intermediate level class, you probably want to use
+ * Object3D class instead
  **/
 class GModel : public Drawable {
 public:
@@ -62,6 +65,8 @@ public:
      **/
     std::shared_ptr<gl::Shader> get_shader() const override;
     /**
+     * \brief updates
+     * \author João Vitor Espig (JotaEspig)
      * \param dt - delta time
      **/
     void update(double dt) override;
