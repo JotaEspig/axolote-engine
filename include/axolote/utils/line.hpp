@@ -38,12 +38,12 @@ public:
     /**
      * @brief Constructor
      * @author João Vitor Espig (jotaespig@gmail.com)
-     * @param point - starting point
-     * @param direction_vector - direction vector
-     * @param length - line length
-     * @param thickness - line thickness
-     * @param color - line color
-     * @param line_quality - line quality
+     * @param point starting point
+     * @param direction_vector direction vector
+     * @param length line length
+     * @param thickness line thickness
+     * @param color line color
+     * @param line_quality line quality
      **/
     Line(
         const glm::vec3 &point, const glm::vec3 &direction_vector, float length,
@@ -59,7 +59,7 @@ public:
     /**
      * @brief set line end point
      * @author Mickael Reichert (mickael.reichert@gmail.com)
-     * @param end - end point
+     * @param end end point
      **/
     void set_end(const glm::vec3 &end);
 

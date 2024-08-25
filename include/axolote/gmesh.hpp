@@ -39,15 +39,15 @@ public:
     /**
      * @brief Constructor
      * @author João Vitor Espig (jotaespig@gmail.com)
-     * @param mesh - mesh object
+     * @param mesh mesh object
      **/
     GMesh(const Mesh &mesh);
     /**
      * @brief Constructor
      * @author João Vitor Espig (jotaespig@gmail.com)
-     * @param vertices - polygon mesh vertices
-     * @param indices - polygon mesh indices
-     * @param textures - textures to be rendered with polygon mesh
+     * @param vertices polygon mesh vertices
+     * @param indices polygon mesh indices
+     * @param textures textures to be rendered with polygon mesh
      **/
     GMesh(
         const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices,
@@ -72,7 +72,7 @@ public:
     /**
      * @brief binds a shader into gmesh
      * @author João Vitor Espig (jotaespig@gmail.com)
-     * @param shader_program - Shader
+     * @param shader_program Shader
      **/
     void bind_shader(std::shared_ptr<gl::Shader> shader_program) override;
     /**
@@ -81,7 +81,7 @@ public:
      **/
     std::shared_ptr<gl::Shader> get_shader() const override;
     /**
-     * @param dt - delta time
+     * @param dt delta time
      **/
     void update(double dt) override;
     /**
@@ -104,7 +104,7 @@ public:
     /**
      * @brief draws
      * @author João Vitor Espig (jotaespig@gmail.com)
-     * @param mat - model transformation matrix
+     * @param mat model transformation matrix
      **/
     void draw(const glm::mat4 &mat) override;
 

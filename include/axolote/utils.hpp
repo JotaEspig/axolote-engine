@@ -12,7 +12,7 @@ namespace axolote {
 /**
  * @brief read file entirely
  * @author João Vitor Espig (jotaespig@gmail.com)
- * @param filename - name of file
+ * @param filename name of file
  **/
 std::string get_file_content(const char *filename);
 #ifdef DEBUG

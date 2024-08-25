@@ -42,16 +42,16 @@ public:
     /**
      * @brief Constructor
      * @author João Vitor Espig (jotaespig@gmail.com)
-     * @param mat - model transformation matrix
+     * @param mat model transformation matrix
      **/
     Object3D(const glm::mat4 &mat);
     /**
      * @brief Constructor
      * @author João Vitor Espig (jotaespig@gmail.com)
-     * @param vertices - polygon mesh vertices
-     * @param indices - polygon mesh indices
-     * @param textures - textures to be rendered with polygon mesh
-     * @param mat - model transformation matrix
+     * @param vertices polygon mesh vertices
+     * @param indices polygon mesh indices
+     * @param textures textures to be rendered with polygon mesh
+     * @param mat model transformation matrix
      **/
     Object3D(
         const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices,
@@ -61,9 +61,9 @@ public:
     /**
      * @brief initializes an Object3D from model file
      * @author João Vitor Espig (jotaespig@gmail.com)
-     * @param path - path to file
-     * @param color - default color for the model if there's no texture
-     * @param mat - model transformation matrix
+     * @param path path to file
+     * @param color default color for the model if there's no texture
+     * @param mat model transformation matrix
      *
      * It calls load_model method
      **/
@@ -72,8 +72,8 @@ public:
     /**
      * @brief loads a model from file
      * @author João Vitor Espig (jotaespig@gmail.com)
-     * @param path - path to file
-     * @param color - default color for the model if there's no texture
+     * @param path path to file
+     * @param color default color for the model if there's no texture
      *
      * It uses constructor from Model
      **/
@@ -102,7 +102,7 @@ public:
      **/
     std::shared_ptr<gl::Shader> get_shader() const override;
     /**
-     * @param dt - delta time
+     * @param dt delta time
      **/
     void update(double dt) override;
     /**
@@ -113,7 +113,7 @@ public:
     /**
      * @brief draws
      * @author João Vitor Espig (jotaespig@gmail.com)
-     * @param mat - matrix transformation model
+     * @param mat matrix transformation model
      *
      * It just calls draw()
      **/

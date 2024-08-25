@@ -50,10 +50,10 @@ public:
     /**
      * @brief Constructor
      * @author João Vitor Espig (jotaespig@gmail.com)
-     * @param size - grid size
-     * @param step - grid step
-     * @param is_3d - is 3D grid
-     * @param color - grid color
+     * @param size grid size
+     * @param step grid step
+     * @param is_3d is 3D grid
+     * @param color grid color
      **/
     Grid(
         std::uint8_t size, std::uint8_t step, bool is_3d, const glm::vec4 &color

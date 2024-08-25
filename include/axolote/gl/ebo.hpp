@@ -61,9 +61,9 @@ public:
      * @author João Vitor Espig (jotaespig@gmail.com)
      * \data June 07, 2024
      * \version June 07, 2024
-     * @param size - size of the data
-     * @param data - pointer to the data
-     * @param usage - usage of the data
+     * @param size size of the data
+     * @param data pointer to the data
+     * @param usage usage of the data
      **/
     void buffer_data(
         std::size_t size, const void *data, GLenum usage = GL_STATIC_DRAW
@@ -92,7 +92,7 @@ private:
     /**
      * @brief Constructor
      * @author João Vitor Espig (jotaespig@gmail.com)
-     * @param indices - array of indices
+     * @param indices array of indices
      **/
     EBO(const std::vector<GLuint> &indices);
 };

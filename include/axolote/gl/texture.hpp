@@ -93,9 +93,9 @@ private:
     /**
      * @brief Constructor
      * @author João Vitor Espig (jotaespig@gmail.com)
-     * @param texture_filename - name of texture file
-     * @param tex_type - type of text ("diffuse" or "specular")
-     * @param _unit - texture unit (used inside OpenGL shaders)
+     * @param texture_filename name of texture file
+     * @param tex_type type of text ("diffuse" or "specular")
+     * @param _unit texture unit (used inside OpenGL shaders)
      **/
     Texture(std::string texture_filename, std::string tex_type, GLuint unit);
 };

@@ -39,8 +39,8 @@ public:
     /**
      * @brief Initializes the framebuffer with a given width and height
      * @author João Vitor Espig (jotaespig@gmail.com)
-     * @param width - framebuffer width
-     * @param height - framebuffer height
+     * @param width framebuffer width
+     * @param height framebuffer height
      **/
     void init(std::uint16_t width, std::uint16_t height);
     /**
@@ -68,23 +68,23 @@ public:
     /**
      * @brief Resize the framebuffer to a given width and height
      * @author João Vitor Espig (jotaespig@gmail.com)
-     * @param width - new width
-     * @param height - new height
+     * @param width new width
+     * @param height new height
      **/
     void resize(std::uint16_t width, std::uint16_t height);
     /**
      * @brief clear color of the framebuffer
      * @author João Vitor Espig (jotaespig@gmail.com)
-     * @param r - red
-     * @param g - green
-     * @param b - blue
-     * @param a - alpha
+     * @param r red
+     * @param g green
+     * @param b blue
+     * @param a alpha
      **/
     void clear_color(float r, float g, float b, float a);
     /**
      * @brief clear the framebuffer with a given mask
      * @author João Vitor Espig (jotaespig@gmail.com)
-     * @param mask - mask to clear
+     * @param mask mask to clear
      **/
     void clear(GLbitfield mask);
     /**

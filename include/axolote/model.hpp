@@ -31,8 +31,8 @@ public:
     /**
      * @brief Constructor
      * @author João Vitor Espig (jotaespig@gmail.com)
-     * @param path - path to model file (.obj)
-     * @param color - default Model color
+     * @param path path to model file (.obj)
+     * @param color default Model color
      **/
     Model(
         std::string path,
@@ -42,8 +42,8 @@ public:
     /**
      * @brief loads a model from file
      * @author João Vitor Espig (jotaespig@gmail.com)
-     * @param path - path to file
-     * @param color - default color for model
+     * @param path path to file
+     * @param color default color for model
      **/
     void load_model(std::string path, const glm::vec4 &color);
 };

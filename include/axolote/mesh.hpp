@@ -36,9 +36,9 @@ struct Mesh {
     /**
      * @brief Constructor
      * @author João Vitor Espig (jotaespig@gmail.com)
-     * @param _vertices - polygon mesh vertices
-     * @param _indices - polygon mesh indices
-     * @param _textures - textures to be rendered with polygon mesh
+     * @param _vertices polygon mesh vertices
+     * @param _indices polygon mesh indices
+     * @param _textures textures to be rendered with polygon mesh
      **/
     Mesh(
         const std::vector<Vertex> &_vertices,

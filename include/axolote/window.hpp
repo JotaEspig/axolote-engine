@@ -179,7 +179,7 @@ public:
     /**
      * @brief Constructor with Vsync
      * @author João Vitor Espig (jotaespig@gmail.com)
-     * @param vsync - should use vsync
+     * @param vsync should use vsync
      **/
     Window(bool vsync);
     /**
@@ -191,9 +191,9 @@ public:
     /**
      * @brief Default framebuffer size callback
      *
-     * @param window - GLFWwindow pointer
-     * @param width - window width
-     * @param height - window height
+     * @param window GLFWwindow pointer
+     * @param width window width
+     * @param height window height
      *
      * When you want to implement a custom framebuffer size callback, you can
      * use this method as a reference. And it's recommended to see the function
@@ -206,8 +206,8 @@ public:
     /**
      * @brief Default error callback
      *
-     * @param error - error code
-     * @param description - error description
+     * @param error error code
+     * @param description error description
 
      * When you want to implement a custom error callback, you can
      * use this method as a reference. And it's recommended to see the function
@@ -229,7 +229,7 @@ public:
     /**
      * @brief get key state
      * @author João Vitor Espig (jotaespig@gmail.com)
-     * @param key - key to check
+     * @param key key to check
      * @returns KeyState enum
      **/
     KeyState get_key_state(Key key);
@@ -238,41 +238,41 @@ public:
     /**
      * @brief returns if a key is pressed
      * @author João Vitor Espig (jotaespig@gmail.com)
-     * @param key - key to check
+     * @param key key to check
      * @returns true or false
      **/
     bool is_key_pressed(Key key) const;
     /**
      * @brief set a key as pressed or not
      * @author João Vitor Espig (jotaespig@gmail.com)
-     * @param key - key to set
-     * @param value - true or false
+     * @param key key to set
+     * @param value true or false
      **/
     void set_key_pressed(Key key, bool value);
     /**
      * @brief set the cursor mode
      * @author João Vitor Espig (jotaespig@gmail.com)
-     * @param mode - CursorMode enum
+     * @param mode CursorMode enum
      **/
     void set_cursor_mode(CursorMode mode);
     /**
      * @brief get the cursor position
      * @author João Vitor Espig (jotaespig@gmail.com)
-     * @param xpos - x position
-     * @param ypos - y position
+     * @param xpos x position
+     * @param ypos y position
      **/
     void get_cursor_position(double *xpos, double *ypos);
     /**
      * @brief set the cursor position
      * @author João Vitor Espig (jotaespig@gmail.com)
-     * @param xpos - x position
-     * @param ypos - y position
+     * @param xpos x position
+     * @param ypos y position
      **/
     void set_cursor_position(double xpos, double ypos);
     /**
      * @brief process user input
      * @author João Vitor Espig (jotaespig@gmail.com)
-     * @param delta_t - time difference from last frame
+     * @param delta_t time difference from last frame
      *
      * Preconfigured way to process SPACE, SHIFT, CTRL and mouse movement
      * (this method can be overrided)
@@ -281,7 +281,7 @@ public:
     /**
      * @brief process the simplest user input (AWSD)
      * @author João Vitor Espig (jotaespig@gmail.com)
-     * @param delta_t - time difference from last frame
+     * @param delta_t time difference from last frame
      *
      * Preconfigured way to process A, W, S and D keys
      * (this method can be overrided)
@@ -295,7 +295,7 @@ public:
     /**
      * @brief set if window should close
      * @author João Vitor Espig (jotaespig@gmail.com)
-     * @param value - true or false
+     * @param value true or false
      **/
     void set_should_close(bool value);
     /**
@@ -309,11 +309,11 @@ public:
      **/
     void flush();
     /**
-     * @param aspect_ratio - camera aspect ratio
+     * @param aspect_ratio camera aspect ratio
      **/
     void update_camera(float aspect_ratio);
     /**
-     * @param delta_t - time difference from last frame
+     * @param delta_t time difference from last frame
      **/
     void update(double delta_t);
     /**
@@ -326,7 +326,7 @@ public:
     /**
      * @brief Set the current scene
      * @author João Vitor Espig (jotaespig@gmail.com)
-     * @param scene - Scene object pointer
+     * @param scene Scene object pointer
      **/
     void set_scene(std::shared_ptr<Scene> scene);
     /**
@@ -338,13 +338,13 @@ public:
     /**
      * @brief Enable or disable vsync
      * @author João Vitor Espig (jotaespig@gmail.com)
-     * @param vsync - should use vsync
+     * @param vsync should use vsync
      **/
     void set_vsync(bool vsync);
     /**
      * @brief get path relative to executable directory (_root_path)
      * @author João Vitor Espig (jotaespig@gmail.com)
-     * @param path - relative path
+     * @param path relative path
      **/
     std::string get_path(std::string path) const;
     /**
@@ -355,7 +355,7 @@ public:
     /**
      * @brief title setter
      * @author João Vitor Espig (jotaespig@gmail.com)
-     * @param new_title - new window title
+     * @param new_title new window title
      **/
     void set_title(std::string new_title);
     /**
@@ -366,7 +366,7 @@ public:
     /**
      * @brief width setter
      * @author João Vitor Espig (jotaespig@gmail.com)
-     * @param new_width - new window width
+     * @param new_width new window width
      **/
     void set_width(int new_width);
     /**
@@ -377,7 +377,7 @@ public:
     /**
      * @brief height setter
      * @author João Vitor Espig (jotaespig@gmail.com)
-     * @param new_height - new window height
+     * @param new_height new window height
      **/
     void set_height(int new_height);
     /**
@@ -388,16 +388,16 @@ public:
     /**
      * @brief color setter
      * @author João Vitor Espig (jotaespig@gmail.com)
-     * @param color - Color object
+     * @param color Color object
      **/
     void set_color(const Color &color);
     /**
      * @brief color setter
      * @author João Vitor Espig (jotaespig@gmail.com)
-     * @param r - Red in RGB
-     * @param g - Green in RGB
-     * @param b - Blue in RGB
-     * @param opacity - alpha param
+     * @param r Red in RGB
+     * @param g Green in RGB
+     * @param b Blue in RGB
+     * @param opacity alpha param
      **/
     void set_color(uint8_t r, uint8_t g, uint8_t b, float opacity = 1.0f);
     /**

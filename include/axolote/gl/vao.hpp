@@ -40,12 +40,12 @@ public:
     /**
      * @brief links an attribute
      * @author João Vitor Espig (jotaespig@gmail.com)
-     * @param vbo - VBO object
-     * @param layout - layout index (used in inside OpenGL shaders)
-     * @param num_components - number of components in attribute
-     * @param type - data type of the components
-     * @param size - size of attribute
-     * @param offset - offset to attribute according to VBO object
+     * @param vbo VBO object
+     * @param layout layout index (used in inside OpenGL shaders)
+     * @param num_components number of components in attribute
+     * @param type data type of the components
+     * @param size size of attribute
+     * @param offset offset to attribute according to VBO object
      **/
     void link_attrib(
         std::shared_ptr<VBO> vbo, GLuint layout, GLuint num_components,
@@ -54,9 +54,9 @@ public:
     /**
      * @brief Divides correctly attrib
      * @author João Vitor Espig (jotaespig@gmail.com)
-     * @param vbo - VBO object
-     * @param layout - index
-     * @param divisor - divisor
+     * @param vbo VBO object
+     * @param layout index
+     * @param divisor divisor
      **/
     void attrib_divisor(std::shared_ptr<VBO> vbo, GLuint index, GLuint divisor);
     /**
