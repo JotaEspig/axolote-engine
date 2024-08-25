@@ -1,7 +1,7 @@
 /**
- * \file grid.hpp
- * \brief Grid class
- * \author João Vitor Espig (JotaEspig)
+ * @file grid.hpp
+ * @brief Grid class
+ * @author João Vitor Espig (jotaespig@gmail.com)
  **/
 #pragma once
 
@@ -20,8 +20,8 @@ namespace axolote {
 namespace utils {
 
 /**
- * \brief Grid class
- * \author João Vitor Espig (JotaEspig)
+ * @brief Grid class
+ * @author João Vitor Espig (jotaespig@gmail.com)
  **/
 class Grid : public Drawable {
 public:
@@ -43,25 +43,25 @@ public:
     glm::mat4 model_mat{1.0f};
 
     /**
-     * \brief Constructor
-     * \author João Vitor Espig (JotaEspig)
+     * @brief Constructor
+     * @author João Vitor Espig (jotaespig@gmail.com)
      **/
     Grid();
     /**
-     * \brief Constructor
-     * \author João Vitor Espig (JotaEspig)
-     * \param size - grid size
-     * \param step - grid step
-     * \param is_3d - is 3D grid
-     * \param color - grid color
+     * @brief Constructor
+     * @author João Vitor Espig (jotaespig@gmail.com)
+     * @param size - grid size
+     * @param step - grid step
+     * @param is_3d - is 3D grid
+     * @param color - grid color
      **/
     Grid(
         std::uint8_t size, std::uint8_t step, bool is_3d, const glm::vec4 &color
     );
 
     /**
-     * \brief build the mesh for the grid
-     * \author João Vitor Espig (JotaEspig)
+     * @brief build the mesh for the grid
+     * @author João Vitor Espig (jotaespig@gmail.com)
      **/
     void build_mesh();
     void bind_shader(std::shared_ptr<gl::Shader> shader_program) override;

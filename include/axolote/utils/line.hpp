@@ -1,7 +1,7 @@
 /**
- * \file line.hpp
- * \brief Line object
- * \author João Vitor Espig (JotaEspig)
+ * @file line.hpp
+ * @brief Line object
+ * @author João Vitor Espig (jotaespig@gmail.com)
  **/
 #pragma once
 
@@ -14,8 +14,8 @@ namespace axolote {
 namespace utils {
 
 /**
- * \brief Defines a drawable line
- * \author João Vitor Espig (JotaEspig)
+ * @brief Defines a drawable line
+ * @author João Vitor Espig (jotaespig@gmail.com)
  *
  * Abstraction from the equation: r = a + λb
  * See: https://www.cuemath.com/algebra/vector-equation/
@@ -36,14 +36,14 @@ public:
     float line_quality;
 
     /**
-     * \brief Constructor
-     * \author João Vitor Espig (JotaEspig)
-     * \param point - starting point
-     * \param direction_vector - direction vector
-     * \param length - line length
-     * \param thickness - line thickness
-     * \param color - line color
-     * \param line_quality - line quality
+     * @brief Constructor
+     * @author João Vitor Espig (jotaespig@gmail.com)
+     * @param point - starting point
+     * @param direction_vector - direction vector
+     * @param length - line length
+     * @param thickness - line thickness
+     * @param color - line color
+     * @param line_quality - line quality
      **/
     Line(
         const glm::vec3 &point, const glm::vec3 &direction_vector, float length,
@@ -51,15 +51,15 @@ public:
     );
 
     /**
-     * \brief build the mesh for the line
-     * \author João Vitor Espig (JotaEspig)
+     * @brief build the mesh for the line
+     * @author João Vitor Espig (jotaespig@gmail.com)
      **/
     void build_mesh();
 
     /**
-     * \brief set line end point
-     * \author Mickael Reichert (mickaelrei)
-     * \param end - end point
+     * @brief set line end point
+     * @author Mickael Reichert (mickael.reichert@gmail.com)
+     * @param end - end point
      **/
     void set_end(const glm::vec3 &end);
 
@@ -69,8 +69,8 @@ public:
      **/
     void update(double dt) override;
     /**
-     * \brief draws the line using set_matrix before
-     * \author João Vitor Espig (JotaEspig)
+     * @brief draws the line using set_matrix before
+     * @author João Vitor Espig (jotaespig@gmail.com)
      **/
     void draw() override;
 

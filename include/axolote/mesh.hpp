@@ -1,7 +1,7 @@
 /**
- * \file mesh.hpp
- * \brief Mesh struct
- * \author João Vitor Espig (JotaEspig)
+ * @file mesh.hpp
+ * @brief Mesh struct
+ * @author João Vitor Espig (jotaespig@gmail.com)
  **/
 #pragma once
 
@@ -17,8 +17,8 @@
 namespace axolote {
 
 /**
- * \brief defines a polygon mesh
- * \author João Vitor Espig (JotaEspig)
+ * @brief defines a polygon mesh
+ * @author João Vitor Espig (jotaespig@gmail.com)
  **/
 struct Mesh {
     /** polygon mesh vertices **/
@@ -29,16 +29,16 @@ struct Mesh {
     std::vector<std::shared_ptr<gl::Texture>> textures;
 
     /**
-     * \brief Constructor
-     * \author João Vitor Espig (JotaEspig)
+     * @brief Constructor
+     * @author João Vitor Espig (jotaespig@gmail.com)
      **/
     Mesh();
     /**
-     * \brief Constructor
-     * \author João Vitor Espig (JotaEspig)
-     * \param _vertices - polygon mesh vertices
-     * \param _indices - polygon mesh indices
-     * \param _textures - textures to be rendered with polygon mesh
+     * @brief Constructor
+     * @author João Vitor Espig (jotaespig@gmail.com)
+     * @param _vertices - polygon mesh vertices
+     * @param _indices - polygon mesh indices
+     * @param _textures - textures to be rendered with polygon mesh
      **/
     Mesh(
         const std::vector<Vertex> &_vertices,

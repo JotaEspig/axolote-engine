@@ -1,7 +1,7 @@
 /**
- * \file light.hpp
- * \brief Light classes
- * \author Mickael Reichert (mickaelrei)
+ * @file light.hpp
+ * @brief Light classes
+ * @author Mickael Reichert (mickael.reichert@gmail.com)
  **/
 #pragma once
 
@@ -13,14 +13,14 @@
 namespace axolote {
 
 /**
- * \brief Light class
- * \author Mickael Reichert (mickaelrei)
+ * @brief Light class
+ * @author Mickael Reichert (mickael.reichert@gmail.com)
  **/
 class Light {
 public:
     /**
-     * \brief Light type
-     * \author Mickael Reichert (mickaelrei)
+     * @brief Light type
+     * @author Mickael Reichert (mickael.reichert@gmail.com)
      **/
     enum class Type {
         Point,
@@ -29,20 +29,20 @@ public:
     };
 
     /**
-     * \brief Constructor
-     * \author Mickael Reichert (mickaelrei)
+     * @brief Constructor
+     * @author Mickael Reichert (mickael.reichert@gmail.com)
      **/
     Light(const glm::vec3 &color, bool is_set, Type type);
 
     /**
-     * \brief Bind light to shader
-     * \author Mickael Reichert (mickaelrei)
+     * @brief Bind light to shader
+     * @author Mickael Reichert (mickael.reichert@gmail.com)
      **/
     virtual void
     bind(std::shared_ptr<gl::Shader> shader, const std::string &prefix);
     /**
-     * \brief Update light
-     * \author João Vitor Espig
+     * @brief Update light
+     * @author João Vitor Espig
      **/
     virtual void update(double dt);
 
@@ -56,8 +56,8 @@ public:
 };
 
 /**
- * \brief Point light class
- * \author Mickael Reichert (mickaelrei)
+ * @brief Point light class
+ * @author Mickael Reichert (mickael.reichert@gmail.com)
  **/
 class PointLight : public Light {
 public:
@@ -73,24 +73,24 @@ public:
     float quadratic = 0.032f;
 
     /**
-     * \brief Constructor
-     * \author Mickael Reichert (mickaelrei)
+     * @brief Constructor
+     * @author Mickael Reichert (mickael.reichert@gmail.com)
      **/
     PointLight(
         const glm::vec3 &color, bool is_set, const glm::vec3 &pos, float radius
     );
 
     /**
-     * \brief Bind light to shader
-     * \author Mickael Reichert (mickaelrei)
+     * @brief Bind light to shader
+     * @author Mickael Reichert (mickael.reichert@gmail.com)
      **/
     void bind(std::shared_ptr<gl::Shader> shader, const std::string &prefix)
         override;
 };
 
 /**
- * \brief Directional light class
- * \author Mickael Reichert (mickaelrei)
+ * @brief Directional light class
+ * @author Mickael Reichert (mickael.reichert@gmail.com)
  **/
 class DirectionalLight : public Light {
 public:
@@ -100,22 +100,22 @@ public:
     float intensity = 1.0f;
 
     /**
-     * \brief Constructor
-     * \author Mickael Reichert (mickaelrei)
+     * @brief Constructor
+     * @author Mickael Reichert (mickael.reichert@gmail.com)
      **/
     DirectionalLight(const glm::vec3 &color, bool is_set, const glm::vec3 &dir);
 
     /**
-     * \brief Bind light to shader
-     * \author Mickael Reichert (mickaelrei)
+     * @brief Bind light to shader
+     * @author Mickael Reichert (mickael.reichert@gmail.com)
      **/
     void bind(std::shared_ptr<gl::Shader> shader, const std::string &prefix)
         override;
 };
 
 /**
- * \brief Spot light class
- * \author Mickael Reichert (mickaelrei)
+ * @brief Spot light class
+ * @author Mickael Reichert (mickael.reichert@gmail.com)
  **/
 class SpotLight : public Light {
 public:
@@ -135,8 +135,8 @@ public:
     float quadratic = 0.032f;
 
     /**
-     * \brief Constructor
-     * \author Mickael Reichert (mickaelrei)
+     * @brief Constructor
+     * @author Mickael Reichert (mickael.reichert@gmail.com)
      **/
     SpotLight(
         const glm::vec3 &color, bool is_set, const glm::vec3 &pos,
@@ -144,8 +144,8 @@ public:
     );
 
     /**
-     * \brief Bind light to shader
-     * \author Mickael Reichert (mickaelrei)
+     * @brief Bind light to shader
+     * @author Mickael Reichert (mickael.reichert@gmail.com)
      **/
     void bind(std::shared_ptr<gl::Shader> shader, const std::string &prefix)
         override;

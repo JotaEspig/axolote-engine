@@ -1,7 +1,7 @@
 /**
- * \file assimp.hpp
- * \brief assimp functions
- * \author João Vitor Espig (JotaEspig)
+ * @file assimp.hpp
+ * @brief assimp functions
+ * @author João Vitor Espig (jotaespig@gmail.com)
  *
  * This file is a piece of shit.
  * This file is created to try to don't force the user to have the assimp
@@ -26,7 +26,7 @@
 namespace axolote {
 
 /**
- * \author João Vitor Espig (JotaEspig)
+ * @author João Vitor Espig (jotaespig@gmail.com)
  **/
 void process_node(
     aiNode *node, const aiScene *scene, std::vector<Mesh> &meshes,
@@ -35,7 +35,7 @@ void process_node(
 );
 
 /**
- * \author João Vitor Espig (JotaEspig)
+ * @author João Vitor Espig (jotaespig@gmail.com)
  **/
 Mesh process_mesh(
     aiMesh *mesh, const aiScene *scene, glm::vec4 color,
@@ -44,7 +44,7 @@ Mesh process_mesh(
 );
 
 /**
- * \author João Vitor Espig (JotaEspig)
+ * @author João Vitor Espig (jotaespig@gmail.com)
  **/
 std::vector<std::shared_ptr<gl::Texture>> load_material_textures(
     aiMaterial *mat, aiTextureType type, std::string type_name,

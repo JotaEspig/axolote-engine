@@ -1,7 +1,7 @@
 /**
- * \file ebo.hpp
- * \brief OpenGL EBO operations handler
- * \author João Vitor Espig (JotaEspig)
+ * @file ebo.hpp
+ * @brief OpenGL EBO operations handler
+ * @author João Vitor Espig (jotaespig@gmail.com)
  *
  * this file contains a class called EBO that handles OpenGL EBO operations:
  * Bind, Unbind and destroy
@@ -21,56 +21,56 @@ namespace axolote {
 namespace gl {
 
 /**
- * \brief OpenGL EBO handler
- * \author João Vitor Espig (JotaEspig)
+ * @brief OpenGL EBO handler
+ * @author João Vitor Espig (jotaespig@gmail.com)
  **/
 class EBO : public OpenGLObject {
 public:
     /**
-     * \brief Creates a EBO object
-     * \author João Vitor Espig (JotaEspig)
-     * \return shared pointer to EBO object
+     * @brief Creates a EBO object
+     * @author João Vitor Espig (jotaespig@gmail.com)
+     * @return shared pointer to EBO object
      **/
     template <typename... Args>
     static std::shared_ptr<EBO> create(Args &&...args);
 
     /**
-     * \brief id getter
-     * \author João Vitor Espig (JotaEspig)
-     * \return id
+     * @brief id getter
+     * @author João Vitor Espig (jotaespig@gmail.com)
+     * @return id
      **/
     GLuint id() const override;
     /**
-     * \brief size getter
-     * \author João Vitor Espig (JotaEspig)
-     * \return size
+     * @brief size getter
+     * @author João Vitor Espig (jotaespig@gmail.com)
+     * @return size
      **/
     std::size_t size() const;
     /**
-     * \brief binds
-     * \author João Vitor Espig (JotaEspig)
+     * @brief binds
+     * @author João Vitor Espig (jotaespig@gmail.com)
      **/
     void bind();
     /**
-     * \brief unbinds
-     * \author João Vitor Espig (JotaEspig)
+     * @brief unbinds
+     * @author João Vitor Espig (jotaespig@gmail.com)
      **/
     void unbind();
     /**
-     * \brief buffer data
-     * \author João Vitor Espig (JotaEspig)
+     * @brief buffer data
+     * @author João Vitor Espig (jotaespig@gmail.com)
      * \data June 07, 2024
      * \version June 07, 2024
-     * \param size - size of the data
-     * \param data - pointer to the data
-     * \param usage - usage of the data
+     * @param size - size of the data
+     * @param data - pointer to the data
+     * @param usage - usage of the data
      **/
     void buffer_data(
         std::size_t size, const void *data, GLenum usage = GL_STATIC_DRAW
     );
     /**
-     * \brief destroys
-     * \author João Vitor Espig (JotaEspig)
+     * @brief destroys
+     * @author João Vitor Espig (jotaespig@gmail.com)
      **/
     void destroy() override;
 
@@ -85,14 +85,14 @@ private:
     std::size_t _size;
 
     /**
-     * \brief Constructor
-     * \author João Vitor Espig (JotaEspig)
+     * @brief Constructor
+     * @author João Vitor Espig (jotaespig@gmail.com)
      **/
     EBO();
     /**
-     * \brief Constructor
-     * \author João Vitor Espig (JotaEspig)
-     * \param indices - array of indices
+     * @brief Constructor
+     * @author João Vitor Espig (jotaespig@gmail.com)
+     * @param indices - array of indices
      **/
     EBO(const std::vector<GLuint> &indices);
 };

@@ -1,7 +1,7 @@
 /**
- * \file shader.hpp
- * \brief Shader class
- * \author João Vitor Espig (JotaEspig)
+ * @file shader.hpp
+ * @brief Shader class
+ * @author João Vitor Espig (jotaespig@gmail.com)
  **/
 #pragma once
 
@@ -20,75 +20,75 @@ namespace axolote {
 namespace gl {
 
 /**
- * \brief OpenGL shader handler
- * \author João Vitor Espig (JotaEspig)
+ * @brief OpenGL shader handler
+ * @author João Vitor Espig (jotaespig@gmail.com)
  **/
 class Shader : public OpenGLObject {
 public:
     /**
-     * \brief Creates a Shader object
-     * \author João Vitor Espig (JotaEspig)
-     * \return shared pointer to Shader object
+     * @brief Creates a Shader object
+     * @author João Vitor Espig (jotaespig@gmail.com)
+     * @return shared pointer to Shader object
      **/
     template <typename... Args>
     static std::shared_ptr<Shader> create(Args &&...args);
 
     /**
-     * \brief id getter
-     * \author João Vitor Espig (JotaEspig)
+     * @brief id getter
+     * @author João Vitor Espig (jotaespig@gmail.com)
      **/
     GLuint id() const override;
     /**
-     * \brief sets a value in an integer uniform
-     * \author João Vitor Espig (JotaEspig)
-     * \param uniform_name - name of uniform variable
-     * \param value - integer value
+     * @brief sets a value in an integer uniform
+     * @author João Vitor Espig (jotaespig@gmail.com)
+     * @param uniform_name - name of uniform variable
+     * @param value - integer value
      **/
     void set_uniform_int(const char *uniform_name, int value);
     /**
-     * \brief sets a value in a matrix 4x4 uniform
-     * \author João Vitor Espig (JotaEspig)
-     * \param uniform_name - name of uniform variable
-     * \param matrix - matrix 4x4 value
+     * @brief sets a value in a matrix 4x4 uniform
+     * @author João Vitor Espig (jotaespig@gmail.com)
+     * @param uniform_name - name of uniform variable
+     * @param matrix - matrix 4x4 value
      **/
     void set_uniform_matrix4(const char *uniform_name, const glm::mat4 &matrix);
     /**
-     * \brief sets a value in a matrix 4x4 uniform
-     * \author João Vitor Espig (JotaEspig)
-     * \param uniform_name - name of uniform variable
-     * \param x - float value
+     * @brief sets a value in a matrix 4x4 uniform
+     * @author João Vitor Espig (jotaespig@gmail.com)
+     * @param uniform_name - name of uniform variable
+     * @param x - float value
      **/
     void set_uniform_float(const char *uniform_name, float x);
     /**
-     * \brief sets a value in a vector of 3 floats uniform
-     * \author João Vitor Espig (JotaEspig)
-     * \param uniform_name - name of uniform variable
-     * \param x - first float value
-     * \param y - second float value
-     * \param z - third float value
+     * @brief sets a value in a vector of 3 floats uniform
+     * @author João Vitor Espig (jotaespig@gmail.com)
+     * @param uniform_name - name of uniform variable
+     * @param x - first float value
+     * @param y - second float value
+     * @param z - third float value
      **/
     void
     set_uniform_float3(const char *uniform_name, float x, float y, float z);
     /**
-     * \brief sets a value in a vector of 4 floats uniform
-     * \author João Vitor Espig (JotaEspig)
-     * \param uniform_name - name of uniform variable
-     * \param x - first float value
-     * \param y - second float value
-     * \param z - third float value
-     * \param w - fourth float value
+     * @brief sets a value in a vector of 4 floats uniform
+     * @author João Vitor Espig (jotaespig@gmail.com)
+     * @param uniform_name - name of uniform variable
+     * @param x - first float value
+     * @param y - second float value
+     * @param z - third float value
+     * @param w - fourth float value
      **/
     void set_uniform_float4(
         const char *uniform_name, float x, float y, float z, float w
     );
     /**
-     * \brief activates shader
-     * \author João Vitor Espig (JotaEspig)
+     * @brief activates shader
+     * @author João Vitor Espig (jotaespig@gmail.com)
      **/
     void activate();
     /**
-     * \brief destroys shader
-     * \author João Vitor Espig (JotaEspig)
+     * @brief destroys shader
+     * @author João Vitor Espig (jotaespig@gmail.com)
      **/
     void destroy() override;
 
@@ -101,15 +101,15 @@ private:
     GLuint _id;
 
     /**
-     * \brief Constructor
-     * \author João Vitor Espig (JotaEspig)
+     * @brief Constructor
+     * @author João Vitor Espig (jotaespig@gmail.com)
      **/
     Shader();
     /**
-     * \brief Constructor
-     * \author João Vitor Espig (JotaEspig)
-     * \param vertex_file - vertex glsl file
-     * \param fragment_file - fragment glsl file
+     * @brief Constructor
+     * @author João Vitor Espig (jotaespig@gmail.com)
+     * @param vertex_file - vertex glsl file
+     * @param fragment_file - fragment glsl file
      **/
     Shader(std::string vertex_file, std::string fragment_file);
 };

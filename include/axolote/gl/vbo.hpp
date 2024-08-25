@@ -1,7 +1,7 @@
 /**
- * \file vbo.hpp
- * \brief OpenGL VBO operations handler
- * \author João Vitor Espig (JotaEspig)
+ * @file vbo.hpp
+ * @brief OpenGL VBO operations handler
+ * @author João Vitor Espig (jotaespig@gmail.com)
  *
  * this file contains a class called VBO that handles OpenGL VBO operations:
  * Bind, Unbind and destroy
@@ -23,48 +23,48 @@ namespace axolote {
 namespace gl {
 
 /**
- * \brief OpenGL VBO handler
- * \author João Vitor Espig (JotaEspig)
+ * @brief OpenGL VBO handler
+ * @author João Vitor Espig (jotaespig@gmail.com)
  **/
 class VBO : public OpenGLObject {
 public:
     /**
-     * \brief Creates a VBO object
-     * \author João Vitor Espig (JotaEspig)
-     * \return shared pointer to VBO object
+     * @brief Creates a VBO object
+     * @author João Vitor Espig (jotaespig@gmail.com)
+     * @return shared pointer to VBO object
      **/
     template <typename... Args>
     static std::shared_ptr<VBO> create(Args &&...args);
     /**
-     * \brief id getter
-     * \author João Vitor Espig (JotaEspig)
+     * @brief id getter
+     * @author João Vitor Espig (jotaespig@gmail.com)
      **/
     GLuint id() const override;
     /**
-     * \brief binds
-     * \author João Vitor Espig (JotaEspig)
+     * @brief binds
+     * @author João Vitor Espig (jotaespig@gmail.com)
      **/
     void bind();
     /**
-     * \brief unbinds
-     * \author João Vitor Espig (JotaEspig)
+     * @brief unbinds
+     * @author João Vitor Espig (jotaespig@gmail.com)
      **/
     void unbind();
     /**
-     * \brief buffer data
-     * \author João Vitor Espig (JotaEspig)
+     * @brief buffer data
+     * @author João Vitor Espig (jotaespig@gmail.com)
      * \data June 07, 2024
      * \version June 07, 2024
-     * \param size - size of the data
-     * \param data - pointer to the data
-     * \param usage - usage of the data
+     * @param size - size of the data
+     * @param data - pointer to the data
+     * @param usage - usage of the data
      **/
     void buffer_data(
         std::size_t size, const void *data, GLenum usage = GL_STATIC_DRAW
     );
     /**
-     * \brief destroys
-     * \author João Vitor Espig (JotaEspig)
+     * @brief destroys
+     * @author João Vitor Espig (jotaespig@gmail.com)
      **/
     void destroy() override;
 
@@ -77,14 +77,14 @@ private:
     GLuint _id;
 
     /**
-     * \brief Constructor
-     * \author João Vitor Espig (JotaEspig)
+     * @brief Constructor
+     * @author João Vitor Espig (jotaespig@gmail.com)
      **/
     VBO();
     /**
-     * \brief Constructor
-     * \author João Vitor Espig (JotaEspig)
-     * \param vertices - array of vertex
+     * @brief Constructor
+     * @author João Vitor Espig (jotaespig@gmail.com)
+     * @param vertices - array of vertex
      **/
     template <class T>
     VBO(const std::vector<T> &vertices);

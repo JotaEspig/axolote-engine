@@ -1,7 +1,7 @@
 /**
- * \file window.hpp
- * \brief GLFWwindow operations handler
- * \author João Vitor Espig (JotaEspig)
+ * @file window.hpp
+ * @brief GLFWwindow operations handler
+ * @author João Vitor Espig (jotaespig@gmail.com)
  **/
 #pragma once
 
@@ -20,8 +20,8 @@
 namespace axolote {
 
 /**
- * \brief Window handler
- * \author João Vitor Espig (JotaEspig)
+ * @brief Window handler
+ * @author João Vitor Espig (jotaespig@gmail.com)
  *
  * This class take care of GLFW window object and input process
  **/
@@ -172,210 +172,210 @@ public:
     };
 
     /**
-     * \brief Constructor
-     * \author João Vitor Espig (JotaEspig)
+     * @brief Constructor
+     * @author João Vitor Espig (jotaespig@gmail.com)
      **/
     Window();
     /**
-     * \brief Constructor with Vsync
-     * \author João Vitor Espig (JotaEspig)
-     * \param vsync - should use vsync
+     * @brief Constructor with Vsync
+     * @author João Vitor Espig (jotaespig@gmail.com)
+     * @param vsync - should use vsync
      **/
     Window(bool vsync);
     /**
-     * \brief Destructor
-     * \author João Vitor Espig (JotaEspig)
+     * @brief Destructor
+     * @author João Vitor Espig (jotaespig@gmail.com)
      **/
     ~Window();
 
     /**
-     * \brief initializes window
-     * \author João Vitor Espig (JotaEspig)
+     * @brief initializes window
+     * @author João Vitor Espig (jotaespig@gmail.com)
      **/
     void init();
     /**
-     * \brief poll events from GLFW
-     * \author João Vitor Espig (JotaEspig)
+     * @brief poll events from GLFW
+     * @author João Vitor Espig (jotaespig@gmail.com)
      **/
     void poll_events();
     /**
-     * \brief get key state
-     * \author João Vitor Espig (JotaEspig)
-     * \param key - key to check
-     * \returns KeyState enum
+     * @brief get key state
+     * @author João Vitor Espig (jotaespig@gmail.com)
+     * @param key - key to check
+     * @returns KeyState enum
      **/
     KeyState get_key_state(Key key);
 
     MouseKeyState get_mouse_key_state(MouseKey key);
     /**
-     * \brief returns if a key is pressed
-     * \author João Vitor Espig (JotaEspig)
-     * \param key - key to check
-     * \returns true or false
+     * @brief returns if a key is pressed
+     * @author João Vitor Espig (jotaespig@gmail.com)
+     * @param key - key to check
+     * @returns true or false
      **/
     bool is_key_pressed(Key key) const;
     /**
-     * \brief set a key as pressed or not
-     * \author João Vitor Espig (JotaEspig)
-     * \param key - key to set
-     * \param value - true or false
+     * @brief set a key as pressed or not
+     * @author João Vitor Espig (jotaespig@gmail.com)
+     * @param key - key to set
+     * @param value - true or false
      **/
     void set_key_pressed(Key key, bool value);
     /**
-     * \brief set the cursor mode
-     * \author João Vitor Espig (JotaEspig)
-     * \param mode - CursorMode enum
+     * @brief set the cursor mode
+     * @author João Vitor Espig (jotaespig@gmail.com)
+     * @param mode - CursorMode enum
      **/
     void set_cursor_mode(CursorMode mode);
     /**
-     * \brief get the cursor position
-     * \author João Vitor Espig (JotaEspig)
-     * \param xpos - x position
-     * \param ypos - y position
+     * @brief get the cursor position
+     * @author João Vitor Espig (jotaespig@gmail.com)
+     * @param xpos - x position
+     * @param ypos - y position
      **/
     void get_cursor_position(double *xpos, double *ypos);
     /**
-     * \brief set the cursor position
-     * \author João Vitor Espig (JotaEspig)
-     * \param xpos - x position
-     * \param ypos - y position
+     * @brief set the cursor position
+     * @author João Vitor Espig (jotaespig@gmail.com)
+     * @param xpos - x position
+     * @param ypos - y position
      **/
     void set_cursor_position(double xpos, double ypos);
     /**
-     * \brief process user input
-     * \author João Vitor Espig (JotaEspig)
-     * \param delta_t - time difference from last frame
+     * @brief process user input
+     * @author João Vitor Espig (jotaespig@gmail.com)
+     * @param delta_t - time difference from last frame
      *
      * Preconfigured way to process SPACE, SHIFT, CTRL and mouse movement
      * (this method can be overrided)
      **/
     void process_input(double delta_t = 1.0f);
     /**
-     * \brief process the simplest user input (AWSD)
-     * \author João Vitor Espig (JotaEspig)
-     * \param delta_t - time difference from last frame
+     * @brief process the simplest user input (AWSD)
+     * @author João Vitor Espig (jotaespig@gmail.com)
+     * @param delta_t - time difference from last frame
      *
      * Preconfigured way to process A, W, S and D keys
      * (this method can be overrided)
      **/
     void minimal_process_input(double delta_t = 1.0f);
     /**
-     * \brief checks if window should close
-     * \author João Vitor Espig (JotaEspig)
+     * @brief checks if window should close
+     * @author João Vitor Espig (jotaespig@gmail.com)
      **/
     bool should_close() const;
     /**
-     * \brief set if window should close
-     * \author João Vitor Espig (JotaEspig)
-     * \param value - true or false
+     * @brief set if window should close
+     * @author João Vitor Espig (jotaespig@gmail.com)
+     * @param value - true or false
      **/
     void set_should_close(bool value);
     /**
-     * \brief Clear the window with the background color
-     * \author João Vitor Espig (JotaEspig)
+     * @brief Clear the window with the background color
+     * @author João Vitor Espig (jotaespig@gmail.com)
      **/
     void clear();
     /**
-     * \brief Flush the buffers. Should be called at the end of the main loop
-     * \author João Vitor Espig (JotaEspig)
+     * @brief Flush the buffers. Should be called at the end of the main loop
+     * @author João Vitor Espig (jotaespig@gmail.com)
      **/
     void flush();
     /**
-     * \param aspect_ratio - camera aspect ratio
+     * @param aspect_ratio - camera aspect ratio
      **/
     void update_camera(float aspect_ratio);
     /**
-     * \param delta_t - time difference from last frame
+     * @param delta_t - time difference from last frame
      **/
     void update(double delta_t);
     /**
-     * \brief Render the current scene
-     * \author João Vitor Espig (JotaEspig)
+     * @brief Render the current scene
+     * @author João Vitor Espig (jotaespig@gmail.com)
      **/
     void render();
 
     std::shared_ptr<Scene> current_scene() const;
     /**
-     * \brief Set the current scene
-     * \author João Vitor Espig (JotaEspig)
-     * \param scene - Scene object pointer
+     * @brief Set the current scene
+     * @author João Vitor Espig (jotaespig@gmail.com)
+     * @param scene - Scene object pointer
      **/
     void set_scene(std::shared_ptr<Scene> scene);
     /**
-     * \brief Get the state of vsync
-     * \author João Vitor Espig (JotaEspig)
-     * \return return vsync member
+     * @brief Get the state of vsync
+     * @author João Vitor Espig (jotaespig@gmail.com)
+     * @return return vsync member
      **/
     bool vsync() const;
     /**
-     * \brief Enable or disable vsync
-     * \author João Vitor Espig (JotaEspig)
-     * \param vsync - should use vsync
+     * @brief Enable or disable vsync
+     * @author João Vitor Espig (jotaespig@gmail.com)
+     * @param vsync - should use vsync
      **/
     void set_vsync(bool vsync);
     /**
-     * \brief get path relative to executable directory (_root_path)
-     * \author João Vitor Espig (JotaEspig)
-     * \param path - relative path
+     * @brief get path relative to executable directory (_root_path)
+     * @author João Vitor Espig (jotaespig@gmail.com)
+     * @param path - relative path
      **/
     std::string get_path(std::string path) const;
     /**
-     * \brief title getter
-     * \author João Vitor Espig (JotaEspig)
+     * @brief title getter
+     * @author João Vitor Espig (jotaespig@gmail.com)
      **/
     std::string title() const;
     /**
-     * \brief title setter
-     * \author João Vitor Espig (JotaEspig)
-     * \param new_title - new window title
+     * @brief title setter
+     * @author João Vitor Espig (jotaespig@gmail.com)
+     * @param new_title - new window title
      **/
     void set_title(std::string new_title);
     /**
-     * \brief width getter
-     * \author João Vitor Espig (JotaEspig)
+     * @brief width getter
+     * @author João Vitor Espig (jotaespig@gmail.com)
      **/
     int width() const;
     /**
-     * \brief width setter
-     * \author João Vitor Espig (JotaEspig)
-     * \param new_width - new window width
+     * @brief width setter
+     * @author João Vitor Espig (jotaespig@gmail.com)
+     * @param new_width - new window width
      **/
     void set_width(int new_width);
     /**
-     * \brief height getter
-     * \author João Vitor Espig (JotaEspig)
+     * @brief height getter
+     * @author João Vitor Espig (jotaespig@gmail.com)
      **/
     int height() const;
     /**
-     * \brief height setter
-     * \author João Vitor Espig (JotaEspig)
-     * \param new_height - new window height
+     * @brief height setter
+     * @author João Vitor Espig (jotaespig@gmail.com)
+     * @param new_height - new window height
      **/
     void set_height(int new_height);
     /**
-     * \brief color getter
-     * \author João Vitor Espig (JotaEspig)
+     * @brief color getter
+     * @author João Vitor Espig (jotaespig@gmail.com)
      **/
     Color color() const;
     /**
-     * \brief color setter
-     * \author João Vitor Espig (JotaEspig)
-     * \param color - Color object
+     * @brief color setter
+     * @author João Vitor Espig (jotaespig@gmail.com)
+     * @param color - Color object
      **/
     void set_color(const Color &color);
     /**
-     * \brief color setter
-     * \author João Vitor Espig (JotaEspig)
-     * \param r - Red in RGB
-     * \param g - Green in RGB
-     * \param b - Blue in RGB
-     * \param opacity - alpha param
+     * @brief color setter
+     * @author João Vitor Espig (jotaespig@gmail.com)
+     * @param r - Red in RGB
+     * @param g - Green in RGB
+     * @param b - Blue in RGB
+     * @param opacity - alpha param
      **/
     void set_color(uint8_t r, uint8_t g, uint8_t b, float opacity = 1.0f);
     /**
-     * \brief get the time since GLFW was initialized
-     * \author João Vitor Espig (JotaEspig)
-     * \returns time in seconds
+     * @brief get the time since GLFW was initialized
+     * @author João Vitor Espig (jotaespig@gmail.com)
+     * @returns time in seconds
      **/
     double get_time() const;
 
