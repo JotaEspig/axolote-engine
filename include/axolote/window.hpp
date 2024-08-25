@@ -378,6 +378,14 @@ public:
      * @returns time in seconds
      **/
     double get_time() const;
+    /**
+     * @brief get glfw window object pointer
+     * @author João Vitor Espig (jotaespig@gmail.com)
+     * @returns GLFWwindow pointer
+     *
+     * Useful to set callbacks
+     */
+    GLFWwindow *window() const;
 
 protected:
     /** window title **/

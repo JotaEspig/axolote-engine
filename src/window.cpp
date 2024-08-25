@@ -253,4 +253,8 @@ double Window::get_time() const {
     return glfwGetTime();
 }
 
+GLFWwindow *Window::window() const {
+    return _window;
+}
+
 } // namespace axolote
