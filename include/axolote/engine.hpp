@@ -11,6 +11,7 @@
 
 #include "axolote/camera.hpp"
 #include "axolote/gl/ebo.hpp"
+#include "axolote/gl/framebuffer.hpp"
 #include "axolote/gl/shader.hpp"
 #include "axolote/gl/texture.hpp"
 #include "axolote/gl/vao.hpp"
