@@ -41,8 +41,9 @@ void Texture::unbind() {
 }
 
 void Texture::destroy() {
-    debug("Texture destroyed: %u", _id);
+    GLuint id = _id;
     glDeleteTextures(1, &_id);
+    debug("Texture destroyed: %u", id);
 }
 
 Texture::Texture() {

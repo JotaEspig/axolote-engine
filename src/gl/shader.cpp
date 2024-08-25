@@ -68,8 +68,8 @@ void Shader::activate() {
 }
 
 void Shader::destroy() {
-    debug("Shader destroyed: %u", _id);
     glDeleteProgram(_id);
+    debug("Shader destroyed: %u", _id);
 }
 
 Shader::Shader() {

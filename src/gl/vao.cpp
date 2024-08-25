@@ -41,8 +41,9 @@ void VAO::unbind() {
 }
 
 void VAO::destroy() {
-    debug("VAO destroyed: %u", _id);
+    GLuint id = _id;
     glDeleteVertexArrays(1, &_id);
+    debug("VAO destroyed: %u", id);
 }
 
 VAO::VAO() {

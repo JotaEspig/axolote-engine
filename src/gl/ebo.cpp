@@ -33,8 +33,9 @@ void EBO::buffer_data(std::size_t size, const void *data, GLenum usage) {
 }
 
 void EBO::destroy() {
-    debug("EBO destroyed: %u", _id);
+    GLuint id = _id;
     glDeleteBuffers(1, &_id);
+    debug("EBO destroyed: %u", id);
 }
 
 EBO::EBO() {
