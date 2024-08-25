@@ -11,17 +11,6 @@
 
 namespace axolote {
 
-static void
-framebuffer_size_callback(GLFWwindow *window, int width, int height) {
-    UNUSED(window);
-    glViewport(0, 0, width, height);
-}
-
-static void error_callback(int error, const char *description) {
-    std::cerr << "Error: " << error << std::endl;
-    std::cerr << "Description: " << description << std::endl;
-}
-
 Window::Window() {
     init();
 }
@@ -36,8 +25,21 @@ Window::~Window() {
     glfwTerminate();
 }
 
+void Window::default_framebuffer_size_callback(
+    GLFWwindow *window, int width, int height
+) {
+    UNUSED(window);
+    glViewport(0, 0, width, height);
+}
+
+void Window::default_error_callback(int error, const char *description) {
+    std::cerr << "Error: " << error << std::endl;
+    std::cerr << "Description: " << description << std::endl;
+}
+
 void Window::init() {
-    glfwSetErrorCallback(error_callback);
+    glfwSetWindowUserPointer(_window, this);
+    glfwSetErrorCallback(default_error_callback);
 
     _title = "Axolote Engine";
     _window = NULL;
@@ -61,7 +63,7 @@ void Window::init() {
         return;
     }
 
-    glfwSetFramebufferSizeCallback(_window, framebuffer_size_callback);
+    glfwSetFramebufferSizeCallback(_window, default_framebuffer_size_callback);
 
     glfwMakeContextCurrent(_window);
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {

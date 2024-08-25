@@ -189,6 +189,35 @@ public:
     ~Window();
 
     /**
+     * @brief Default framebuffer size callback
+     *
+     * @param window - GLFWwindow pointer
+     * @param width - window width
+     * @param height - window height
+     *
+     * When you want to implement a custom framebuffer size callback, you can
+     * use this method as a reference. And it's recommended to see the function
+     * glfwGetWindowUserPointer. the init method already sets the pointer for
+     * you
+     */
+    static void default_framebuffer_size_callback(
+        GLFWwindow *window, int width, int height
+    );
+
+    /**
+     * @brief Default error callback
+     *
+     * @param error - error code
+     * @param description - error description
+
+     * When you want to implement a custom error callback, you can
+     * use this method as a reference. And it's recommended to see the function
+     * glfwGetWindowUserPointer. the init method already sets the pointer for
+     * you
+     */
+    static void default_error_callback(int error, const char *description);
+
+    /**
      * @brief initializes window
      * @author João Vitor Espig (jotaespig@gmail.com)
      **/
