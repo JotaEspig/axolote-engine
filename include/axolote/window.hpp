@@ -203,7 +203,6 @@ public:
     static void default_framebuffer_size_callback(
         GLFWwindow *window, int width, int height
     );
-
     /**
      * @brief Default error callback
      *
