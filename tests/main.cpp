@@ -90,8 +90,8 @@ void App::main_loop() {
         get_path("/resources/shaders/grid_base_fragment_shader.glsl")
     );
     auto screen_shader = axolote::gl::Shader::create(
-        get_path("/resources/shaders/object3d_base_vertex_shader.glsl"),
-        get_path("/tests/screen_frag.glsl")
+        get_path("/resources/shaders/gmesh_base_vertex_shader.glsl"),
+        get_path("/tests/shaders/screen_frag.glsl")
     );
 
     // Scene object
