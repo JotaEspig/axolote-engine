@@ -52,6 +52,10 @@ glm::mat4 Object3D::get_matrix() const {
     return _model_matrix;
 }
 
+glm::mat4 Object3D::get_normal_matrix() const {
+    return _normal_matrix;
+}
+
 void Object3D::bind_shader(std::shared_ptr<gl::Shader> shader_program) {
     gmodel->bind_shader(shader_program);
 }

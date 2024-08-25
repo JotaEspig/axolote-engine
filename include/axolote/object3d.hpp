@@ -92,6 +92,12 @@ public:
      **/
     glm::mat4 get_matrix() const;
     /**
+     * @brief Get the normal matrix object
+     *
+     * @return glm::mat4
+     **/
+    glm::mat4 get_normal_matrix() const;
+    /**
      * @brief binds a shader into the meshes
      * @author João Vitor Espig (jotaespig@gmail.com)
      **/
