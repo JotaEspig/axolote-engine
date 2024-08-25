@@ -31,10 +31,20 @@ public:
 class App : public axolote::Window {
 public:
     std::shared_ptr<axolote::SpotLight> flashlight;
+    std::shared_ptr<axolote::gl::Framebuffer> default_fbo;
 
     void process_input(double dt);
     void main_loop();
 };
+
+// custom resize framebuffer callback
+void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
+    axolote::Window::default_framebuffer_size_callback(window, width, height);
+    auto app = static_cast<App *>(glfwGetWindowUserPointer(window));
+    // check if the app is not null
+    if (app && app->default_fbo)
+        app->default_fbo->resize(width, height);
+}
 
 void App::process_input(double dt) {
     axolote::Window::process_input(dt);
@@ -59,6 +69,8 @@ void App::process_input(double dt) {
 }
 
 void App::main_loop() {
+    // Set the window user pointer to this object
+    glfwSetWindowUserPointer(window(), this);
     // Set root path using definition from CMake
     _root_path = PROJECT_ROOT_FOLDER;
 
@@ -160,55 +172,16 @@ void App::main_loop() {
     std::vector<GLuint> quad_indices{0, 1, 2, 0, 2, 3};
 
     // Funny things with fbo
-    GLuint fbo;
-    auto tex = axolote::gl::Texture::create();
-    {
-        glGenFramebuffers(1, &fbo);
-
-        // Bind
-        glBindFramebuffer(GL_FRAMEBUFFER, fbo);
-
-        GLuint id = tex->id();
-        glBindTexture(GL_TEXTURE_2D, id);
-
-        int w = 600;
-        int h = 600;
-        glTexImage2D(
-            GL_TEXTURE_2D, 0, GL_RGB, w, h, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL
-        );
-
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-        glFramebufferTexture2D(
-            GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, id, 0
-        );
-
-        GLuint rbo;
-        glGenRenderbuffers(1, &rbo);
-        glBindRenderbuffer(GL_RENDERBUFFER, rbo);
-        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, w, h);
-        glBindRenderbuffer(GL_RENDERBUFFER, 0);
-
-        glFramebufferRenderbuffer(
-            GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo
-        );
-
-        // Check if the framebuffer is ready to go
-        bool is_ready = glCheckFramebufferStatus(GL_FRAMEBUFFER)
-                        == GL_FRAMEBUFFER_COMPLETE;
-        if (!is_ready) {
-            std::cerr << "Framebuffer is not complete!" << std::endl;
-        }
-
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
-        glBindTexture(GL_TEXTURE_2D, 0);
-    }
+    default_fbo = axolote::gl::Framebuffer::create();
+    default_fbo->init(width(), height());
+    // Overwrite the default framebuffer size callback
+    glfwSetFramebufferSizeCallback(window(), framebuffer_size_callback);
 
     // TODO: check how to use the textute correctly when resizing the window
     auto quad = std::make_shared<axolote::GMesh>(
         quad_vec, quad_indices,
-        std::vector<std::shared_ptr<axolote::gl::Texture>>{tex}
+        std::vector<std::shared_ptr<axolote::gl::Texture>>{default_fbo->texture(
+        )}
     );
     quad->bind_shader(screen_shader);
 
@@ -241,15 +214,13 @@ void App::main_loop() {
 
         dt *= DT_MULTIPLIER;
         {
-            glBindFramebuffer(GL_FRAMEBUFFER, fbo);
-            glClearColor(color().r, color().g, color().b, 1.0f);
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            default_fbo->bind();
+            clear();
             render();
 
             // second pass
-            glBindFramebuffer(GL_FRAMEBUFFER, 0); // back to default
-            glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-            glClear(GL_COLOR_BUFFER_BIT);
+            default_fbo->unbind();
+            clear();
 
             auto camera = current_scene()->camera;
             glm::mat4 view = glm::lookAt(
