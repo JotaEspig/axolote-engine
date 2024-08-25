@@ -70,6 +70,7 @@ set(
     ${SOURCE_DIR}/camera.cpp
     ${SOURCE_DIR}/glad/glad.c
     ${SOURCE_DIR}/gl/ebo.cpp
+    ${SOURCE_DIR}/gl/framebuffer.cpp
     ${SOURCE_DIR}/gl/shader.cpp
     ${SOURCE_DIR}/gl/texture.cpp
     ${SOURCE_DIR}/gl/vao.cpp
