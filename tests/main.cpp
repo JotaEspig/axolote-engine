@@ -158,10 +158,10 @@ void App::main_loop() {
     scene->set_grid(grid);
 
     std::vector<axolote::Vertex> quad_vec{
-        {{-1.0f, 1.0f, 0.0f}, {}, {0.0f, 1.0f}, {}},
-        {{-1.0f, -1.0f, 0.0f}, {}, {0.0f, 0.0f}, {}},
-        {{1.0f, -1.0f, 0.0f}, {}, {1.0f, 0.0f}, {}},
-        {{1.0f, 1.0f, 0.0f}, {}, {1.0f, 1.0f}, {}}
+        {{-1.0f, 1.0f, 0.0f}, {}, {1.0f, 1.0f}, {}},
+        {{-1.0f, -1.0f, 0.0f}, {}, {1.0f, 0.0f}, {}},
+        {{1.0f, -1.0f, 0.0f}, {}, {0.0f, 0.0f}, {}},
+        {{1.0f, 1.0f, 0.0f}, {}, {0.0f, 1.0f}, {}}
     };
     std::vector<axolote::Vertex> eder_quad_vec{
         {{-1.0f, 1.0f, 0.0f}, {1.0f, 0.0f, 0.0f, 1.0f}, {0.0f, 1.0f}, {}},
@@ -170,6 +170,7 @@ void App::main_loop() {
         {{1.0f, 1.0f, 0.0f}, {1.0f, 0.0f, 0.0f, 1.0f}, {1.0f, 1.0f}, {}}
     };
     std::vector<GLuint> quad_indices{0, 1, 2, 0, 2, 3};
+    glm::vec3 quad_normal = glm::vec3{0.0f, 0.0f, 1.0f};
 
     // Funny things with fbo
     default_fbo = axolote::gl::Framebuffer::create();
@@ -178,10 +179,11 @@ void App::main_loop() {
     glfwSetFramebufferSizeCallback(window(), framebuffer_size_callback);
 
     // TODO: check how to use the textute correctly when resizing the window
-    auto quad = std::make_shared<axolote::GMesh>(
+    auto quad = std::make_shared<axolote::Object3D>(
         quad_vec, quad_indices,
         std::vector<std::shared_ptr<axolote::gl::Texture>>{default_fbo->texture(
-        )}
+        )},
+        glm::mat4{1.0f}
     );
     quad->bind_shader(screen_shader);
 
@@ -214,6 +216,35 @@ void App::main_loop() {
 
         dt *= DT_MULTIPLIER;
         {
+            glm::vec3 normal
+                = glm::mat3{quad->get_normal_matrix()} * quad_normal;
+            glm::vec3 pos = quad->get_matrix()[3];
+            glm::mat4 reflection_matrix{1.0f};
+            float A = normal.x;
+            float B = normal.y;
+            float C = normal.z;
+            reflection_matrix[0][0] = 1 - 2 * A * A;
+            reflection_matrix[0][1] = -2 * A * B;
+            reflection_matrix[0][2] = -2 * A * C;
+
+            reflection_matrix[1][0] = -2 * A * B;
+            reflection_matrix[1][1] = 1 - 2 * B * B;
+            reflection_matrix[1][2] = -2 * B * C;
+
+            reflection_matrix[2][0] = -2 * A * C;
+            reflection_matrix[2][1] = -2 * B * C;
+            reflection_matrix[2][2] = 1 - 2 * C * C;
+            glm::vec3 reflection
+                = reflection_matrix
+                  * glm::vec4{pos - current_scene()->camera.pos, 1.0f};
+
+            auto camera = current_scene()->camera;
+
+            current_scene()->camera.pos = pos;
+            current_scene()->camera.orientation = reflection;
+            current_scene()->camera.up = glm::vec3{0.0f, 1.0f, 0.0f};
+            update_camera((float)width() / height());
+
             default_fbo->bind();
             clear();
             render();
@@ -222,7 +253,7 @@ void App::main_loop() {
             default_fbo->unbind();
             clear();
 
-            auto camera = current_scene()->camera;
+            current_scene()->camera = camera;
             glm::mat4 view = glm::lookAt(
                 camera.pos, camera.pos + camera.orientation, camera.up
             );
@@ -244,9 +275,14 @@ void App::main_loop() {
                 model, (float)get_time() * 0.1f, glm::vec3{0.0f, 1.0f, 0.0f}
             );
             model = glm::translate(model, glm::vec3{10.0f, 0.0f, 0.0f});
+            // rotate so it points to the center
+            model = glm::rotate(
+                model, glm::radians(-90.0f), glm::vec3{0.0f, 1.0f, 0.0f}
+            );
 
             glDisable(GL_CULL_FACE);
-            quad->draw(model);
+            quad->set_matrix(model);
+            quad->draw();
 
             s = eder_quad->get_shader();
             s->activate();
@@ -272,13 +308,6 @@ void App::main_loop() {
         grid->camera_pos = current_scene()->camera.pos;
 
         flush();
-
-        // Print order of drawing objects and its positions
-        // std::cout << "\n\n";
-        // for (auto d : current_scene()->sorted_drawables_objects()) {
-        // std::cout << d->name << " -> " << glm::to_string(d->get_matrix())
-        //<< std::endl;
-        //}
     }
 }
 
