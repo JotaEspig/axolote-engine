@@ -38,7 +38,6 @@ void Window::default_error_callback(int error, const char *description) {
 }
 
 void Window::init() {
-    glfwSetWindowUserPointer(_window, this);
     glfwSetErrorCallback(default_error_callback);
 
     _title = "Axolote Engine";

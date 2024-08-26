@@ -6,6 +6,7 @@
 #pragma once
 
 #include <memory>
+#include <cstdint>
 
 #include "axolote/gl/opengl_object.hpp"
 #include "axolote/gl/texture.hpp"
