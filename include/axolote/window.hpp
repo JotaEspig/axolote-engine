@@ -171,6 +171,9 @@ public:
         REPEAT = GLFW_REPEAT
     };
 
+    /** Absolute path to executable directory **/
+    static std::string _root_path;
+
     /**
      * @brief Constructor
      * @author João Vitor Espig (jotaespig@gmail.com)
@@ -346,7 +349,7 @@ public:
      * @author João Vitor Espig (jotaespig@gmail.com)
      * @param path relative path
      **/
-    std::string get_path(std::string path) const;
+    static std::string get_path(std::string path);
     /**
      * @brief title getter
      * @author João Vitor Espig (jotaespig@gmail.com)
@@ -418,8 +421,6 @@ public:
 protected:
     /** window title **/
     std::string _title;
-    /** Absolute path to executable directory **/
-    std::string _root_path;
     /** window background color **/
     Color _color;
 

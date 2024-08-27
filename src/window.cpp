@@ -11,6 +11,8 @@
 
 namespace axolote {
 
+    std::string Window::_root_path = "";
+
 Window::Window() {
     init();
 }
@@ -205,7 +207,7 @@ void Window::set_vsync(bool vsync) {
     glfwSwapInterval(vsync);
 }
 
-std::string Window::get_path(std::string path) const {
+std::string Window::get_path(std::string path) {
     return _root_path + "/" + path;
 }
 
