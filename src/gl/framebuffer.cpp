@@ -104,7 +104,7 @@ void Framebuffer::destroy() {
     glDeleteFramebuffers(1, &_id);
     debug("Framebuffer destroyed: %u", id);
     glDeleteRenderbuffers(1, &_rbo);
-    debug("Renderbuffer destroyed: %u", id);
+    debug("Renderbuffer destroyed: %u", rbo_id);
 }
 
 Framebuffer::Framebuffer() {
