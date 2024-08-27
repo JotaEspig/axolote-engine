@@ -31,7 +31,7 @@ public:
 class App : public axolote::Window {
 public:
     std::shared_ptr<axolote::SpotLight> flashlight;
-    std::shared_ptr<axolote::gl::Framebuffer> default_fbo;
+    std::shared_ptr<axolote::gl::Framebuffer> mirror_fbo;
 
     void process_input(double dt);
     void main_loop();
@@ -42,8 +42,8 @@ void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
     axolote::Window::default_framebuffer_size_callback(window, width, height);
     auto app = static_cast<App *>(glfwGetWindowUserPointer(window));
     // check if the app is not null
-    if (app && app->default_fbo)
-        app->default_fbo->resize(width, height);
+    if (app && app->mirror_fbo)
+        app->mirror_fbo->resize(width, height);
 }
 
 void App::process_input(double dt) {
@@ -145,8 +145,9 @@ void App::main_loop() {
 
     auto line = std::make_shared<axolote::utils::Line>(
         glm::vec3{10.0f, 10.0f, 0.0f}, glm::vec3{1.0f, 1.0f, 1.0f}, 5.0f, 1.0f,
-        glm::vec4{0.0f, 1.0f, 0.0f, 1.0f}, 5
+        glm::vec4{0.0f, 1.0f, 0.0f, 1.0f}
     );
+    line->is_affected_by_lights = true;
     line->bind_shader(shader_program);
     scene->add_drawable(line);
 
@@ -173,16 +174,16 @@ void App::main_loop() {
     glm::vec3 quad_normal = glm::vec3{0.0f, 0.0f, 1.0f};
 
     // Funny things with fbo
-    default_fbo = axolote::gl::Framebuffer::create();
-    default_fbo->init(width(), height());
+    mirror_fbo = axolote::gl::Framebuffer::create();
+    mirror_fbo->init(width(), height());
     // Overwrite the default framebuffer size callback
     glfwSetFramebufferSizeCallback(window(), framebuffer_size_callback);
 
     // TODO: check how to use the textute correctly when resizing the window
     auto quad = std::make_shared<axolote::Object3D>(
         quad_vec, quad_indices,
-        std::vector<std::shared_ptr<axolote::gl::Texture>>{default_fbo->texture(
-        )},
+        std::vector<std::shared_ptr<axolote::gl::Texture>>{mirror_fbo->texture()
+        },
         glm::mat4{1.0f}
     );
     quad->bind_shader(screen_shader);
@@ -240,19 +241,22 @@ void App::main_loop() {
 
             auto camera = current_scene()->camera;
 
+            // first pass
+            // Setting the camera to the mirror position and orientation
             current_scene()->camera.pos = pos;
             current_scene()->camera.orientation = reflection;
             current_scene()->camera.up = glm::vec3{0.0f, 1.0f, 0.0f};
             update_camera((float)width() / height());
 
-            default_fbo->bind();
+            mirror_fbo->bind();
             clear();
             render();
 
             // second pass
-            default_fbo->unbind();
+            mirror_fbo->unbind();
             clear();
 
+            // restore original camera
             current_scene()->camera = camera;
             glm::mat4 view = glm::lookAt(
                 camera.pos, camera.pos + camera.orientation, camera.up
