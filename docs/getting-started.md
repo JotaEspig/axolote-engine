@@ -3,7 +3,7 @@
 First of all you must install it at your project folder. See [install.md](install.md).
 
 It's recommended to use CMake to compile your project with Axolote Engine.
-You can see a minimal CMakeLists.txt file that you can use at [examples/CMakeLists.txt](examples/CMakeLists.txt).
+You can see a minimal CMakeLists.txt file that you can use at [examples/CMakeLists.txt](../examples/CMakeLists.txt).
 
 ## Opening a window
 
@@ -145,7 +145,7 @@ int main() {
 
 ## Other Examples
 
-You can see some examples in the [examples](examples) folder.
+You can see some examples in the [examples](../examples/) folder.
 You can run it as well:
 
 Linux

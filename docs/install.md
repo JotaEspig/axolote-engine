@@ -11,7 +11,7 @@ It will create a folder called ´external´ and another folder called `resources
 and it will store the needed files there
 
 And then, for compiling your project, you should link the libraries and header files correctly. See the
-[CMakeLists.txt](examples/project_example/CMakeLists.txt) file in the `examples/project_example`
+[CMakeLists.txt](../examples/project_example/CMakeLists.txt) file in the `examples/project_example`
 directory.
 
 ## Windows
@@ -29,7 +29,7 @@ It will create a folder called ´external´ and another folder called `resources
 and it will store the needed files there.
 
 And then, for compiling your project, you should link the libraries and header files correctly. See the
-[CMakeLists.txt](examples/project_example/CMakeLists.txt) file in the `examples/project_example`
+[CMakeLists.txt](../examples/project_example/CMakeLists.txt) file in the `examples/project_example`
 directory.
 
 ### Manual
@@ -90,5 +90,5 @@ project/
 ```
 
 And then, for compiling your project, you should link the libraries and header files correctly. See the
-[CMakeLists.txt](examples/project_example/CMakeLists.txt) file in the `examples/project_example`
+[CMakeLists.txt](../examples/project_example/CMakeLists.txt) file in the `examples/project_example`
 directory.
