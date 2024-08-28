@@ -80,13 +80,15 @@ cmake -G "Visual Studio 17 2022" -DCMAKE_TOOLCHAIN_FILE=C:/path/to/vcpkg/scripts
 cmake --build . --config Release
 ```
 
+For more details about building the project, see [building.md](docs/building.md).
+
 ## Installation
 
-see [install.md](install.md).
+see [install.md](docs/install.md).
 
 ## Getting Started
 
-see [getting-started.md](getting-started.md).
+see [getting-started.md](docs/getting-started.md).
 
 ## Executing some tests
 
@@ -145,4 +147,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## TODO
 
-See [TODO.md](TODO.md)
+See [TODO.md](docs/TODO.md)

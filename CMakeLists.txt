@@ -1,24 +1,6 @@
 cmake_minimum_required(VERSION 3.15)
 project(axolote-engine)
 
-set(FLAGS "-Wall")
-if (CMAKE_COMPILER_IS_GNUXX)
-    set(FLAGS "${FLAGS} -Wextra")
-endif (CMAKE_COMPILER_IS_GNUXX)
-
-if (NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE Release)
-endif ()
-
-option(
-    USE_LOCAL_ASSIMP
-    "Should use local assimp library (located in external folder). Does not work on Windows"
-    OFF
-)
-if (USE_LOCAL_ASSIMP AND (WIN32 OR MSVC))
-    message(FATAL_ERROR "Cannot use local assimp library on Windows")
-endif ()
-
 # CMake settings
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -34,13 +16,31 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${FLAGS}")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} ${FLAGS} -g3 -fsanitize=address,undefined")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} ${FLAGS} -O3")
 
+set(FLAGS "-Wall")
+if (CMAKE_COMPILER_IS_GNUXX)
+    set(FLAGS "${FLAGS} -Wextra")
+endif (CMAKE_COMPILER_IS_GNUXX)
+
+
+# Flags
+option(CMAKE_BUILD_TYPE "Build type" Release)
+option(
+    USE_LOCAL_ASSIMP
+    "Should use local assimp library (located in external folder). Does not work on Windows"
+    OFF
+)
 option(DEBUG "Enable debug mode" ON)
+option(BUILD_TESTS "Build tests" ON)
+if (USE_LOCAL_ASSIMP AND (WIN32 OR MSVC))
+    message(FATAL_ERROR "Cannot use local assimp library on Windows")
+endif ()
 if (DEBUG)
     message("DEBUG MODE ON")
     add_definitions(-DDEBUG)
 else()
     message("DEBUG MODE OFF")
 endif()
+
 
 # Find packages
 set(OpenGL_GL_PREFERENCE GLVND)
@@ -134,6 +134,10 @@ target_include_directories(
 
 
 # =-=-=-=-=-=-= TESTS =-=-=-=-=-=-=
+if (NOT BUILD_TESTS)
+    return()
+endif ()
+
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 
 # ------ MAIN ------
