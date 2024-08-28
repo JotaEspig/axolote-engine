@@ -10,6 +10,15 @@ if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
 endif ()
 
+option(
+    USE_LOCAL_ASSIMP
+    "Should use local assimp library (located in external folder). Does not work on Windows"
+    OFF
+)
+if (USE_LOCAL_ASSIMP AND (WIN32 OR MSVC))
+    message(FATAL_ERROR "Cannot use local assimp library on Windows")
+endif ()
+
 # CMake settings
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -40,6 +49,12 @@ find_package(assimp CONFIG REQUIRED)
 find_package(glfw3 CONFIG REQUIRED)
 find_package(glm REQUIRED)
 find_package(Doxygen OPTIONAL_COMPONENTS dot)
+
+set(ASSIMP_LIB assimp)
+if (NOT USE_LOCAL_ASSIMP)
+    find_package(assimp REQUIRED)
+    set(ASSIMP_LIB ${ASSIMP_LIB})
+endif ()
 
 
 # =-=-=-=-=-=-= DOCS =-=-=-=-=-=-=
@@ -95,10 +110,17 @@ add_library(axolote SHARED ${SOURCE_FILES})
 target_compile_definitions(axolote PUBLIC GLAD_GLAPI_EXPORT PRIVATE GLAD_GLAPI_EXPORT_BUILD)
 
 # Libraries
+if (USE_LOCAL_ASSIMP)
+    target_link_directories(
+        axolote
+        PUBLIC
+        ${CMAKE_SOURCE_DIR}/external/lib/assimp
+    )
+endif (USE_LOCAL_ASSIMP)
 target_link_libraries(
     axolote
     PUBLIC
-    ${OPENGL_LIBRARIES} glfw assimp::assimp
+    ${OPENGL_LIBRARIES} glfw ${ASSIMP_LIB}
 )
 
 # Header files
@@ -136,12 +158,18 @@ if (UNIX)
         ./lib
     )
 endif (UNIX)
-
+if (USE_LOCAL_ASSIMP)
+    target_link_directories(
+        axolote
+        PUBLIC
+        ${CMAKE_SOURCE_DIR}/external/lib/assimp
+    )
+endif (USE_LOCAL_ASSIMP)
 target_link_libraries(
     main-test
     PUBLIC
     axolote
-    ${OPENGL_LIBRARIES} glfw assimp::assimp
+    ${OPENGL_LIBRARIES} glfw ${ASSIMP_LIB}
 )
 
 # Header files
@@ -184,12 +212,18 @@ if (UNIX)
         ./lib
     )
 endif (UNIX)
-
+if (USE_LOCAL_ASSIMP)
+    target_link_directories(
+        axolote
+        PUBLIC
+        ${CMAKE_SOURCE_DIR}/external/lib/assimp
+    )
+endif (USE_LOCAL_ASSIMP)
 target_link_libraries(
     window-test
     PUBLIC
     axolote
-    ${OPENGL_LIBRARIES} glfw assimp::assimp
+    ${OPENGL_LIBRARIES} glfw ${ASSIMP_LIB}
 )
 
 # Header files
@@ -232,12 +266,18 @@ if (UNIX)
         ./lib
     )
 endif (UNIX)
-
+if (USE_LOCAL_ASSIMP)
+    target_link_directories(
+        axolote
+        PUBLIC
+        ${CMAKE_SOURCE_DIR}/external/lib/assimp
+    )
+endif (USE_LOCAL_ASSIMP)
 target_link_libraries(
     models-and-shaders-test
     PUBLIC
     axolote
-    ${OPENGL_LIBRARIES} glfw assimp::assimp
+    ${OPENGL_LIBRARIES} glfw ${ASSIMP_LIB}
 )
 
 # Header files
