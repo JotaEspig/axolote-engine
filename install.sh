@@ -54,6 +54,7 @@ mkdir tmp/resources/shaders -p
 
 echo "Copying content to temp folder"
 cp lib/* tmp/external/lib/axolote/
+cp external/lib/assimp/* tmp/external/lib/axolote/
 cp -r include/axolote tmp/external/include/
 cp -r resources/shaders/* tmp/resources/shaders
 
