@@ -45,14 +45,13 @@ endif()
 # Find packages
 set(OpenGL_GL_PREFERENCE GLVND)
 find_package(OpenGL REQUIRED)
-find_package(assimp CONFIG REQUIRED)
 find_package(glfw3 CONFIG REQUIRED)
 find_package(glm REQUIRED)
 find_package(Doxygen OPTIONAL_COMPONENTS dot)
 
 set(ASSIMP_LIB assimp)
 if (NOT USE_LOCAL_ASSIMP)
-    find_package(assimp REQUIRED)
+    find_package(assimp CONFIG REQUIRED)
     set(ASSIMP_LIB ${ASSIMP_LIB})
 endif ()
 
