@@ -99,6 +99,7 @@ void App::main_loop() {
     scene->camera.pos = {0.0f, 0.0f, 12.35f};
     scene->camera.speed = 3.0f;
     scene->camera.sensitivity = 10000.0f;
+    scene->ambient_light_intensity = 0.2f;
 
     auto dir_light = std::make_shared<MyDirLight>(
         glm::vec3{1.f, 1.f, 1.f}, true, glm::vec3{1.0f, 0.0f, 0.0f}
