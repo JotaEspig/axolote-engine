@@ -2,7 +2,7 @@
 
 Graphics engine made in C++ using OpenGL
 
-🇧 README em português: [READMEpt.md](READMEpt.md)
+🇧🇷 README em português: [READMEpt.md](READMEpt.md)
 
 ## 📄 Description
 
