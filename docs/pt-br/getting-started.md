@@ -1,21 +1,21 @@
-## Compiling your project with Axolote Engine
+## Compilando seu projeto com o Axolote Engine
 
-First of all you must install it at your project folder. See [install.md](install.md).
+Primeiramente, você deve instalá-lo na pasta do seu projeto. Veja [install.md](install.md).
 
-It's recommended to use CMake to compile your project with Axolote Engine.
-You can see a minimal CMakeLists.txt file that you can use at [examples/CMakeLists.txt](../examples/CMakeLists.txt).
+É recomendado usar CMake para compilar seu projeto com o Axolote Engine.
+Você pode ver um arquivo CMakeLists.txt mínimo que você pode usar em [examples/CMakeLists.txt](../../examples/CMakeLists.txt).
 
-## Opening a window
+## Abrindo uma janela
 
-To open a window you must create a class that inherits from `axolote::Window` and implement the `main_loop` method.
+Para abrir uma janela, você deve criar uma classe que herda de `axolote::Window` e implementar o método `main_loop`.
 
-Please take note that we are processing input from the keyboard and mouse.
-Look at the `poll_events` and `process_input` methods. `poll_events` it's a must call to work with input.
-And `process_input` it's the default implementation to process user input, using this implementation you have:
+Observe que estamos processando a entrada do teclado e do mouse.
+Veja os métodos `poll_events` e `process_input`. `poll_events` é uma chamada obrigatória para trabalhar com entrada.
+E `process_input` é a implementação padrão para processar a entrada do usuário. Usando essa implementação, você tem:
 
--   W, A, S, D, Left Shift and Space -> Move around
--   Holding mouse right button and dragging it -> Camera movement
--   ESC -> Quit
+- W, A, S, D, Left Shift e Space -> Mover-se
+- Segurando o botão direito do mouse e arrastando -> Movimento da câmera
+- ESC -> Sair
 
 ```cpp
 #include <iostream>
@@ -64,13 +64,13 @@ int main() {
 }
 ```
 
-## Model loading and Shaders
+## Carregamento de modelos e Shaders
 
-In this example, A shader and a 3D model is loaded (Better Caul Saul!).
-To load a model it's quite easy, create a object3D object, call `load_model` and bind the shader.
-You can see more about shaders at [https://learnopengl.com/Getting-started/Shaders](https://learnopengl.com/Getting-started/Shaders).
-With this default shaders you can do almost all the simple things, but please be aware that sometimes, some models can break.
-If want to do more advanced things it's advised to learn about shaders.
+Neste exemplo, um shader e um modelo 3D são carregados (Better Caul Saul!).
+Carregar um modelo é bastante simples, crie um objeto `Object3D`, chame `load_model` e vincule o shader.
+Você pode ver mais sobre shaders em [https://learnopengl.com/Getting-started/Shaders](https://learnopengl.com/Getting-started/Shaders).
+Com esses shaders padrão, você pode fazer quase todas as coisas simples, mas esteja ciente de que, às vezes, alguns modelos podem não funcionar corretamente.
+Se você deseja fazer coisas mais avançadas, é aconselhável aprender sobre shaders.
 
 ```cpp
 #include <iostream>
@@ -143,31 +143,28 @@ int main() {
 }
 ```
 
-## Other Examples
+## Outros Exemplos
 
-You can see some examples in the [examples](../examples/) folder.
-You can run it as well:
+Você pode ver alguns exemplos na pasta [examples](../../examples/).
+Você também pode executá-los:
 
 Linux
-
 ```bash
 ./bin/window-test
 ./bin/models-and-shaders-test
 ./bin/main-test
 ```
 
-Windows:
-
+Windows
 ```bash
-.\bin\Release\window-test.exe
-.\bin\Release\models-and-shaders-test.exe
-.\bin\Release\main-test.exe
+./bin/window-test.exe
+./bin/models-and-shaders-test.exe
+./bin/main-test.exe
 ```
 
-## Documentation
+## Documentação
 
-If you have Doxygen, you can read the documentation using:
-
+Se você tiver Doxygen, pode ler a documentação usando:
 ```bash
 git clone https://github.com/JotaEspig/axolote-engine
 cd axolote-engine

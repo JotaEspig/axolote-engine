@@ -4,6 +4,8 @@ Graphics engine made in C++ using OpenGL
 
 ## Description
 
+README em português: [READMEpt.md](READMEpt.md)
+
 Graphics engine made in C++ using OpenGL version 3.3+. The idea of the project came from the fact that I (João Vitor Espig) wanted to learn OpenGL at the start of 2023 and have some fun doing some games and simulations, and then I decided to create a small engine using OpenGL. One of my motivations for learning OpenGL came from Minecraft (it uses OpenGL to render its graphics) and from the curiosity that I had about how 3D games are made.
 
 ## Dependencies
@@ -80,15 +82,15 @@ cmake -G "Visual Studio 17 2022" -DCMAKE_TOOLCHAIN_FILE=C:/path/to/vcpkg/scripts
 cmake --build . --config Release
 ```
 
-For more details about building the project, see [building.md](docs/building.md).
+For more details about building the project, see [building.md](docs/en/building.md).
 
 ## Installation
 
-see [install.md](docs/install.md).
+see [install.md](docs/en/install.md).
 
 ## Getting Started
 
-see [getting-started.md](docs/getting-started.md).
+see [getting-started.md](docs/en/getting-started.md).
 
 ## Executing some tests
 
@@ -144,7 +146,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 * [Learn OpenGL](https://github.com/JoeyDeVries/LearnOpenGL)
 * [OpenGL course](https://www.youtube.com/watch?v=45MIykWJ-C4&ab_channel=freeCodeCamp.org) - By freeCodeCamp
 * [README-Template.md](https://gist.github.com/DomPizzie/7a5ff55ffa9081f2de27c315f5018afc)
-
-## TODO
-
-See [TODO.md](docs/TODO.md)
