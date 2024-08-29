@@ -1,13 +1,13 @@
-# Axolote Engine
+# 🦎 Axolote Engine
 
 Engine gráfica feita em C++ utilizando OpenGL
 
-## Descrição
+🇺/🇬 README in english: [README.md](README.md)
 
-README in english: [README.md](README.md)
+## 📄 Descrição
 
 Engine gráfica feita em C++ utilizando OpenGL versão 3.3+. A ideia do projeto surgiu do fato de que eu (João Vitor Espig) queria aprender OpenGL no início de 2023 e me divertir fazendo alguns jogos e simulações, e então decidi criar uma pequena engine utilizando OpenGL. Uma das minhas motivações para aprender OpenGL veio do Minecraft (ele usa OpenGL para renderizar seus gráficos) e da curiosidade que eu tinha sobre como os jogos 3D são feitos.
-## Dependências
+## 📦 Dependências
 
 * CMake 2.8.5+
 * OpenGL 3.3+
@@ -54,7 +54,7 @@ vcpkg.exe install glfw3
 vcpkg.exe install assimp
 ```
 
-## Compilação
+## 🔧 Compilação
 
 Clone o repositório e vá para a pasta build:
 ```bash
@@ -84,15 +84,15 @@ cmake --build . --config Release
 
 Para mais detalhes sobre a compilação do projeto, veja [building.md](docs/pt-br/building.md).
 
-## Instalação
+## 🛠️ Instalação
 
 veja [install.md](docs/pt-br/install.md).
 
-## Getting Started
+## 🚀 Getting Started
 
 veja [getting-started.md](docs/pt-br/getting-started.md).
 
-## Executing some tests
+## 🧪 Executing some tests
 
 After compiling the project, go back to the root directory of the project and
 run the following commands:
@@ -113,7 +113,7 @@ Para Windows
 .\bin\Release\main-test.exe
 ```
 
-## Documentação
+## 📚 Documentação
 
 Se você tiver o Doxygen, você pode ler a documentação usando:
 ```bash
@@ -125,25 +125,25 @@ cmake ..
 make docs
 ```
 
-## Ajuda
+## ❓ Ajuda
 
 Você pode criar uma Issue ou contatar os mantenedores (autores)
 
-## Autores
+## 👥 Autores
 
  * João Vitor Espig ([JotaEspig](https://github.com/JotaEspig))
  * Mickael Reichert ([mickaelrei](https://github.com/mickaelrei))
  * Gustavo Tramontin Pedro ([gustatramontin](https://github.com/gustatramontin))
 
-## Historico de versões
+## 🕒 Historico de versões
 
 veja [CHANGELOG.md](CHANGELOG.md)
 
-## Licença
+## 📜 Licença
 
 O projeto é licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICENSE) para mais detalhes
 
-## Agradecimentos
+## 🙏 Agradecimentos
 
 * [Learn OpenGL](https://github.com/JoeyDeVries/LearnOpenGL)
 * [OpenGL course](https://www.youtube.com/watch?v=45MIykWJ-C4&ab_channel=freeCodeCamp.org) - Por freeCodeCamp

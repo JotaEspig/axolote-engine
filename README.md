@@ -1,14 +1,14 @@
-# Axolote Engine
+# 🦎 Axolote Engine
 
 Graphics engine made in C++ using OpenGL
 
-## Description
+🇧 README em português: [READMEpt.md](READMEpt.md)
 
-README em português: [READMEpt.md](READMEpt.md)
+## 📄 Description
 
 Graphics engine made in C++ using OpenGL version 3.3+. The idea of the project came from the fact that I (João Vitor Espig) wanted to learn OpenGL at the start of 2023 and have some fun doing some games and simulations, and then I decided to create a small engine using OpenGL. One of my motivations for learning OpenGL came from Minecraft (it uses OpenGL to render its graphics) and from the curiosity that I had about how 3D games are made.
 
-## Dependencies
+## 📦 Dependencies
 
 * CMake 2.8.5+
 * OpenGL 3.3+
@@ -55,7 +55,7 @@ vcpkg.exe install glfw3
 vcpkg.exe install assimp
 ```
 
-## Compiling
+## 🔧 Compiling
 
 Clone the repository:
 ```bash
@@ -84,15 +84,15 @@ cmake --build . --config Release
 
 For more details about building the project, see [building.md](docs/en/building.md).
 
-## Installation
+## 🛠️ Installation
 
 see [install.md](docs/en/install.md).
 
-## Getting Started
+## 🚀 Getting Started
 
 see [getting-started.md](docs/en/getting-started.md).
 
-## Executing some tests
+## 🧪 Executing some tests
 
 After compiling the project, go back to the root directory of the project and
 run the following commands:
@@ -111,7 +111,7 @@ For Windows
 .\bin\Release\main-test.exe
 ```
 
-## Documentation
+## 📚 Documentation
 
 If you have Doxygen, you can read the documentation using:
 ```bash
@@ -123,25 +123,25 @@ cmake ..
 make docs
 ```
 
-## Help
+## ❓ Help
 
 You can create an Issue or contact the mantainers (authors)
 
-## Authors
+## 👥 Authors
 
  * João Vitor Espig ([JotaEspig](https://github.com/JotaEspig))
  * Mickael Reichert ([mickaelrei](https://github.com/mickaelrei))
  * Gustavo Tramontin Pedro ([gustatramontin](https://github.com/gustatramontin))
 
-## Version History
+## 🕒 Version History
 
 see [CHANGELOG.md](CHANGELOG.md)
 
-## License
+## 📜 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
 
-## Acknowledgments
+## 🙏 Acknowledgments
 
 * [Learn OpenGL](https://github.com/JoeyDeVries/LearnOpenGL)
 * [OpenGL course](https://www.youtube.com/watch?v=45MIykWJ-C4&ab_channel=freeCodeCamp.org) - By freeCodeCamp
