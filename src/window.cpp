@@ -26,11 +26,11 @@ Window::Window(bool vsync) :
 }
 
 Window::~Window() {
-    glfwDestroyWindow(_window);
-    glfwTerminate();
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
+    glfwDestroyWindow(_window);
+    glfwTerminate();
 }
 
 void Window::default_framebuffer_size_callback(
