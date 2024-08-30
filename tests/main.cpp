@@ -30,6 +30,7 @@ public:
 
 class App : public axolote::Window {
 public:
+    bool use_mirror = true;
     std::shared_ptr<axolote::SpotLight> flashlight;
     std::shared_ptr<axolote::gl::Framebuffer> mirror_fbo;
 
@@ -66,6 +67,15 @@ void App::process_input(double dt) {
         flashlight->is_set = !flashlight->is_set;
         set_key_pressed(Key::L, false);
     }
+
+    KeyState m_key_state = get_key_state(Key::M);
+    if (m_key_state == KeyState::PRESSED && !is_key_pressed(Key::M)) {
+        set_key_pressed(Key::M, true);
+    }
+    else if (m_key_state == KeyState::RELEASED && is_key_pressed(Key::M)) {
+        use_mirror = !use_mirror;
+        set_key_pressed(Key::M, false);
+    }
 }
 
 void App::main_loop() {
@@ -99,7 +109,7 @@ void App::main_loop() {
     scene->camera.pos = {0.0f, 0.0f, 12.35f};
     scene->camera.speed = 3.0f;
     scene->camera.sensitivity = 10000.0f;
-    scene->ambient_light_intensity = 0.2f;
+    scene->ambient_light_intensity = 0.15f;
 
     auto dir_light = std::make_shared<MyDirLight>(
         glm::vec3{1.f, 1.f, 1.f}, true, glm::vec3{1.0f, 0.0f, 0.0f}
@@ -129,7 +139,7 @@ void App::main_loop() {
 
     auto moon = std::make_shared<axolote::Object3D>(
         get_path("resources/models/sphere/sphere.obj"),
-        glm::vec4{0.9f, 0.9f, 0.9f, 1.0f},
+        glm::vec4{0.8f, 0.8f, 0.8f, 1.0f},
         glm::translate(glm::mat4{1.0f}, glm::vec3{15.f, 2.f, 0.f})
     );
     moon->bind_shader(shader_program);
@@ -203,8 +213,6 @@ void App::main_loop() {
     set_scene(scene);
     double before = get_time();
     while (!should_close()) {
-        clear();
-
         poll_events();
 
         double now = get_time();
@@ -217,7 +225,8 @@ void App::main_loop() {
         set_title(sstr.str());
 
         dt *= DT_MULTIPLIER;
-        {
+        auto camera = current_scene()->camera;
+        if (use_mirror) {
             glm::vec3 normal
                 = glm::mat3{quad->get_normal_matrix()} * quad_normal;
             glm::vec3 pos = quad->get_matrix()[3];
@@ -240,8 +249,6 @@ void App::main_loop() {
                 = reflection_matrix
                   * glm::vec4{pos - current_scene()->camera.pos, 1.0f};
 
-            auto camera = current_scene()->camera;
-
             // first pass
             // Setting the camera to the mirror position and orientation
             current_scene()->camera.pos = pos;
@@ -255,52 +262,51 @@ void App::main_loop() {
 
             // second pass
             mirror_fbo->unbind();
-            clear();
-
-            // restore original camera
-            current_scene()->camera = camera;
-            glm::mat4 view = glm::lookAt(
-                camera.pos, camera.pos + camera.orientation, camera.up
-            );
-            glm::mat4 projection = glm::perspective(
-                glm::radians(camera.fov), (float)width() / height(),
-                camera.min_dist, camera.max_dist
-            );
-
-            auto s = quad->get_shader();
-            s->activate();
-            s->set_uniform_float3(
-                "axolote_camera_pos", camera.pos.x, camera.pos.y, camera.pos.z
-            );
-            s->set_uniform_matrix4("axolote_projection", projection);
-            s->set_uniform_matrix4("axolote_view", view);
-            glm::mat4 model = glm::mat4{1.0f};
-            // make the model orbit around the the center using radius 10
-            model = glm::rotate(
-                model, (float)get_time() * 0.1f, glm::vec3{0.0f, 1.0f, 0.0f}
-            );
-            model = glm::translate(model, glm::vec3{10.0f, 0.0f, 0.0f});
-            // rotate so it points to the center
-            model = glm::rotate(
-                model, glm::radians(-90.0f), glm::vec3{0.0f, 1.0f, 0.0f}
-            );
-
-            glDisable(GL_CULL_FACE);
-            quad->set_matrix(model);
-            quad->draw();
-
-            s = eder_quad->get_shader();
-            s->activate();
-            s->set_uniform_float3(
-                "axolote_camera_pos", camera.pos.x, camera.pos.y, camera.pos.z
-            );
-            s->set_uniform_matrix4("axolote_projection", projection);
-            s->set_uniform_matrix4("axolote_view", view);
-            model = glm::translate(model, glm::vec3{0.0f, 0.0f, -0.01f});
-            model = glm::scale(model, glm::vec3{1.1f, 1.1f, 1.1f});
-            eder_quad->draw(model);
-            glEnable(GL_CULL_FACE);
         }
+
+        clear();
+        // restore original camera
+        current_scene()->camera = camera;
+        glm::mat4 view = glm::lookAt(
+            camera.pos, camera.pos + camera.orientation, camera.up
+        );
+        glm::mat4 projection = glm::perspective(
+            glm::radians(camera.fov), (float)width() / height(),
+            camera.min_dist, camera.max_dist
+        );
+
+        auto s = quad->get_shader();
+        s->activate();
+        s->set_uniform_float3(
+            "axolote_camera_pos", camera.pos.x, camera.pos.y, camera.pos.z
+        );
+        s->set_uniform_matrix4("axolote_projection", projection);
+        s->set_uniform_matrix4("axolote_view", view);
+        glm::mat4 model = glm::mat4{1.0f};
+        // make the model orbit around the the center using radius 10
+        model = glm::rotate(
+            model, (float)get_time() * 0.1f, glm::vec3{0.0f, 1.0f, 0.0f}
+        );
+        model = glm::translate(model, glm::vec3{10.0f, 0.0f, 0.0f});
+        // rotate so it points to the center
+        model = glm::rotate(
+            model, glm::radians(-90.0f), glm::vec3{0.0f, 1.0f, 0.0f}
+        );
+        glDisable(GL_CULL_FACE);
+        quad->set_matrix(model);
+        quad->draw();
+
+        s = eder_quad->get_shader();
+        s->activate();
+        s->set_uniform_float3(
+            "axolote_camera_pos", camera.pos.x, camera.pos.y, camera.pos.z
+        );
+        s->set_uniform_matrix4("axolote_projection", projection);
+        s->set_uniform_matrix4("axolote_view", view);
+        model = glm::translate(model, glm::vec3{0.0f, 0.0f, -0.01f});
+        model = glm::scale(model, glm::vec3{1.1f, 1.1f, 1.1f});
+        eder_quad->draw(model);
+        glEnable(GL_CULL_FACE);
 
         // Flashlight
         spot_light->pos = current_scene()->camera.pos;
