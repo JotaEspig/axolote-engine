@@ -103,6 +103,13 @@ set(
     ${SOURCE_DIR}/window.cpp
 
     ${CMAKE_SOURCE_DIR}/external/stb/stb.cpp
+    ${CMAKE_SOURCE_DIR}/external/imgui/src/imgui.cpp
+    ${CMAKE_SOURCE_DIR}/external/imgui/src/imgui_demo.cpp
+    ${CMAKE_SOURCE_DIR}/external/imgui/src/imgui_draw.cpp
+    ${CMAKE_SOURCE_DIR}/external/imgui/src/imgui_impl_glfw.cpp
+    ${CMAKE_SOURCE_DIR}/external/imgui/src/imgui_impl_opengl3.cpp
+    ${CMAKE_SOURCE_DIR}/external/imgui/src/imgui_tables.cpp
+    ${CMAKE_SOURCE_DIR}/external/imgui/src/imgui_widgets.cpp
 )
 
 # Adding axolote shared library
@@ -129,6 +136,7 @@ target_include_directories(
     PUBLIC
     ${CMAKE_SOURCE_DIR}/include
     ${CMAKE_SOURCE_DIR}/external/include
+    ${CMAKE_SOURCE_DIR}/external/imgui/include
     ${ASSIMP_INCLUDE_DIRS}
 )
 
@@ -182,6 +190,7 @@ target_include_directories(
     PUBLIC
     ${CMAKE_SOURCE_DIR}/include
     ${CMAKE_SOURCE_DIR}/external/include
+    ${CMAKE_SOURCE_DIR}/external/imgui/include
     ${ASSIMP_INCLUDE_DIRS}
 )
 
@@ -236,6 +245,7 @@ target_include_directories(
     PUBLIC
     ${CMAKE_SOURCE_DIR}/include
     ${CMAKE_SOURCE_DIR}/external/include
+    ${CMAKE_SOURCE_DIR}/external/imgui/include
     ${ASSIMP_INCLUDE_DIRS}
 )
 
@@ -290,6 +300,7 @@ target_include_directories(
     PUBLIC
     ${CMAKE_SOURCE_DIR}/include
     ${CMAKE_SOURCE_DIR}/external/include
+    ${CMAKE_SOURCE_DIR}/external/imgui/include
     ${ASSIMP_INCLUDE_DIRS}
 )
 

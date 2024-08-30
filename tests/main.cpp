@@ -7,6 +7,9 @@
 #include <glm/gtc/type_ptr.hpp>
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/string_cast.hpp>
+#include <imgui.h>
+#include <imgui_impl_glfw.h>
+#include <imgui_impl_opengl3.h>
 
 #include <axolote/engine.hpp>
 
@@ -218,11 +221,17 @@ void App::main_loop() {
         double now = get_time();
         double dt = now - before;
         before = now;
-        process_input(dt);
+        if (!_io->WantCaptureMouse) {
+            process_input(dt);
+        }
 
         std::stringstream sstr;
         sstr << original_title << " | " << (int)(1 / dt) << " fps";
         set_title(sstr.str());
+
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
 
         dt *= DT_MULTIPLIER;
         auto camera = current_scene()->camera;
@@ -317,6 +326,15 @@ void App::main_loop() {
         render();
 
         grid->camera_pos = current_scene()->camera.pos;
+
+        ImGui::Begin("Tests using ImGui");
+        ImGui::Text("Press 'V' to toggle vsync");
+        ImGui::Text("Press 'L' to toggle flashlight");
+        ImGui::Text("Press 'M' to toggle mirror");
+        ImGui::End();
+
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
         flush();
     }

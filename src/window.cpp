@@ -1,6 +1,9 @@
 #include <iostream>
 
 #include <glm/glm.hpp>
+#include <imgui.h>
+#include <imgui_impl_glfw.h>
+#include <imgui_impl_opengl3.h>
 
 #include "axolote/glad/glad.h"
 #include "axolote/structs.hpp"
@@ -11,7 +14,7 @@
 
 namespace axolote {
 
-    std::string Window::_root_path = "";
+std::string Window::_root_path = "";
 
 Window::Window() {
     init();
@@ -25,6 +28,9 @@ Window::Window(bool vsync) :
 Window::~Window() {
     glfwDestroyWindow(_window);
     glfwTerminate();
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
 }
 
 void Window::default_framebuffer_size_callback(
@@ -78,6 +84,14 @@ void Window::init() {
     glEnable(GL_CULL_FACE);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO &io = ImGui::GetIO();
+    _io = std::make_shared<ImGuiIO>(io);
+    ImGui::StyleColorsDark();
+    ImGui_ImplGlfw_InitForOpenGL(_window, true);
+    ImGui_ImplOpenGL3_Init("#version 330");
 }
 
 void Window::poll_events() {

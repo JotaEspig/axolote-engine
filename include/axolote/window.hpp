@@ -13,6 +13,7 @@
 #include <unordered_map>
 
 #include <GLFW/glfw3.h>
+#include <imgui.h>
 
 #include "axolote/scene.hpp"
 #include "axolote/structs.hpp"
@@ -423,6 +424,8 @@ protected:
     std::string _title;
     /** window background color **/
     Color _color;
+    /** ImGui IO object **/
+    std::shared_ptr<ImGuiIO> _io;
 
 private:
     /** GLFWwindow struct object **/
