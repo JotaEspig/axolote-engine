@@ -263,7 +263,7 @@ void App::main_loop() {
             current_scene()->camera.pos = pos;
             current_scene()->camera.orientation = reflection;
             current_scene()->camera.up = glm::vec3{0.0f, 1.0f, 0.0f};
-            update_camera((float)width() / height());
+            update_camera(1.0f);
 
             mirror_fbo->bind();
             clear();
