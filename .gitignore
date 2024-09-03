@@ -7,6 +7,9 @@ cmake_install.cmake
 CMakeDoxyfile.in
 CMakeDoxygenDefaults.cmake
 
+# ImGui
+imgui.ini
+
 # folder
 docs/html/
 docs/latex/
