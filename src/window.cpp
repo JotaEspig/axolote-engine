@@ -88,6 +88,8 @@ void Window::init() {
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO &io = ImGui::GetIO();
+    io.IniFilename = NULL;
+    io.LogFilename = NULL;
     _io = std::make_shared<ImGuiIO>(io);
     ImGui::StyleColorsDark();
     ImGui_ImplGlfw_InitForOpenGL(_window, true);
