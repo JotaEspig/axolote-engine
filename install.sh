@@ -9,7 +9,7 @@ if [ "$#" -ne 1 ]; then echo
 fi
 
 path=$1
-if [ -d "$path" ]; then
+if [ ! -d "$path" ]; then
     echo "target path not found"
     exit 1
 fi
