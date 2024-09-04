@@ -64,11 +64,13 @@ echo ""
 echo "Creating temporary folder"
 mkdir tmp/external/lib/axolote
 mkdir tmp/external/include
+mkdir tmp/external/imgui
 mkdir tmp/resources/shaders
 
 echo "Copying content to temporary folder"
 cp build/$type/* tmp/external/lib/axolote
 cp -r include/axolote tmp/external/include
+cp -r external/imgui/* tmp/external/imgui/
 cp -r external/include/KHR tmp/external/include
 cp -r resources/shaders/* tmp/resources/shaders
 
