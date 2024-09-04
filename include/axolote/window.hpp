@@ -368,22 +368,17 @@ public:
      **/
     int width() const;
     /**
-     * @brief width setter
-     * @author João Vitor Espig (jotaespig@gmail.com)
-     * @param new_width new window width
-     **/
-    void set_width(int new_width);
-    /**
      * @brief height getter
      * @author João Vitor Espig (jotaespig@gmail.com)
      **/
     int height() const;
     /**
-     * @brief height setter
+     * @brief window size setter
      * @author João Vitor Espig (jotaespig@gmail.com)
+     * @param new_width new window width
      * @param new_height new window height
      **/
-    void set_height(int new_height);
+    void set_window_size(int new_width, int new_height);
     /**
      * @brief color getter
      * @author João Vitor Espig (jotaespig@gmail.com)

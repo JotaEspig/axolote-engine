@@ -242,18 +242,14 @@ int Window::width() const {
     return width;
 }
 
-void Window::set_width(int new_width) {
-    glfwSetWindowSize(_window, new_width, height());
-}
-
 int Window::height() const {
     int width, height;
     glfwGetWindowSize(_window, &width, &height);
     return height;
 }
 
-void Window::set_height(int new_height) {
-    glfwSetWindowSize(_window, width(), new_height);
+void Window::set_window_size(int new_width, int new_height) {
+    glfwSetWindowSize(_window, new_width, new_height);
 }
 
 Color Window::color() const {

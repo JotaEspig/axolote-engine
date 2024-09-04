@@ -56,8 +56,7 @@ int main() {
     std::cout << "Axolote Engine" << std::endl;
     App app{};
     app.set_title("Window");
-    app.set_width(600);
-    app.set_height(600);
+    app.set_window_size(600, 600);
     app.set_color(0x01, 0x40, 0xff);
     app.main_loop();
     return 0;
@@ -135,8 +134,7 @@ int main() {
     std::cout << "Axolote Engine" << std::endl;
     App app{};
     app.set_title("Window");
-    app.set_width(600);
-    app.set_height(600);
+    app.set_window_size(600, 600);
     app.set_color(0x01, 0x40, 0xff);
     app.main_loop();
     return 0;
