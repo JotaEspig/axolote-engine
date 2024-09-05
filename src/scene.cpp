@@ -83,6 +83,7 @@ void Scene::update_camera(float aspect_ratio) {
         s->set_uniform_matrix4("axolote_view", view);
     }
     if (_grid) {
+        _grid->camera_pos = camera.pos;
         std::shared_ptr<gl::Shader> s = _grid->get_shader();
         s->activate();
         s->set_uniform_float3(

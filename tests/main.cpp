@@ -325,8 +325,6 @@ void App::main_loop() {
         update(dt);
         render();
 
-        grid->camera_pos = current_scene()->camera.pos;
-
         ImGui::Begin("Tests using ImGui");
         ImGui::Text("Press 'V' to toggle vsync");
         ImGui::Text("Press 'L' to toggle flashlight");

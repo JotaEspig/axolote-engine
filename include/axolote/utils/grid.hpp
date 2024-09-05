@@ -36,7 +36,7 @@ public:
     /** grid color **/
     glm::vec4 color{1.0f};
     /** camera pos **/
-    glm::vec3 camera_pos;
+    glm::vec3 camera_pos{0.0f, 0.0f, 0.0f};
     /** grid position **/
     glm::vec3 pos{0.0f};
     /** model_mat **/
