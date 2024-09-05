@@ -23,7 +23,7 @@ namespace utils {
 class Line : public axolote::Object3D {
 public:
     /** starting point **/
-    glm::vec3 a;
+    glm::vec3 start;
     /** direction vector **/
     glm::vec3 dir_vec;
     /** limit for the λ **/
@@ -62,6 +62,13 @@ public:
      * @param end end point
      **/
     void set_end(const glm::vec3 &end);
+
+    /**
+     * @brief get line end point
+     * @author Mickael Reichert (mickael.reichert@gmail.com)
+     * @return end point
+     **/
+    glm::vec3 get_end();
 
     /**
      *

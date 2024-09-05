@@ -17,7 +17,7 @@ Line::Line(
     const glm::vec3 &point, const glm::vec3 &direction_vector, float length,
     float thickness, const glm::vec4 &color, float line_quality
 ) :
-  a{point},
+  start{point},
   dir_vec{glm::normalize(direction_vector)},
   length{length},
   thickness{thickness},
@@ -104,13 +104,17 @@ void Line::build_mesh() {
 
 void Line::set_end(const glm::vec3 &end) {
     // Calculate new direction
-    glm::vec3 direction = end - a;
+    glm::vec3 direction = end - start;
     float distance = glm::length(direction);
     assert((distance > 0.0f));
 
     // Set new direction and length
     dir_vec = glm::normalize(direction);
     length = distance;
+}
+
+glm::vec3 Line::get_end() {
+    return start + dir_vec * length;
 }
 
 void Line::draw() {
@@ -122,7 +126,7 @@ void Line::update(double dt) {
     glm::mat4 mat{1.0f};
     float x_rot = get_rotation_around_x();
     float y_rot = get_rotation_around_y();
-    mat = glm::translate(mat, a);
+    mat = glm::translate(mat, start);
     mat = glm::rotate(mat, y_rot, {0.0f, 1.0f, 0.0f});
     mat = glm::rotate(mat, x_rot, {1.0f, 0.0f, 0.0f});
     mat = glm::scale(mat, {1.0f, length, 1.0f});
