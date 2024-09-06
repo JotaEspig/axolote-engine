@@ -38,11 +38,34 @@ else
     exit
 fi
 
+use_local_assimp=""
+while true; do
+    echo "Do you want to use the local assimp library or the one installed"
+    echo "on your machine (via your package manager)?"
+    echo "Local [1]"
+    echo "Installed [2]"
+    echo "Exit script [3]"
+    read -p "Your choice: " option
+
+    case $option in
+        1 | 2 | 3) break ;;
+        *) echo -e "Invalid option\n" && sleep 1 ;;
+    esac
+done
+
+if [ $option = 1 ]; then
+    use_local_assimp="On"
+elif [ $option = 2 ]; then
+    use_local_assimp="Off"
+else
+    exit
+fi
+
 if [ ! -d "build" ]; then
     mkdir build
 fi
 cd build
-cmake .. -DCMAKE_BUILD_TYPE=$type
+cmake .. -DCMAKE_BUILD_TYPE=$type -DUSE_LOCAL_ASSIMP=$use_local_assimp
 make -j4
 cd ..
 
