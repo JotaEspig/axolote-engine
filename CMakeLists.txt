@@ -129,6 +129,13 @@ target_link_libraries(
     PUBLIC
     ${OPENGL_LIBRARIES} glfw ${ASSIMP_LIB}
 )
+if (UNIX)
+    target_link_libraries(
+        axolote
+        PUBLIC
+        stdc++
+    )
+endif (UNIX)
 
 # Header files
 target_include_directories(
@@ -183,6 +190,13 @@ target_link_libraries(
     axolote
     ${OPENGL_LIBRARIES} glfw ${ASSIMP_LIB}
 )
+if (UNIX)
+    target_link_libraries(
+        main-test
+        PUBLIC
+        stdc++
+    )
+endif (UNIX)
 
 # Header files
 target_include_directories(
@@ -238,6 +252,13 @@ target_link_libraries(
     axolote
     ${OPENGL_LIBRARIES} glfw ${ASSIMP_LIB}
 )
+if (UNIX)
+    target_link_libraries(
+        window-test
+        PUBLIC
+        stdc++
+    )
+endif (UNIX)
 
 # Header files
 target_include_directories(
@@ -293,6 +314,13 @@ target_link_libraries(
     axolote
     ${OPENGL_LIBRARIES} glfw ${ASSIMP_LIB}
 )
+if (UNIX)
+    target_link_libraries(
+        models-and-shaders-test
+        PUBLIC
+        stdc++
+    )
+endif (UNIX)
 
 # Header files
 target_include_directories(
