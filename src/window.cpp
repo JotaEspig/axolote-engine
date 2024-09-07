@@ -14,8 +14,6 @@
 
 namespace axolote {
 
-std::string Window::_root_path = "";
-
 Window::Window() {
     init();
 }

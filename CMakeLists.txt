@@ -53,7 +53,7 @@ set(ASSIMP_LIB assimp)
 set(ASSIMP_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/external/include_assimp)
 if (NOT USE_LOCAL_ASSIMP)
     find_package(assimp CONFIG REQUIRED)
-    set(ASSIMP_LIB ${ASSIMP_LIB})
+    set(ASSIMP_LIB assimp::assimp)
 endif ()
 
 
