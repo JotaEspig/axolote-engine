@@ -40,12 +40,12 @@ void Line::build_mesh() {
     for (float i = 0; i < 2 * M_PI; i += step / 2) {
         // bottom base face
         glm::vec3 bottom_p1{
-            std::cos(i) * thickness, bottom_base_center.y,
-            std::sin(i) * thickness
+            std::cos(i) * 0.5f, bottom_base_center.y,
+            std::sin(i) * 0.5f
         };
         glm::vec3 bottom_p2{
-            std::cos(i + step / 2) * thickness, bottom_base_center.y,
-            std::sin(i + step / 2) * thickness
+            std::cos(i + step / 2) * 0.5f, bottom_base_center.y,
+            std::sin(i + step / 2) * 0.5f
         };
         vs.push_back(Vertex{bottom_base_center, color, {}, {}});
         vs.push_back(Vertex{bottom_p1, color, {}, {}});
@@ -57,11 +57,11 @@ void Line::build_mesh() {
 
         // top base face
         glm::vec3 top_p1{
-            std::cos(i) * thickness, top_base_center.y, std::sin(i) * thickness
+            std::cos(i) * 0.5f, top_base_center.y, std::sin(i) * 0.5f
         };
         glm::vec3 top_p2{
-            std::cos(i + step / 2) * thickness, top_base_center.y,
-            std::sin(i + step / 2) * thickness
+            std::cos(i + step / 2) * 0.5f, top_base_center.y,
+            std::sin(i + step / 2) * 0.5f
         };
         vs.push_back(Vertex{top_p1, color, {}, {}});
         vs.push_back(Vertex{top_base_center, color, {}, {}});
@@ -129,7 +129,7 @@ void Line::update(double dt) {
     mat = glm::translate(mat, start);
     mat = glm::rotate(mat, y_rot, {0.0f, 1.0f, 0.0f});
     mat = glm::rotate(mat, x_rot, {1.0f, 0.0f, 0.0f});
-    mat = glm::scale(mat, {1.0f, length, 1.0f});
+    mat = glm::scale(mat, {thickness, length, thickness});
     set_matrix(mat);
 }
 
