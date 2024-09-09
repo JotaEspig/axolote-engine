@@ -83,6 +83,11 @@ cp -r external/imgui/* tmp/external/imgui/
 cp -r include/axolote tmp/external/include/
 cp -r resources/shaders/* tmp/resources/shaders
 
+if [ $use_local_assimp = "Off" ]; then
+    # removing assimp libs
+    rm tmp/external/lib/axolote/libassimp*
+fi
+
 echo "Moving to target path: $path"
 cp tmp/* -r $path
 
