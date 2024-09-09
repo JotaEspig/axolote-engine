@@ -38,6 +38,28 @@ else
     exit
 fi
 
+debug_output=""
+while true; do
+    echo "Do you want to show debug output?"
+    echo "Yes [1]"
+    echo "No [2]"
+    echo "Exit script [3]"
+    read -p "Your choice: " option
+
+    case $option in
+        1 | 2 | 3) break ;;
+        *) echo -e "Invalid option\n" && sleep 1 ;;
+    esac
+done
+
+if [ $option = 1 ]; then
+    debug_output="On"
+elif [ $option = 2 ]; then
+    debug_output="Off"
+else
+    exit
+fi
+
 use_local_assimp=""
 while true; do
     echo "Do you want to use the local assimp library or the one installed"
@@ -65,7 +87,7 @@ if [ ! -d "build" ]; then
     mkdir build
 fi
 cd build
-cmake .. -DCMAKE_BUILD_TYPE=$type -DUSE_LOCAL_ASSIMP=$use_local_assimp
+cmake .. -DCMAKE_BUILD_TYPE=$type -DUSE_LOCAL_ASSIMP=$use_local_assimp -DDEBUG=$debug_output
 make -j4
 cd ..
 
