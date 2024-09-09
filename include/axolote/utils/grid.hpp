@@ -6,8 +6,10 @@
 #pragma once
 
 #include <cstdint>
-#include <glm/fwd.hpp>
 #include <memory>
+#include <vector>
+
+#include <glm/fwd.hpp>
 
 #include "axolote/drawable.hpp"
 #include "axolote/gl/ebo.hpp"
@@ -65,7 +67,7 @@ public:
      **/
     void build_mesh();
     void bind_shader(std::shared_ptr<gl::Shader> shader_program) override;
-    std::shared_ptr<gl::Shader> get_shader() const override;
+    std::vector<std::shared_ptr<gl::Shader>> get_shaders() const override;
     void update(double delta_t) override;
     void draw() override;
     void draw(const glm::mat4 &mat) override;

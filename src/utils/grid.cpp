@@ -81,8 +81,8 @@ void Grid::bind_shader(std::shared_ptr<gl::Shader> shader_program) {
     _shader = shader_program;
 }
 
-std::shared_ptr<gl::Shader> Grid::get_shader() const {
-    return _shader;
+std::vector<std::shared_ptr<gl::Shader>> Grid::get_shaders() const {
+    return {_shader};
 }
 
 void Grid::update(double delta_t) {

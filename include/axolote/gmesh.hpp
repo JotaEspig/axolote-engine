@@ -79,7 +79,7 @@ public:
      * @brief binds a shader into gmesh
      * @author João Vitor Espig (jotaespig@gmail.com)
      **/
-    std::shared_ptr<gl::Shader> get_shader() const override;
+    std::vector<std::shared_ptr<gl::Shader>> get_shaders() const override;
     /**
      * @param dt delta time
      **/

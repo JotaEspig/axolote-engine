@@ -6,6 +6,7 @@
 #pragma once
 
 #include <memory>
+#include <vector>
 
 #include <glm/glm.hpp>
 
@@ -28,7 +29,7 @@ public:
      * @brief virtual function get_shader
      * @author João Vitor Espig (jotaespig@gmail.com)
      **/
-    virtual std::shared_ptr<gl::Shader> get_shader() const = 0;
+    virtual std::vector<std::shared_ptr<gl::Shader>> get_shaders() const = 0;
     /**
      * @brief virtual function update
      * @author João Vitor Espig (jotaespig@gmail.com)

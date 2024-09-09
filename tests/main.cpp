@@ -284,13 +284,16 @@ void App::main_loop() {
             camera.min_dist, camera.max_dist
         );
 
-        auto s = quad->get_shader();
-        s->activate();
-        s->set_uniform_float3(
-            "axolote_camera_pos", camera.pos.x, camera.pos.y, camera.pos.z
-        );
-        s->set_uniform_matrix4("axolote_projection", projection);
-        s->set_uniform_matrix4("axolote_view", view);
+        auto shaders = quad->get_shaders();
+        for (auto &s : shaders) {
+            s->activate();
+            s->set_uniform_float3(
+                "axolote_camera_pos", camera.pos.x, camera.pos.y, camera.pos.z
+            );
+            s->set_uniform_matrix4("axolote_projection", projection);
+            s->set_uniform_matrix4("axolote_view", view);
+        }
+
         glm::mat4 model = glm::mat4{1.0f};
         // make the model orbit around the the center using radius 10
         model = glm::rotate(
@@ -305,13 +308,16 @@ void App::main_loop() {
         quad->set_matrix(model);
         quad->draw();
 
-        s = eder_quad->get_shader();
-        s->activate();
-        s->set_uniform_float3(
-            "axolote_camera_pos", camera.pos.x, camera.pos.y, camera.pos.z
-        );
-        s->set_uniform_matrix4("axolote_projection", projection);
-        s->set_uniform_matrix4("axolote_view", view);
+        shaders = eder_quad->get_shaders();
+        for (auto &s : shaders) {
+            s->activate();
+            s->set_uniform_float3(
+                "axolote_camera_pos", camera.pos.x, camera.pos.y, camera.pos.z
+            );
+            s->set_uniform_matrix4("axolote_projection", projection);
+            s->set_uniform_matrix4("axolote_view", view);
+        }
+
         model = glm::translate(model, glm::vec3{0.0f, 0.0f, -0.01f});
         model = glm::scale(model, glm::vec3{1.1f, 1.1f, 1.1f});
         eder_quad->draw(model);

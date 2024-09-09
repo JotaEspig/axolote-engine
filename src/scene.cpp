@@ -21,7 +21,8 @@ Scene::~Scene() {
 
 void Scene::add_drawable(std::shared_ptr<Drawable> d) {
     _drawable_objects.push_back(d);
-    _shaders.push_back(d->get_shader());
+    auto shaders = d->get_shaders();
+    _shaders.insert(_shaders.end(), shaders.begin(), shaders.end());
 }
 
 const std::vector<std::shared_ptr<Drawable>> &Scene::drawables_objects() const {
@@ -43,7 +44,8 @@ void Scene::add_sorted_drawable(std::shared_ptr<Object3D> d) {
         }
     );
     _sorted_drawables_objects.insert(it, d);
-    _shaders.push_back(d->get_shader());
+    auto shaders = d->get_shaders();
+    _shaders.insert(_shaders.end(), shaders.begin(), shaders.end());
 }
 
 const std::vector<std::shared_ptr<Object3D>> &
@@ -84,13 +86,15 @@ void Scene::update_camera(float aspect_ratio) {
     }
     if (_grid) {
         _grid->camera_pos = camera.pos;
-        std::shared_ptr<gl::Shader> s = _grid->get_shader();
-        s->activate();
-        s->set_uniform_float3(
-            "axolote_camera_pos", camera.pos.x, camera.pos.y, camera.pos.z
-        );
-        s->set_uniform_matrix4("axolote_projection", projection);
-        s->set_uniform_matrix4("axolote_view", view);
+        auto shaders = _grid->get_shaders();
+        for (auto &s : shaders) {
+            s->activate();
+            s->set_uniform_float3(
+                    "axolote_camera_pos", camera.pos.x, camera.pos.y, camera.pos.z
+                    );
+            s->set_uniform_matrix4("axolote_projection", projection);
+            s->set_uniform_matrix4("axolote_view", view);
+        }
     }
 }
 

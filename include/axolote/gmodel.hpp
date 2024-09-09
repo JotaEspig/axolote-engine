@@ -63,7 +63,7 @@ public:
      * @brief binds a shader into the meshes
      * @author João Vitor Espig (jotaespig@gmail.com)
      **/
-    std::shared_ptr<gl::Shader> get_shader() const override;
+    std::vector<std::shared_ptr<gl::Shader>> get_shaders() const override;
     /**
      * @brief updates
      * @author João Vitor Espig (jotaespig@gmail.com)

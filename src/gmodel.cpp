@@ -30,11 +30,13 @@ void GModel::bind_shader(std::shared_ptr<gl::Shader> shader) {
         e.bind_shader(shader);
 };
 
-std::shared_ptr<gl::Shader> GModel::get_shader() const {
+std::vector<std::shared_ptr<gl::Shader>> GModel::get_shaders() const {
+    std::vector<std::shared_ptr<gl::Shader>> v;
     for (GMesh e : meshes) {
-        return e.get_shader();
+        auto x = e.get_shaders();
+        v.insert(v.end(), x.begin(), x.end());
     }
-    return nullptr;
+    return v;
 }
 
 void GModel::update(double dt) {

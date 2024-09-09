@@ -71,8 +71,8 @@ void GMesh::bind_shader(std::shared_ptr<gl::Shader> shader_program) {
     _shader = shader_program;
 }
 
-std::shared_ptr<gl::Shader> GMesh::get_shader() const {
-    return _shader;
+std::vector<std::shared_ptr<gl::Shader>> GMesh::get_shaders() const {
+    return {_shader};
 }
 
 void GMesh::update(double dt) {

@@ -60,8 +60,8 @@ void Object3D::bind_shader(std::shared_ptr<gl::Shader> shader_program) {
     gmodel->bind_shader(shader_program);
 }
 
-std::shared_ptr<gl::Shader> Object3D::get_shader() const {
-    return gmodel->get_shader();
+std::vector<std::shared_ptr<gl::Shader>> Object3D::get_shaders() const {
+    return gmodel->get_shaders();
 }
 
 void Object3D::update(double dt) {
@@ -69,13 +69,17 @@ void Object3D::update(double dt) {
 }
 
 void Object3D::draw() {
-    get_shader()->set_uniform_int("axolote_is_affected_by_lights_set", 1);
-    get_shader()->set_uniform_int(
-        "axolote_is_affected_by_lights", is_affected_by_lights
-    );
-    get_shader()->set_uniform_matrix4("axolote_normal_matrix", _normal_matrix);
+    auto shaders = get_shaders();
+    for (auto &shader : shaders) {
+        shader->set_uniform_int("axolote_is_affected_by_lights_set", 1);
+        shader->set_uniform_int(
+            "axolote_is_affected_by_lights", is_affected_by_lights
+        );
+        shader->set_uniform_matrix4("axolote_normal_matrix", _normal_matrix);
+    }
     gmodel->draw(_model_matrix);
-    get_shader()->set_uniform_int("axolote_is_affected_by_lights_set", 0);
+    for (auto &shader : shaders)
+        shader->set_uniform_int("axolote_is_affected_by_lights_set", 0);
 }
 
 void Object3D::draw(const glm::mat4 &mat) {
