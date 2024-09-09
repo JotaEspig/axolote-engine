@@ -21,8 +21,6 @@ Scene::~Scene() {
 
 void Scene::add_drawable(std::shared_ptr<Drawable> d) {
     _drawable_objects.push_back(d);
-    auto shaders = d->get_shaders();
-    _shaders.insert(_shaders.end(), shaders.begin(), shaders.end());
 }
 
 const std::vector<std::shared_ptr<Drawable>> &Scene::drawables_objects() const {
@@ -44,8 +42,6 @@ void Scene::add_sorted_drawable(std::shared_ptr<Object3D> d) {
         }
     );
     _sorted_drawables_objects.insert(it, d);
-    auto shaders = d->get_shaders();
-    _shaders.insert(_shaders.end(), shaders.begin(), shaders.end());
 }
 
 const std::vector<std::shared_ptr<Object3D>> &
@@ -76,13 +72,20 @@ void Scene::update_camera(float aspect_ratio) {
         glm::radians(camera.fov), aspect_ratio, camera.min_dist, camera.max_dist
     );
 
-    for (std::shared_ptr<gl::Shader> s : _shaders) {
-        s->activate();
-        s->set_uniform_float3(
-            "axolote_camera_pos", camera.pos.x, camera.pos.y, camera.pos.z
-        );
-        s->set_uniform_matrix4("axolote_projection", projection);
-        s->set_uniform_matrix4("axolote_view", view);
+    auto all_objects = _drawable_objects;
+    all_objects.insert(
+        all_objects.end(), _sorted_drawables_objects.begin(),
+        _sorted_drawables_objects.end()
+    );
+    for (auto &o : all_objects) {
+        for (std::shared_ptr<gl::Shader> s : o->get_shaders()) {
+            s->activate();
+            s->set_uniform_float3(
+                "axolote_camera_pos", camera.pos.x, camera.pos.y, camera.pos.z
+            );
+            s->set_uniform_matrix4("axolote_projection", projection);
+            s->set_uniform_matrix4("axolote_view", view);
+        }
     }
     if (_grid) {
         _grid->camera_pos = camera.pos;
@@ -90,8 +93,8 @@ void Scene::update_camera(float aspect_ratio) {
         for (auto &s : shaders) {
             s->activate();
             s->set_uniform_float3(
-                    "axolote_camera_pos", camera.pos.x, camera.pos.y, camera.pos.z
-                    );
+                "axolote_camera_pos", camera.pos.x, camera.pos.y, camera.pos.z
+            );
             s->set_uniform_matrix4("axolote_projection", projection);
             s->set_uniform_matrix4("axolote_view", view);
         }
@@ -151,22 +154,36 @@ void Scene::update(double delta_t) {
             break;
         }
 
-        for (std::shared_ptr<gl::Shader> shader : _shaders) {
-            light->bind(shader, prefix);
+        auto all_objects = _drawable_objects;
+        all_objects.insert(
+            all_objects.end(), _sorted_drawables_objects.begin(),
+            _sorted_drawables_objects.end()
+        );
+        for (auto &o : all_objects) {
+            for (std::shared_ptr<gl::Shader> s : o->get_shaders()) {
+                light->bind(s, prefix);
+            }
         }
     }
 
     // Set number of each light type for every shader
-    for (auto &shader : _shaders) {
-        shader->set_uniform_float("axolote_ambient_light", 1);
-        shader->set_uniform_float(
-            "axolote_ambient_light_intensity", ambient_light_intensity
-        );
-        shader->set_uniform_int("axolote_num_point_lights", num_point_lights);
-        shader->set_uniform_int(
-            "axolote_num_directional_lights", num_directional_lights
-        );
-        shader->set_uniform_int("axolote_num_spot_lights", num_spot_lights);
+    auto all_objects = _drawable_objects;
+    all_objects.insert(
+        all_objects.end(), _sorted_drawables_objects.begin(),
+        _sorted_drawables_objects.end()
+    );
+    for (auto &o : all_objects) {
+        for (auto &shader : o->get_shaders()) {
+            shader->set_uniform_float("axolote_ambient_light", 1);
+            shader->set_uniform_float(
+                    "axolote_ambient_light_intensity", ambient_light_intensity
+                    );
+            shader->set_uniform_int("axolote_num_point_lights", num_point_lights);
+            shader->set_uniform_int(
+                    "axolote_num_directional_lights", num_directional_lights
+                    );
+            shader->set_uniform_int("axolote_num_spot_lights", num_spot_lights);
+        }
     }
 }
 

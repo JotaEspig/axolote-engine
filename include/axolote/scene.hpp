@@ -113,8 +113,6 @@ private:
     std::vector<std::shared_ptr<Object3D>> _sorted_drawables_objects;
     /** grid **/
     std::shared_ptr<utils::Grid> _grid;
-    /** vector of shaders from drawable objects **/
-    std::vector<std::shared_ptr<gl::Shader>> _shaders;
     /** lights of the scene **/
     std::vector<std::shared_ptr<Light>> _lights;
 };
