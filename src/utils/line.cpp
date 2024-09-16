@@ -32,72 +32,92 @@ void Line::build_mesh() {
     std::vector<Vertex> vs;
     std::vector<GLuint> es;
 
-    float step = 2 * M_PI / line_quality;
+    // Add top and bottom vertex
+    vs.push_back(Vertex{
+        glm::vec3{0.0f, 1.0f, 0.0f},
+        glm::vec4{color},
+        glm::vec2{0.5f, 1.0f},
+        glm::vec3{0.0f, 1.0f, 0.0f}
+    });
+    vs.push_back(Vertex{
+        glm::vec3{0.0f, 0.0f, 0.0f},
+        glm::vec4{color},
+        glm::vec2{0.5f, 0.0f},
+        glm::vec3{0.0f, -1.0f, 0.0f}
+    });
 
-    glm::vec3 bottom_base_center = glm::vec3{0.0f};
-    glm::vec3 top_base_center = glm::vec3{0.0f, 1.0f, 0.0f};
-    int counter = 0;
-    for (float i = 0; i < 2 * M_PI; i += step / 2) {
-        // bottom base face
-        glm::vec3 bottom_p1{
-            std::cos(i) * 0.5f, bottom_base_center.y,
-            std::sin(i) * 0.5f
-        };
-        glm::vec3 bottom_p2{
-            std::cos(i + step / 2) * 0.5f, bottom_base_center.y,
-            std::sin(i + step / 2) * 0.5f
-        };
-        vs.push_back(Vertex{bottom_base_center, color, {}, {}});
-        vs.push_back(Vertex{bottom_p1, color, {}, {}});
-        vs.push_back(Vertex{bottom_p2, color, {}, {}});
-        es.push_back(3 * counter + 0);
-        es.push_back(3 * counter + 1);
-        es.push_back(3 * counter + 2);
-        ++counter;
+    // Add bottom vertices
+    const size_t resolution = 30;
+    float step = 1.0f / (float)resolution;
+    for (size_t i = 0; i < resolution; ++i) {
+        float tex_u;
+        if (i <= resolution / 2)
+        {
+            tex_u = (float)i * step * 2.0f;
+        }
+        else
+        {
+            tex_u = 2.0f - (float)i * step * 2.0f;
+        }
+        float angle = (float)i * step * 2.0f * M_PIf;
+        float c = std::cos(angle);
+        float s = std::sin(angle);
 
-        // top base face
-        glm::vec3 top_p1{
-            std::cos(i) * 0.5f, top_base_center.y, std::sin(i) * 0.5f
-        };
-        glm::vec3 top_p2{
-            std::cos(i + step / 2) * 0.5f, top_base_center.y,
-            std::sin(i + step / 2) * 0.5f
-        };
-        vs.push_back(Vertex{top_p1, color, {}, {}});
-        vs.push_back(Vertex{top_base_center, color, {}, {}});
-        vs.push_back(Vertex{top_p2, color, {}, {}});
-        es.push_back(3 * counter + 0);
-        es.push_back(3 * counter + 1);
-        es.push_back(3 * counter + 2);
-        ++counter;
+        // Vertex for top face
+        vs.push_back(Vertex{
+            glm::vec3{c * 0.5f, 1.0f, s * 0.5f},
+            glm::vec4{color},
+            glm::vec2{tex_u, 0.75f},
+            glm::vec3{0.0f, 1.0f, 0.0f}
+        });
 
-        // lateral face
-        vs.push_back(Vertex{top_p1, color, {}, {}});
-        vs.push_back(Vertex{top_p2, color, {}, {}});
-        vs.push_back(Vertex{bottom_p1, color, {}, {}});
-        es.push_back(3 * counter + 0);
-        es.push_back(3 * counter + 1);
-        es.push_back(3 * counter + 2);
-        ++counter;
-        vs.push_back(Vertex{top_p2, color, {}, {}});
-        vs.push_back(Vertex{bottom_p2, color, {}, {}});
-        vs.push_back(Vertex{bottom_p1, color, {}, {}});
-        es.push_back(3 * counter + 0);
-        es.push_back(3 * counter + 1);
-        es.push_back(3 * counter + 2);
-        ++counter;
+        // Vertex for bottom face
+        vs.push_back(Vertex{
+            glm::vec3{c * 0.5f, 0.0f, s * 0.5f},
+            glm::vec4{color},
+            glm::vec2{tex_u, 0.25f},
+            glm::vec3{0.0f, -1.0f, 0.0f}
+        });
+
+        // Vertices for side face
+        // Top
+        vs.push_back(Vertex{
+            glm::vec3{c * 0.5f, 1.0f, s * 0.5f},
+            glm::vec4{color},
+            glm::vec2{tex_u, 0.75f},
+            glm::vec3{c, 0.0f, s}
+        });
+        // Bottom
+        vs.push_back(Vertex{
+            glm::vec3{c * 0.5f, 0.0f, s * 0.5f},
+            glm::vec4{color},
+            glm::vec2{tex_u, 0.25f},
+            glm::vec3{c, 0.0f, s}
+        });
     }
 
-    for (unsigned long i = 0; i < vs.size(); i += 3) {
-        glm::vec3 normal
-            = glm::cross(vs[i + 1].pos - vs[i].pos, vs[i + 2].pos - vs[i].pos);
-        vs[i].normal += normal;
-        vs[i + 1].normal += normal;
-        vs[i + 2].normal += normal;
-    }
+    // Add indices
+    for (size_t i = 2; i < (resolution * 4); i += 4) {
+        // Top face
+        es.push_back(i);
+        es.push_back(0);
+        es.push_back(i == (resolution * 4 - 2) ? 2 : (i + 4));
 
-    for (auto &v : vs)
-        v.normal = glm::normalize(v.normal);
+        // Bottom face
+        es.push_back(1);
+        es.push_back(i + 1);
+        es.push_back(i == (resolution * 4 - 2) ? 3 : (i + 5));
+
+        // Side face 1
+        es.push_back(i + 2);
+        es.push_back(i == (resolution * 4 - 2) ? 5 : (i + 7));
+        es.push_back(i + 3);
+
+        // Side face 2
+        es.push_back(i + 2);
+        es.push_back(i == (resolution * 4 - 2) ? 4 : (i + 6));
+        es.push_back(i == (resolution * 4 - 2) ? 5 : (i + 7));
+    }
 
     gmodel->meshes.push_back({vs, es, {}});
 }
