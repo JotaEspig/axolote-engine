@@ -9,6 +9,10 @@
 
 #define UNUSED(x) (void)(x)
 
+#ifdef _WIN32
+#define M_PIf 3.14159265358979323846f
+#endif
+
 namespace axolote {
 
 namespace utils {
