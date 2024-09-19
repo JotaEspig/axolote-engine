@@ -97,6 +97,16 @@ struct Camera {
     void move_vision(
         float x, float y, float width, float height, double delta_t = 1.0
     );
+    /**
+     * @brief get ray from camera to a point in the screen
+     * @param x point x value
+     * @param y point y value
+     * @param width Window width
+     * @param height Window height
+     * @return ray vector
+     * @see https://antongerdelan.net/opengl/raycasting.html
+     **/
+    glm::vec3 get_ray(float x, float y, float width, float height);
 };
 
 } // namespace axolote

@@ -79,6 +79,15 @@ void App::process_input(double dt) {
         use_mirror = !use_mirror;
         set_key_pressed(Key::M, false);
     }
+
+    // Test camera get_ray
+    if (get_mouse_key_state(MouseKey::LEFT) == MouseKeyState::PRESSED) {
+        double mx, my;
+        get_cursor_position(&mx, &my);
+        glm::vec3 ray
+            = current_scene()->camera.get_ray(width()/2.0, height()/2.0, width(), height());
+        std::cout << "Ray: " << glm::to_string(ray) << std::endl;
+    }
 }
 
 void App::main_loop() {
