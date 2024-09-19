@@ -68,4 +68,22 @@ void Camera::move_vision(
     orientation = glm::rotate(orientation, (float)glm::radians(-rot_y), up);
 }
 
+glm::vec3 Camera::get_ray(float x, float y, float width, float height) {
+    glm::vec3 ray = glm::normalize(orientation);
+    glm::vec3 right = glm::normalize(glm::cross(orientation, up));
+    glm::vec3 up = glm::normalize(glm::cross(right, orientation));
+
+    float aspect_ratio = width / height;
+    float fov = glm::radians(45.0f);
+    float tan_fov = std::tan(fov / 2.0f);
+
+    float x_ndc = (2.0f * x / width - 1.0f) * tan_fov * aspect_ratio;
+    float y_ndc = (1.0f - 2.0f * y / height) * tan_fov;
+
+    glm::vec3 ray_dir
+        = glm::normalize(x_ndc * right + y_ndc * up + orientation);
+
+    return ray_dir;
+}
+
 } // namespace axolote
