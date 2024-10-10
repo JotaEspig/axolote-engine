@@ -44,7 +44,7 @@ uniform bool axolote_is_affected_by_lights_set;
 
 // Scene info
 uniform vec3 axolote_camera_pos;
-uniform float axolote_ambient_light;
+uniform vec3 axolote_ambient_light;
 uniform float axolote_ambient_light_intensity;
 
 // Scene lights
@@ -176,10 +176,10 @@ vec3 axolote_calculate_light() {
         color += axolote_calculate_spot_light(axolote_spot_lights[i]);
     }
 
-    if (color == vec3(0.0f)) {
-        color = vec3(1.0f) * axolote_ambient_light_intensity;
-    }
-    return color + (axolote_ambient_light * axolote_ambient_light_intensity);
+        color.r = clamp(max(color.r, axolote_ambient_light.r * axolote_ambient_light_intensity), 0.0f, 1.0f);
+    color.g = clamp(max(color.g, axolote_ambient_light.g * axolote_ambient_light_intensity), 0.0f, 1.0f);
+    color.b = clamp(max(color.b, axolote_ambient_light.b * axolote_ambient_light_intensity), 0.0f, 1.0f);
+    return color;
 }
 
 void main() {
