@@ -346,8 +346,21 @@ void App::main_loop() {
         ImGui::Text("Press 'M' to toggle mirror");
         ImGui::End();
 
+        glDisable(GL_FRAMEBUFFER_SRGB);
+        ImGui::SetNextWindowSize(ImVec2(200, 100), ImGuiCond_FirstUseEver);
+        ImGui::SetNextWindowPos(
+            ImVec2(width() / 2.0, height() / 2.0 + height() / 4.0),
+            ImGuiCond_FirstUseEver
+        );
+        ImGui::Begin("Settings", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
+        static float gamma = current_scene()->gamma;
+        ImGui::SliderFloat("Gamma", &gamma, 0.1f, 2.0f);
+        current_scene()->gamma = gamma;
+        ImGui::End();
+
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+        glEnable(GL_FRAMEBUFFER_SRGB);
 
         flush();
     }

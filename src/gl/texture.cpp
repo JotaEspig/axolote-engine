@@ -75,17 +75,17 @@ Texture::Texture(
 
     if (num_channels_img == 4)
         glTexImage2D(
-            GL_TEXTURE_2D, 0, GL_RGBA, width_img, height_img, 0, GL_RGBA,
+            GL_TEXTURE_2D, 0, GL_SRGB_ALPHA, width_img, height_img, 0, GL_RGBA,
             GL_UNSIGNED_BYTE, data
         );
     else if (num_channels_img == 3)
         glTexImage2D(
-            GL_TEXTURE_2D, 0, GL_RGBA, width_img, height_img, 0, GL_RGB,
+            GL_TEXTURE_2D, 0, GL_SRGB_ALPHA, width_img, height_img, 0, GL_RGB,
             GL_UNSIGNED_BYTE, data
         );
     else if (num_channels_img == 1)
         glTexImage2D(
-            GL_TEXTURE_2D, 0, GL_RGBA, width_img, height_img, 0, GL_RED,
+            GL_TEXTURE_2D, 0, GL_SRGB_ALPHA, width_img, height_img, 0, GL_RED,
             GL_UNSIGNED_BYTE, data
         );
     else

@@ -175,8 +175,8 @@ void Scene::update(double delta_t) {
     for (auto &o : all_objects) {
         for (auto &shader : o->get_shaders()) {
             shader->set_uniform_float3(
-                "axolote_ambient_light", ambient_light.x,
-                ambient_light.y, ambient_light.z
+                "axolote_ambient_light", ambient_light.x, ambient_light.y,
+                ambient_light.z
             );
             shader->set_uniform_float(
                 "axolote_ambient_light_intensity", ambient_light_intensity
@@ -188,6 +188,7 @@ void Scene::update(double delta_t) {
                 "axolote_num_directional_lights", num_directional_lights
             );
             shader->set_uniform_int("axolote_num_spot_lights", num_spot_lights);
+            shader->set_uniform_float("axolote_gamma", gamma);
         }
     }
 }
