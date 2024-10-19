@@ -176,9 +176,9 @@ vec3 axolote_calculate_light() {
         color += axolote_calculate_spot_light(axolote_spot_lights[i]);
     }
 
-        color.r = clamp(max(color.r, axolote_ambient_light.r * axolote_ambient_light_intensity), 0.0f, 1.0f);
-    color.g = clamp(max(color.g, axolote_ambient_light.g * axolote_ambient_light_intensity), 0.0f, 1.0f);
-    color.b = clamp(max(color.b, axolote_ambient_light.b * axolote_ambient_light_intensity), 0.0f, 1.0f);
+    color.r = max(color.r, axolote_ambient_light.r * axolote_ambient_light_intensity);
+    color.g = max(color.g, axolote_ambient_light.g * axolote_ambient_light_intensity);
+    color.b = max(color.b, axolote_ambient_light.b * axolote_ambient_light_intensity);
     return color;
 }
 
