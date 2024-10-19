@@ -22,7 +22,7 @@ cmake --build . --config Release
 
 # Running the code
 
-The executable will be in the `bin` directory. Go back to the root directory and run it.
+The executable will be in the `bin` directory. run it.
 ```bash
 cd ..
 ```

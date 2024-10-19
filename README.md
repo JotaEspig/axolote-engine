@@ -94,8 +94,7 @@ see [getting-started.md](docs/en/getting-started.md).
 
 ## 🧪 Executing some tests
 
-After compiling the project, go back to the root directory of the project and
-run the following commands:
+After compiling the project, run the following commands:
 
 For Linux
 ```bash
