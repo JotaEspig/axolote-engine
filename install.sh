@@ -99,7 +99,7 @@ mkdir tmp/external/imgui -p
 mkdir tmp/resources/shaders -p
 
 echo "Copying content to temp folder"
-cp lib/* tmp/external/lib/axolote/
+cp build/lib/* tmp/external/lib/axolote/
 cp external/lib/assimp/* tmp/external/lib/axolote/
 cp -r external/imgui/* tmp/external/imgui/
 cp -r include/axolote tmp/external/include/
