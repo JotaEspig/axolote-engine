@@ -46,6 +46,7 @@ uniform bool axolote_is_affected_by_lights_set;
 uniform vec3 axolote_camera_pos;
 uniform vec3 axolote_ambient_light;
 uniform float axolote_ambient_light_intensity;
+uniform float axolote_gamma = 1.0f;
 
 // Scene lights
 const int axolote_NUM_MAX_LIGHTS = 50;
@@ -205,4 +206,6 @@ void main() {
     else {
         FragColor = temp_frag_color;
     }
+
+    FragColor.rgb = pow(FragColor.rgb, vec3(1.0 / axolote_gamma));
 }
