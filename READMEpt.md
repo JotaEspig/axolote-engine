@@ -97,7 +97,7 @@ veja [getting-started.md](docs/pt-br/getting-started.md).
 After compiling the project, go back to the root directory of the project and
 run the following commands:
 
-Após compilar o projeto, volte para o diretório raiz do projeto e execute os seguintes comandos:
+Após compilar o projeto, execute os seguintes comandos:
 
 Para Linux
 ```bash
