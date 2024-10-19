@@ -1,3 +1,38 @@
+## v0.8.0 (2024-10-19)
+
+### Feat
+
+- added get ray from mouse input
+- added get ray from mouse input
+- added get_end() method to Line, changed 'a' to 'start'
+- **framebuffer**: working resizing everything else
+- **window**: added getter for glfw window pointer
+- **light**: added intensity to Directional Light
+
+### Fix
+
+- ambient color
+- defining M_PIf in windows
+- defining M_PIf in windows
+- utils/line now using thickness correctly
+- for windows
+- scene now updates grid's position
+- using set_window_size
+- mirror now using correct aspect ratio for projection
+- cmake assimp include dir
+- bug in texture when unit was not set manually
+- **gmesh**: now gmesh considers an untyped texture as diffuse
+- **texture**: generating texture in the default constructor
+- small error on windows
+
+### Refactor
+
+- **shaders**: removed useless clamp
+- scene doesnt stores the shaders anymore
+- get_shader -> get_shaders
+- debug destroyed gl object after destroying it
+- change constructor parameters to use string instead of const char*
+
 ## v0.7.1 (2024-08-19)
 
 ### Fix
