@@ -77,9 +77,9 @@ vec3 axolote_calculate_point_light(axolote_PointLight light) {
 
     float specular_light = 0.25f;
     vec3 view_direction = normalize(axolote_camera_pos - axolote_current_pos);
-    vec3 reflection_direction = reflect(-light_direction, normal);
+    vec3 halfway_direction = normalize(light_direction + view_direction);
     float spec_amount
-        = pow(max(dot(view_direction, reflection_direction), 0.0f), 16);
+        = pow(max(dot(view_direction, halfway_direction), 0.0f), 16);
     float specular = spec_amount * specular_light;
 
     // Apply attenuation to the light
@@ -105,9 +105,9 @@ vec3 axolote_calculate_directional_light(axolote_DirectionalLight light) {
 
     float specular_light = 0.25f;
     vec3 view_direction = normalize(axolote_camera_pos - axolote_current_pos);
-    vec3 reflection_direction = reflect(-light_direction, normal);
+    vec3 halfway_direction = normalize(light_direction + view_direction);
     float spec_amount
-        = pow(max(dot(view_direction, reflection_direction), 0.0f), 16);
+        = pow(max(dot(view_direction, halfway_direction), 0.0f), 16);
     float specular = spec_amount * specular_light;
 
     vec3 diffuse_light_color = light.color.rgb * (diffuse + axolote_ambient_light_intensity);
@@ -121,14 +121,13 @@ vec3 axolote_calculate_directional_light(axolote_DirectionalLight light) {
 vec3 axolote_calculate_spot_light(axolote_SpotLight light) {
     vec3 normal = normalize(axolote_normal);
     vec3 light_direction = normalize(light.pos - axolote_current_pos);
-
     float diffuse = max(dot(normal, light_direction), 0.0f);
 
     float specular_light = 0.25f;
     vec3 view_direction = normalize(axolote_camera_pos - axolote_current_pos);
-    vec3 reflection_direction = reflect(-light_direction, normal);
+    vec3 halfway_direction = normalize(light_direction + view_direction);
     float spec_amount
-        = pow(max(dot(view_direction, reflection_direction), 0.0f), 16);
+        = pow(max(dot(view_direction, halfway_direction), 0.0f), 16);
     float specular = spec_amount * specular_light;
 
     // Apply attenuation to the light

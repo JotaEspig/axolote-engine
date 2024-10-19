@@ -84,9 +84,8 @@ void App::process_input(double dt) {
     if (get_mouse_key_state(MouseKey::LEFT) == MouseKeyState::PRESSED) {
         double mx, my;
         get_cursor_position(&mx, &my);
-        glm::vec3 ray = current_scene()->camera.get_ray(
-            width() / 2.0, height() / 2.0, width(), height()
-        );
+        glm::vec3 ray
+            = current_scene()->camera.get_ray(mx, my, width(), height());
         std::cout << "Ray: " << glm::to_string(ray) << std::endl;
     }
 }
