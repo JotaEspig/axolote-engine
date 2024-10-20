@@ -15,6 +15,20 @@
 
 #define DT_MULTIPLIER 200000
 
+class App : public axolote::Window {
+public:
+    bool use_mirror = true;
+    std::shared_ptr<axolote::SpotLight> flashlight;
+    std::shared_ptr<axolote::gl::Framebuffer> mirror_fbo;
+
+    void process_input(double dt);
+    void main_loop();
+
+    bool should_process_mouse_input() const override {
+        return !_io->WantCaptureMouse;
+    }
+};
+
 class MyDirLight : public axolote::DirectionalLight {
 public:
     float absolute_time = 0.0;
@@ -31,14 +45,22 @@ public:
     }
 };
 
-class App : public axolote::Window {
+class SpotLightAttachedToCamera : public axolote::SpotLight {
 public:
-    bool use_mirror = true;
-    std::shared_ptr<axolote::SpotLight> flashlight;
-    std::shared_ptr<axolote::gl::Framebuffer> mirror_fbo;
+    App *app;
 
-    void process_input(double dt);
-    void main_loop();
+    SpotLightAttachedToCamera(
+        const glm::vec3 &color, bool is_set, const glm::vec3 &pos,
+        const glm::vec3 &dir, float cut_off, float outer_cut_off, App *app
+    ) :
+      axolote::SpotLight{color, is_set, pos, dir, cut_off, outer_cut_off},
+      app{app} {
+    }
+
+    void update(double dt) override {
+        pos = app->current_scene()->camera.pos;
+        dir = app->current_scene()->camera.orientation;
+    }
 };
 
 // custom resize framebuffer callback
@@ -121,7 +143,7 @@ void App::main_loop() {
     scene->camera.pos = {0.0f, 0.0f, 12.35f};
     scene->camera.speed = 3.0f;
     scene->camera.sensitivity = 10000.0f;
-    scene->ambient_light_intensity = 0.15f;
+    scene->ambient_light_intensity = 0.1f;
 
     auto dir_light = std::make_shared<MyDirLight>(
         glm::vec3{1.f, 1.f, 1.f}, true, glm::vec3{1.0f, 0.0f, 0.0f}
@@ -129,15 +151,15 @@ void App::main_loop() {
     dir_light->intensity = 0.9f;
     scene->add_light(dir_light);
 
-    auto spot_light = std::make_shared<axolote::SpotLight>(
+    auto flashlight = std::make_shared<SpotLightAttachedToCamera>(
         glm::vec3{1.0f}, true, glm::vec3{0.0f, 5.0f, 0.0f},
         glm::vec3{0.0f, -1.0f, 0.0f}, glm::cos(glm::radians(12.5f)),
-        glm::cos(glm::radians(20.0f))
+        glm::cos(glm::radians(20.0f)), this
     );
-    spot_light->linear = 0.09f;
-    spot_light->quadratic = 0.032f;
-    scene->add_light(spot_light);
-    App::flashlight = spot_light;
+    flashlight->linear = 0.09f;
+    flashlight->quadratic = 0.032f;
+    scene->add_light(flashlight);
+    App::flashlight = flashlight;
 
     auto earth = std::make_shared<axolote::Object3D>(
         get_path("resources/models/sphere/sphere.obj"),
@@ -202,7 +224,6 @@ void App::main_loop() {
     // Overwrite the default framebuffer size callback
     glfwSetFramebufferSizeCallback(window(), framebuffer_size_callback);
 
-    // TODO: check how to use the textute correctly when resizing the window
     auto quad = std::make_shared<axolote::Object3D>(
         quad_vec, quad_indices,
         std::vector<std::shared_ptr<axolote::gl::Texture>>{mirror_fbo->texture()
@@ -230,7 +251,7 @@ void App::main_loop() {
         double now = get_time();
         double dt = now - before;
         before = now;
-        if (!_io->WantCaptureMouse) {
+        if (should_process_mouse_input()) {
             process_input(dt);
         }
 
@@ -332,10 +353,6 @@ void App::main_loop() {
         eder_quad->draw(model);
         glEnable(GL_CULL_FACE);
 
-        // Flashlight
-        spot_light->pos = current_scene()->camera.pos;
-        spot_light->dir = current_scene()->camera.orientation;
-
         update_camera((float)width() / height());
         update(dt);
         render();
@@ -354,7 +371,7 @@ void App::main_loop() {
         );
         ImGui::Begin("Settings", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
         static float gamma = current_scene()->gamma;
-        ImGui::SliderFloat("Gamma", &gamma, 0.1f, 2.0f);
+        ImGui::SliderFloat("Gamma", &gamma, 0.3f, 1.8f);
         current_scene()->gamma = gamma;
         ImGui::End();
 
