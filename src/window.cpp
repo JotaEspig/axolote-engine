@@ -271,6 +271,14 @@ double Window::get_time() const {
     return glfwGetTime();
 }
 
+bool Window::should_process_mouse_input() const {
+    return true;
+}
+
+bool Window::should_process_keyboard_input() const {
+    return true;
+}
+
 GLFWwindow *Window::window() const {
     return _window;
 }
