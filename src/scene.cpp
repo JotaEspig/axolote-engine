@@ -23,6 +23,15 @@ void Scene::add_drawable(std::shared_ptr<Drawable> d) {
     _drawable_objects.push_back(d);
 }
 
+bool Scene::remove_drawable(std::shared_ptr<Drawable> d) {
+    auto it = std::find(_drawable_objects.begin(), _drawable_objects.end(), d);
+    if (it == _drawable_objects.end())
+        return false;
+
+    _drawable_objects.erase(it);
+    return true;
+}
+
 const std::vector<std::shared_ptr<Drawable>> &Scene::drawables_objects() const {
     return _drawable_objects;
 }
@@ -44,6 +53,17 @@ void Scene::add_sorted_drawable(std::shared_ptr<Object3D> d) {
     _sorted_drawables_objects.insert(it, d);
 }
 
+bool Scene::remove_sorted_drawable(std::shared_ptr<Object3D> d) {
+    auto it = std::find(
+        _sorted_drawables_objects.begin(), _sorted_drawables_objects.end(), d
+    );
+    if (it == _sorted_drawables_objects.end())
+        return false;
+
+    _sorted_drawables_objects.erase(it);
+    return true;
+}
+
 const std::vector<std::shared_ptr<Object3D>> &
 Scene::sorted_drawables_objects() const {
     return _sorted_drawables_objects;
@@ -53,12 +73,25 @@ void Scene::add_light(std::shared_ptr<Light> light) {
     _lights.push_back(light);
 }
 
+bool Scene::remove_light(std::shared_ptr<Light> light) {
+    auto it = std::find(_lights.begin(), _lights.end(), light);
+    if (it == _lights.end())
+        return false;
+
+    _lights.erase(it);
+    return true;
+}
+
 const std::vector<std::shared_ptr<Light>> &Scene::lights() const {
     return _lights;
 }
 
 void Scene::set_grid(std::shared_ptr<utils::Grid> grid) {
     _grid = grid;
+}
+
+void Scene::unset_grid() {
+    _grid = nullptr;
 }
 
 std::shared_ptr<utils::Grid> Scene::grid() const {
