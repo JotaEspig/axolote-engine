@@ -343,6 +343,11 @@ public:
      **/
     void set_vsync(bool vsync);
     /**
+     * @brief Set the window to maximized
+     * @author João Vitor Espig (jotaespig@gmail.com)
+     **/
+    void set_maximized();
+    /**
      * @brief get path relative to executable directory (_root_path)
      * @author João Vitor Espig (jotaespig@gmail.com)
      * @param path relative path
