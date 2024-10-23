@@ -80,6 +80,7 @@ void Window::init() {
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
+    glEnable(GL_FRAMEBUFFER_SRGB);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -268,6 +269,14 @@ void Window::set_color(uint8_t r, uint8_t g, uint8_t b, float opacity) {
 
 double Window::get_time() const {
     return glfwGetTime();
+}
+
+bool Window::should_process_mouse_input() const {
+    return true;
+}
+
+bool Window::should_process_keyboard_input() const {
+    return true;
 }
 
 GLFWwindow *Window::window() const {

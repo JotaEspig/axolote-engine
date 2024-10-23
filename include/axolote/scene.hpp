@@ -28,6 +28,8 @@ public:
     glm::vec3 ambient_light{1.0f};
     /** Ambient light intensity **/
     float ambient_light_intensity = 0.05f;
+    /** Gamma correction for the scene **/
+    float gamma = 1.0f;
 
     /**
      * @brief Constructor

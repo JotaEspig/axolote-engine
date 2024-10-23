@@ -408,6 +408,24 @@ public:
      **/
     double get_time() const;
     /**
+     * @brief Checks if the window should process mouse input. Can be overrided
+     * by the user to implement custom behavior. by default it retuns
+     * true
+     *
+     * @return true
+     * @return false
+     **/
+    virtual bool should_process_mouse_input() const;
+    /**
+     * @brief Checks if the window should process keyboard input. Can be
+     * overrided by the user to implement custom behavior. by default it retuns
+     * true
+     *
+     * @return true
+     * @return false
+     **/
+    virtual bool should_process_keyboard_input() const;
+    /**
      * @brief get glfw window object pointer
      * @author João Vitor Espig (jotaespig@gmail.com)
      * @returns GLFWwindow pointer
