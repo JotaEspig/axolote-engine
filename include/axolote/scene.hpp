@@ -48,6 +48,13 @@ public:
      **/
     void add_drawable(std::shared_ptr<Drawable> d);
     /**
+     * @brief remove a Drawable object from the scene
+     * @author João Vitor Espig (jotaespig@gmail.com)
+     * @param d the object to be removed
+     * @return true if the object was removed, false otherwise
+     **/
+    bool remove_drawable(std::shared_ptr<Drawable> d);
+    /**
      * @brief get the unsorted drawables objects
      * @author João Vitor Espig (jotaespig@gmail.com)
      **/
@@ -60,11 +67,19 @@ public:
      **/
     void add_sorted_drawable(std::shared_ptr<Object3D> d);
     /**
+     * @brief remove a Drawable object from the sorted drawables objects
+     * @author João Vitor Espig (jotaespig@gmail.com)
+     * @param d the object to be removed
+     * @return true if the object was removed, false otherwise
+     **/
+    bool remove_sorted_drawable(std::shared_ptr<Object3D> d);
+    /**
      * @brief get the sorted drawables objects
      * @author João Vitor Espig (jotaespig@gmail.com)
      *
-     * It's not garanteed that the objects are sorted, because it depends on the
-     * camera position
+     * Sorted by transparency and distance to the camera.
+     * Please note that the objects are sorted based on the last call to method
+     * update()
      **/
     const std::vector<std::shared_ptr<Object3D>> &
     sorted_drawables_objects() const;
@@ -75,6 +90,13 @@ public:
      **/
     void add_light(std::shared_ptr<Light> light);
     /**
+     * @brief remove a light from the scene
+     * @author João Vitor Espig (jotaespig@gmail.com)
+     * @param light the light to be removed
+     * @return true if the light was removed, false otherwise
+     **/
+    bool remove_light(std::shared_ptr<Light> light);
+    /**
      * @brief get the lights of the scene
      * @author João Vitor Espig (jotaespig@gmail.com)
      **/
@@ -84,6 +106,11 @@ public:
      * @author João Vitor Espig (jotaespig@gmail.com)
      **/
     void set_grid(std::shared_ptr<utils::Grid> grid);
+    /**
+     * @brief unset the grid of the scene
+     * @author João Vitor Espig (jotaespig@gmail.com)
+     **/
+    void unset_grid();
     /**
      * @brief get the grid of the scene
      * @author João Vitor Espig (jotaespig@gmail.com)
