@@ -358,7 +358,7 @@ int main() {
     std::cout << "Axolote Engine" << std::endl;
     App app{};
     app.set_title("Main test");
-    app.set_window_size(600, 600);
+    app.set_maximized();
     app.main_loop();
     return 0;
 }

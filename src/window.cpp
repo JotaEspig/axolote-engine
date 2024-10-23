@@ -221,6 +221,10 @@ void Window::set_vsync(bool vsync) {
     glfwSwapInterval(vsync);
 }
 
+void Window::set_maximized() {
+    glfwMaximizeWindow(_window);
+}
+
 std::string Window::get_path(std::string path) {
     return _root_path + "/" + path;
 }
