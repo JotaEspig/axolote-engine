@@ -18,6 +18,8 @@ namespace axolote {
  **/
 struct Camera {
     bool has_moved = true;
+    /** should calculate matrix **/
+    bool should_calculate_matrix = true;
     /** max view distance **/
     float max_dist = 1000.0f;
     /** min view distance **/
@@ -36,6 +38,12 @@ struct Camera {
     glm::vec3 orientation = glm::vec3(0.0f, 0.0f, -1.0f);
     /** camera up vector **/
     glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
+    /** camera view matrix **/
+    glm::mat4 view_matrix{1.0f};
+    /** camera projection matrix **/
+    glm::mat4 projection_matrix{1.0f};
+    /** camera matrix **/
+    glm::mat4 matrix{1.0f};
 
     /**
      * @brief Constructor
@@ -107,6 +115,12 @@ struct Camera {
      * @see https://antongerdelan.net/opengl/raycasting.html
      **/
     glm::vec3 get_ray(float x, float y, float width, float height);
+    /**
+     * @brief update camera view matrix, projection matrix and final matrix
+     * @author João Vitor Espig (jotaespig@gmail.com)
+     * @param aspect_ratio Window aspect ratio
+     **/
+    void update_matrix(float aspect_ratio);
 };
 
 } // namespace axolote
