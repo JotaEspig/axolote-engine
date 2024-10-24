@@ -315,7 +315,7 @@ void App::main_loop() {
                 "axolote_camera_pos", camera.pos.x, camera.pos.y, camera.pos.z
             );
             s->set_uniform_matrix4(
-                "axolote_camera", current_scene()->camera.matrix
+                "axolote_camera", current_scene()->camera.matrix()
             );
         }
 
@@ -340,7 +340,7 @@ void App::main_loop() {
                 "axolote_camera_pos", camera.pos.x, camera.pos.y, camera.pos.z
             );
             s->set_uniform_matrix4(
-                "axolote_camera", current_scene()->camera.matrix
+                "axolote_camera", current_scene()->camera.matrix()
             );
         }
 

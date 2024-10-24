@@ -95,13 +95,25 @@ glm::vec3 Camera::get_ray(float x, float y, float width, float height) {
 
 void Camera::update_matrix(float aspect_ratio) {
     if (should_calculate_matrix) {
-        view_matrix = glm::lookAt(pos, pos + orientation, up);
-        projection_matrix = glm::perspective(
+        _view_matrix = glm::lookAt(pos, pos + orientation, up);
+        _projection_matrix = glm::perspective(
             glm::radians(fov), aspect_ratio, min_dist, max_dist
         );
-        matrix = projection_matrix * view_matrix;
+        _matrix = _projection_matrix * _view_matrix;
         should_calculate_matrix = false;
     }
+}
+
+glm::mat4 Camera::view_matrix() const {
+    return _view_matrix;
+}
+
+glm::mat4 Camera::projection_matrix() const {
+    return _projection_matrix;
+}
+
+glm::mat4 Camera::matrix() const {
+    return _matrix;
 }
 
 } // namespace axolote
