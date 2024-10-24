@@ -6,16 +6,11 @@ out vec4 axolote_color;
 out vec3 axolote_vertex_position;
 
 uniform mat4 axolote_model;
-uniform mat4 axolote_projection;
-uniform mat4 axolote_view;
-
-mat4 axolote_camera() {
-    return axolote_projection * axolote_view;
-}
+uniform mat4 axolote_camera;
 
 void main() {
     vec4 current_pos = axolote_model * vec4(axolote_aPos, 1.0);
     axolote_vertex_position = axolote_aPos;
     axolote_color = axolote_aColor;
-    gl_Position = axolote_camera() * current_pos;
+    gl_Position = axolote_camera * current_pos;
 }

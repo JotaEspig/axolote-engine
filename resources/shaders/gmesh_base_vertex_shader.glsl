@@ -10,19 +10,14 @@ out vec3 axolote_current_pos;
 
 uniform mat4 axolote_model;
 
-// WARNING: These 2 uniforms are NOT set in the
+// WARNING: This uniform is NOT set in the
 // GMesh class, you have to set them manually
-uniform mat4 axolote_projection;
-uniform mat4 axolote_view;
-
-mat4 axolote_camera() {
-    return axolote_projection * axolote_view;
-}
+uniform mat4 axolote_camera;
 
 void main() {
     axolote_current_pos = vec3(axolote_model * vec4(axolote_aPos, 1.0f));
     axolote_tex_coord = axolote_aTex;
     axolote_color = axolote_aColor;
 
-    gl_Position = axolote_camera() * vec4(axolote_current_pos, 1.0f);
+    gl_Position = axolote_camera * vec4(axolote_current_pos, 1.0f);
 }
