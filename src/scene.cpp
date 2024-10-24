@@ -111,7 +111,7 @@ void Scene::update_camera(float aspect_ratio) {
             s->set_uniform_float3(
                 "axolote_camera_pos", camera.pos.x, camera.pos.y, camera.pos.z
             );
-            s->set_uniform_matrix4("axolote_camera", camera.matrix);
+            s->set_uniform_matrix4("axolote_camera", camera.matrix());
         }
     }
     if (_grid) {
@@ -122,7 +122,7 @@ void Scene::update_camera(float aspect_ratio) {
             s->set_uniform_float3(
                 "axolote_camera_pos", camera.pos.x, camera.pos.y, camera.pos.z
             );
-            s->set_uniform_matrix4("axolote_camera", camera.matrix);
+            s->set_uniform_matrix4("axolote_camera", camera.matrix());
         }
     }
 }

@@ -38,12 +38,6 @@ struct Camera {
     glm::vec3 orientation = glm::vec3(0.0f, 0.0f, -1.0f);
     /** camera up vector **/
     glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
-    /** camera view matrix **/
-    glm::mat4 view_matrix{1.0f};
-    /** camera projection matrix **/
-    glm::mat4 projection_matrix{1.0f};
-    /** camera matrix **/
-    glm::mat4 matrix{1.0f};
 
     /**
      * @brief Constructor
@@ -121,6 +115,32 @@ struct Camera {
      * @param aspect_ratio Window aspect ratio
      **/
     void update_matrix(float aspect_ratio);
+    /**
+     * @brief get camera view matrix
+     * @author João Vitor Espig (jotaespig@gmail.com)
+     * @return camera view matrix
+     **/
+    glm::mat4 view_matrix() const;
+    /**
+     * @brief get camera projection matrix
+     * @author João Vitor Espig (jotaespig@gmail.com)
+     * @return camera projection matrix
+     **/
+    glm::mat4 projection_matrix() const;
+    /**
+     * @brief get camera matrix
+     * @author João Vitor Espig (jotaespig@gmail.com)
+     * @return camera matrix
+     **/
+    glm::mat4 matrix() const;
+
+private:
+    /** camera view matrix **/
+    glm::mat4 _view_matrix{1.0f};
+    /** camera projection matrix **/
+    glm::mat4 _projection_matrix{1.0f};
+    /** camera matrix **/
+    glm::mat4 _matrix{1.0f};
 };
 
 } // namespace axolote
