@@ -104,6 +104,7 @@ void Scene::update_camera(float aspect_ratio) {
     glm::mat4 projection = glm::perspective(
         glm::radians(camera.fov), aspect_ratio, camera.min_dist, camera.max_dist
     );
+    glm::mat4 camera_matrix = projection * view;
 
     auto all_objects = _drawable_objects;
     all_objects.insert(
@@ -116,8 +117,7 @@ void Scene::update_camera(float aspect_ratio) {
             s->set_uniform_float3(
                 "axolote_camera_pos", camera.pos.x, camera.pos.y, camera.pos.z
             );
-            s->set_uniform_matrix4("axolote_projection", projection);
-            s->set_uniform_matrix4("axolote_view", view);
+            s->set_uniform_matrix4("axolote_camera", camera_matrix);
         }
     }
     if (_grid) {
@@ -128,8 +128,7 @@ void Scene::update_camera(float aspect_ratio) {
             s->set_uniform_float3(
                 "axolote_camera_pos", camera.pos.x, camera.pos.y, camera.pos.z
             );
-            s->set_uniform_matrix4("axolote_projection", projection);
-            s->set_uniform_matrix4("axolote_view", view);
+            s->set_uniform_matrix4("axolote_camera", camera_matrix);
         }
     }
 }

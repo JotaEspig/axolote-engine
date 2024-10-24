@@ -313,6 +313,7 @@ void App::main_loop() {
             glm::radians(camera.fov), (float)width() / height(),
             camera.min_dist, camera.max_dist
         );
+        glm::mat camera_matrix = projection * view;
 
         auto shaders = quad->get_shaders();
         for (auto &s : shaders) {
@@ -320,8 +321,7 @@ void App::main_loop() {
             s->set_uniform_float3(
                 "axolote_camera_pos", camera.pos.x, camera.pos.y, camera.pos.z
             );
-            s->set_uniform_matrix4("axolote_projection", projection);
-            s->set_uniform_matrix4("axolote_view", view);
+            s->set_uniform_matrix4("axolote_camera", camera_matrix);
         }
 
         glm::mat4 model = glm::mat4{1.0f};
@@ -344,8 +344,7 @@ void App::main_loop() {
             s->set_uniform_float3(
                 "axolote_camera_pos", camera.pos.x, camera.pos.y, camera.pos.z
             );
-            s->set_uniform_matrix4("axolote_projection", projection);
-            s->set_uniform_matrix4("axolote_view", view);
+            s->set_uniform_matrix4("axolote_camera", camera_matrix);
         }
 
         model = glm::translate(model, glm::vec3{0.0f, 0.0f, -0.01f});
