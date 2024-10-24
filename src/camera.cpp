@@ -19,32 +19,38 @@ Camera::Camera(const glm::vec3 &position) :
 void Camera::forward(double delta_t) {
     pos += (float)delta_t * speed * orientation;
     has_moved = true;
+    should_calculate_matrix = true;
 }
 
 void Camera::backward(double delta_t) {
     pos += (float)delta_t * speed * -orientation;
     has_moved = true;
+    should_calculate_matrix = true;
 }
 
 void Camera::leftward(double delta_t) {
     pos += (float)delta_t * speed
            * -glm::normalize(glm::cross(orientation, up));
     has_moved = true;
+    should_calculate_matrix = true;
 }
 
 void Camera::rightward(double delta_t) {
     pos += (float)delta_t * speed * glm::normalize(glm::cross(orientation, up));
     has_moved = true;
+    should_calculate_matrix = true;
 }
 
 void Camera::upward(double delta_t) {
     pos += (float)delta_t * speed * up;
     has_moved = true;
+    should_calculate_matrix = true;
 }
 
 void Camera::downward(double delta_t) {
     pos += (float)delta_t * speed * -up;
     has_moved = true;
+    should_calculate_matrix = true;
 }
 
 void Camera::move_vision(
@@ -66,6 +72,7 @@ void Camera::move_vision(
     }
 
     orientation = glm::rotate(orientation, (float)glm::radians(-rot_y), up);
+    should_calculate_matrix = true;
 }
 
 glm::vec3 Camera::get_ray(float x, float y, float width, float height) {
@@ -84,6 +91,17 @@ glm::vec3 Camera::get_ray(float x, float y, float width, float height) {
         = glm::normalize(x_ndc * right + y_ndc * up + orientation);
 
     return ray_dir;
+}
+
+void Camera::update_matrix(float aspect_ratio) {
+    if (should_calculate_matrix) {
+        view_matrix = glm::lookAt(pos, pos + orientation, up);
+        projection_matrix = glm::perspective(
+            glm::radians(fov), aspect_ratio, min_dist, max_dist
+        );
+        matrix = projection_matrix * view_matrix;
+        should_calculate_matrix = false;
+    }
 }
 
 } // namespace axolote

@@ -290,9 +290,11 @@ void App::main_loop() {
 
             // first pass
             // Setting the camera to the mirror position and orientation
-            current_scene()->camera.pos = pos;
-            current_scene()->camera.orientation = reflection;
-            current_scene()->camera.up = glm::vec3{0.0f, 1.0f, 0.0f};
+            auto &camera = current_scene()->camera;
+            camera.pos = pos;
+            camera.orientation = reflection;
+            camera.up = glm::vec3{0.0f, 1.0f, 0.0f};
+            camera.should_calculate_matrix = true;
             update_camera(1.0f);
 
             mirror_fbo->bind();
@@ -306,22 +308,15 @@ void App::main_loop() {
         clear();
         // restore original camera
         current_scene()->camera = camera;
-        glm::mat4 view = glm::lookAt(
-            camera.pos, camera.pos + camera.orientation, camera.up
-        );
-        glm::mat4 projection = glm::perspective(
-            glm::radians(camera.fov), (float)width() / height(),
-            camera.min_dist, camera.max_dist
-        );
-        glm::mat camera_matrix = projection * view;
-
         auto shaders = quad->get_shaders();
         for (auto &s : shaders) {
             s->activate();
             s->set_uniform_float3(
                 "axolote_camera_pos", camera.pos.x, camera.pos.y, camera.pos.z
             );
-            s->set_uniform_matrix4("axolote_camera", camera_matrix);
+            s->set_uniform_matrix4(
+                "axolote_camera", current_scene()->camera.matrix
+            );
         }
 
         glm::mat4 model = glm::mat4{1.0f};
@@ -344,7 +339,9 @@ void App::main_loop() {
             s->set_uniform_float3(
                 "axolote_camera_pos", camera.pos.x, camera.pos.y, camera.pos.z
             );
-            s->set_uniform_matrix4("axolote_camera", camera_matrix);
+            s->set_uniform_matrix4(
+                "axolote_camera", current_scene()->camera.matrix
+            );
         }
 
         model = glm::translate(model, glm::vec3{0.0f, 0.0f, -0.01f});
