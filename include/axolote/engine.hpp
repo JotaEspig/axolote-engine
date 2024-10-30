@@ -10,6 +10,7 @@
 #define GLFW_INCLUDE_NONE
 
 #include "axolote/camera.hpp"
+#include "axolote/camera_renderer.hpp"
 #include "axolote/gl/ebo.hpp"
 #include "axolote/gl/framebuffer.hpp"
 #include "axolote/gl/shader.hpp"

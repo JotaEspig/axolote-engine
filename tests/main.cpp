@@ -13,13 +13,157 @@
 
 #include <axolote/engine.hpp>
 
-#define DT_MULTIPLIER 200000
+std::string myget_path(const std::string &path) {
+    return std::string(PROJECT_ROOT_FOLDER) + "/" + path;
+}
+
+class Mirror : public axolote::CameraRenderer {
+public:
+    double absolute_time = 0.0f;
+    bool should_render = true;
+    std::vector<axolote::Vertex> quad_vec{
+        {{-1.0f, 1.0f, 0.0f}, {}, {1.0f, 1.0f}, {}},
+        {{-1.0f, -1.0f, 0.0f}, {}, {1.0f, 0.0f}, {}},
+        {{1.0f, -1.0f, 0.0f}, {}, {0.0f, 0.0f}, {}},
+        {{1.0f, 1.0f, 0.0f}, {}, {0.0f, 1.0f}, {}}
+    };
+    std::vector<axolote::Vertex> eder_quad_vec{
+        {{-1.0f, 1.0f, 0.0f}, {1.0f, 0.0f, 0.0f, 1.0f}, {0.0f, 1.0f}, {}},
+        {{-1.0f, -1.0f, 0.0f}, {1.0f, 0.0f, 0.0f, 1.0f}, {0.0f, 0.0f}, {}},
+        {{1.0f, -1.0f, 0.0f}, {1.0f, 0.0f, 0.0f, 1.0f}, {1.0f, 0.0f}, {}},
+        {{1.0f, 1.0f, 0.0f}, {1.0f, 0.0f, 0.0f, 1.0f}, {1.0f, 1.0f}, {}}
+    };
+    std::vector<GLuint> quad_indices{0, 1, 2, 0, 2, 3};
+    glm::vec3 quad_normal = glm::vec3{0.0f, 0.0f, 1.0f};
+    std::shared_ptr<axolote::gl::Texture> eder_tex;
+    std::shared_ptr<axolote::Object3D> quad;
+    std::shared_ptr<axolote::GMesh> eder_quad;
+    std::shared_ptr<axolote::gl::Shader> screen_shader
+        = axolote::gl::Shader::create(
+            myget_path("/resources/shaders/gmesh_base_vertex_shader.glsl"),
+            myget_path("/tests/shaders/screen_frag.glsl")
+        );
+    std::shared_ptr<axolote::gl::Shader> gmesh_shader
+        = axolote::gl::Shader::create(
+            myget_path("/resources/shaders/gmesh_base_vertex_shader.glsl"),
+            myget_path("/resources/shaders/gmesh_base_fragment_shader.glsl")
+        );
+
+    Mirror(double width, double height);
+
+    void update(double dt) override;
+    void render() override;
+};
+
+Mirror::Mirror(double width, double height) {
+    fbo = axolote::gl::Framebuffer::create();
+    fbo->init(width, height);
+    quad = std::make_shared<axolote::Object3D>(
+        quad_vec, quad_indices,
+        std::vector<std::shared_ptr<axolote::gl::Texture>>{fbo->texture()},
+        glm::mat4{1.0f}
+    );
+    quad->bind_shader(screen_shader);
+
+    eder_tex = axolote::gl::Texture::create(
+        myget_path("resources/textures/eder.jpg"), "diffuse", (GLuint)0
+    );
+    eder_quad = std::make_shared<axolote::GMesh>(
+        eder_quad_vec, quad_indices,
+        std::vector<std::shared_ptr<axolote::gl::Texture>>{eder_tex}
+    );
+    eder_quad->bind_shader(gmesh_shader);
+}
+
+void Mirror::update(double dt) {
+    absolute_time += dt;
+    auto scene = (axolote::Scene *)scene_ptr;
+    auto camera_original = scene->camera;
+    if (should_render) {
+        glm::vec3 normal = glm::mat3{quad->get_normal_matrix()} * quad_normal;
+        glm::vec3 pos = quad->get_matrix()[3];
+        glm::mat4 reflection_matrix{1.0f};
+        float A = normal.x;
+        float B = normal.y;
+        float C = normal.z;
+        reflection_matrix[0][0] = 1 - 2 * A * A;
+        reflection_matrix[0][1] = -2 * A * B;
+        reflection_matrix[0][2] = -2 * A * C;
+
+        reflection_matrix[1][0] = -2 * A * B;
+        reflection_matrix[1][1] = 1 - 2 * B * B;
+        reflection_matrix[1][2] = -2 * B * C;
+
+        reflection_matrix[2][0] = -2 * A * C;
+        reflection_matrix[2][1] = -2 * B * C;
+        reflection_matrix[2][2] = 1 - 2 * C * C;
+        glm::vec3 reflection
+            = reflection_matrix * glm::vec4{pos - scene->camera.pos, 1.0f};
+
+        // first pass
+        // Setting the camera to the mirror position and orientation
+        Mirror::camera.pos = pos;
+        Mirror::camera.orientation = reflection;
+        Mirror::camera.up = glm::vec3{0.0f, 1.0f, 0.0f};
+        Mirror::camera.should_calculate_matrix = true;
+        scene->camera = Mirror::camera;
+        scene->update_camera(1.0f);
+
+        fbo->bind();
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        scene->render();
+
+        // second pass
+        fbo->unbind();
+    }
+    // restore the camera
+    scene->camera = camera_original;
+}
+
+void Mirror::render() {
+    auto scene = (axolote::Scene *)scene_ptr;
+    auto shaders = quad->get_shaders();
+    for (auto &s : shaders) {
+        s->activate();
+        s->set_uniform_float3(
+            "axolote_camera_pos", camera.pos.x, camera.pos.y, camera.pos.z
+        );
+        s->set_uniform_matrix4("axolote_camera", scene->camera.matrix());
+    }
+
+    glm::mat4 model = glm::mat4{1.0f};
+    // make the model orbit around the the center using radius 10
+    model = glm::rotate(
+        model, (float)absolute_time * 0.1f, glm::vec3{0.0f, 1.0f, 0.0f}
+    );
+    model = glm::translate(model, glm::vec3{10.0f, 0.0f, 0.0f});
+    // rotate so it points to the center
+    model
+        = glm::rotate(model, glm::radians(-90.0f), glm::vec3{0.0f, 1.0f, 0.0f});
+    glDisable(GL_CULL_FACE);
+    quad->set_matrix(model);
+    quad->draw();
+
+    shaders = eder_quad->get_shaders();
+    for (auto &s : shaders) {
+        s->activate();
+        s->set_uniform_float3(
+            "axolote_camera_pos", camera.pos.x, camera.pos.y, camera.pos.z
+        );
+        s->set_uniform_matrix4("axolote_camera", scene->camera.matrix());
+    }
+
+    model = glm::translate(model, glm::vec3{0.0f, 0.0f, -0.01f});
+    model = glm::scale(model, glm::vec3{1.1f, 1.1f, 1.1f});
+    eder_quad->draw(model);
+    glEnable(GL_CULL_FACE);
+}
 
 class App : public axolote::Window {
 public:
-    bool use_mirror = true;
     std::shared_ptr<axolote::SpotLight> flashlight;
-    std::shared_ptr<axolote::gl::Framebuffer> mirror_fbo;
+    std::shared_ptr<Mirror> mirror;
 
     void process_input(double dt);
     void main_loop();
@@ -38,7 +182,7 @@ public:
     }
 
     void update(double dt) override {
-        absolute_time += dt / (DT_MULTIPLIER * 10);
+        absolute_time += dt / (10);
         dir = glm::vec3{
             glm::cos((float)absolute_time), 0.0f, glm::sin((float)absolute_time)
         };
@@ -68,8 +212,8 @@ void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
     axolote::Window::default_framebuffer_size_callback(window, width, height);
     auto app = static_cast<App *>(glfwGetWindowUserPointer(window));
     // check if the app is not null
-    if (app && app->mirror_fbo)
-        app->mirror_fbo->resize(width, height);
+    if (app && app->mirror->fbo)
+        app->mirror->fbo->resize(width, height);
 }
 
 void App::process_input(double dt) {
@@ -98,7 +242,7 @@ void App::process_input(double dt) {
         set_key_pressed(Key::M, true);
     }
     else if (m_key_state == KeyState::RELEASED && is_key_pressed(Key::M)) {
-        use_mirror = !use_mirror;
+        mirror->should_render = !mirror->should_render;
         set_key_pressed(Key::M, false);
     }
 
@@ -125,17 +269,9 @@ void App::main_loop() {
         get_path("resources/shaders/object3d_base_vertex_shader.glsl"),
         get_path("./resources/shaders/object3d_base_fragment_shader.glsl")
     );
-    auto gmesh_shader = axolote::gl::Shader::create(
-        get_path("/resources/shaders/gmesh_base_vertex_shader.glsl"),
-        get_path("/resources/shaders/gmesh_base_fragment_shader.glsl")
-    );
     auto grid_shader = axolote::gl::Shader::create(
         get_path("/resources/shaders/grid_base_vertex_shader.glsl"),
         get_path("/resources/shaders/grid_base_fragment_shader.glsl")
-    );
-    auto screen_shader = axolote::gl::Shader::create(
-        get_path("/resources/shaders/gmesh_base_vertex_shader.glsl"),
-        get_path("/tests/shaders/screen_frag.glsl")
     );
 
     // Scene object
@@ -144,6 +280,9 @@ void App::main_loop() {
     scene->camera.speed = 3.0f;
     scene->camera.sensitivity = 10000.0f;
     scene->ambient_light_intensity = 0.1f;
+
+    mirror = std::make_shared<Mirror>(width(), height());
+    scene->add_camera_renderer(mirror);
 
     auto dir_light = std::make_shared<MyDirLight>(
         glm::vec3{1.f, 1.f, 1.f}, true, glm::vec3{1.0f, 0.0f, 0.0f}
@@ -203,49 +342,16 @@ void App::main_loop() {
     grid->bind_shader(grid_shader);
     scene->set_grid(grid);
 
-    std::vector<axolote::Vertex> quad_vec{
-        {{-1.0f, 1.0f, 0.0f}, {}, {1.0f, 1.0f}, {}},
-        {{-1.0f, -1.0f, 0.0f}, {}, {1.0f, 0.0f}, {}},
-        {{1.0f, -1.0f, 0.0f}, {}, {0.0f, 0.0f}, {}},
-        {{1.0f, 1.0f, 0.0f}, {}, {0.0f, 1.0f}, {}}
-    };
-    std::vector<axolote::Vertex> eder_quad_vec{
-        {{-1.0f, 1.0f, 0.0f}, {1.0f, 0.0f, 0.0f, 1.0f}, {0.0f, 1.0f}, {}},
-        {{-1.0f, -1.0f, 0.0f}, {1.0f, 0.0f, 0.0f, 1.0f}, {0.0f, 0.0f}, {}},
-        {{1.0f, -1.0f, 0.0f}, {1.0f, 0.0f, 0.0f, 1.0f}, {1.0f, 0.0f}, {}},
-        {{1.0f, 1.0f, 0.0f}, {1.0f, 0.0f, 0.0f, 1.0f}, {1.0f, 1.0f}, {}}
-    };
-    std::vector<GLuint> quad_indices{0, 1, 2, 0, 2, 3};
-    glm::vec3 quad_normal = glm::vec3{0.0f, 0.0f, 1.0f};
-
     // Funny things with fbo
-    mirror_fbo = axolote::gl::Framebuffer::create();
-    mirror_fbo->init(width(), height());
     // Overwrite the default framebuffer size callback
     glfwSetFramebufferSizeCallback(window(), framebuffer_size_callback);
-
-    auto quad = std::make_shared<axolote::Object3D>(
-        quad_vec, quad_indices,
-        std::vector<std::shared_ptr<axolote::gl::Texture>>{mirror_fbo->texture()
-        },
-        glm::mat4{1.0f}
-    );
-    quad->bind_shader(screen_shader);
-
-    auto eder_tex = axolote::gl::Texture::create(
-        get_path("resources/textures/eder.jpg"), "diffuse", (GLuint)0
-    );
-    auto eder_quad = std::make_shared<axolote::GMesh>(
-        eder_quad_vec, quad_indices,
-        std::vector<std::shared_ptr<axolote::gl::Texture>>{eder_tex}
-    );
-    eder_quad->bind_shader(gmesh_shader);
 
     std::cout << "Starting main loop" << std::endl;
 
     set_scene(scene);
     double before = get_time();
     while (!should_close()) {
+        clear();
         poll_events();
 
         double now = get_time();
@@ -263,94 +369,9 @@ void App::main_loop() {
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        dt *= DT_MULTIPLIER;
-        auto camera = current_scene()->camera;
-        if (use_mirror) {
-            glm::vec3 normal
-                = glm::mat3{quad->get_normal_matrix()} * quad_normal;
-            glm::vec3 pos = quad->get_matrix()[3];
-            glm::mat4 reflection_matrix{1.0f};
-            float A = normal.x;
-            float B = normal.y;
-            float C = normal.z;
-            reflection_matrix[0][0] = 1 - 2 * A * A;
-            reflection_matrix[0][1] = -2 * A * B;
-            reflection_matrix[0][2] = -2 * A * C;
-
-            reflection_matrix[1][0] = -2 * A * B;
-            reflection_matrix[1][1] = 1 - 2 * B * B;
-            reflection_matrix[1][2] = -2 * B * C;
-
-            reflection_matrix[2][0] = -2 * A * C;
-            reflection_matrix[2][1] = -2 * B * C;
-            reflection_matrix[2][2] = 1 - 2 * C * C;
-            glm::vec3 reflection
-                = reflection_matrix
-                  * glm::vec4{pos - current_scene()->camera.pos, 1.0f};
-
-            // first pass
-            // Setting the camera to the mirror position and orientation
-            auto &camera = current_scene()->camera;
-            camera.pos = pos;
-            camera.orientation = reflection;
-            camera.up = glm::vec3{0.0f, 1.0f, 0.0f};
-            camera.should_calculate_matrix = true;
-            update_camera(1.0f);
-
-            mirror_fbo->bind();
-            clear();
-            render();
-
-            // second pass
-            mirror_fbo->unbind();
-        }
-
-        clear();
-        // restore original camera
-        current_scene()->camera = camera;
-        auto shaders = quad->get_shaders();
-        for (auto &s : shaders) {
-            s->activate();
-            s->set_uniform_float3(
-                "axolote_camera_pos", camera.pos.x, camera.pos.y, camera.pos.z
-            );
-            s->set_uniform_matrix4(
-                "axolote_camera", current_scene()->camera.matrix()
-            );
-        }
-
-        glm::mat4 model = glm::mat4{1.0f};
-        // make the model orbit around the the center using radius 10
-        model = glm::rotate(
-            model, (float)get_time() * 0.1f, glm::vec3{0.0f, 1.0f, 0.0f}
-        );
-        model = glm::translate(model, glm::vec3{10.0f, 0.0f, 0.0f});
-        // rotate so it points to the center
-        model = glm::rotate(
-            model, glm::radians(-90.0f), glm::vec3{0.0f, 1.0f, 0.0f}
-        );
-        glDisable(GL_CULL_FACE);
-        quad->set_matrix(model);
-        quad->draw();
-
-        shaders = eder_quad->get_shaders();
-        for (auto &s : shaders) {
-            s->activate();
-            s->set_uniform_float3(
-                "axolote_camera_pos", camera.pos.x, camera.pos.y, camera.pos.z
-            );
-            s->set_uniform_matrix4(
-                "axolote_camera", current_scene()->camera.matrix()
-            );
-        }
-
-        model = glm::translate(model, glm::vec3{0.0f, 0.0f, -0.01f});
-        model = glm::scale(model, glm::vec3{1.1f, 1.1f, 1.1f});
-        eder_quad->draw(model);
-        glEnable(GL_CULL_FACE);
-
         update_camera((float)width() / height());
         update(dt);
+        clear();
         render();
 
         ImGui::Begin("Tests using ImGui");
