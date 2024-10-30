@@ -86,6 +86,29 @@ const std::vector<std::shared_ptr<Light>> &Scene::lights() const {
     return _lights;
 }
 
+void Scene::add_camera_renderer(std::shared_ptr<CameraRenderer> camera_renderer
+) {
+    _camera_renderers.push_back(camera_renderer);
+}
+
+bool Scene::remove_camera_renderer(
+    std::shared_ptr<CameraRenderer> camera_renderer
+) {
+    auto it = std::find(
+        _camera_renderers.begin(), _camera_renderers.end(), camera_renderer
+    );
+    if (it == _camera_renderers.end())
+        return false;
+
+    _camera_renderers.erase(it);
+    return true;
+}
+
+const std::vector<std::shared_ptr<CameraRenderer>> &
+Scene::camera_renderers() const {
+    return _camera_renderers;
+}
+
 void Scene::set_grid(std::shared_ptr<utils::Grid> grid) {
     _grid = grid;
 }
@@ -99,6 +122,7 @@ std::shared_ptr<utils::Grid> Scene::grid() const {
 }
 
 void Scene::update_camera(float aspect_ratio) {
+    last_aspect_ratio = aspect_ratio;
     camera.update_matrix(aspect_ratio);
     auto all_objects = _drawable_objects;
     all_objects.insert(
@@ -217,11 +241,24 @@ void Scene::update(double delta_t) {
             shader->set_uniform_float("axolote_gamma", gamma);
         }
     }
+
+    for (auto &camera_renderer : _camera_renderers) {
+        camera_renderer->setup(this);
+        camera_renderer->update(delta_t);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    }
+    if (_camera_renderers.size() > 0) {
+        update_camera(last_aspect_ratio);
+    }
 }
 
 void Scene::render() {
     if (_grid)
         _grid->draw();
+    for (auto &camera_renderer : _camera_renderers) {
+        camera_renderer->render();
+    }
     for (std::shared_ptr<Drawable> d : _drawable_objects)
         d->draw();
     for (std::shared_ptr<Object3D> d : _sorted_drawables_objects)

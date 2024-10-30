@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "axolote/camera.hpp"
+#include "axolote/camera_renderer.hpp"
 #include "axolote/drawable.hpp"
 #include "axolote/light.hpp"
 #include "axolote/object3d.hpp"
@@ -102,6 +103,26 @@ public:
      **/
     const std::vector<std::shared_ptr<Light>> &lights() const;
     /**
+     * @brief add a camera renderer to the scene
+     * @author João Vitor Espig (jotaespig@gmail.com)
+     * @param camera_renderer the camera renderer to be added
+     **/
+    void add_camera_renderer(std::shared_ptr<CameraRenderer> camera_renderer);
+    /**
+     * @brief remove a camera renderer from the scene
+     * @author João Vitor Espig (jotaespig@gmail.com)
+     * @param camera_renderer the camera renderer to be removed
+     * @return true if the camera renderer was removed, false otherwise
+     **/
+    bool remove_camera_renderer(std::shared_ptr<CameraRenderer> camera_renderer
+    );
+    /**
+     * @brief get the camera renderers of the scene
+     * @author João Vitor Espig (jotaespig@gmail.com)
+     **/
+    const std::vector<std::shared_ptr<CameraRenderer>> &
+    camera_renderers() const;
+    /**
      * @brief set the grid of the scene
      * @author João Vitor Espig (jotaespig@gmail.com)
      **/
@@ -136,10 +157,13 @@ public:
     void render();
 
 private:
+    double last_aspect_ratio = 1.0;
     /** vector of drawables objects **/
     std::vector<std::shared_ptr<Drawable>> _drawable_objects;
     /** sorted drawables objects **/
     std::vector<std::shared_ptr<Object3D>> _sorted_drawables_objects;
+    /** Camera renderers **/
+    std::vector<std::shared_ptr<CameraRenderer>> _camera_renderers;
     /** grid **/
     std::shared_ptr<utils::Grid> _grid;
     /** lights of the scene **/
