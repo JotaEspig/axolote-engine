@@ -14,6 +14,7 @@ Graphics engine made in C++ using OpenGL version 3.3+. The idea of the project c
 * OpenGL 3.3+
 * GLFW3
 * GLM
+* Assimp 5.4
 * Doxygen (Optional)
 
 ### Linux

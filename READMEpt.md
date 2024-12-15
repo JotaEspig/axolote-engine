@@ -13,6 +13,7 @@ Engine gráfica feita em C++ utilizando OpenGL versão 3.3+. A ideia do projeto 
 * OpenGL 3.3+
 * GLFW3
 * GLM
+* Assimp 5.4
 * Doxygen (Opcional)
 
 ### Linux
