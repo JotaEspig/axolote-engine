@@ -213,7 +213,6 @@ public:
      * When you want to implement a custom error callback, you can
      * use this method as a reference. And it's recommended to see the function
      * glfwGetWindowUserPointer.
-     * you
      */
     static void default_error_callback(int error, const char *description);
 
