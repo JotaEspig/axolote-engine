@@ -2,8 +2,8 @@
 
 namespace axolote {
 
-void CameraRenderer::setup(const void *scene_ptr) {
-    CameraRenderer::scene_ptr = scene_ptr;
+void CameraRenderer::setup(std::shared_ptr<SceneContext> context) {
+    scene_context = context;
 }
 
 } // namespace axolote

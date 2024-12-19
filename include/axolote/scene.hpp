@@ -8,11 +8,11 @@
 #include <memory>
 #include <vector>
 
-#include "axolote/camera.hpp"
 #include "axolote/camera_renderer.hpp"
 #include "axolote/drawable.hpp"
 #include "axolote/light.hpp"
 #include "axolote/object3d.hpp"
+#include "axolote/scene_context.hpp"
 #include "axolote/utils/grid.hpp"
 
 namespace axolote {
@@ -23,8 +23,8 @@ namespace axolote {
  **/
 class Scene {
 public:
-    /** Camera in the scene **/
-    Camera camera;
+    /** Scene Context pointer **/
+    std::shared_ptr<SceneContext> context = std::make_shared<SceneContext>();
     /** Ambient light **/
     glm::vec3 ambient_light{1.0f};
     /** Ambient light intensity **/
@@ -158,16 +158,8 @@ public:
 
 private:
     double last_aspect_ratio = 1.0;
-    /** vector of drawables objects **/
-    std::vector<std::shared_ptr<Drawable>> _drawable_objects;
-    /** sorted drawables objects **/
-    std::vector<std::shared_ptr<Object3D>> _sorted_drawables_objects;
     /** Camera renderers **/
     std::vector<std::shared_ptr<CameraRenderer>> _camera_renderers;
-    /** grid **/
-    std::shared_ptr<utils::Grid> _grid;
-    /** lights of the scene **/
-    std::vector<std::shared_ptr<Light>> _lights;
 };
 
 } // namespace axolote

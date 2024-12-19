@@ -29,7 +29,7 @@ void App::main_loop() {
     // Creating a scene, configurating the camera and adding a drawable object
     std::shared_ptr<axolote::Scene> scene{new axolote::Scene{}};
     // Arbitrary value, you can change it for testing purposes
-    scene->camera.sensitivity = 5000.0f;
+    scene->context->camera.sensitivity = 5000.0f;
     scene->add_drawable(saul_goodman);
 
     // You must set a scene for the engine to render it, otherwise it will give

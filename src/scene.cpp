@@ -20,25 +20,28 @@ Scene::~Scene() {
 }
 
 void Scene::add_drawable(std::shared_ptr<Drawable> d) {
-    _drawable_objects.push_back(d);
+    context->drawable_objects.push_back(d);
 }
 
 bool Scene::remove_drawable(std::shared_ptr<Drawable> d) {
-    auto it = std::find(_drawable_objects.begin(), _drawable_objects.end(), d);
-    if (it == _drawable_objects.end())
+    auto it = std::find(
+        context->drawable_objects.begin(), context->drawable_objects.end(), d
+    );
+    if (it == context->drawable_objects.end())
         return false;
 
-    _drawable_objects.erase(it);
+    context->drawable_objects.erase(it);
     return true;
 }
 
 const std::vector<std::shared_ptr<Drawable>> &Scene::drawables_objects() const {
-    return _drawable_objects;
+    return context->drawable_objects;
 }
 
 void Scene::add_sorted_drawable(std::shared_ptr<Object3D> d) {
     auto it = std::lower_bound(
-        _sorted_drawables_objects.begin(), _sorted_drawables_objects.end(), d,
+        context->sorted_drawables_objects.begin(),
+        context->sorted_drawables_objects.end(), d,
         [this](
             const std::shared_ptr<Object3D> &a,
             const std::shared_ptr<Object3D> &b
@@ -46,44 +49,49 @@ void Scene::add_sorted_drawable(std::shared_ptr<Object3D> d) {
             if (a->is_transparent < b->is_transparent)
                 return true;
 
-            return glm::length2(camera.pos - glm::vec3(a->get_matrix()[3]))
-                   > glm::length2(camera.pos - glm::vec3(b->get_matrix()[3]));
+            return glm::length2(
+                       context->camera.pos - glm::vec3(a->get_matrix()[3])
+                   )
+                   > glm::length2(
+                       context->camera.pos - glm::vec3(b->get_matrix()[3])
+                   );
         }
     );
-    _sorted_drawables_objects.insert(it, d);
+    context->sorted_drawables_objects.insert(it, d);
 }
 
 bool Scene::remove_sorted_drawable(std::shared_ptr<Object3D> d) {
     auto it = std::find(
-        _sorted_drawables_objects.begin(), _sorted_drawables_objects.end(), d
+        context->sorted_drawables_objects.begin(),
+        context->sorted_drawables_objects.end(), d
     );
-    if (it == _sorted_drawables_objects.end())
+    if (it == context->sorted_drawables_objects.end())
         return false;
 
-    _sorted_drawables_objects.erase(it);
+    context->sorted_drawables_objects.erase(it);
     return true;
 }
 
 const std::vector<std::shared_ptr<Object3D>> &
 Scene::sorted_drawables_objects() const {
-    return _sorted_drawables_objects;
+    return context->sorted_drawables_objects;
 }
 
 void Scene::add_light(std::shared_ptr<Light> light) {
-    _lights.push_back(light);
+    context->lights.push_back(light);
 }
 
 bool Scene::remove_light(std::shared_ptr<Light> light) {
-    auto it = std::find(_lights.begin(), _lights.end(), light);
-    if (it == _lights.end())
+    auto it = std::find(context->lights.begin(), context->lights.end(), light);
+    if (it == context->lights.end())
         return false;
 
-    _lights.erase(it);
+    context->lights.erase(it);
     return true;
 }
 
 const std::vector<std::shared_ptr<Light>> &Scene::lights() const {
-    return _lights;
+    return context->lights;
 }
 
 void Scene::add_camera_renderer(std::shared_ptr<CameraRenderer> camera_renderer
@@ -110,51 +118,54 @@ Scene::camera_renderers() const {
 }
 
 void Scene::set_grid(std::shared_ptr<utils::Grid> grid) {
-    _grid = grid;
+    context->grid = grid;
 }
 
 void Scene::unset_grid() {
-    _grid = nullptr;
+    context->grid = nullptr;
 }
 
 std::shared_ptr<utils::Grid> Scene::grid() const {
-    return _grid;
+    return context->grid;
 }
 
 void Scene::update_camera(float aspect_ratio) {
     last_aspect_ratio = aspect_ratio;
-    camera.update_matrix(aspect_ratio);
-    auto all_objects = _drawable_objects;
+    context->camera.update_matrix(aspect_ratio);
+    auto all_objects = context->drawable_objects;
     all_objects.insert(
-        all_objects.end(), _sorted_drawables_objects.begin(),
-        _sorted_drawables_objects.end()
+        all_objects.end(), context->sorted_drawables_objects.begin(),
+        context->sorted_drawables_objects.end()
     );
     for (auto &o : all_objects) {
         for (std::shared_ptr<gl::Shader> s : o->get_shaders()) {
             s->activate();
             s->set_uniform_float3(
-                "axolote_camera_pos", camera.pos.x, camera.pos.y, camera.pos.z
+                "axolote_camera_pos", context->camera.pos.x,
+                context->camera.pos.y, context->camera.pos.z
             );
-            s->set_uniform_matrix4("axolote_camera", camera.matrix());
+            s->set_uniform_matrix4("axolote_camera", context->camera.matrix());
         }
     }
-    if (_grid) {
-        _grid->camera_pos = camera.pos;
-        auto shaders = _grid->get_shaders();
+    if (context->grid) {
+        context->grid->camera_pos = context->camera.pos;
+        auto shaders = context->grid->get_shaders();
         for (auto &s : shaders) {
             s->activate();
             s->set_uniform_float3(
-                "axolote_camera_pos", camera.pos.x, camera.pos.y, camera.pos.z
+                "axolote_camera_pos", context->camera.pos.x,
+                context->camera.pos.y, context->camera.pos.z
             );
-            s->set_uniform_matrix4("axolote_camera", camera.matrix());
+            s->set_uniform_matrix4("axolote_camera", context->camera.matrix());
         }
     }
 }
 
 void Scene::update(double delta_t) {
-    if (camera.has_moved) {
+    if (context->camera.has_moved) {
         std::sort(
-            _sorted_drawables_objects.begin(), _sorted_drawables_objects.end(),
+            context->sorted_drawables_objects.begin(),
+            context->sorted_drawables_objects.end(),
             [this](
                 const std::shared_ptr<Object3D> &a,
                 const std::shared_ptr<Object3D> &b
@@ -162,28 +173,30 @@ void Scene::update(double delta_t) {
                 if (a->is_transparent < b->is_transparent)
                     return true;
 
-                return glm::length2(camera.pos - glm::vec3(a->get_matrix()[3]))
+                return glm::length2(
+                           context->camera.pos - glm::vec3(a->get_matrix()[3])
+                       )
                        > glm::length2(
-                           camera.pos - glm::vec3(b->get_matrix()[3])
+                           context->camera.pos - glm::vec3(b->get_matrix()[3])
                        );
             }
         );
-        camera.has_moved = false;
+        context->camera.has_moved = false;
     }
 
-    for (std::shared_ptr<Object3D> d : _sorted_drawables_objects) {
+    for (std::shared_ptr<Object3D> d : context->sorted_drawables_objects) {
         d->update(delta_t);
     }
-    for (std::shared_ptr<Drawable> d : _drawable_objects)
+    for (std::shared_ptr<Drawable> d : context->drawable_objects)
         d->update(delta_t);
-    if (_grid)
-        _grid->update(delta_t);
+    if (context->grid)
+        context->grid->update(delta_t);
 
     // Bind lighs to every shader and calculate how much of each type
     int num_point_lights = 0;
     int num_directional_lights = 0;
     int num_spot_lights = 0;
-    for (auto &light : _lights) {
+    for (auto &light : context->lights) {
         light->update(delta_t);
         std::string prefix;
 
@@ -204,10 +217,10 @@ void Scene::update(double delta_t) {
             break;
         }
 
-        auto all_objects = _drawable_objects;
+        auto all_objects = context->drawable_objects;
         all_objects.insert(
-            all_objects.end(), _sorted_drawables_objects.begin(),
-            _sorted_drawables_objects.end()
+            all_objects.end(), context->sorted_drawables_objects.begin(),
+            context->sorted_drawables_objects.end()
         );
         for (auto &o : all_objects) {
             for (std::shared_ptr<gl::Shader> s : o->get_shaders()) {
@@ -217,10 +230,10 @@ void Scene::update(double delta_t) {
     }
 
     // Set number of each light type for every shader
-    auto all_objects = _drawable_objects;
+    auto all_objects = context->drawable_objects;
     all_objects.insert(
-        all_objects.end(), _sorted_drawables_objects.begin(),
-        _sorted_drawables_objects.end()
+        all_objects.end(), context->sorted_drawables_objects.begin(),
+        context->sorted_drawables_objects.end()
     );
     for (auto &o : all_objects) {
         for (auto &shader : o->get_shaders()) {
@@ -243,7 +256,7 @@ void Scene::update(double delta_t) {
     }
 
     for (auto &camera_renderer : _camera_renderers) {
-        camera_renderer->setup(this);
+        camera_renderer->setup(context);
         camera_renderer->update(delta_t);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
@@ -254,14 +267,11 @@ void Scene::update(double delta_t) {
 }
 
 void Scene::render() {
-    if (_grid)
-        _grid->draw();
-    for (auto &camera_renderer : _camera_renderers) {
-        camera_renderer->render();
-    }
-    for (std::shared_ptr<Drawable> d : _drawable_objects)
+    if (context->grid)
+        context->grid->draw();
+    for (std::shared_ptr<Drawable> d : context->drawable_objects)
         d->draw();
-    for (std::shared_ptr<Object3D> d : _sorted_drawables_objects)
+    for (std::shared_ptr<Object3D> d : context->sorted_drawables_objects)
         d->draw();
 }
 

@@ -140,18 +140,18 @@ void Window::process_input(double delta_t) {
 
     // More keybinds
     if (get_key_state(Key::SPACE) == KeyState::PRESSED)
-        _current_scene->camera.upward(delta_t);
+        _current_scene->context->camera.upward(delta_t);
     if (get_key_state(Key::LEFT_SHIFT) == KeyState::PRESSED)
-        _current_scene->camera.downward(delta_t);
+        _current_scene->context->camera.downward(delta_t);
     if (get_mouse_key_state(MouseKey::RIGHT) == MouseKeyState::PRESSED) {
         set_cursor_mode(CursorMode::DISABLED);
 
-        if (_current_scene->camera.first_click)
+        if (_current_scene->context->camera.first_click)
             set_cursor_position((double)width() / 2, (double)height() / 2);
 
         double mouse_x, mouse_y;
         get_cursor_position(&mouse_x, &mouse_y);
-        _current_scene->camera.move_vision(
+        _current_scene->context->camera.move_vision(
             (float)mouse_x, (float)mouse_y, (float)width(), (float)height(),
             delta_t
         );
@@ -159,7 +159,7 @@ void Window::process_input(double delta_t) {
     }
     if (get_mouse_key_state(MouseKey::RIGHT) == MouseKeyState::RELEASED) {
         set_cursor_mode(CursorMode::NORMAL);
-        _current_scene->camera.first_click = true;
+        _current_scene->context->camera.first_click = true;
     }
 }
 
@@ -167,13 +167,13 @@ void Window::minimal_process_input(double delta_t) {
     if (get_key_state(Key::ESCAPE) == KeyState::PRESSED)
         set_should_close(true);
     if (get_key_state(Key::W) == KeyState::PRESSED)
-        _current_scene->camera.forward(delta_t);
+        _current_scene->context->camera.forward(delta_t);
     if (get_key_state(Key::S) == KeyState::PRESSED)
-        _current_scene->camera.backward(delta_t);
+        _current_scene->context->camera.backward(delta_t);
     if (get_key_state(Key::A) == KeyState::PRESSED)
-        _current_scene->camera.leftward(delta_t);
+        _current_scene->context->camera.leftward(delta_t);
     if (get_key_state(Key::D) == KeyState::PRESSED)
-        _current_scene->camera.rightward(delta_t);
+        _current_scene->context->camera.rightward(delta_t);
 }
 
 bool Window::should_close() const {

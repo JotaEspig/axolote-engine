@@ -98,6 +98,7 @@ set(
     ${SOURCE_DIR}/model.cpp
     ${SOURCE_DIR}/object3d.cpp
     ${SOURCE_DIR}/scene.cpp
+    ${SOURCE_DIR}/scene_context.cpp
     ${SOURCE_DIR}/utils.cpp
     ${SOURCE_DIR}/utils/grid.cpp
     ${SOURCE_DIR}/utils/line.cpp

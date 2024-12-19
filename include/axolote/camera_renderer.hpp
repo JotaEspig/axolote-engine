@@ -10,6 +10,7 @@
 
 #include "axolote/camera.hpp"
 #include "axolote/gl/framebuffer.hpp"
+#include "axolote/scene_context.hpp"
 
 namespace axolote {
 
@@ -26,30 +27,21 @@ public:
     Camera camera;
     /** Framebuffer **/
     std::shared_ptr<gl::Framebuffer> fbo;
-    /** Current scene pointer **/
-    const void *scene_ptr;
+    /** Scene context pointer **/
+    std::shared_ptr<SceneContext> scene_context;
 
     /**
      * @brief update method. Should be overriden by the child class
      * @author João Vitor Espig (jotaespig@gmail.com)
      * @param dt time difference from last frame
-     * @param scene_ptr pointer to the scene. SHOULD BE CASTED TO THE
-     *CORRECT CLASS (i.e. Scene*). Example:
-     * @code
-     * Scene *scene = (Scene*)scene_ptr;
      **/
     virtual void update(double dt) = 0;
     /**
-     * @brief render method. Should be overriden by the child class
-     * @author João Vitor Espig (jotaespig@gmail.com)
-     **/
-    virtual void render() = 0;
-    /**
      * @brief Setups the camera renderer to the current scene
      * @author João Vitor Espig (jotaespig@gmail.com)
-     * @param scene_ptr pointer to the scene
+     * @param context the scene context
      **/
-    void setup(const void *scene_ptr);
+    void setup(std::shared_ptr<SceneContext> context);
 };
 
 } // namespace axolote
