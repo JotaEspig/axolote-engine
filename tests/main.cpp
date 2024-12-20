@@ -395,12 +395,12 @@ void App::main_loop() {
     line->bind_shader(shader_program);
     scene->add_drawable(line);
 
-    auto red_ball = std::make_shared<axolote::GModel>(
+    auto red_ball = std::make_shared<axolote::Model>(
         myget_path("resources/models/sphere/sphere.obj"),
         glm::vec4{1.0f, 0.0f, 0.0f, 1.0f}
     );
     auto instancing
-        = std::make_shared<axolote::Instancing>(red_ball->meshes[0]);
+        = std::make_shared<axolote::Instancing>(axolote::GMesh{red_ball->meshes[0]});
     std::vector<glm::mat4> matrices;
     for (int i = 0; i < 100; i++) {
         glm::mat4 model = glm::mat4{1.0f};
