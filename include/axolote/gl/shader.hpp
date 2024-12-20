@@ -85,7 +85,7 @@ public:
      * @brief activates shader
      * @author João Vitor Espig (jotaespig@gmail.com)
      **/
-    void activate();
+    void use();
     /**
      * @brief destroys shader
      * @author João Vitor Espig (jotaespig@gmail.com)

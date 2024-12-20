@@ -112,7 +112,7 @@ void Grid::update(double delta_t) {
 
 void Grid::draw() {
     glLineWidth(2.0f);
-    _shader->activate();
+    _shader->use();
     _vao->bind();
     _shader->set_uniform_matrix4("axolote_model", model_mat);
     _shader->set_uniform_int("axolote_grid_size", size);

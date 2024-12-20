@@ -80,7 +80,7 @@ void GMesh::update(double dt) {
 }
 
 void GMesh::default_draw_binds(const glm::mat4 &mat) {
-    _shader->activate();
+    _shader->use();
     _vao->bind();
 
     _shader->set_uniform_int("axolote_is_specular_map_set", 0);

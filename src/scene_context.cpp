@@ -20,7 +20,7 @@ void SceneContext::update_camera(float aspect_ratio) {
     );
     for (auto &o : all_objects) {
         for (std::shared_ptr<gl::Shader> s : o->get_shaders()) {
-            s->activate();
+            s->use();
             s->set_uniform_float3(
                 "axolote_camera_pos", camera.pos.x, camera.pos.y, camera.pos.z
             );
@@ -31,7 +31,7 @@ void SceneContext::update_camera(float aspect_ratio) {
         grid->camera_pos = camera.pos;
         auto shaders = grid->get_shaders();
         for (auto &s : shaders) {
-            s->activate();
+            s->use();
             s->set_uniform_float3(
                 "axolote_camera_pos", camera.pos.x, camera.pos.y, camera.pos.z
             );
