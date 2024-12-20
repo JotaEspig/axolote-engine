@@ -72,7 +72,7 @@ void App::main_loop() {
         clear();
         render();
 
-        // Swapping the buffers MUST BE CALLED, otherwise bye bye PC :)
+        // Swapping the buffers MUST BE CALLED
         flush();
     }
 }
