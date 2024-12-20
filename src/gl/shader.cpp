@@ -23,6 +23,15 @@ namespace axolote {
 
 namespace gl {
 
+std::shared_ptr<Shader> Shader::create_from_source_code(
+    const char *vertex_source_code,
+    const char *fragment_source_code
+) {
+    std::shared_ptr<Shader> shader = Shader::create();
+    shader->compile(vertex_source_code, fragment_source_code);
+    return shader;
+}
+
 GLuint Shader::id() const {
     return _id;
 }
@@ -67,17 +76,9 @@ void Shader::use() {
     glUseProgram(_id);
 }
 
-void Shader::destroy() {
-    glDeleteProgram(_id);
-    debug("Shader destroyed: %u", _id);
-}
-
-Shader::Shader() {
-}
-
-Shader::Shader(std::string vertex_file, std::string fragment_file) {
-    std::string vertex_code = get_file_content(vertex_file.c_str());
-    std::string fragment_code = get_file_content(fragment_file.c_str());
+void Shader::compile(
+    const std::string &vertex_code, const std::string &fragment_code
+) {
     const char *vertex_src = vertex_code.c_str();
     const char *fragment_src = fragment_code.c_str();
 
@@ -106,6 +107,20 @@ Shader::Shader(std::string vertex_file, std::string fragment_file) {
     glDeleteShader(fragment_shader);
 
     debug("Shader created: %u", _id);
+}
+
+void Shader::destroy() {
+    glDeleteProgram(_id);
+    debug("Shader destroyed: %u", _id);
+}
+
+Shader::Shader() {
+}
+
+Shader::Shader(std::string vertex_file, std::string fragment_file) {
+    std::string vertex_code = get_file_content(vertex_file.c_str());
+    std::string fragment_code = get_file_content(fragment_file.c_str());
+    compile(vertex_code, fragment_code);
 }
 
 void Shader::Deleter::operator()(Shader *shader) {

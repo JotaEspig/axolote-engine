@@ -32,6 +32,14 @@ public:
      **/
     template <typename... Args>
     static std::shared_ptr<Shader> create(Args &&...args);
+    /** @brief Creates a Shader object from source code
+     * @author João Vitor Espig (jotaespig@gmail.com)
+     * @return shared pointer to Shader object
+     **/
+    static std::shared_ptr<Shader> create_from_source_code(
+        const char *vertex_source_code,
+        const char *fragment_source_code
+    );
 
     /**
      * @brief id getter
@@ -86,6 +94,14 @@ public:
      * @author João Vitor Espig (jotaespig@gmail.com)
      **/
     void use();
+    /**
+     * @brief Process shader source code and compile it
+     * @author João Vitor Espig (jotaespig@gmail.com)
+     * @param vertex_source_code vertex shader source code
+     * @param fragment_source_code fragment shader source code
+     **/
+    void
+    compile(const std::string &vertex_source_code, const std::string &fragment_source_code);
     /**
      * @brief destroys shader
      * @author João Vitor Espig (jotaespig@gmail.com)
