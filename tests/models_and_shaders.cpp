@@ -21,6 +21,13 @@ void App::main_loop() {
         my_get_path("resources/shaders/object3d_base_vertex_shader.glsl"),
         my_get_path("resources/shaders/object3d_base_fragment_shader.glsl")
     );
+    auto post_processing_shader = axolote::gl::Shader::create(
+        my_get_path("resources/shaders/post_processing_base_vertex_shader.glsl"
+        ),
+        my_get_path(
+            "resources/shaders/post_processing_base_fragment_shader.glsl"
+        )
+    );
 
     auto saul_goodman = std::make_shared<axolote::Object3D>();
     saul_goodman->load_model(
@@ -33,7 +40,15 @@ void App::main_loop() {
 
     // Creating a scene, configurating the camera and adding a drawable object
     std::shared_ptr<axolote::Scene> scene{new axolote::Scene{}};
+    // Initializes the renderer for the scene
+    scene->renderer.init(width(), height());
+    // Setup the shader used for post processing (see:
+    // https://learnopengl.com/Advanced-OpenGL/Framebuffers), this base shader
+    // does nothing related to post processing, just draws the texture into the
+    // screen
+    scene->renderer.setup_shader(post_processing_shader);
     // Arbitrary value, you can change it for testing purposes
+    // The context variable stores the camera and objects to be drawn
     scene->context->camera.sensitivity = 5000.0f;
     scene->add_drawable(saul_goodman);
 
