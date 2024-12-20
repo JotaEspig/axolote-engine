@@ -36,6 +36,8 @@ void Window::default_framebuffer_size_callback(
 ) {
     UNUSED(window);
     glViewport(0, 0, width, height);
+    auto w = static_cast<Window *>(glfwGetWindowUserPointer(window));
+    w->_current_scene->renderer.fbo->resize(width, height);
 }
 
 void Window::default_error_callback(int error, const char *description) {
@@ -69,6 +71,8 @@ void Window::init() {
     }
 
     glfwSetFramebufferSizeCallback(_window, default_framebuffer_size_callback);
+
+    glfwSetWindowUserPointer(_window, this);
 
     glfwMakeContextCurrent(_window);
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {

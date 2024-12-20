@@ -13,6 +13,7 @@
 #include "axolote/light.hpp"
 #include "axolote/object3d.hpp"
 #include "axolote/scene_context.hpp"
+#include "axolote/scene_renderer.hpp"
 #include "axolote/utils/grid.hpp"
 
 namespace axolote {
@@ -25,6 +26,8 @@ class Scene {
 public:
     /** Scene Context pointer **/
     std::shared_ptr<SceneContext> context = std::make_shared<SceneContext>();
+    /** Scene Renderer **/
+    SceneRenderer renderer;
     /** Ambient light **/
     glm::vec3 ambient_light{1.0f};
     /** Ambient light intensity **/
@@ -160,6 +163,7 @@ private:
     double last_aspect_ratio = 1.0;
     /** Camera renderers **/
     std::vector<std::shared_ptr<CameraRenderer>> _camera_renderers;
+    /** Framebuffer shader **/
 };
 
 } // namespace axolote

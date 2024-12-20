@@ -261,18 +261,20 @@ void Scene::update(double delta_t) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     }
+    // Resets the camera if has any camera renderers because the camera
+    // renderers may change the camera
     if (_camera_renderers.size() > 0) {
         update_camera(last_aspect_ratio);
     }
+
+    renderer.setup(context);
+    renderer.update(delta_t);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
 void Scene::render() {
-    if (context->grid)
-        context->grid->draw();
-    for (std::shared_ptr<Drawable> d : context->drawable_objects)
-        d->draw();
-    for (std::shared_ptr<Object3D> d : context->sorted_drawables_objects)
-        d->draw();
+    renderer.render();
 }
 
 } // namespace axolote

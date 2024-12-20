@@ -301,6 +301,8 @@ void App::main_loop() {
 
     // Scene object
     std::shared_ptr<axolote::Scene> scene{new axolote::Scene{}};
+    scene->renderer.init(width(), height());
+    scene->renderer.setup_shader(shader_post_processing);
     scene->context->camera.pos = {0.0f, 0.0f, 12.35f};
     scene->context->camera.speed = 3.0f;
     scene->context->camera.sensitivity = 10000.0f;
