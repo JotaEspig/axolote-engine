@@ -295,8 +295,11 @@ void App::main_loop() {
         myget_path("/resources/shaders/grid_base_fragment_shader.glsl")
     );
     auto shader_post_processing = axolote::gl::Shader::create(
-        myget_path("/resources/shaders/post_processing_base_vertex_shader.glsl"),
-        myget_path("/resources/shaders/post_processing_base_fragment_shader.glsl")
+        myget_path("/resources/shaders/post_processing_base_vertex_shader.glsl"
+        ),
+        myget_path(
+            "/resources/shaders/post_processing_base_fragment_shader.glsl"
+        )
     );
 
     // Scene object
@@ -364,9 +367,9 @@ void App::main_loop() {
     scene->add_drawable(line);
 
     auto grid = std::make_shared<axolote::utils::Grid>(
-        70, 5, true, glm::vec4{1.0f, 0.f, 0.f, 1.0f}
+        50, 5, true, glm::vec4{1.0f, 0.f, 0.f, 1.0f}
     );
-    grid->fading_factor = 70.0f;
+    grid->fading_factor = 50.0f;
     grid->bind_shader(grid_shader);
     scene->set_grid(grid);
 
