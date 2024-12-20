@@ -186,6 +186,9 @@ class App : public axolote::Window {
 public:
     std::shared_ptr<axolote::SpotLight> flashlight;
     std::shared_ptr<Mirror> mirror;
+    std::shared_ptr<axolote::gl::Shader> shader_post_process;
+    std::shared_ptr<axolote::gl::Shader> crazy_post_process_shader;
+    int shader_num = 0;
 
     void process_input(double dt);
     void main_loop();
@@ -250,6 +253,22 @@ void App::process_input(double dt) {
         set_key_pressed(Key::V, false);
     }
 
+    KeyState p_key_state = get_key_state(Key::P);
+    if (p_key_state == KeyState::PRESSED && !is_key_pressed(Key::P)) {
+        set_key_pressed(Key::P, true);
+    }
+    else if (p_key_state == KeyState::RELEASED && is_key_pressed(Key::P)) {
+        if (shader_num == 0) {
+            current_scene()->renderer.setup_shader(crazy_post_process_shader);
+            shader_num = 1;
+        }
+        else {
+            current_scene()->renderer.setup_shader(shader_post_process);
+            shader_num = 0;
+        }
+        set_key_pressed(Key::P, false);
+    }
+
     KeyState l_key_state = get_key_state(Key::L);
     if (l_key_state == KeyState::PRESSED && !is_key_pressed(Key::L)) {
         set_key_pressed(Key::L, true);
@@ -294,18 +313,23 @@ void App::main_loop() {
         myget_path("/resources/shaders/grid_base_vertex_shader.glsl"),
         myget_path("/resources/shaders/grid_base_fragment_shader.glsl")
     );
-    auto shader_post_processing = axolote::gl::Shader::create(
+    shader_post_process = axolote::gl::Shader::create(
         myget_path("/resources/shaders/post_processing_base_vertex_shader.glsl"
         ),
         myget_path(
             "/resources/shaders/post_processing_base_fragment_shader.glsl"
         )
     );
+    crazy_post_process_shader = axolote::gl::Shader::create(
+        myget_path("/resources/shaders/post_processing_base_vertex_shader.glsl"
+        ),
+        myget_path("/tests/shaders/crazy_post_processing_frag.glsl")
+    );
 
     // Scene object
     std::shared_ptr<axolote::Scene> scene{new axolote::Scene{}};
     scene->renderer.init(width(), height());
-    scene->renderer.setup_shader(shader_post_processing);
+    scene->renderer.setup_shader(shader_post_process);
     scene->context->camera.pos = {0.0f, 0.0f, 12.35f};
     scene->context->camera.speed = 3.0f;
     scene->context->camera.sensitivity = 10000.0f;
