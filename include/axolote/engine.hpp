@@ -21,6 +21,7 @@
 #include "axolote/gmodel.hpp"
 #include "axolote/mesh.hpp"
 #include "axolote/model.hpp"
+#include "axolote/instancing.hpp"
 #include "axolote/object3d.hpp"
 #include "axolote/scene.hpp"
 #include "axolote/structs.hpp"

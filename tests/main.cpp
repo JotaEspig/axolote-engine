@@ -326,6 +326,11 @@ void App::main_loop() {
         myget_path("/tests/shaders/crazy_post_processing_frag.glsl")
     );
 
+    auto instancing_shader = axolote::gl::Shader::create(
+        myget_path("/tests/shaders/instancing_vert_shader.glsl"),
+        myget_path("/resources/shaders/gmesh_base_fragment_shader.glsl")
+    );
+
     // Scene object
     std::shared_ptr<axolote::Scene> scene{new axolote::Scene{}};
     scene->renderer.init(width(), height());
@@ -389,6 +394,28 @@ void App::main_loop() {
     line->is_affected_by_lights = true;
     line->bind_shader(shader_program);
     scene->add_drawable(line);
+
+    auto red_ball = std::make_shared<axolote::GModel>(
+        myget_path("resources/models/sphere/sphere.obj"),
+        glm::vec4{1.0f, 0.0f, 0.0f, 1.0f}
+    );
+    auto instancing
+        = std::make_shared<axolote::Instancing>(red_ball->meshes[0]);
+    std::vector<glm::mat4> matrices;
+    for (int i = 0; i < 100; i++) {
+        glm::mat4 model = glm::mat4{1.0f};
+        model = glm::translate(model, glm::vec3{0.0f, 0.0f, 0.0f});
+        model = glm::rotate(
+            model, glm::radians((float)i * 10.0f), glm::vec3{0.0f, 1.0f, 0.0f}
+        );
+        model = glm::translate(model, glm::vec3{15.0f, 2.0f, 0.0f});
+        model = glm::scale(model, glm::vec3{0.5f, 0.5f, 0.5f});
+        matrices.push_back(model);
+    }
+    instancing->element_count = matrices.size();
+    instancing->add_instanced_mat4_array(4, matrices);
+    instancing->bind_shader(instancing_shader);
+    scene->add_drawable(instancing);
 
     auto grid = std::make_shared<axolote::utils::Grid>(
         50, 5, true, glm::vec4{1.0f, 0.f, 0.f, 1.0f}

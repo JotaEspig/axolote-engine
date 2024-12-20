@@ -93,6 +93,7 @@ set(
     ${SOURCE_DIR}/gl/vbo.cpp
     ${SOURCE_DIR}/gmesh.cpp
     ${SOURCE_DIR}/gmodel.cpp
+    ${SOURCE_DIR}/instancing.cpp
     ${SOURCE_DIR}/light.cpp
     ${SOURCE_DIR}/mesh.cpp
     ${SOURCE_DIR}/model.cpp
