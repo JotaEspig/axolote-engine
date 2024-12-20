@@ -6,21 +6,26 @@
 
 #include <axolote/engine.hpp>
 
+std::string my_get_path(const std::string &path) {
+    return std::string(PROJECT_ROOT_FOLDER) + "/" + path;
+}
+
 class App : public axolote::Window {
 public:
     void main_loop();
 };
 
 void App::main_loop() {
-    _root_path = PROJECT_ROOT_FOLDER;
     // Loads the default shaders
     auto shader = axolote::gl::Shader::create(
-        get_path("resources/shaders/object3d_base_vertex_shader.glsl"),
-        get_path("resources/shaders/object3d_base_fragment_shader.glsl")
+        my_get_path("resources/shaders/object3d_base_vertex_shader.glsl"),
+        my_get_path("resources/shaders/object3d_base_fragment_shader.glsl")
     );
 
     auto saul_goodman = std::make_shared<axolote::Object3D>();
-    saul_goodman->load_model(get_path("resources/models/saul-goodman/model.obj"));
+    saul_goodman->load_model(
+        my_get_path("resources/models/saul-goodman/model.obj")
+    );
     saul_goodman->set_matrix(
         glm::translate(glm::mat4{1.0f}, glm::vec3{0.0f, 0.0f, -2.0f})
     );

@@ -226,10 +226,6 @@ void Window::set_maximized() {
     glfwMaximizeWindow(_window);
 }
 
-std::string Window::get_path(std::string path) {
-    return _root_path + "/" + path;
-}
-
 std::string Window::title() const {
     return _title;
 }

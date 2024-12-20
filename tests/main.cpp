@@ -282,19 +282,21 @@ void App::process_input(double dt) {
 void App::main_loop() {
     // Set the window user pointer to this object
     glfwSetWindowUserPointer(window(), this);
-    // Set root path using definition from CMake
-    _root_path = PROJECT_ROOT_FOLDER;
 
     set_color(0xff, 0xff, 0xff);
     std::string original_title = title();
 
     auto shader_program = axolote::gl::Shader::create(
-        get_path("resources/shaders/object3d_base_vertex_shader.glsl"),
-        get_path("./resources/shaders/object3d_base_fragment_shader.glsl")
+        myget_path("resources/shaders/object3d_base_vertex_shader.glsl"),
+        myget_path("./resources/shaders/object3d_base_fragment_shader.glsl")
     );
     auto grid_shader = axolote::gl::Shader::create(
-        get_path("/resources/shaders/grid_base_vertex_shader.glsl"),
-        get_path("/resources/shaders/grid_base_fragment_shader.glsl")
+        myget_path("/resources/shaders/grid_base_vertex_shader.glsl"),
+        myget_path("/resources/shaders/grid_base_fragment_shader.glsl")
+    );
+    auto shader_post_processing = axolote::gl::Shader::create(
+        myget_path("/resources/shaders/post_processing_base_vertex_shader.glsl"),
+        myget_path("/resources/shaders/post_processing_base_fragment_shader.glsl")
     );
 
     // Scene object
@@ -325,7 +327,7 @@ void App::main_loop() {
     App::flashlight = flashlight;
 
     auto earth = std::make_shared<axolote::Object3D>(
-        get_path("resources/models/sphere/sphere.obj"),
+        myget_path("resources/models/sphere/sphere.obj"),
         glm::vec4{0.0f, 0.0f, 1.0f, 0.6f},
         glm::scale(glm::mat4{1.0f}, 6.0f * glm::vec3{1.0f, 1.0f, 1.0f})
     );
@@ -335,7 +337,7 @@ void App::main_loop() {
     scene->add_sorted_drawable(earth);
 
     auto moon = std::make_shared<axolote::Object3D>(
-        get_path("resources/models/sphere/sphere.obj"),
+        myget_path("resources/models/sphere/sphere.obj"),
         glm::vec4{0.8f, 0.8f, 0.8f, 1.0f},
         glm::translate(glm::mat4{1.0f}, glm::vec3{15.f, 2.f, 0.f})
     );
@@ -343,7 +345,7 @@ void App::main_loop() {
     scene->add_drawable(moon);
 
     auto m26 = std::make_shared<axolote::Object3D>(
-        get_path("resources/models/m26/m26pershing_coh.obj"), glm::vec4{1.0f},
+        myget_path("resources/models/m26/m26pershing_coh.obj"), glm::vec4{1.0f},
         glm::translate(glm::mat4{1.0f}, glm::vec3{0.f, -10.f, 0.f})
     );
     m26->name = "m26";

@@ -347,12 +347,6 @@ public:
      **/
     void set_maximized();
     /**
-     * @brief get path relative to executable directory (_root_path)
-     * @author João Vitor Espig (jotaespig@gmail.com)
-     * @param path relative path
-     **/
-    std::string get_path(std::string path);
-    /**
      * @brief title getter
      * @author João Vitor Espig (jotaespig@gmail.com)
      **/
@@ -434,8 +428,6 @@ public:
     GLFWwindow *window() const;
 
 protected:
-    /** Absolute path to executable directory **/
-    std::string _root_path;
     /** window title **/
     std::string _title;
     /** window background color **/
