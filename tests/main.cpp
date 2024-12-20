@@ -328,7 +328,7 @@ void App::main_loop() {
 
     auto instancing_shader = axolote::gl::Shader::create(
         myget_path("/tests/shaders/instancing_vert_shader.glsl"),
-        myget_path("/resources/shaders/gmesh_base_fragment_shader.glsl")
+        myget_path("/resources/shaders/object3d_base_fragment_shader.glsl")
     );
 
     // Scene object
@@ -395,25 +395,34 @@ void App::main_loop() {
     line->bind_shader(shader_program);
     scene->add_drawable(line);
 
-    auto red_ball = std::make_shared<axolote::Model>(
+    auto red_ball = std::make_shared<axolote::Object3D>(
         myget_path("resources/models/sphere/sphere.obj"),
-        glm::vec4{1.0f, 0.0f, 0.0f, 1.0f}
+        glm::vec4{1.0f, 0.0f, 0.0f, 1.0f}, glm::mat4{0.0f}
     );
-    auto instancing
-        = std::make_shared<axolote::Instancing>(axolote::GMesh{red_ball->meshes[0]});
+    red_ball->is_transparent = false;
+    red_ball->is_affected_by_lights = true;
+    auto instancing = std::make_shared<axolote::Instancing>(red_ball);
     std::vector<glm::mat4> matrices;
+    // Model matrices
     for (int i = 0; i < 100; i++) {
         glm::mat4 model = glm::mat4{1.0f};
-        model = glm::translate(model, glm::vec3{0.0f, 0.0f, 0.0f});
         model = glm::rotate(
             model, glm::radians((float)i * 10.0f), glm::vec3{0.0f, 1.0f, 0.0f}
         );
-        model = glm::translate(model, glm::vec3{15.0f, 2.0f, 0.0f});
+        model = glm::translate(model, glm::vec3{15.0f, -2.0f, 0.0f});
         model = glm::scale(model, glm::vec3{0.5f, 0.5f, 0.5f});
         matrices.push_back(model);
     }
+    // Normal matrices
+    std::vector<glm::mat4> normal_matrices;
+    for (int i = 0; i < 100; i++) {
+        glm::mat4 normal_matrix = glm::transpose(glm::inverse(matrices[i]));
+        normal_matrices.push_back(normal_matrix);
+    }
+
     instancing->element_count = matrices.size();
     instancing->add_instanced_mat4_array(4, matrices);
+    instancing->add_instanced_mat4_array(8, normal_matrices);
     instancing->bind_shader(instancing_shader);
     scene->add_drawable(instancing);
 
