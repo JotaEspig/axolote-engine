@@ -9,17 +9,17 @@
 
 #include "axolote/drawable.hpp"
 #include "axolote/gl/vbo.hpp"
-#include "axolote/gmesh.hpp"
+#include "axolote/object3d.hpp"
 
 namespace axolote {
 
 class Instancing : public Drawable {
 public:
-    GMesh mesh;
+    std::shared_ptr<Object3D> object;
     std::uint32_t element_count = 0;
 
     Instancing();
-    Instancing(const GMesh &mesh);
+    Instancing(std::shared_ptr<Object3D> object);
 
     void add_instanced_mat4_array(
         const std::uint8_t location, const std::vector<glm::mat4> &data
