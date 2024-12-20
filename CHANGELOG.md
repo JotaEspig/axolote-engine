@@ -1,3 +1,31 @@
+## v0.9.0 (2024-12-20)
+
+### Feat
+
+- added Instancing class to render instanced objects
+- added another way to create a Shader class
+- allowing user to use post-processing effects using SceneRenderer class
+- added camera renderers
+- **scene**: add methods to remove drawables and lights
+- added gamma correction to the scene
+- add method to maximize window
+
+### Fix
+
+- updating camera when resizing window
+
+### Refactor
+
+- **Instancing**: using Object3D to allow lights handling
+- showing more debug info in get_file_contents
+- removed method in Window class because of inconsistency in its use
+- renamed method in Shader class
+- CameraRenderer and Scene using SceneContext intermediary class for communication
+- camera matrices are now private
+- pre-calculating camera matrix
+- calculating camera matrix in cpu
+- stopped using alias
+
 ## v0.8.0 (2024-10-19)
 
 ### Feat
