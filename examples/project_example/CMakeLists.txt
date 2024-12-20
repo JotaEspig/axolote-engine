@@ -27,10 +27,16 @@ find_package(glm REQUIRED)
 find_package(Doxygen OPTIONAL_COMPONENTS dot)
 
 add_library(axolote SHARED IMPORTED)
-set_target_properties(axolote PROPERTIES 
-    IMPORTED_LOCATION "${CMAKE_SOURCE_DIR}/external/lib/axolote/axolote.dll"
-    IMPORTED_IMPLIB "${CMAKE_SOURCE_DIR}/external/lib/axolote/axolote.lib"
-)
+if (WIN32)
+    set_target_properties(axolote PROPERTIES
+        IMPORTED_LOCATION "${CMAKE_SOURCE_DIR}/external/lib/axolote/axolote.dll"
+        IMPORTED_IMPLIB "${CMAKE_SOURCE_DIR}/external/lib/axolote/axolote.lib"
+    )
+else()
+    set_target_properties(axolote PROPERTIES
+        IMPORTED_LOCATION "${CMAKE_SOURCE_DIR}/external/lib/axolote/libaxolote.so"
+    )
+endif()
 add_dependencies(axolote glfw)
 add_dependencies(axolote assimp::assimp)
 
@@ -64,6 +70,8 @@ set(
 add_executable(exe-test ${SOURCE_FILES})
 add_dependencies(exe-test axolote)
 target_compile_definitions(exe-test PUBLIC GLAD_GLAPI_EXPORT)
+target_compile_definitions(exe-test PUBLIC PROJECT_ROOT_FOLDER="${CMAKE_SOURCE_DIR}")
+
 
 # Libraries
 target_link_directories(
@@ -84,6 +92,7 @@ target_include_directories(
     PUBLIC
     ${CMAKE_SOURCE_DIR}/include
     ${CMAKE_SOURCE_DIR}/external/include
+    ${CMAKE_SOURCE_DIR}/external/imgui/include
     ${ASSIMP_INCLUDE_DIRS}
 )
 
