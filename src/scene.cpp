@@ -274,7 +274,11 @@ void Scene::update(double delta_t) {
 }
 
 void Scene::render() {
+    GLint polygon_mode[2];
+    glGetIntegerv(GL_POLYGON_MODE, polygon_mode);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     renderer.render();
+    glPolygonMode(GL_FRONT_AND_BACK, polygon_mode[0]);
 }
 
 } // namespace axolote
