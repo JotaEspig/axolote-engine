@@ -26,7 +26,7 @@ public:
     /** Camera **/
     Camera camera;
     /** Framebuffer **/
-    std::shared_ptr<gl::Framebuffer> fbo;
+    std::shared_ptr<gl::Framebuffer> fbo = nullptr;
     /** Scene context pointer **/
     std::shared_ptr<SceneContext> scene_context;
 

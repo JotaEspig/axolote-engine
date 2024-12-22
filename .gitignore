@@ -19,9 +19,11 @@ bin/
 obj/
 logs/
 build/
+out/
 .vscode/
 .clangd/
 .cache/
+.vs/
 
 # files
 compile_commands.json

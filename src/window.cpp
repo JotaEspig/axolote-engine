@@ -37,9 +37,11 @@ void Window::default_framebuffer_size_callback(
     UNUSED(window);
     glViewport(0, 0, width, height);
     auto w = static_cast<Window *>(glfwGetWindowUserPointer(window));
-    w->_current_scene->renderer.fbo->resize(width, height);
-    w->_current_scene->context->camera.should_calculate_matrix = true;
-    w->update_camera((float)width / height);
+    if (w->_current_scene) {
+        w->_current_scene->renderer.fbo->resize(width, height);
+        w->_current_scene->context->camera.should_calculate_matrix = true;
+        w->update_camera((float)width / height);
+    }
 }
 
 void Window::default_error_callback(int error, const char *description) {
