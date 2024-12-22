@@ -59,7 +59,7 @@ if (-not (Test-Path "build")) {
     New-Item -ItemType Directory -Name build
 }
 Set-Location build
-cmake -G "Visual Studio 17 2022" -DCMAKE_TOOLCHAIN_FILE=$vcpkg_path ..
+cmake -G "Visual Studio 17 2022" -DCMAKE_TOOLCHAIN_FILE="$vcpkg_path" ..
 cmake --build . --config $type
 Set-Location ..
 
