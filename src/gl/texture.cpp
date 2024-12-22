@@ -63,7 +63,10 @@ Texture::Texture(
         texture_filename.c_str(), &width_img, &height_img, &num_channels_img, 0
     );
     if (!data)
+    {
+        debug("Failed to load texture: %s", texture_filename.c_str());
         return;
+    }
 
     activate();
     bind();
