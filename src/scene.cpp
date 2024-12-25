@@ -20,7 +20,11 @@ Scene::~Scene() {
 }
 
 void Scene::add_drawable(std::shared_ptr<Drawable> d) {
+    assert(d->get_shaders().size() > 0);
+
     context->drawable_objects.push_back(d);
+    auto shaders = d->get_shaders();
+    context->cached_shaders.insert(shaders.begin(), shaders.end());
 }
 
 bool Scene::remove_drawable(std::shared_ptr<Drawable> d) {
@@ -47,6 +51,8 @@ const std::vector<std::shared_ptr<Drawable>> &Scene::drawables_objects() const {
 }
 
 void Scene::add_sorted_drawable(std::shared_ptr<Object3D> d) {
+    assert(d->get_shaders().size() > 0);
+
     auto it = std::lower_bound(
         context->sorted_drawables_objects.begin(),
         context->sorted_drawables_objects.end(), d,
@@ -136,6 +142,8 @@ Scene::camera_renderers() const {
 }
 
 void Scene::set_grid(std::shared_ptr<utils::Grid> grid) {
+    assert(grid->get_shaders().size() > 0);
+
     if (context->grid) {
         auto shaders = context->grid->get_shaders();
         for (auto &shader : shaders) {
