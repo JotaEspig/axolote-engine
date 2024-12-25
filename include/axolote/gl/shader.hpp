@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <string>
+#include <type_traits>
 #include <utility>
 
 #include <glm/glm.hpp>
@@ -25,6 +26,21 @@ namespace gl {
  **/
 class Shader : public OpenGLObject {
 public:
+    struct Hash {
+        size_t operator()(const std::shared_ptr<gl::Shader> &shader) const {
+            return std::hash<GLuint>()(shader.get()->_id);
+        }
+    };
+
+    struct Equal {
+        bool operator()(
+            const std::shared_ptr<gl::Shader> &lhs,
+            const std::shared_ptr<gl::Shader> &rhs
+        ) const {
+            return lhs.get()->_id == rhs.get()->_id;
+        }
+    };
+
     /**
      * @brief Creates a Shader object
      * @author João Vitor Espig (jotaespig@gmail.com)
@@ -37,8 +53,7 @@ public:
      * @return shared pointer to Shader object
      **/
     static std::shared_ptr<Shader> create_from_source_code(
-        const char *vertex_source_code,
-        const char *fragment_source_code
+        const char *vertex_source_code, const char *fragment_source_code
     );
 
     /**
@@ -100,8 +115,10 @@ public:
      * @param vertex_source_code vertex shader source code
      * @param fragment_source_code fragment shader source code
      **/
-    void
-    compile(const std::string &vertex_source_code, const std::string &fragment_source_code);
+    void compile(
+        const std::string &vertex_source_code,
+        const std::string &fragment_source_code
+    );
     /**
      * @brief destroys shader
      * @author João Vitor Espig (jotaespig@gmail.com)

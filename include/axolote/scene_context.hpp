@@ -6,6 +6,7 @@
 #pragma once
 
 #include <memory>
+#include <unordered_set>
 #include <vector>
 
 #include "axolote/camera.hpp"
@@ -31,6 +32,10 @@ struct SceneContext {
     std::shared_ptr<utils::Grid> grid;
     /** lights of the scene **/
     std::vector<std::shared_ptr<Light>> lights;
+    /** Cached shaders in a set **/
+    std::unordered_set<
+        std::shared_ptr<gl::Shader>, gl::Shader::Hash, gl::Shader::Equal>
+        cached_shaders;
 
     void render();
     void update_camera(float aspect_ratio);

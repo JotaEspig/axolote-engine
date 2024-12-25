@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <vector>
+#include <unordered_set>
 
 #include "axolote/camera_renderer.hpp"
 #include "axolote/drawable.hpp"
@@ -34,6 +35,7 @@ public:
     float ambient_light_intensity = 0.05f;
     /** Gamma correction for the scene **/
     float gamma = 1.0f;
+
 
     /**
      * @brief Constructor
@@ -163,7 +165,6 @@ private:
     double last_aspect_ratio = 1.0;
     /** Camera renderers **/
     std::vector<std::shared_ptr<CameraRenderer>> _camera_renderers;
-    /** Framebuffer shader **/
 };
 
 } // namespace axolote

@@ -24,8 +24,7 @@ namespace axolote {
 namespace gl {
 
 std::shared_ptr<Shader> Shader::create_from_source_code(
-    const char *vertex_source_code,
-    const char *fragment_source_code
+    const char *vertex_source_code, const char *fragment_source_code
 ) {
     std::shared_ptr<Shader> shader = Shader::create();
     shader->compile(vertex_source_code, fragment_source_code);

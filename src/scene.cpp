@@ -31,6 +31,14 @@ bool Scene::remove_drawable(std::shared_ptr<Drawable> d) {
         return false;
 
     context->drawable_objects.erase(it);
+    auto shaders = d->get_shaders();
+    for (auto &shader : shaders) {
+        bool found = context->cached_shaders.find(shader)
+                     != context->cached_shaders.end();
+        if (found) {
+            context->cached_shaders.erase(shader);
+        }
+    }
     return true;
 }
 
@@ -58,6 +66,8 @@ void Scene::add_sorted_drawable(std::shared_ptr<Object3D> d) {
         }
     );
     context->sorted_drawables_objects.insert(it, d);
+    auto shaders = d->get_shaders();
+    context->cached_shaders.insert(shaders.begin(), shaders.end());
 }
 
 bool Scene::remove_sorted_drawable(std::shared_ptr<Object3D> d) {
@@ -69,6 +79,14 @@ bool Scene::remove_sorted_drawable(std::shared_ptr<Object3D> d) {
         return false;
 
     context->sorted_drawables_objects.erase(it);
+    auto shaders = d->get_shaders();
+    for (auto &shader : shaders) {
+        bool found = context->cached_shaders.find(shader)
+                     != context->cached_shaders.end();
+        if (found) {
+            context->cached_shaders.erase(shader);
+        }
+    }
     return true;
 }
 
@@ -118,10 +136,33 @@ Scene::camera_renderers() const {
 }
 
 void Scene::set_grid(std::shared_ptr<utils::Grid> grid) {
+    if (context->grid) {
+        auto shaders = context->grid->get_shaders();
+        for (auto &shader : shaders) {
+            bool found = context->cached_shaders.find(shader)
+                         != context->cached_shaders.end();
+            if (found) {
+                context->cached_shaders.erase(shader);
+            }
+        }
+    }
+
     context->grid = grid;
+    auto shaders = grid->get_shaders();
+    for (auto &shader : shaders) {
+        context->cached_shaders.insert(shader);
+    }
 }
 
 void Scene::unset_grid() {
+    auto shaders = context->grid->get_shaders();
+    for (auto &shader : shaders) {
+        bool found = context->cached_shaders.find(shader)
+                     != context->cached_shaders.end();
+        if (found) {
+            context->cached_shaders.erase(shader);
+        }
+    }
     context->grid = nullptr;
 }
 
@@ -132,32 +173,16 @@ std::shared_ptr<utils::Grid> Scene::grid() const {
 void Scene::update_camera(float aspect_ratio) {
     last_aspect_ratio = aspect_ratio;
     context->camera.update_matrix(aspect_ratio);
-    auto all_objects = context->drawable_objects;
-    all_objects.insert(
-        all_objects.end(), context->sorted_drawables_objects.begin(),
-        context->sorted_drawables_objects.end()
-    );
-    for (auto &o : all_objects) {
-        for (std::shared_ptr<gl::Shader> s : o->get_shaders()) {
-            s->use();
-            s->set_uniform_float3(
-                "axolote_camera_pos", context->camera.pos.x,
-                context->camera.pos.y, context->camera.pos.z
-            );
-            s->set_uniform_matrix4("axolote_camera", context->camera.matrix());
-        }
+    for (auto &shader : context->cached_shaders) {
+        shader->use();
+        shader->set_uniform_float3(
+            "axolote_camera_pos", context->camera.pos.x, context->camera.pos.y,
+            context->camera.pos.z
+        );
+        shader->set_uniform_matrix4("axolote_camera", context->camera.matrix());
     }
     if (context->grid) {
         context->grid->camera_pos = context->camera.pos;
-        auto shaders = context->grid->get_shaders();
-        for (auto &s : shaders) {
-            s->use();
-            s->set_uniform_float3(
-                "axolote_camera_pos", context->camera.pos.x,
-                context->camera.pos.y, context->camera.pos.z
-            );
-            s->set_uniform_matrix4("axolote_camera", context->camera.matrix());
-        }
     }
 }
 
@@ -217,42 +242,26 @@ void Scene::update(double delta_t) {
             break;
         }
 
-        auto all_objects = context->drawable_objects;
-        all_objects.insert(
-            all_objects.end(), context->sorted_drawables_objects.begin(),
-            context->sorted_drawables_objects.end()
-        );
-        for (auto &o : all_objects) {
-            for (std::shared_ptr<gl::Shader> s : o->get_shaders()) {
-                light->bind(s, prefix);
-            }
+        for (auto &shader : context->cached_shaders) {
+            light->bind(shader, prefix);
         }
     }
 
     // Set number of each light type for every shader
-    auto all_objects = context->drawable_objects;
-    all_objects.insert(
-        all_objects.end(), context->sorted_drawables_objects.begin(),
-        context->sorted_drawables_objects.end()
-    );
-    for (auto &o : all_objects) {
-        for (auto &shader : o->get_shaders()) {
-            shader->set_uniform_float3(
-                "axolote_ambient_light", ambient_light.x, ambient_light.y,
-                ambient_light.z
-            );
-            shader->set_uniform_float(
-                "axolote_ambient_light_intensity", ambient_light_intensity
-            );
-            shader->set_uniform_int(
-                "axolote_num_point_lights", num_point_lights
-            );
-            shader->set_uniform_int(
-                "axolote_num_directional_lights", num_directional_lights
-            );
-            shader->set_uniform_int("axolote_num_spot_lights", num_spot_lights);
-            shader->set_uniform_float("axolote_gamma", gamma);
-        }
+    for (auto &shader : context->cached_shaders) {
+        shader->set_uniform_float3(
+            "axolote_ambient_light", ambient_light.x, ambient_light.y,
+            ambient_light.z
+        );
+        shader->set_uniform_float(
+            "axolote_ambient_light_intensity", ambient_light_intensity
+        );
+        shader->set_uniform_int("axolote_num_point_lights", num_point_lights);
+        shader->set_uniform_int(
+            "axolote_num_directional_lights", num_directional_lights
+        );
+        shader->set_uniform_int("axolote_num_spot_lights", num_spot_lights);
+        shader->set_uniform_float("axolote_gamma", gamma);
     }
 
     for (auto &camera_renderer : _camera_renderers) {
