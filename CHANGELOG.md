@@ -1,3 +1,16 @@
+## v0.9.1 (2025-02-17)
+
+### Fix
+
+- windows installer vcpkg_path not expanding
+- error found on windows
+- showing error when failed to load texture
+- polygon mode using post-processing
+
+### Refactor
+
+- using cached shaders in scene
+
 ## v0.9.0 (2024-12-20)
 
 ### Feat
