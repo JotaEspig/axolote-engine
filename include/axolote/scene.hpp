@@ -149,7 +149,7 @@ public:
      * @brief updates the drawables
      * @author João Vitor Espig (jotaespig@gmail.com)
      **/
-    void update(double absolute_time, double delta_t);
+    void update(double absolute_time, double delta_time);
     /**
      * @brief draw the drawables
      * @author João Vitor Espig (jotaespig@gmail.com)

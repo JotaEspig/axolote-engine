@@ -44,14 +44,12 @@ public:
      * @brief Update light
      * @author João Vitor Espig
      **/
-    virtual void update();
+    virtual void update(double absolute_time, double delta_time);
 
     /** Light color **/
     glm::vec3 color;
     /** Light is set **/
     bool is_set;
-    double absolute_time;
-    double delta_time;
 
     /** Light type **/
     Type type;

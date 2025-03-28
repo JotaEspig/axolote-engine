@@ -9,6 +9,8 @@
 #include "axolote/utils.hpp"
 #include "axolote/utils/grid.hpp"
 
+#define UNUSED(x) (void)(x)
+
 struct CustomVertex {
     glm::vec3 pos;
     glm::vec4 color;
@@ -85,7 +87,10 @@ std::vector<std::shared_ptr<gl::Shader>> Grid::get_shaders() const {
     return {_shader};
 }
 
-void Grid::update() {
+void Grid::update(double absolute_time, double delta_time) {
+    UNUSED(absolute_time);
+    UNUSED(delta_time);
+
     if (camera_pos.x > 0) {
         pos.x = (int)camera_pos.x - (int)camera_pos.x % step;
     }

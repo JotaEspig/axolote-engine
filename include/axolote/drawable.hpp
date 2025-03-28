@@ -22,10 +22,6 @@ class Drawable {
 public:
     /** Pause state, if it's true, the object will not call update **/
     bool paused = false;
-    /** Absolute time since the window was created **/
-    double absolute_time = 0;
-    /** Delta time since the last update **/
-    double delta_time = 0;
 
     /**
      * @brief virtual function bind_shader
@@ -41,7 +37,7 @@ public:
      * @brief virtual function update
      * @author João Vitor Espig (jotaespig@gmail.com)
      **/
-    virtual void update() = 0;
+    virtual void update(double absolute_time, double delta_time) = 0;
     /**
      * @brief virtual function draw
      * @author João Vitor Espig (jotaespig@gmail.com)

@@ -39,7 +39,9 @@ std::vector<std::shared_ptr<gl::Shader>> GModel::get_shaders() const {
     return v;
 }
 
-void GModel::update() {
+void GModel::update(double absolute_time, double delta_time) {
+    UNUSED(absolute_time);
+    UNUSED(delta_time);
 }
 
 void GModel::draw() {

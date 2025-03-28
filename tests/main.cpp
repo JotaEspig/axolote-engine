@@ -19,6 +19,7 @@ std::string myget_path(const std::string &path) {
 
 class MirrorDrawable : public axolote::Drawable {
 public:
+    double absolute_time = 0.0;
     std::vector<axolote::Vertex> quad_vec{
         {{-1.0f, 1.0f, 0.0f}, {}, {1.0f, 1.0f}, {}},
         {{-1.0f, -1.0f, 0.0f}, {}, {1.0f, 0.0f}, {}},
@@ -53,7 +54,7 @@ public:
     void bind_shader(std::shared_ptr<axolote::gl::Shader> shader) override;
     std::vector<std::shared_ptr<axolote::gl::Shader>>
     get_shaders() const override;
-    void update() override;
+    void update(double absolute_time, double delta_time) override;
     void draw() override;
     void draw(const glm::mat4 &mat) override;
 };
@@ -89,7 +90,10 @@ MirrorDrawable::get_shaders() const {
     return {screen_shader, gmesh_shader};
 }
 
-void MirrorDrawable::update() {
+void MirrorDrawable::update(double absolute_time, double delta_time) {
+    (void)delta_time;
+
+    MirrorDrawable::absolute_time = absolute_time;
 }
 
 void MirrorDrawable::draw() {
@@ -125,7 +129,7 @@ public:
 
     Mirror(double width, double height);
 
-    void update() override;
+    void update(double absolute_time, double delta_time) override;
 };
 
 Mirror::Mirror(double width, double height) {
@@ -134,7 +138,7 @@ Mirror::Mirror(double width, double height) {
     mirror_drawable->init(fbo);
 }
 
-void Mirror::update() {
+void Mirror::update(double absolute_time, double delta_time) {
     auto camera_original = scene_context->camera;
     if (should_render) {
         glm::vec3 normal = glm::mat3{mirror_drawable->quad->get_normal_matrix()}
@@ -202,7 +206,7 @@ public:
       axolote::DirectionalLight{color, is_set, dir} {
     }
 
-    void update() override {
+    void update(double absolute_time, double delta_time) override {
         dir = glm::vec3{
             glm::cos((float)absolute_time / 10), 0.0f,
             glm::sin((float)absolute_time / 10)
@@ -222,7 +226,7 @@ public:
       app{app} {
     }
 
-    void update() override {
+    void update(double absolute_time, double delta_time) override {
         pos = app->current_scene()->context->camera.pos;
         dir = app->current_scene()->context->camera.orientation;
     }

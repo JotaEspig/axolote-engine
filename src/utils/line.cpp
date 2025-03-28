@@ -26,8 +26,7 @@ Line::Line(
   length{length},
   thickness{thickness},
   color{color},
-  line_quality{line_quality}
-{
+  line_quality{line_quality} {
     is_affected_by_lights = false;
     build_mesh();
 }
@@ -38,15 +37,11 @@ void Line::build_mesh() {
 
     // Add top and bottom vertex
     vs.push_back(Vertex{
-        glm::vec3{0.0f, 1.0f, 0.0f},
-        glm::vec4{color},
-        glm::vec2{0.5f, 1.0f},
+        glm::vec3{0.0f, 1.0f, 0.0f}, glm::vec4{color}, glm::vec2{0.5f, 1.0f},
         glm::vec3{0.0f, 1.0f, 0.0f}
     });
     vs.push_back(Vertex{
-        glm::vec3{0.0f, 0.0f, 0.0f},
-        glm::vec4{color},
-        glm::vec2{0.5f, 0.0f},
+        glm::vec3{0.0f, 0.0f, 0.0f}, glm::vec4{color}, glm::vec2{0.5f, 0.0f},
         glm::vec3{0.0f, -1.0f, 0.0f}
     });
 
@@ -55,12 +50,10 @@ void Line::build_mesh() {
     float step = 1.0f / (float)resolution;
     for (size_t i = 0; i < resolution; ++i) {
         float tex_u;
-        if (i <= resolution / 2)
-        {
+        if (i <= resolution / 2) {
             tex_u = (float)i * step * 2.0f;
         }
-        else
-        {
+        else {
             tex_u = 2.0f - (float)i * step * 2.0f;
         }
         float angle = (float)i * step * 2.0f * M_PIf;
@@ -69,34 +62,26 @@ void Line::build_mesh() {
 
         // Vertex for top face
         vs.push_back(Vertex{
-            glm::vec3{c * 0.5f, 1.0f, s * 0.5f},
-            glm::vec4{color},
-            glm::vec2{tex_u, 0.75f},
-            glm::vec3{0.0f, 1.0f, 0.0f}
+            glm::vec3{c * 0.5f, 1.0f, s * 0.5f}, glm::vec4{color},
+            glm::vec2{tex_u, 0.75f}, glm::vec3{0.0f, 1.0f, 0.0f}
         });
 
         // Vertex for bottom face
         vs.push_back(Vertex{
-            glm::vec3{c * 0.5f, 0.0f, s * 0.5f},
-            glm::vec4{color},
-            glm::vec2{tex_u, 0.25f},
-            glm::vec3{0.0f, -1.0f, 0.0f}
+            glm::vec3{c * 0.5f, 0.0f, s * 0.5f}, glm::vec4{color},
+            glm::vec2{tex_u, 0.25f}, glm::vec3{0.0f, -1.0f, 0.0f}
         });
 
         // Vertices for side face
         // Top
         vs.push_back(Vertex{
-            glm::vec3{c * 0.5f, 1.0f, s * 0.5f},
-            glm::vec4{color},
-            glm::vec2{tex_u, 0.75f},
-            glm::vec3{c, 0.0f, s}
+            glm::vec3{c * 0.5f, 1.0f, s * 0.5f}, glm::vec4{color},
+            glm::vec2{tex_u, 0.75f}, glm::vec3{c, 0.0f, s}
         });
         // Bottom
         vs.push_back(Vertex{
-            glm::vec3{c * 0.5f, 0.0f, s * 0.5f},
-            glm::vec4{color},
-            glm::vec2{tex_u, 0.25f},
-            glm::vec3{c, 0.0f, s}
+            glm::vec3{c * 0.5f, 0.0f, s * 0.5f}, glm::vec4{color},
+            glm::vec2{tex_u, 0.25f}, glm::vec3{c, 0.0f, s}
         });
     }
 
@@ -145,7 +130,10 @@ void Line::draw() {
     Object3D::draw();
 }
 
-void Line::update() {
+void Line::update(double absolute_time, double delta_time) {
+    UNUSED(absolute_time);
+    UNUSED(delta_time);
+
     glm::mat4 mat{1.0f};
     float x_rot = get_rotation_around_x();
     float y_rot = get_rotation_around_y();

@@ -16,7 +16,8 @@ public:
 
     void init(std::uint16_t width, std::uint16_t height);
     void setup_shader(std::shared_ptr<gl::Shader> shader);
-    void update() override;
+    void update();
+    void update(double absolute_time, double delta_time) override;
     void render();
 
 protected:

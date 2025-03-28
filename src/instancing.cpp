@@ -1,5 +1,7 @@
 #include "axolote/instancing.hpp"
 
+#define UNUSED(x) (void)(x)
+
 namespace axolote {
 
 Instancing::Instancing() {
@@ -82,7 +84,9 @@ std::vector<std::shared_ptr<gl::Shader>> Instancing::get_shaders() const {
     return object->get_shaders();
 }
 
-void Instancing::update() {
+void Instancing::update(double absolute_time, double delta_time) {
+    UNUSED(absolute_time);
+    UNUSED(delta_time);
 }
 
 void Instancing::draw() {
@@ -90,8 +94,9 @@ void Instancing::draw() {
     for (auto gmesh : object->gmodel->meshes) {
         gmesh.vao()->bind();
         glDrawElementsInstanced(
-                GL_TRIANGLES, gmesh.indices.size(), GL_UNSIGNED_INT, 0, element_count
-                );
+            GL_TRIANGLES, gmesh.indices.size(), GL_UNSIGNED_INT, 0,
+            element_count
+        );
         gmesh.vao()->unbind();
     }
 }

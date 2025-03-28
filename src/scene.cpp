@@ -194,7 +194,7 @@ void Scene::update_camera(float aspect_ratio) {
     }
 }
 
-void Scene::update(double absolute_time, double delta_t) {
+void Scene::update(double absolute_time, double delta_time) {
     if (context->camera.has_moved) {
         std::sort(
             context->sorted_drawables_objects.begin(),
@@ -218,19 +218,13 @@ void Scene::update(double absolute_time, double delta_t) {
     }
 
     for (std::shared_ptr<Object3D> d : context->sorted_drawables_objects) {
-        d->absolute_time = absolute_time;
-        d->delta_time = delta_t;
-        d->update();
+        d->update(absolute_time, delta_time);
     }
     for (std::shared_ptr<Drawable> d : context->drawable_objects) {
-        d->absolute_time = absolute_time;
-        d->delta_time = delta_t;
-        d->update();
+        d->update(absolute_time, delta_time);
     }
     if (context->grid) {
-        context->grid->absolute_time = absolute_time;
-        context->grid->delta_time = delta_t;
-        context->grid->update();
+        context->grid->update(absolute_time, delta_time);
     }
 
     // Bind lighs to every shader and calculate how much of each type
@@ -238,9 +232,7 @@ void Scene::update(double absolute_time, double delta_t) {
     int num_directional_lights = 0;
     int num_spot_lights = 0;
     for (auto &light : context->lights) {
-        light->absolute_time = absolute_time;
-        light->delta_time = delta_t;
-        light->update();
+        light->update(absolute_time, delta_time);
         std::string prefix;
 
         switch (light->type) {
@@ -284,9 +276,7 @@ void Scene::update(double absolute_time, double delta_t) {
 
     for (auto &camera_renderer : _camera_renderers) {
         camera_renderer->setup(context);
-        camera_renderer->absolute_time = absolute_time;
-        camera_renderer->delta_time = delta_t;
-        camera_renderer->update();
+        camera_renderer->update(absolute_time, delta_time);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     }
@@ -297,8 +287,6 @@ void Scene::update(double absolute_time, double delta_t) {
     }
 
     renderer.setup(context);
-    renderer.absolute_time = absolute_time;
-    renderer.delta_time = delta_t;
     renderer.update();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);

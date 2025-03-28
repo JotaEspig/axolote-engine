@@ -83,7 +83,7 @@ public:
     /**
      * @brief updates the object state, called every frame by the scene manager
      **/
-    void update() override;
+    void update(double absolute_time, double delta_time) override;
         /**
          * @brief sets shaders uniforms and do the binds
          * @author João Vitor Espig (jotaespig@gmail.com)

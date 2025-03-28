@@ -73,7 +73,7 @@ public:
     /**
      * it uses the point A and the direction vector
      **/
-    void update() override;
+    void update(double absolute_time, double delta_time) override;
     /**
      * @brief draws the line using set_matrix before
      * @author João Vitor Espig (jotaespig@gmail.com)

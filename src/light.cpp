@@ -20,7 +20,9 @@ void Light::bind(
     shader->set_uniform_int(is_set_name.c_str(), is_set);
 }
 
-void Light::update() {
+void Light::update(double absolute_time, double delta_time) {
+    UNUSED(absolute_time);
+    UNUSED(delta_time);
 }
 
 PointLight::PointLight(

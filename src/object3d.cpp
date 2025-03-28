@@ -64,7 +64,9 @@ std::vector<std::shared_ptr<gl::Shader>> Object3D::get_shaders() const {
     return gmodel->get_shaders();
 }
 
-void Object3D::update() {
+void Object3D::update(double absolute_time, double delta_time) {
+    UNUSED(absolute_time);
+    UNUSED(delta_time);
 }
 
 void Object3D::draw() {

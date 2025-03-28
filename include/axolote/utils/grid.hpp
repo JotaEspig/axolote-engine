@@ -68,7 +68,7 @@ public:
     void build_mesh();
     void bind_shader(std::shared_ptr<gl::Shader> shader_program) override;
     std::vector<std::shared_ptr<gl::Shader>> get_shaders() const override;
-    void update() override;
+    void update(double absolute_time, double delta_time) override;
     void draw() override;
     void draw(const glm::mat4 &mat) override;
 

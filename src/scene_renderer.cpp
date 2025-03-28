@@ -4,6 +4,8 @@
 #include "axolote/gmesh.hpp"
 #include "axolote/scene_renderer.hpp"
 
+#define UNUSED(x) (void)(x)
+
 namespace axolote {
 
 SceneRenderer::SceneRenderer() {
@@ -21,6 +23,13 @@ void SceneRenderer::setup_shader(std::shared_ptr<gl::Shader> shader) {
 }
 
 void SceneRenderer::update() {
+    update(0,0);
+}
+
+void SceneRenderer::update(double absolute_time, double delta_time) {
+    UNUSED(absolute_time);
+    UNUSED(delta_time);
+
     fbo->bind();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
