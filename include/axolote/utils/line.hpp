@@ -71,10 +71,9 @@ public:
     glm::vec3 get_end();
 
     /**
-     *
      * it uses the point A and the direction vector
      **/
-    void update(double dt) override;
+    void update() override;
     /**
      * @brief draws the line using set_matrix before
      * @author João Vitor Espig (jotaespig@gmail.com)

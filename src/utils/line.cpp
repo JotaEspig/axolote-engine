@@ -145,8 +145,7 @@ void Line::draw() {
     Object3D::draw();
 }
 
-void Line::update(double dt) {
-    UNUSED(dt);
+void Line::update() {
     glm::mat4 mat{1.0f};
     float x_rot = get_rotation_around_x();
     float y_rot = get_rotation_around_y();

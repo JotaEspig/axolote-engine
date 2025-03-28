@@ -81,14 +81,14 @@ public:
      **/
     std::vector<std::shared_ptr<gl::Shader>> get_shaders() const override;
     /**
-     * @param dt delta time
+     * @brief updates the object state, called every frame by the scene manager
      **/
-    void update(double dt) override;
-    /**
-     * @brief sets shaders uniforms and do the binds
-     * @author João Vitor Espig (jotaespig@gmail.com)
-     **/
-    void default_draw_binds(const glm::mat4 &mat);
+    void update() override;
+        /**
+         * @brief sets shaders uniforms and do the binds
+         * @author João Vitor Espig (jotaespig@gmail.com)
+         **/
+        void default_draw_binds(const glm::mat4 &mat);
     /**
      * @brief unbinds things used in drawing
      * @author João Vitor Espig (jotaespig@gmail.com)

@@ -75,8 +75,7 @@ std::vector<std::shared_ptr<gl::Shader>> GMesh::get_shaders() const {
     return {_shader};
 }
 
-void GMesh::update(double dt) {
-    UNUSED(dt);
+void GMesh::update() {
 }
 
 void GMesh::default_draw_binds(const glm::mat4 &mat) {

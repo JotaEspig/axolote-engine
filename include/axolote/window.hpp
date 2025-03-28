@@ -277,7 +277,7 @@ public:
      * Preconfigured way to process SPACE, SHIFT, CTRL and mouse movement
      * (this method can be overrided)
      **/
-    void process_input(double delta_t = 1.0f);
+    void process_input();
     /**
      * @brief process the simplest user input (AWSD)
      * @author João Vitor Espig (jotaespig@gmail.com)
@@ -286,7 +286,7 @@ public:
      * Preconfigured way to process A, W, S and D keys
      * (this method can be overrided)
      **/
-    void minimal_process_input(double delta_t = 1.0f);
+    void minimal_process_input();
     /**
      * @brief checks if window should close
      * @author João Vitor Espig (jotaespig@gmail.com)
@@ -313,9 +313,9 @@ public:
      **/
     void update_camera(float aspect_ratio);
     /**
-     * @param delta_t time difference from last frame
+     * @brief Update the current scene.
      **/
-    void update(double delta_t);
+    void update();
     /**
      * @brief Render the current scene
      * @author João Vitor Espig (jotaespig@gmail.com)
@@ -395,6 +395,14 @@ public:
      **/
     void set_color(uint8_t r, uint8_t g, uint8_t b, float opacity = 1.0f);
     /**
+     * @brief Main loop tick. Should be called in the main loop
+     *
+     * This method is responsible for updating the time variables inside the
+     * window that will be used by the user to update the scene and process the
+     * input.
+     **/
+    void tick();
+    /**
      * @brief get the time since GLFW was initialized
      * @author João Vitor Espig (jotaespig@gmail.com)
      * @returns time in seconds
@@ -434,6 +442,10 @@ protected:
     Color _color;
     /** ImGui IO object **/
     std::shared_ptr<ImGuiIO> _io;
+    /** Absolute time since the window was created **/
+    double _absolute_time = 0;
+    /** Delta time **/
+    double _delta_time = 0;
 
 private:
     /** GLFWwindow struct object **/

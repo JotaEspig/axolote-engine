@@ -20,8 +20,7 @@ void Light::bind(
     shader->set_uniform_int(is_set_name.c_str(), is_set);
 }
 
-void Light::update(double dt) {
-    UNUSED(dt);
+void Light::update() {
 }
 
 PointLight::PointLight(

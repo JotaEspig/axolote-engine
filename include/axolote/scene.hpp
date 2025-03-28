@@ -7,7 +7,6 @@
 
 #include <memory>
 #include <vector>
-#include <unordered_set>
 
 #include "axolote/camera_renderer.hpp"
 #include "axolote/drawable.hpp"
@@ -35,7 +34,6 @@ public:
     float ambient_light_intensity = 0.05f;
     /** Gamma correction for the scene **/
     float gamma = 1.0f;
-
 
     /**
      * @brief Constructor
@@ -151,7 +149,7 @@ public:
      * @brief updates the drawables
      * @author João Vitor Espig (jotaespig@gmail.com)
      **/
-    void update(double delta_t);
+    void update(double absolute_time, double delta_t);
     /**
      * @brief draw the drawables
      * @author João Vitor Espig (jotaespig@gmail.com)

@@ -67,9 +67,8 @@ public:
     /**
      * @brief updates
      * @author João Vitor Espig (jotaespig@gmail.com)
-     * @param dt delta time
      **/
-    void update(double dt) override;
+    void update() override;
     /**
      * @brief draws
      * @author João Vitor Espig (jotaespig@gmail.com)

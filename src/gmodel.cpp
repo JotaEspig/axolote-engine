@@ -39,8 +39,7 @@ std::vector<std::shared_ptr<gl::Shader>> GModel::get_shaders() const {
     return v;
 }
 
-void GModel::update(double dt) {
-    UNUSED(dt);
+void GModel::update() {
 }
 
 void GModel::draw() {

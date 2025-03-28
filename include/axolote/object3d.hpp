@@ -110,9 +110,9 @@ public:
      **/
     std::vector<std::shared_ptr<gl::Shader>> get_shaders() const override;
     /**
-     * @param dt delta time
+     * @brief updates the object3d state
      **/
-    void update(double dt) override;
+    void update() override;
     /**
      * @brief draws
      * @author João Vitor Espig (jotaespig@gmail.com)

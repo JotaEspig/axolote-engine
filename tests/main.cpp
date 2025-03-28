@@ -19,7 +19,6 @@ std::string myget_path(const std::string &path) {
 
 class MirrorDrawable : public axolote::Drawable {
 public:
-    double absolute_time = 0.0f;
     std::vector<axolote::Vertex> quad_vec{
         {{-1.0f, 1.0f, 0.0f}, {}, {1.0f, 1.0f}, {}},
         {{-1.0f, -1.0f, 0.0f}, {}, {1.0f, 0.0f}, {}},
@@ -54,7 +53,7 @@ public:
     void bind_shader(std::shared_ptr<axolote::gl::Shader> shader) override;
     std::vector<std::shared_ptr<axolote::gl::Shader>>
     get_shaders() const override;
-    void update(double dt) override;
+    void update() override;
     void draw() override;
     void draw(const glm::mat4 &mat) override;
 };
@@ -90,8 +89,7 @@ MirrorDrawable::get_shaders() const {
     return {screen_shader, gmesh_shader};
 }
 
-void MirrorDrawable::update(double dt) {
-    absolute_time += dt;
+void MirrorDrawable::update() {
 }
 
 void MirrorDrawable::draw() {
@@ -127,7 +125,7 @@ public:
 
     Mirror(double width, double height);
 
-    void update(double dt) override;
+    void update() override;
 };
 
 Mirror::Mirror(double width, double height) {
@@ -136,7 +134,7 @@ Mirror::Mirror(double width, double height) {
     mirror_drawable->init(fbo);
 }
 
-void Mirror::update(double dt) {
+void Mirror::update() {
     auto camera_original = scene_context->camera;
     if (should_render) {
         glm::vec3 normal = glm::mat3{mirror_drawable->quad->get_normal_matrix()}
@@ -190,7 +188,7 @@ public:
     std::shared_ptr<axolote::gl::Shader> crazy_post_process_shader;
     int shader_num = 0;
 
-    void process_input(double dt);
+    void process_input();
     void main_loop();
 
     bool should_process_mouse_input() const override {
@@ -200,16 +198,14 @@ public:
 
 class MyDirLight : public axolote::DirectionalLight {
 public:
-    float absolute_time = 0.0;
-
     MyDirLight(const glm::vec3 &color, bool is_set, const glm::vec3 &dir) :
       axolote::DirectionalLight{color, is_set, dir} {
     }
 
-    void update(double dt) override {
-        absolute_time += dt / (10);
+    void update() override {
         dir = glm::vec3{
-            glm::cos((float)absolute_time), 0.0f, glm::sin((float)absolute_time)
+            glm::cos((float)absolute_time / 10), 0.0f,
+            glm::sin((float)absolute_time / 10)
         };
     }
 };
@@ -226,7 +222,7 @@ public:
       app{app} {
     }
 
-    void update(double dt) override {
+    void update() override {
         pos = app->current_scene()->context->camera.pos;
         dir = app->current_scene()->context->camera.orientation;
     }
@@ -241,8 +237,8 @@ void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
         app->mirror->fbo->resize(width, height);
 }
 
-void App::process_input(double dt) {
-    axolote::Window::process_input(dt);
+void App::process_input() {
+    axolote::Window::process_input();
 
     KeyState v_key_state = get_key_state(Key::V);
     if (v_key_state == KeyState::PRESSED && !is_key_pressed(Key::V)) {
@@ -444,16 +440,14 @@ void App::main_loop() {
     while (!should_close()) {
         clear();
         poll_events();
+        tick();
 
-        double now = get_time();
-        double dt = now - before;
-        before = now;
         if (should_process_mouse_input()) {
-            process_input(dt);
+            process_input();
         }
 
         std::stringstream sstr;
-        sstr << original_title << " | " << (int)(1 / dt) << " fps";
+        sstr << original_title << " | " << (int)(1 / _delta_time) << " fps";
         set_title(sstr.str());
 
         ImGui_ImplOpenGL3_NewFrame();
@@ -461,7 +455,7 @@ void App::main_loop() {
         ImGui::NewFrame();
 
         update_camera((float)width() / height());
-        update(dt);
+        update();
         clear();
         render();
 

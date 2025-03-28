@@ -20,7 +20,7 @@ void SceneRenderer::setup_shader(std::shared_ptr<gl::Shader> shader) {
     quad.bind_shader(shader);
 }
 
-void SceneRenderer::update(double dt) {
+void SceneRenderer::update() {
     fbo->bind();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);

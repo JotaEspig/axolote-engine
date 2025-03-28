@@ -85,8 +85,7 @@ std::vector<std::shared_ptr<gl::Shader>> Grid::get_shaders() const {
     return {_shader};
 }
 
-void Grid::update(double delta_t) {
-    (void)delta_t;
+void Grid::update() {
     if (camera_pos.x > 0) {
         pos.x = (int)camera_pos.x - (int)camera_pos.x % step;
     }

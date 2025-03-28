@@ -29,13 +29,15 @@ public:
     std::shared_ptr<gl::Framebuffer> fbo = nullptr;
     /** Scene context pointer **/
     std::shared_ptr<SceneContext> scene_context;
+    double absolute_time;
+    double delta_time;
 
     /**
      * @brief update method. Should be overriden by the child class
      * @author João Vitor Espig (jotaespig@gmail.com)
      * @param dt time difference from last frame
      **/
-    virtual void update(double dt) = 0;
+    virtual void update() = 0;
     /**
      * @brief Setups the camera renderer to the current scene
      * @author João Vitor Espig (jotaespig@gmail.com)

@@ -30,7 +30,7 @@ public:
 
     void bind_shader(std::shared_ptr<gl::Shader> shader) override;
     std::vector<std::shared_ptr<gl::Shader>> get_shaders() const override;
-    void update(double dt) override;
+    void update() override;
     void draw() override;
     void draw(const glm::mat4 &mat) override;
 

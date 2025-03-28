@@ -101,6 +101,8 @@ void Window::init() {
     ImGui::StyleColorsDark();
     ImGui_ImplGlfw_InitForOpenGL(_window, true);
     ImGui_ImplOpenGL3_Init("#version 330");
+
+    _absolute_time = get_time();
 }
 
 void Window::poll_events() {
@@ -143,14 +145,14 @@ void Window::set_cursor_position(double x, double y) {
     glfwSetCursorPos(_window, x, y);
 }
 
-void Window::process_input(double delta_t) {
-    minimal_process_input(delta_t);
+void Window::process_input() {
+    minimal_process_input();
 
     // More keybinds
     if (get_key_state(Key::SPACE) == KeyState::PRESSED)
-        _current_scene->context->camera.upward(delta_t);
+        _current_scene->context->camera.upward(_delta_time);
     if (get_key_state(Key::LEFT_SHIFT) == KeyState::PRESSED)
-        _current_scene->context->camera.downward(delta_t);
+        _current_scene->context->camera.downward(_delta_time);
     if (get_mouse_key_state(MouseKey::RIGHT) == MouseKeyState::PRESSED) {
         set_cursor_mode(CursorMode::DISABLED);
 
@@ -161,7 +163,7 @@ void Window::process_input(double delta_t) {
         get_cursor_position(&mouse_x, &mouse_y);
         _current_scene->context->camera.move_vision(
             (float)mouse_x, (float)mouse_y, (float)width(), (float)height(),
-            delta_t
+            _delta_time
         );
         set_cursor_position((double)width() / 2, (double)height() / 2);
     }
@@ -171,17 +173,17 @@ void Window::process_input(double delta_t) {
     }
 }
 
-void Window::minimal_process_input(double delta_t) {
+void Window::minimal_process_input() {
     if (get_key_state(Key::ESCAPE) == KeyState::PRESSED)
         set_should_close(true);
     if (get_key_state(Key::W) == KeyState::PRESSED)
-        _current_scene->context->camera.forward(delta_t);
+        _current_scene->context->camera.forward(_delta_time);
     if (get_key_state(Key::S) == KeyState::PRESSED)
-        _current_scene->context->camera.backward(delta_t);
+        _current_scene->context->camera.backward(_delta_time);
     if (get_key_state(Key::A) == KeyState::PRESSED)
-        _current_scene->context->camera.leftward(delta_t);
+        _current_scene->context->camera.leftward(_delta_time);
     if (get_key_state(Key::D) == KeyState::PRESSED)
-        _current_scene->context->camera.rightward(delta_t);
+        _current_scene->context->camera.rightward(_delta_time);
 }
 
 bool Window::should_close() const {
@@ -205,8 +207,8 @@ void Window::update_camera(float aspect_ratio) {
     _current_scene->update_camera(aspect_ratio);
 }
 
-void Window::update(double delta_t) {
-    _current_scene->update(delta_t);
+void Window::update() {
+    _current_scene->update(_absolute_time, _delta_time);
 }
 
 void Window::render() {
@@ -269,6 +271,12 @@ void Window::set_color(const Color &color) {
 
 void Window::set_color(uint8_t r, uint8_t g, uint8_t b, float opacity) {
     _color = {(float)r / 255, (float)g / 255, (float)b / 255, opacity};
+}
+
+void Window::tick() {
+    double now = get_time();
+    _delta_time = now - _absolute_time;
+    _absolute_time = now;
 }
 
 double Window::get_time() const {

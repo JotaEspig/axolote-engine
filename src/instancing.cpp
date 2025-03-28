@@ -82,7 +82,7 @@ std::vector<std::shared_ptr<gl::Shader>> Instancing::get_shaders() const {
     return object->get_shaders();
 }
 
-void Instancing::update(double dt) {
+void Instancing::update() {
 }
 
 void Instancing::draw() {
