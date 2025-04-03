@@ -161,13 +161,13 @@ void Mirror::update(double absolute_time, double delta_time) {
         reflection_matrix[2][2] = 1 - 2 * C * C;
         glm::vec3 reflection
             = reflection_matrix
-              * glm::vec4{pos - scene_context->camera.pos, 1.0f};
+              * glm::vec4{pos - scene_context->camera.get_pos(), 1.0f};
 
         // first pass
         // Setting the camera to the mirror position and orientation
-        Mirror::camera.pos = pos;
-        Mirror::camera.orientation = reflection;
-        Mirror::camera.up = glm::vec3{0.0f, 1.0f, 0.0f};
+        Mirror::camera.set_pos(pos);
+        Mirror::camera.set_orientation(reflection);
+        Mirror::camera.set_up(glm::vec3{0.0f, 1.0f, 0.0f});
         Mirror::camera.should_calculate_matrix = true;
         scene_context->camera = Mirror::camera;
         scene_context->update_camera(1.0f);
@@ -227,8 +227,8 @@ public:
     }
 
     void update(double absolute_time, double delta_time) override {
-        pos = app->current_scene()->context->camera.pos;
-        dir = app->current_scene()->context->camera.orientation;
+        pos = app->current_scene()->context->camera.get_pos();
+        dir = app->current_scene()->context->camera.get_orientation();
     }
 };
 
@@ -335,7 +335,7 @@ void App::main_loop() {
     std::shared_ptr<axolote::Scene> scene{new axolote::Scene{}};
     scene->renderer.init(width(), height());
     scene->renderer.setup_shader(shader_post_process);
-    scene->context->camera.pos = {0.0f, 0.0f, 12.35f};
+    scene->context->camera.set_pos({0.0f, 0.0f, 12.35f});
     scene->context->camera.speed = 3.0f;
     scene->context->camera.sensitivity = 10000.0f;
     scene->ambient_light_intensity = 0.1f;

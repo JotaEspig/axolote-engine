@@ -16,10 +16,8 @@ namespace axolote {
  * @brief struct that represents a Camera in 2D/3D
  * @author João Vitor Espig (jotaespig@gmail.com)
  **/
-struct Camera {
-    bool has_moved = true;
-    /** should calculate matrix **/
-    bool should_calculate_matrix = true;
+class Camera {
+public:
     /** max view distance **/
     float max_dist = 1000.0f;
     /** min view distance **/
@@ -32,12 +30,9 @@ struct Camera {
     float fov = 45.0f;
     /** first click in the window (used in view movement) **/
     bool first_click = true;
-    /** camera position vector **/
-    glm::vec3 pos;
-    /** camera orientation vector **/
-    glm::vec3 orientation = glm::vec3(0.0f, 0.0f, -1.0f);
-    /** camera up vector **/
-    glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
+    /** check if camera orientation has moved, so the matrix should be
+     * recalculated **/
+    bool should_calculate_matrix = true;
 
     /**
      * @brief Constructor
@@ -133,14 +128,37 @@ struct Camera {
      * @return camera matrix
      **/
     glm::mat4 matrix() const;
+    /**
+     * @brief check if the camera position has moved
+     * @author João Vitor Espig (jotaespig@gmail.com)
+     * @return true if the camera position has moved
+     **/
+    bool has_moved() const;
+    void set_pos(const glm::vec3 &pos);
+    glm::vec3 get_pos() const;
+    void set_orientation(const glm::vec3 &orientation);
+    glm::vec3 get_orientation() const;
+    void set_up(const glm::vec3 &up);
+    glm::vec3 get_up() const;
+
+    friend class Scene;
 
 private:
+    /** camera position vector **/
+    glm::vec3 _pos;
+    /** camera orientation vector **/
+    glm::vec3 _orientation = glm::vec3(0.0f, 0.0f, -1.0f);
+    /** camera up vector **/
+    glm::vec3 _up = glm::vec3(0.0f, 1.0f, 0.0f);
     /** camera view matrix **/
     glm::mat4 _view_matrix{1.0f};
     /** camera projection matrix **/
     glm::mat4 _projection_matrix{1.0f};
     /** camera matrix **/
     glm::mat4 _matrix{1.0f};
+    /** check if camera position has moved, so the matrix should be recalculated
+     * **/
+    bool _has_moved = true;
 };
 
 } // namespace axolote

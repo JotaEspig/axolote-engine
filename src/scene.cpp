@@ -64,10 +64,10 @@ void Scene::add_sorted_drawable(std::shared_ptr<Object3D> d) {
                 return true;
 
             return glm::length2(
-                       context->camera.pos - glm::vec3(a->get_matrix()[3])
+                       context->camera._pos - glm::vec3(a->get_matrix()[3])
                    )
                    > glm::length2(
-                       context->camera.pos - glm::vec3(b->get_matrix()[3])
+                       context->camera._pos - glm::vec3(b->get_matrix()[3])
                    );
         }
     );
@@ -184,18 +184,18 @@ void Scene::update_camera(float aspect_ratio) {
     for (auto &shader : context->cached_shaders) {
         shader->use();
         shader->set_uniform_float3(
-            "axolote_camera_pos", context->camera.pos.x, context->camera.pos.y,
-            context->camera.pos.z
+            "axolote_camera_pos", context->camera._pos.x,
+            context->camera._pos.y, context->camera._pos.z
         );
         shader->set_uniform_matrix4("axolote_camera", context->camera.matrix());
     }
     if (context->grid) {
-        context->grid->camera_pos = context->camera.pos;
+        context->grid->camera_pos = context->camera._pos;
     }
 }
 
 void Scene::update(double absolute_time, double delta_time) {
-    if (context->camera.has_moved) {
+    if (context->camera._has_moved) {
         std::sort(
             context->sorted_drawables_objects.begin(),
             context->sorted_drawables_objects.end(),
