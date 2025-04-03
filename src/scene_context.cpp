@@ -3,12 +3,12 @@
 namespace axolote {
 
 void SceneContext::render() {
-    if (grid)
-        grid->draw();
     for (std::shared_ptr<Drawable> d : drawable_objects)
         d->draw();
     for (std::shared_ptr<Object3D> d : sorted_drawables_objects)
         d->draw();
+    if (grid)
+        grid->draw();
 }
 
 void SceneContext::update_camera(float aspect_ratio) {
