@@ -6,6 +6,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/norm.hpp>
 #include <glm/gtx/string_cast.hpp>
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
@@ -91,9 +92,12 @@ MirrorDrawable::get_shaders() const {
 }
 
 void MirrorDrawable::update(double absolute_time, double delta_time) {
-    (void)delta_time;
+    (void)absolute_time;
 
-    MirrorDrawable::absolute_time = absolute_time;
+    MirrorDrawable::absolute_time += delta_time;
+    if (absolute_time > M_PI * 2.0) {
+        absolute_time -= M_PI * 2.0;
+    }
 }
 
 void MirrorDrawable::draw() {
@@ -140,14 +144,23 @@ Mirror::Mirror(double width, double height) {
 
 void Mirror::update(double absolute_time, double delta_time) {
     auto camera_original = scene_context->camera;
-    if (should_render) {
-        glm::vec3 normal = glm::mat3{mirror_drawable->quad->get_normal_matrix()}
-                           * mirror_drawable->quad_normal;
-        glm::vec3 pos = mirror_drawable->quad->get_matrix()[3];
+    glm::vec3 mirror_pos = mirror_drawable->quad->get_matrix()[3];
+    glm::vec3 mirror_normal = glm::normalize(
+        glm::mat3{mirror_drawable->quad->get_normal_matrix()}
+        * mirror_drawable->quad_normal
+    );
+    glm::vec3 vec_camera_mirror_pos
+        = glm::normalize(mirror_pos - scene_context->camera.get_pos());
+    bool mirror_dir_comes_towards_camera
+        = glm::length2(vec_camera_mirror_pos + mirror_normal)
+          <= 2.0; // Pitagoras :) MATH IS SICK
+
+    if (should_render && mirror_dir_comes_towards_camera) {
+        std::cout << "Mirror is rendering" << std::endl;
         glm::mat4 reflection_matrix{1.0f};
-        float A = normal.x;
-        float B = normal.y;
-        float C = normal.z;
+        float A = mirror_normal.x;
+        float B = mirror_normal.y;
+        float C = mirror_normal.z;
         reflection_matrix[0][0] = 1 - 2 * A * A;
         reflection_matrix[0][1] = -2 * A * B;
         reflection_matrix[0][2] = -2 * A * C;
@@ -161,11 +174,11 @@ void Mirror::update(double absolute_time, double delta_time) {
         reflection_matrix[2][2] = 1 - 2 * C * C;
         glm::vec3 reflection
             = reflection_matrix
-              * glm::vec4{pos - scene_context->camera.get_pos(), 1.0f};
+              * glm::vec4{mirror_pos - scene_context->camera.get_pos(), 1.0f};
 
         // first pass
         // Setting the camera to the mirror position and orientation
-        Mirror::camera.set_pos(pos);
+        Mirror::camera.set_pos(mirror_pos);
         Mirror::camera.set_orientation(reflection);
         Mirror::camera.set_up(glm::vec3{0.0f, 1.0f, 0.0f});
         Mirror::camera.should_calculate_matrix = true;
@@ -179,6 +192,9 @@ void Mirror::update(double absolute_time, double delta_time) {
 
         // second pass
         fbo->unbind();
+    }
+    else {
+        std::cout << "Mirror is NOT rendering" << std::endl;
     }
     // restore the camera
     scene_context->camera = camera_original;
@@ -244,6 +260,15 @@ void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
 void App::process_input() {
     axolote::Window::process_input();
 
+    KeyState p_key_state = get_key_state(Key::P);
+    if (p_key_state == KeyState::PRESSED && !is_key_pressed(Key::P)) {
+        current_scene()->pause = !current_scene()->pause;
+        set_key_pressed(Key::P, true);
+    }
+    else if (p_key_state == KeyState::RELEASED && is_key_pressed(Key::P)) {
+        set_key_pressed(Key::P, false);
+    }
+
     KeyState v_key_state = get_key_state(Key::V);
     if (v_key_state == KeyState::PRESSED && !is_key_pressed(Key::V)) {
         set_key_pressed(Key::V, true);
@@ -253,11 +278,11 @@ void App::process_input() {
         set_key_pressed(Key::V, false);
     }
 
-    KeyState p_key_state = get_key_state(Key::P);
-    if (p_key_state == KeyState::PRESSED && !is_key_pressed(Key::P)) {
+    KeyState x_state = get_key_state(Key::P);
+    if (x_state == KeyState::PRESSED && !is_key_pressed(Key::P)) {
         set_key_pressed(Key::P, true);
     }
-    else if (p_key_state == KeyState::RELEASED && is_key_pressed(Key::P)) {
+    else if (x_state == KeyState::RELEASED && is_key_pressed(Key::P)) {
         if (shader_num == 0) {
             current_scene()->renderer.setup_shader(crazy_post_process_shader);
             shader_num = 1;
@@ -430,7 +455,7 @@ void App::main_loop() {
     auto grid = std::make_shared<axolote::utils::Grid>(
         50, 5, true, glm::vec4{1.0f, 0.f, 0.f, 1.0f}
     );
-    grid->fading_factor = 50.0f;
+    grid->fading_factor = 25.0f;
     grid->bind_shader(grid_shader);
     scene->set_grid(grid);
 
@@ -457,9 +482,9 @@ void App::main_loop() {
         update();
         render();
 
-        scene->pause = true;
-
         ImGui::Begin("Tests using ImGui");
+        ImGui::Text("Press 'P' to toggle scene pause rule");
+        ImGui::Text("Press 'X' to toggle crazy post processing shader");
         ImGui::Text("Press 'V' to toggle vsync");
         ImGui::Text("Press 'L' to toggle flashlight");
         ImGui::Text("Press 'M' to toggle mirror");
@@ -481,7 +506,7 @@ void App::main_loop() {
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         glEnable(GL_FRAMEBUFFER_SRGB);
 
-        flush();
+        finish_frame();
     }
 }
 
