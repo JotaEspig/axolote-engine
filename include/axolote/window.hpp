@@ -319,7 +319,7 @@ public:
      * @brief Flush the buffers. Should be called at the end of the main loop
      * @author João Vitor Espig (jotaespig@gmail.com)
      **/
-    void flush();
+    void finish_frame();
     /**
      * @param aspect_ratio camera aspect ratio
      **/
