@@ -28,6 +28,19 @@ public:
         Spot,
     };
 
+    /** Light color **/
+    glm::vec3 color;
+    /** Light is set **/
+    bool is_set;
+    /** If true, the Scene pause rule won't be able to make this light not
+     * update. Sometimes we want to overlap the scene pause rule with the light
+     * pause rule, e.g. a light attached to the camera where the entire scene is
+     * pause, simulating a time stop, but the torchlight from the character
+     * should still work **/
+    bool should_overlap_scene_pause = false;
+    /** Light type **/
+    Type type;
+
     /**
      * @brief Constructor
      * @author Mickael Reichert (mickael.reichert@gmail.com)
@@ -45,14 +58,6 @@ public:
      * @author João Vitor Espig
      **/
     virtual void update(double absolute_time, double delta_time);
-
-    /** Light color **/
-    glm::vec3 color;
-    /** Light is set **/
-    bool is_set;
-
-    /** Light type **/
-    Type type;
 };
 
 /**

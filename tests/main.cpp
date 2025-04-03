@@ -355,6 +355,7 @@ void App::main_loop() {
         glm::vec3{0.0f, -1.0f, 0.0f}, glm::cos(glm::radians(12.5f)),
         glm::cos(glm::radians(20.0f)), this
     );
+    flashlight->should_overlap_scene_pause = true;
     flashlight->linear = 0.09f;
     flashlight->quadratic = 0.032f;
     scene->add_light(flashlight);
@@ -442,9 +443,7 @@ void App::main_loop() {
     set_scene(scene);
     double before = get_time();
     while (!should_close()) {
-        clear();
-        poll_events();
-        tick();
+        init_frame();
 
         if (should_process_mouse_input()) {
             process_input();
@@ -454,14 +453,11 @@ void App::main_loop() {
         sstr << original_title << " | " << (int)(1 / _delta_time) << " fps";
         set_title(sstr.str());
 
-        ImGui_ImplOpenGL3_NewFrame();
-        ImGui_ImplGlfw_NewFrame();
-        ImGui::NewFrame();
-
         update_camera((float)width() / height());
         update();
-        clear();
         render();
+
+        scene->pause = true;
 
         ImGui::Begin("Tests using ImGui");
         ImGui::Text("Press 'V' to toggle vsync");

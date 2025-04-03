@@ -34,6 +34,8 @@ public:
     float ambient_light_intensity = 0.05f;
     /** Gamma correction for the scene **/
     float gamma = 1.0f;
+    /** Is the scene paused? **/
+    bool pause = false;
 
     /**
      * @brief Constructor

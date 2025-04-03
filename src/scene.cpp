@@ -207,24 +207,27 @@ void Scene::update(double absolute_time, double delta_time) {
                     return true;
 
                 return glm::length2(
-                           context->camera.pos - glm::vec3(a->get_matrix()[3])
+                           context->camera._pos - glm::vec3(a->get_matrix()[3])
                        )
                        > glm::length2(
-                           context->camera.pos - glm::vec3(b->get_matrix()[3])
+                           context->camera._pos - glm::vec3(b->get_matrix()[3])
                        );
             }
         );
-        context->camera.has_moved = false;
+        context->camera._has_moved = false;
     }
 
-    for (std::shared_ptr<Object3D> d : context->sorted_drawables_objects) {
-        d->update(absolute_time, delta_time);
-    }
-    for (std::shared_ptr<Drawable> d : context->drawable_objects) {
-        d->update(absolute_time, delta_time);
-    }
     if (context->grid) {
         context->grid->update(absolute_time, delta_time);
+    }
+
+    if (!pause) {
+        for (std::shared_ptr<Object3D> d : context->sorted_drawables_objects) {
+            d->update(absolute_time, delta_time);
+        }
+        for (std::shared_ptr<Drawable> d : context->drawable_objects) {
+            d->update(absolute_time, delta_time);
+        }
     }
 
     // Bind lighs to every shader and calculate how much of each type
@@ -232,7 +235,13 @@ void Scene::update(double absolute_time, double delta_time) {
     int num_directional_lights = 0;
     int num_spot_lights = 0;
     for (auto &light : context->lights) {
-        light->update(absolute_time, delta_time);
+        if (!light->is_set) {
+            continue;
+        }
+        if (light->should_overlap_scene_pause || !pause) {
+            light->update(absolute_time, delta_time);
+        }
+
         std::string prefix;
 
         switch (light->type) {

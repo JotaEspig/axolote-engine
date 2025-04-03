@@ -299,6 +299,18 @@ public:
      **/
     void set_should_close(bool value);
     /**
+     * @brief Main loop tick. Should be called in the main loop
+     *
+     * This method is responsible for updating the time variables inside the
+     * window that will be used by the user to update the scene and process the
+     * input.
+     **/
+    void tick();
+    /**
+     * @brief Initialize the frame for rendering
+     **/
+    void init_frame();
+    /**
      * @brief Clear the window with the background color
      * @author João Vitor Espig (jotaespig@gmail.com)
      **/
@@ -394,14 +406,6 @@ public:
      * @param opacity alpha param
      **/
     void set_color(uint8_t r, uint8_t g, uint8_t b, float opacity = 1.0f);
-    /**
-     * @brief Main loop tick. Should be called in the main loop
-     *
-     * This method is responsible for updating the time variables inside the
-     * window that will be used by the user to update the scene and process the
-     * input.
-     **/
-    void tick();
     /**
      * @brief get the time since GLFW was initialized
      * @author João Vitor Espig (jotaespig@gmail.com)

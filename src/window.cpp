@@ -194,6 +194,22 @@ void Window::set_should_close(bool should_close) {
     glfwSetWindowShouldClose(_window, should_close);
 }
 
+void Window::tick() {
+    double now = get_time();
+    _delta_time = now - _absolute_time;
+    _absolute_time = now;
+}
+
+void Window::init_frame() {
+    clear();
+    poll_events();
+    tick();
+
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplGlfw_NewFrame();
+    ImGui::NewFrame();
+}
+
 void Window::clear() {
     glClearColor(_color.r, _color.g, _color.b, _color.opacity);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -209,6 +225,7 @@ void Window::update_camera(float aspect_ratio) {
 
 void Window::update() {
     _current_scene->update(_absolute_time, _delta_time);
+    clear();
 }
 
 void Window::render() {
@@ -271,12 +288,6 @@ void Window::set_color(const Color &color) {
 
 void Window::set_color(uint8_t r, uint8_t g, uint8_t b, float opacity) {
     _color = {(float)r / 255, (float)g / 255, (float)b / 255, opacity};
-}
-
-void Window::tick() {
-    double now = get_time();
-    _delta_time = now - _absolute_time;
-    _absolute_time = now;
 }
 
 double Window::get_time() const {
