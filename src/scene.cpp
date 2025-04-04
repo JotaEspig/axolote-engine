@@ -217,15 +217,21 @@ void Scene::update(double absolute_time, double delta_time) {
         context->camera._has_moved = false;
     }
 
-    if (context->grid) {
+    if (context->grid && !context->grid->paused) {
         context->grid->update(absolute_time, delta_time);
     }
 
     if (!pause) {
         for (std::shared_ptr<Object3D> d : context->sorted_drawables_objects) {
+            if (d->paused) {
+                continue;
+            }
             d->update(absolute_time, delta_time);
         }
         for (std::shared_ptr<Drawable> d : context->drawable_objects) {
+            if (d->paused) {
+                continue;
+            }
             d->update(absolute_time, delta_time);
         }
     }
