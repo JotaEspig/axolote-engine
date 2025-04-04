@@ -108,7 +108,7 @@ public:
      **/
     void draw(const glm::mat4 &mat) override;
 
-private:
+protected:
     /** VAO **/
     std::shared_ptr<gl::VAO> _vao;
     /** VBO **/
