@@ -1,0 +1,23 @@
+# axoloteConfig.cmake.in - CMake configuration file template for axolote
+#
+# This file is processed by configure_package_config_file() to create
+# the final axoloteConfig.cmake file.
+
+@PACKAGE_INIT@
+
+# Find dependencies required by the axolote library
+# Use the same find_package calls as in the main CMakeLists.txt,
+# but ensure they are REQUIRED for the installed package to work.
+# Use QUIET to avoid noisy output when users find_package(axolote)
+find_dependency(OpenGL REQUIRED)
+find_dependency(glfw3 CONFIG REQUIRED)
+find_dependency(glm REQUIRED) # Assuming glm provides find_dependency support or a Findglm.cmake
+find_dependency(assimp CONFIG REQUIRED) # Assuming users need assimp installed separately
+
+# Include the generated targets file
+# This defines the imported target axolote::axolote
+include("${CMAKE_CURRENT_LIST_DIR}/axoloteTargets.cmake")
+
+# Check that all required components (targets) are available
+# This is mainly useful if you have optional components in your library
+check_required_components(axolote)

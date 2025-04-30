@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.15)
-project(axolote-engine)
+project(axolote-engine VERSION 1.0.0 LANGUAGES C CXX)
 
 # CMake settings
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
@@ -54,6 +54,14 @@ set(ASSIMP_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/external/include_assimp)
 if (NOT USE_LOCAL_ASSIMP)
     find_package(assimp CONFIG REQUIRED)
     set(ASSIMP_LIB assimp::assimp)
+else()
+    # If using local assimp, define an INTERFACE library to represent it
+    # This assumes headers are in external/include_assimp and libs in external/lib/assimp
+    add_library(assimp INTERFACE)
+    target_include_directories(assimp INTERFACE ${ASSIMP_INCLUDE_DIRS})
+    # Link directories need to be handled carefully, often better done per-target
+    # Or define an IMPORTED library if you know the exact library file location.
+    # For simplicity here, we'll handle link directories in the targets using it.
 endif ()
 
 
@@ -61,21 +69,30 @@ endif ()
 if (DOXYGEN_FOUND)
     message("Doxygen found. You can use `make docs`")
 
+    # Configure Doxyfile template
+    set(DOXYGEN_PROJECT_NAME ${PROJECT_NAME})
+    set(DOXYGEN_PROJECT_NUMBER ${PROJECT_VERSION})
+    set(DOXYGEN_INPUT ${CMAKE_SOURCE_DIR}/include ${CMAKE_SOURCE_DIR}/src)
+    set(DOXYGEN_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/docs)
+    set(DOXYGEN_RECURSIVE YES)
+    # Add other Doxygen variables as needed
+    configure_file(${CMAKE_SOURCE_DIR}/Doxyfile.in ${CMAKE_BINARY_DIR}/Doxyfile @ONLY)
+
     add_custom_target(
         docs
-        COMMAND ${DOXYGEN_EXECUTABLE}
-        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_BINARY_DIR}/Doxyfile
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+        COMMENT "Generating API documentation with Doxygen"
         VERBATIM
     )
 else (DOXYGEN_FOUND)
-    message("Doxygen not found. You won't be able to use `make docs`")
+    message("Doxygen not found. Documentation target 'docs' will not be available.")
 endif (DOXYGEN_FOUND)
 
 
 # =-=-=-=-=-=-= LIBRARY =-=-=-=-=-=-=
-if (UNIX)
-    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-endif (UNIX)
+# Use GNUInstallDirs to define standard installation paths
+include(GNUInstallDirs)
 
 # Source files
 set(SOURCE_DIR ${CMAKE_SOURCE_DIR}/src)
@@ -118,38 +135,132 @@ set(
 
 # Adding axolote shared library
 add_library(axolote SHARED ${SOURCE_FILES})
+add_library(axolote::axolote ALIAS axolote) # Add alias for modern CMake usage
+
 target_compile_definitions(axolote PUBLIC GLAD_GLAPI_EXPORT PRIVATE GLAD_GLAPI_EXPORT_BUILD)
 
-# Libraries
-if (USE_LOCAL_ASSIMP)
-    target_link_directories(
-        axolote
-        PUBLIC
-        ${CMAKE_SOURCE_DIR}/external/lib/assimp
-    )
-endif (USE_LOCAL_ASSIMP)
-target_link_libraries(
-    axolote
-    PUBLIC
-    ${OPENGL_LIBRARIES} glfw ${ASSIMP_LIB}
-)
-if (UNIX)
-    target_link_libraries(
-        axolote
-        PUBLIC
-        stdc++
-    )
-endif (UNIX)
-
-# Header files
+# Public Header files for installation and usage
 target_include_directories(
     axolote
     PUBLIC
-    ${CMAKE_SOURCE_DIR}/include
-    ${CMAKE_SOURCE_DIR}/external/include
-    ${CMAKE_SOURCE_DIR}/external/imgui/include
-    ${ASSIMP_INCLUDE_DIRS}
+        $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
+        $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/external/include> # Includes glad
+        $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/external/imgui/include>
+        $<BUILD_INTERFACE:${ASSIMP_INCLUDE_DIRS}> # Assimp headers needed by our headers? If so, PUBLIC
+        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}> # Headers will be installed here
+    PRIVATE
+        ${CMAKE_SOURCE_DIR}/src # Private headers/sources if any
+        ${CMAKE_SOURCE_DIR}/external/stb # STB is likely implementation detail
+        ${CMAKE_SOURCE_DIR}/external/imgui/src # ImGui sources are implementation detail
 )
+
+# Libraries
+target_link_libraries(
+    axolote
+    PUBLIC
+        OpenGL::GL # Use imported target
+        glfw         # Assuming glfw provides 'glfw' target
+        glm::glm     # Assuming glm provides 'glm::glm' target
+        ${ASSIMP_LIB} # Use the variable holding either assimp::assimp or the interface library
+    PRIVATE
+        # Link libraries needed only internally by axolote
+)
+
+# Handle local assimp library linking if needed
+if (USE_LOCAL_ASSIMP)
+    target_link_directories(
+        axolote
+        PRIVATE # Link directory is usually private implementation detail
+        ${CMAKE_SOURCE_DIR}/external/lib/assimp
+    )
+    # If assimp INTERFACE library was created, link against the actual lib file here
+    # target_link_libraries(axolote PRIVATE ${CMAKE_SOURCE_DIR}/external/lib/assimp/libassimp.so) # Example
+endif (USE_LOCAL_ASSIMP)
+
+# Ensure CMAKE links stdc++ on Unix-like systems if required (often not necessary with modern CMake)
+if (UNIX AND NOT APPLE)
+    target_link_libraries(axolote PUBLIC stdc++)
+endif()
+
+# Set properties for shared library versioning
+set_target_properties(axolote PROPERTIES
+    VERSION ${PROJECT_VERSION}
+    SOVERSION ${PROJECT_VERSION_MAJOR}
+)
+
+# Define Windows properties for DLL export/import
+if(WIN32)
+  set_target_properties(axolote PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS ON)
+  # Optionally define a specific export macro if not exporting all symbols
+  # target_compile_definitions(axolote PUBLIC AXOLOTE_EXPORT_SYMBOLS) # If using __declspec
+endif()
+
+
+# =-=-=-=-=-=-= INSTALLATION =-=-=-=-=-=-=
+include(CMakePackageConfigHelpers)
+include(GNUInstallDirs)
+
+# Install Targets (library)
+install(TARGETS axolote
+    EXPORT axoloteTargets # Export the target for CMake package config
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT Runtime # DLLs on Windows
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT Libraries # .so or .lib
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT Development # .lib on Windows, .a
+    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR} # For headers associated with target
+)
+
+# Install Public Headers
+# Install headers from include directory
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/axolote COMPONENT Development)
+# Install necessary external headers (adjust paths as needed)
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/external/imgui/include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/imgui COMPONENT Development)
+# Only install Assimp headers if they are truly part of your public API
+# install(DIRECTORY ${ASSIMP_INCLUDE_DIRS}/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/assimp COMPONENT Development)
+
+
+# --- CMake Package Configuration ---
+
+# Generate the axoloteTargets.cmake file
+# This file contains the imported target definition for axolote::axolote
+export(EXPORT axoloteTargets
+    FILE "${CMAKE_CURRENT_BINARY_DIR}/cmake/axoloteTargets.cmake"
+    NAMESPACE axolote:: # Use a namespace for the imported targets
+)
+
+# Create the ConfigVersion file
+write_basic_package_version_file(
+    "${CMAKE_CURRENT_BINARY_DIR}/cmake/axoloteConfigVersion.cmake"
+    VERSION ${PROJECT_VERSION}
+    COMPATIBILITY AnyNewerVersion # Or SameMajorVersion, ExactVersion etc.
+)
+
+# Create the main Config file (axoloteConfig.cmake)
+# This file finds dependencies and includes the Targets file
+configure_package_config_file(
+    "${CMAKE_SOURCE_DIR}/cmake/config.cmake.in" # Input template file (Create this!)
+    "${CMAKE_CURRENT_BINARY_DIR}/cmake/axoloteConfig.cmake"
+    INSTALL_DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/axolote" # Standard location
+    PATH_VARS CMAKE_INSTALL_INCLUDEDIR CMAKE_INSTALL_LIBDIR # Variables to make absolute in config file
+)
+
+# Install the generated CMake configuration files
+install(
+    FILES
+        "${CMAKE_CURRENT_BINARY_DIR}/cmake/axoloteConfig.cmake"
+        "${CMAKE_CURRENT_BINARY_DIR}/cmake/axoloteConfigVersion.cmake"
+    DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/axolote"
+    COMPONENT Development
+)
+
+# Install the exported targets file
+install(
+    EXPORT axoloteTargets
+    NAMESPACE axolote::
+    DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/axolote"
+    COMPONENT Development
+)
+
+# --- End CMake Package Configuration ---
 
 
 # =-=-=-=-=-=-= TESTS =-=-=-=-=-=-=
@@ -157,191 +268,45 @@ if (NOT BUILD_TESTS)
     return()
 endif ()
 
+enable_testing() # Enable CTest
+
+# Set output directory for executables consistently
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib) # For libraries if any tests are libs
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib) # For static libs
 
-# ------ MAIN ------
+# Helper function to reduce test target duplication
+function(add_axolote_test test_name source_file)
+    add_executable(${test_name} ${source_file})
+    # Ensure library is built before the test executable
+    add_dependencies(${test_name} axolote)
 
-# Source files
-set(
-    MAIN_TEST_SOURCE_FILES
-    ${CMAKE_SOURCE_DIR}/tests/main.cpp
-)
+    # Definitions needed by the test executable
+    target_compile_definitions(${test_name} PRIVATE GLAD_GLAPI_EXPORT) # If test uses glad directly
+    target_compile_definitions(${test_name} PRIVATE PROJECT_ROOT_FOLDER="${CMAKE_SOURCE_DIR}")
 
-# Adding executables for testing
-add_executable(main-test ${MAIN_TEST_SOURCE_FILES})
-add_dependencies(main-test axolote)
-target_compile_definitions(main-test PUBLIC GLAD_GLAPI_EXPORT)
-target_compile_definitions(main-test PUBLIC PROJECT_ROOT_FOLDER="${CMAKE_SOURCE_DIR}")
+    # Link the test against the axolote library and its dependencies
+    target_link_libraries(${test_name} PRIVATE axolote::axolote) # Link against the alias
 
-# Libraries
-if (UNIX)
-    target_link_directories(
-        main-test
-        PUBLIC
-        ./lib
-    )
-endif (UNIX)
-if (USE_LOCAL_ASSIMP)
-    target_link_directories(
-        axolote
-        PUBLIC
-        ${CMAKE_SOURCE_DIR}/external/lib/assimp
-    )
-endif (USE_LOCAL_ASSIMP)
-target_link_libraries(
-    main-test
-    PUBLIC
-    axolote
-    ${OPENGL_LIBRARIES} glfw ${ASSIMP_LIB}
-)
-if (UNIX)
-    target_link_libraries(
-        main-test
-        PUBLIC
-        stdc++
-    )
-endif (UNIX)
+    # Include directories needed by the test source file itself (if any beyond what axolote provides)
+    # target_include_directories(${test_name} PRIVATE ...)
 
-# Header files
-target_include_directories(
-    main-test
-    PUBLIC
-    ${CMAKE_SOURCE_DIR}/include
-    ${CMAKE_SOURCE_DIR}/external/include
-    ${CMAKE_SOURCE_DIR}/external/imgui/include
-    ${ASSIMP_INCLUDE_DIRS}
-)
+    # Add test to CTest
+    add_test(NAME ${test_name} COMMAND ${test_name})
 
-if (WIN32 OR MSVC)
-    add_custom_command(TARGET main-test POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy
-        $<TARGET_RUNTIME_DLLS:main-test>
-        $<TARGET_FILE_DIR:main-test>
-        COMMAND_EXPAND_LISTS
-    )
-endif ()
+    # Copy DLLs on Windows post-build step for the executable
+    if (WIN32 OR MSVC)
+        add_custom_command(TARGET ${test_name} POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different # Use copy_if_different
+            $<TARGET_RUNTIME_DLLS:${test_name}> # Generator expression for DLLs
+            $<TARGET_FILE_DIR:${test_name}>
+            COMMAND_EXPAND_LISTS
+            COMMENT "Copying runtime dependencies for ${test_name}"
+        )
+    endif()
+endfunction()
 
-# ------ WINDOW ------
-
-# Source files
-set(
-    WINDOW_TEST_SOURCE_FILES
-    ${CMAKE_SOURCE_DIR}/tests/window.cpp
-)
-
-# Adding executables for testing
-add_executable(window-test ${WINDOW_TEST_SOURCE_FILES})
-add_dependencies(window-test axolote)
-target_compile_definitions(window-test PUBLIC GLAD_GLAPI_EXPORT)
-target_compile_definitions(window-test PUBLIC PROJECT_ROOT_FOLDER="${CMAKE_SOURCE_DIR}")
-
-# Libraries
-if (UNIX)
-    target_link_directories(
-        window-test
-        PUBLIC
-        ./lib
-    )
-endif (UNIX)
-if (USE_LOCAL_ASSIMP)
-    target_link_directories(
-        axolote
-        PUBLIC
-        ${CMAKE_SOURCE_DIR}/external/lib/assimp
-    )
-endif (USE_LOCAL_ASSIMP)
-target_link_libraries(
-    window-test
-    PUBLIC
-    axolote
-    ${OPENGL_LIBRARIES} glfw ${ASSIMP_LIB}
-)
-if (UNIX)
-    target_link_libraries(
-        window-test
-        PUBLIC
-        stdc++
-    )
-endif (UNIX)
-
-# Header files
-target_include_directories(
-    window-test
-    PUBLIC
-    ${CMAKE_SOURCE_DIR}/include
-    ${CMAKE_SOURCE_DIR}/external/include
-    ${CMAKE_SOURCE_DIR}/external/imgui/include
-    ${ASSIMP_INCLUDE_DIRS}
-)
-
-if (WIN32 OR MSVC)
-    add_custom_command(TARGET window-test POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy
-        $<TARGET_RUNTIME_DLLS:window-test>
-        $<TARGET_FILE_DIR:window-test>
-        COMMAND_EXPAND_LISTS
-    )
-endif ()
-
-# ------ MODELS_AND_SHADERS ------
-
-# Source files
-set(
-    MODELS_AND_SHADERS_TEST_SOURCE_FILES
-    ${CMAKE_SOURCE_DIR}/tests/models_and_shaders.cpp
-)
-
-# Adding executables for testing
-add_executable(models-and-shaders-test ${MODELS_AND_SHADERS_TEST_SOURCE_FILES})
-add_dependencies(models-and-shaders-test axolote)
-target_compile_definitions(models-and-shaders-test PUBLIC GLAD_GLAPI_EXPORT)
-target_compile_definitions(models-and-shaders-test PUBLIC PROJECT_ROOT_FOLDER="${CMAKE_SOURCE_DIR}")
-
-# Libraries
-if (UNIX)
-    target_link_directories(
-        models-and-shaders-test
-        PUBLIC
-        ./lib
-    )
-endif (UNIX)
-if (USE_LOCAL_ASSIMP)
-    target_link_directories(
-        axolote
-        PUBLIC
-        ${CMAKE_SOURCE_DIR}/external/lib/assimp
-    )
-endif (USE_LOCAL_ASSIMP)
-target_link_libraries(
-    models-and-shaders-test
-    PUBLIC
-    axolote
-    ${OPENGL_LIBRARIES} glfw ${ASSIMP_LIB}
-)
-if (UNIX)
-    target_link_libraries(
-        models-and-shaders-test
-        PUBLIC
-        stdc++
-    )
-endif (UNIX)
-
-# Header files
-target_include_directories(
-    models-and-shaders-test
-    PUBLIC
-    ${CMAKE_SOURCE_DIR}/include
-    ${CMAKE_SOURCE_DIR}/external/include
-    ${CMAKE_SOURCE_DIR}/external/imgui/include
-    ${ASSIMP_INCLUDE_DIRS}
-)
-
-
-if (WIN32 OR MSVC)
-    add_custom_command(TARGET models-and-shaders-test POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy
-        $<TARGET_RUNTIME_DLLS:models-and-shaders-test>
-        $<TARGET_FILE_DIR:models-and-shaders-test>
-        COMMAND_EXPAND_LISTS
-    )
-endif ()
+# Add tests using the helper function
+add_axolote_test(main-test ${CMAKE_SOURCE_DIR}/tests/main.cpp)
+add_axolote_test(window-test ${CMAKE_SOURCE_DIR}/tests/window.cpp)
+add_axolote_test(models-and-shaders-test ${CMAKE_SOURCE_DIR}/tests/models_and_shaders.cpp)

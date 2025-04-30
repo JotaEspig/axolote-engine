@@ -1,0 +1,10 @@
+# Doxyfile.in - Doxygen configuration template
+
+PROJECT_NAME           = "@DOXYGEN_PROJECT_NAME@"
+PROJECT_NUMBER         = "@DOXYGEN_PROJECT_NUMBER@"
+OUTPUT_DIRECTORY       = "@DOXYGEN_OUTPUT_DIRECTORY@"
+INPUT                  = "@DOXYGEN_INPUT@"
+RECURSIVE              = @DOXYGEN_RECURSIVE@
+# Add other Doxygen settings as needed...
+EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = YES
