@@ -216,6 +216,7 @@ void Window::clear() {
 }
 
 void Window::finish_frame() {
+    ImGui::EndFrame();
     glfwSwapBuffers(_window);
 }
 

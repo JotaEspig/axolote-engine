@@ -24,16 +24,8 @@ endif (CMAKE_COMPILER_IS_GNUXX)
 
 # Flags
 option(CMAKE_BUILD_TYPE "Build type" Release)
-option(
-    USE_LOCAL_ASSIMP
-    "Should use local assimp library (located in external folder). Does not work on Windows"
-    OFF
-)
 option(DEBUG "Enable debug mode" ON)
 option(BUILD_TESTS "Build tests" ON)
-if (USE_LOCAL_ASSIMP AND (WIN32 OR MSVC))
-    message(FATAL_ERROR "Cannot use local assimp library on Windows")
-endif ()
 if (DEBUG)
     message("DEBUG MODE ON")
     add_definitions(-DDEBUG)
@@ -49,20 +41,7 @@ find_package(glfw3 CONFIG REQUIRED)
 find_package(glm REQUIRED)
 find_package(Doxygen OPTIONAL_COMPONENTS dot)
 
-set(ASSIMP_LIB assimp)
-set(ASSIMP_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/external/include_assimp)
-if (NOT USE_LOCAL_ASSIMP)
-    find_package(assimp CONFIG REQUIRED)
-    set(ASSIMP_LIB assimp::assimp)
-else()
-    # If using local assimp, define an INTERFACE library to represent it
-    # This assumes headers are in external/include_assimp and libs in external/lib/assimp
-    add_library(assimp INTERFACE)
-    target_include_directories(assimp INTERFACE ${ASSIMP_INCLUDE_DIRS})
-    # Link directories need to be handled carefully, often better done per-target
-    # Or define an IMPORTED library if you know the exact library file location.
-    # For simplicity here, we'll handle link directories in the targets using it.
-endif ()
+find_package(assimp CONFIG REQUIRED)
 
 
 # =-=-=-=-=-=-= DOCS =-=-=-=-=-=-=
@@ -144,9 +123,8 @@ target_include_directories(
     axolote
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
-        $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/external/include> # Includes glad
+        $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/external/include>
         $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/external/imgui/include>
-        $<BUILD_INTERFACE:${ASSIMP_INCLUDE_DIRS}> # Assimp headers needed by our headers? If so, PUBLIC
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}> # Headers will be installed here
     PRIVATE
         ${CMAKE_SOURCE_DIR}/src # Private headers/sources if any
@@ -158,26 +136,14 @@ target_include_directories(
 target_link_libraries(
     axolote
     PUBLIC
-        OpenGL::GL # Use imported target
-        glfw         # Assuming glfw provides 'glfw' target
-        glm::glm     # Assuming glm provides 'glm::glm' target
-        ${ASSIMP_LIB} # Use the variable holding either assimp::assimp or the interface library
+        OpenGL::GL
+        glfw
+        glm::glm
+        assimp::assimp
     PRIVATE
         # Link libraries needed only internally by axolote
 )
 
-# Handle local assimp library linking if needed
-if (USE_LOCAL_ASSIMP)
-    target_link_directories(
-        axolote
-        PRIVATE # Link directory is usually private implementation detail
-        ${CMAKE_SOURCE_DIR}/external/lib/assimp
-    )
-    # If assimp INTERFACE library was created, link against the actual lib file here
-    # target_link_libraries(axolote PRIVATE ${CMAKE_SOURCE_DIR}/external/lib/assimp/libassimp.so) # Example
-endif (USE_LOCAL_ASSIMP)
-
-# Ensure CMAKE links stdc++ on Unix-like systems if required (often not necessary with modern CMake)
 if (UNIX AND NOT APPLE)
     target_link_libraries(axolote PUBLIC stdc++)
 endif()
@@ -191,8 +157,6 @@ set_target_properties(axolote PROPERTIES
 # Define Windows properties for DLL export/import
 if(WIN32)
   set_target_properties(axolote PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS ON)
-  # Optionally define a specific export macro if not exporting all symbols
-  # target_compile_definitions(axolote PUBLIC AXOLOTE_EXPORT_SYMBOLS) # If using __declspec
 endif()
 
 
@@ -211,11 +175,9 @@ install(TARGETS axolote
 
 # Install Public Headers
 # Install headers from include directory
-install(DIRECTORY ${CMAKE_SOURCE_DIR}/include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/axolote COMPONENT Development)
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/include/axolote/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/axolote COMPONENT Development)
 # Install necessary external headers (adjust paths as needed)
 install(DIRECTORY ${CMAKE_SOURCE_DIR}/external/imgui/include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/imgui COMPONENT Development)
-# Only install Assimp headers if they are truly part of your public API
-# install(DIRECTORY ${ASSIMP_INCLUDE_DIRS}/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/assimp COMPONENT Development)
 
 
 # --- CMake Package Configuration ---
