@@ -1,5 +1,12 @@
 cmake_minimum_required(VERSION 3.15)
-project(axolote-engine VERSION 1.0.0 LANGUAGES C CXX)
+
+execute_process(
+    COMMAND python3 ${CMAKE_SOURCE_DIR}/scripts/get_version.py ${CMAKE_SOURCE_DIR}
+    OUTPUT_VARIABLE PROJECT_VERSION
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+message("Axolote version: ${PROJECT_VERSION}")
+project(axolote-engine VERSION ${PROJECT_VERSION} LANGUAGES C CXX)
 
 # CMake settings
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
