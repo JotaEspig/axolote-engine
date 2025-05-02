@@ -118,7 +118,8 @@ const std::vector<std::shared_ptr<Light>> &Scene::lights() const {
     return context->lights;
 }
 
-void Scene::add_camera_renderer(std::shared_ptr<CameraRenderer> camera_renderer
+void Scene::add_camera_renderer(
+    std::shared_ptr<CameraRenderer> camera_renderer
 ) {
     _camera_renderers.push_back(camera_renderer);
 }
@@ -180,15 +181,7 @@ std::shared_ptr<utils::Grid> Scene::grid() const {
 
 void Scene::update_camera(float aspect_ratio) {
     last_aspect_ratio = aspect_ratio;
-    context->camera.update_matrix(aspect_ratio);
-    for (auto &shader : context->cached_shaders) {
-        shader->use();
-        shader->set_uniform_float3(
-            "axolote_camera_pos", context->camera._pos.x,
-            context->camera._pos.y, context->camera._pos.z
-        );
-        shader->set_uniform_matrix4("axolote_camera", context->camera.matrix());
-    }
+    context->update_camera(aspect_ratio);
     if (context->grid) {
         context->grid->camera_pos = context->camera._pos;
     }
@@ -252,18 +245,18 @@ void Scene::update(double absolute_time, double delta_time) {
 
         switch (light->type) {
         case Light::Type::Point:
-            prefix = "axolote_point_lights["
+            prefix = "axolote_scene_point_lights["
                      + std::to_string(num_point_lights++) + "]";
             break;
         case Light::Type::Directional:
             num_directional_lights++;
-            prefix = "axolote_directional_lights["
+            prefix = "axolote_scene_dir_lights["
                      + std::to_string(num_directional_lights++) + "]";
             break;
         case Light::Type::Spot:
             num_spot_lights++;
-            prefix = "axolote_spot_lights[" + std::to_string(num_spot_lights++)
-                     + "]";
+            prefix = "axolote_scene_spot_lights["
+                     + std::to_string(num_spot_lights++) + "]";
             break;
         }
 
@@ -275,18 +268,22 @@ void Scene::update(double absolute_time, double delta_time) {
     // Set number of each light type for every shader
     for (auto &shader : context->cached_shaders) {
         shader->set_uniform_float3(
-            "axolote_ambient_light", ambient_light.x, ambient_light.y,
+            "axolote_scene_ambient_light", ambient_light.x, ambient_light.y,
             ambient_light.z
         );
         shader->set_uniform_float(
-            "axolote_ambient_light_intensity", ambient_light_intensity
+            "axolote_scene_ambient_light_intensity", ambient_light_intensity
         );
-        shader->set_uniform_int("axolote_num_point_lights", num_point_lights);
         shader->set_uniform_int(
-            "axolote_num_directional_lights", num_directional_lights
+            "axolote_scene_num_point_lights", num_point_lights
         );
-        shader->set_uniform_int("axolote_num_spot_lights", num_spot_lights);
-        shader->set_uniform_float("axolote_gamma", gamma);
+        shader->set_uniform_int(
+            "axolote_scene_num_dir_lights", num_directional_lights
+        );
+        shader->set_uniform_int(
+            "axolote_scene_num_spot_lights", num_spot_lights
+        );
+        shader->set_uniform_float("axolote_scene_gamma", gamma);
     }
 
     for (auto &camera_renderer : _camera_renderers) {

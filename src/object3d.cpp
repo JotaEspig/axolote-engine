@@ -72,15 +72,21 @@ void Object3D::update(double absolute_time, double delta_time) {
 void Object3D::draw() {
     auto shaders = get_shaders();
     for (auto &shader : shaders) {
-        shader->set_uniform_int("axolote_is_affected_by_lights_set", 1);
         shader->set_uniform_int(
-            "axolote_is_affected_by_lights", is_affected_by_lights
+            "axolote_object3d_is_affected_by_lights_set", 1
         );
-        shader->set_uniform_matrix4("axolote_normal_matrix", _normal_matrix);
+        shader->set_uniform_int(
+            "axolote_object3d_is_affected_by_lights", is_affected_by_lights
+        );
+        shader->set_uniform_matrix4(
+            "axolote_object3d_normal_matrix", _normal_matrix
+        );
     }
     gmodel->draw(_model_matrix);
     for (auto &shader : shaders)
-        shader->set_uniform_int("axolote_is_affected_by_lights_set", 0);
+        shader->set_uniform_int(
+            "axolote_object3d_is_affected_by_lights_set", 0
+        );
 }
 
 void Object3D::draw(const glm::mat4 &mat) {

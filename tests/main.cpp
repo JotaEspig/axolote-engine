@@ -339,14 +339,16 @@ void App::main_loop() {
         myget_path("/resources/shaders/grid_base_fragment_shader.glsl")
     );
     shader_post_process = axolote::gl::Shader::create(
-        myget_path("/resources/shaders/post_processing_base_vertex_shader.glsl"
+        myget_path(
+            "/resources/shaders/post_processing_base_vertex_shader.glsl"
         ),
         myget_path(
             "/resources/shaders/post_processing_base_fragment_shader.glsl"
         )
     );
     crazy_post_process_shader = axolote::gl::Shader::create(
-        myget_path("/resources/shaders/post_processing_base_vertex_shader.glsl"
+        myget_path(
+            "/resources/shaders/post_processing_base_vertex_shader.glsl"
         ),
         myget_path("/tests/shaders/crazy_post_processing_frag.glsl")
     );

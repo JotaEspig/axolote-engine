@@ -16,10 +16,8 @@ void SceneContext::update_camera(float aspect_ratio) {
     for (auto &shader : cached_shaders) {
         shader->use();
         glm::vec3 pos = camera.get_pos();
-        shader->set_uniform_float3(
-            "axolote_camera_pos", pos.x, pos.y, pos.z
-        );
-        shader->set_uniform_matrix4("axolote_camera", camera.matrix());
+        shader->set_uniform_float3("axolote_camera_pos", pos.x, pos.y, pos.z);
+        shader->set_uniform_matrix4("axolote_scene_camera", camera.matrix());
     }
 }
 

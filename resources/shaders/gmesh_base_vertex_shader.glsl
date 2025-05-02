@@ -1,23 +1,21 @@
 #version 330 core
-layout(location = 0) in vec3 axolote_aPos;
-layout(location = 1) in vec4 axolote_aColor;
-layout(location = 2) in vec2 axolote_aTex;
-layout(location = 3) in vec3 axolote_aNormal;
+layout(location = 0) in vec3 axolote_layout_pos;
+layout(location = 1) in vec4 axolote_layout_color;
+layout(location = 2) in vec2 axolote_layout_tex_coord;
+layout(location = 3) in vec3 axolote_layout_normal;
 
-out vec4 axolote_color;
-out vec2 axolote_tex_coord;
-out vec3 axolote_current_pos;
+out vec4 axolote_in_color;
+out vec2 axolote_in_tex_coord;
+out vec3 axolote_in_current_pos;
 
-uniform mat4 axolote_model;
+uniform mat4 axolote_gmesh_model;
 
-// WARNING: This uniform is NOT set in the
-// GMesh class, you have to set them manually
-uniform mat4 axolote_camera;
+uniform mat4 axolote_scene_camera;
 
 void main() {
-    axolote_current_pos = vec3(axolote_model * vec4(axolote_aPos, 1.0f));
-    axolote_tex_coord = axolote_aTex;
-    axolote_color = axolote_aColor;
+    axolote_in_current_pos = vec3(axolote_gmesh_model * vec4(axolote_layout_pos, 1.0f));
+    axolote_in_tex_coord = axolote_layout_tex_coord;
+    axolote_in_color = axolote_layout_color;
 
-    gl_Position = axolote_camera * vec4(axolote_current_pos, 1.0f);
+    gl_Position = axolote_scene_camera * vec4(axolote_in_current_pos, 1.0f);
 }

@@ -84,11 +84,11 @@ void GMesh::default_draw_binds(const glm::mat4 &mat) {
     _shader->use();
     _vao->bind();
 
-    _shader->set_uniform_int("axolote_is_specular_map_set", 0);
+    _shader->set_uniform_int("axolote_gmesh_is_spec_map_set", 0);
     if (textures.size() > 0)
-        _shader->set_uniform_int("axolote_is_tex_set", 1);
+        _shader->set_uniform_int("axolote_gmesh_is_tex_set", 1);
     else
-        _shader->set_uniform_int("axolote_is_tex_set", 0);
+        _shader->set_uniform_int("axolote_gmesh_is_tex_set", 0);
 
     unsigned int num_diffuse = 0;
     unsigned int num_specular = 0;
@@ -96,8 +96,8 @@ void GMesh::default_draw_binds(const glm::mat4 &mat) {
     // to use a texture from another Mesh
     // TODO search if there's a better solution than this
     // i.e. set to 99 (a unused texture id)
-    _shader->set_uniform_int("axolote_diffuse0", 99);
-    _shader->set_uniform_int("axolote_specular0", 99);
+    _shader->set_uniform_int("axolote_gmesh_diffuse0", 99);
+    _shader->set_uniform_int("axolote_gmesh_specular0", 99);
 
     for (std::shared_ptr<gl::Texture> t : textures) {
         std::string num;
@@ -106,7 +106,7 @@ void GMesh::default_draw_binds(const glm::mat4 &mat) {
             num = std::to_string(num_diffuse++);
         else if (type == "specular") {
             num = std::to_string(num_specular++);
-            _shader->set_uniform_int("axolote_is_specular_map_set", 1);
+            _shader->set_uniform_int("axolote_gmesh_is_spec_map_set", 1);
         }
         else {
             num = std::to_string(num_diffuse++);
@@ -115,10 +115,12 @@ void GMesh::default_draw_binds(const glm::mat4 &mat) {
 
         t->bind();
         t->activate();
-        _shader->set_uniform_int(("axolote_" + type + num).c_str(), t->unit());
+        _shader->set_uniform_int(
+            ("axolote_gmesh_" + type + num).c_str(), t->unit()
+        );
     }
 
-    _shader->set_uniform_matrix4("axolote_model", mat);
+    _shader->set_uniform_matrix4("axolote_gmesh_model", mat);
 }
 
 void GMesh::default_draw_unbinds() {
@@ -126,8 +128,8 @@ void GMesh::default_draw_unbinds() {
     for (std::shared_ptr<gl::Texture> t : textures) {
         t->unbind();
     }
-    _shader->set_uniform_int("axolote_diffuse0", 99);
-    _shader->set_uniform_int("axolote_specular0", 99);
+    _shader->set_uniform_int("axolote_gmesh_diffuse0", 99);
+    _shader->set_uniform_int("axolote_gmesh_specular0", 99);
 }
 
 void GMesh::draw() {

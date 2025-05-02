@@ -3,10 +3,10 @@
 // Output color
 out vec4 FragColor;
 
-in vec2 axolote_tex_coord;
+in vec2 axolote_in_tex_coord;
 
 // Texture info
-uniform sampler2D axolote_diffuse0;
+uniform sampler2D axolote_gmesh_diffuse0;
 
 float kernel[9] = float[](
         1.0 / 16, 2.0 / 16, 1.0 / 16,
@@ -33,7 +33,7 @@ void main()
     vec3 sampleTex[9];
     for (int i = 0; i < 9; i++)
     {
-        sampleTex[i] = vec3(texture(axolote_diffuse0, axolote_tex_coord.st + offsets[i]));
+        sampleTex[i] = vec3(texture(axolote_gmesh_diffuse0, axolote_in_tex_coord.st + offsets[i]));
     }
     vec3 col = vec3(0.0);
     for (int i = 0; i < 9; i++)
