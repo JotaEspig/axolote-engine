@@ -278,11 +278,11 @@ void App::process_input() {
         set_key_pressed(Key::V, false);
     }
 
-    KeyState x_state = get_key_state(Key::P);
-    if (x_state == KeyState::PRESSED && !is_key_pressed(Key::P)) {
-        set_key_pressed(Key::P, true);
+    KeyState x_state = get_key_state(Key::X);
+    if (x_state == KeyState::PRESSED && !is_key_pressed(Key::X)) {
+        set_key_pressed(Key::X, true);
     }
-    else if (x_state == KeyState::RELEASED && is_key_pressed(Key::P)) {
+    else if (x_state == KeyState::RELEASED && is_key_pressed(Key::X)) {
         if (shader_num == 0) {
             current_scene()->renderer.setup_shader(crazy_post_process_shader);
             shader_num = 1;
@@ -291,7 +291,7 @@ void App::process_input() {
             current_scene()->renderer.setup_shader(shader_post_process);
             shader_num = 0;
         }
-        set_key_pressed(Key::P, false);
+        set_key_pressed(Key::X, false);
     }
 
     KeyState l_key_state = get_key_state(Key::L);
