@@ -24,6 +24,12 @@ namespace utils {
 /**
  * @brief Grid class
  * @author João Vitor Espig (jotaespig@gmail.com)
+ *
+ * This class is used to create a grid in 3D space. It can be used to
+ * visualize the coordinate system and to help with debugging. The grid
+ * can be 2D or 3D, and it can be customized with different colors and
+ * sizes. It sets GMesh uniforms in the shader program and other grid-specific
+ * uniforms.
  **/
 class Grid : public Drawable {
 public:
