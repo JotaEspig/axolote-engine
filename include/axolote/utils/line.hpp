@@ -81,9 +81,6 @@ public:
     void draw() override;
 
 private:
-    // TODO these 2 functions is not working correctly, fix it
-    // Maybe I should consider to try a different method instead of this
-    // Ask for help from a professor
     float get_rotation_around_x() const;
     float get_rotation_around_y() const;
 };
