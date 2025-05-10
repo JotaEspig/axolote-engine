@@ -118,8 +118,7 @@ const std::vector<std::shared_ptr<Light>> &Scene::lights() const {
     return context->lights;
 }
 
-void Scene::add_camera_renderer(
-    std::shared_ptr<CameraRenderer> camera_renderer
+void Scene::add_camera_renderer(std::shared_ptr<CameraRenderer> camera_renderer
 ) {
     _camera_renderers.push_back(camera_renderer);
 }
@@ -177,6 +176,43 @@ void Scene::unset_grid() {
 
 std::shared_ptr<utils::Grid> Scene::grid() const {
     return context->grid;
+}
+
+void Scene::set_skybox(std::shared_ptr<Skybox> skybox) {
+    assert(skybox->get_shaders().size() > 0);
+
+    if (context->skybox) {
+        auto shaders = context->skybox->get_shaders();
+        for (auto &shader : shaders) {
+            bool found = context->cached_shaders.find(shader)
+                         != context->cached_shaders.end();
+            if (found) {
+                context->cached_shaders.erase(shader);
+            }
+        }
+    }
+
+    context->skybox = skybox;
+    auto shaders = skybox->get_shaders();
+    for (auto &shader : shaders) {
+        context->cached_shaders.insert(shader);
+    }
+}
+
+void Scene::unset_skybox() {
+    auto shaders = context->grid->get_shaders();
+    for (auto &shader : shaders) {
+        bool found = context->cached_shaders.find(shader)
+                     != context->cached_shaders.end();
+        if (found) {
+            context->cached_shaders.erase(shader);
+        }
+    }
+    context->grid = nullptr;
+}
+
+std::shared_ptr<Skybox> Scene::skybox() const {
+    return context->skybox;
 }
 
 void Scene::update_camera(float aspect_ratio) {

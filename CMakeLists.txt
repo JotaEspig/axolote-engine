@@ -88,6 +88,7 @@ set(
     ${SOURCE_DIR}/camera.cpp
     ${SOURCE_DIR}/camera_renderer.cpp
     ${SOURCE_DIR}/glad/glad.c
+    ${SOURCE_DIR}/gl/cubemap.cpp
     ${SOURCE_DIR}/gl/ebo.cpp
     ${SOURCE_DIR}/gl/framebuffer.cpp
     ${SOURCE_DIR}/gl/shader.cpp
@@ -104,6 +105,7 @@ set(
     ${SOURCE_DIR}/scene.cpp
     ${SOURCE_DIR}/scene_context.cpp
     ${SOURCE_DIR}/scene_renderer.cpp
+    ${SOURCE_DIR}/skybox.cpp
     ${SOURCE_DIR}/utils.cpp
     ${SOURCE_DIR}/utils/grid.cpp
     ${SOURCE_DIR}/utils/line.cpp

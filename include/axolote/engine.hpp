@@ -17,6 +17,8 @@
 #include "axolote/gl/shader.hpp"
 #include "axolote/gl/texture.hpp"
 #include "axolote/gl/vao.hpp"
+#include "axolote/gl/cubemap.hpp"
+#include "axolote/skybox.hpp"
 #include "axolote/gl/vbo.hpp"
 #include "axolote/gmodel.hpp"
 #include "axolote/mesh.hpp"

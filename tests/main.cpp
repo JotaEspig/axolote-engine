@@ -156,7 +156,6 @@ void Mirror::update(double absolute_time, double delta_time) {
           <= 2.0; // Pitagoras :) MATH IS SICK
 
     if (should_render && mirror_dir_comes_towards_camera) {
-        std::cout << "Mirror is rendering" << std::endl;
         glm::mat4 reflection_matrix{1.0f};
         float A = mirror_normal.x;
         float B = mirror_normal.y;
@@ -192,9 +191,6 @@ void Mirror::update(double absolute_time, double delta_time) {
 
         // second pass
         fbo->unbind();
-    }
-    else {
-        std::cout << "Mirror is NOT rendering" << std::endl;
     }
     // restore the camera
     scene_context->camera = camera_original;
@@ -339,16 +335,14 @@ void App::main_loop() {
         myget_path("/resources/shaders/grid_base_fragment_shader.glsl")
     );
     shader_post_process = axolote::gl::Shader::create(
-        myget_path(
-            "/resources/shaders/post_processing_base_vertex_shader.glsl"
+        myget_path("/resources/shaders/post_processing_base_vertex_shader.glsl"
         ),
         myget_path(
             "/resources/shaders/post_processing_base_fragment_shader.glsl"
         )
     );
     crazy_post_process_shader = axolote::gl::Shader::create(
-        myget_path(
-            "/resources/shaders/post_processing_base_vertex_shader.glsl"
+        myget_path("/resources/shaders/post_processing_base_vertex_shader.glsl"
         ),
         myget_path("/tests/shaders/crazy_post_processing_frag.glsl")
     );
@@ -460,6 +454,11 @@ void App::main_loop() {
     grid->fading_factor = 25.0f;
     grid->bind_shader(grid_shader);
     scene->set_grid(grid);
+
+    auto skybox = std::make_shared<axolote::Skybox>(
+        myget_path("resources/textures/skybox")
+    );
+    scene->set_skybox(skybox);
 
     // Funny things with fbo
     // Overwrite the default framebuffer size callback

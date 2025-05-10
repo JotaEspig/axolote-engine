@@ -14,6 +14,7 @@
 #include "axolote/object3d.hpp"
 #include "axolote/scene_context.hpp"
 #include "axolote/scene_renderer.hpp"
+#include "axolote/skybox.hpp"
 #include "axolote/utils/grid.hpp"
 
 namespace axolote {
@@ -142,6 +143,21 @@ public:
      * @author João Vitor Espig (jotaespig@gmail.com)
      **/
     std::shared_ptr<utils::Grid> grid() const;
+    /**
+     * @brief set the skybox of the scene
+     * @author João Vitor Espig (jotaespig@gmail.com)
+     **/
+    void set_skybox(std::shared_ptr<Skybox> skybox);
+    /**
+     * @brief unset the skybox of the scene
+     * @author João Vitor Espig (jotaespig@gmail.com)
+     **/
+    void unset_skybox();
+    /**
+     * @brief get the skybox of the scene
+     * @author João Vitor Espig (jotaespig@gmail.com)
+     **/
+    std::shared_ptr<Skybox> skybox() const;
     /**
      * @brief updates the camera in the shaders
      * @author João Vitor Espig (jotaespig@gmail.com)

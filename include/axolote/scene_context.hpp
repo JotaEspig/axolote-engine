@@ -14,6 +14,7 @@
 #include "axolote/light.hpp"
 #include "axolote/object3d.hpp"
 #include "axolote/utils/grid.hpp"
+#include "axolote/skybox.hpp"
 
 namespace axolote {
 
@@ -30,6 +31,8 @@ struct SceneContext {
     std::vector<std::shared_ptr<Object3D>> sorted_drawables_objects;
     /** grid **/
     std::shared_ptr<utils::Grid> grid;
+    /** Skybox **/
+    std::shared_ptr<Skybox> skybox;
     /** lights of the scene **/
     std::vector<std::shared_ptr<Light>> lights;
     /** Cached shaders in a set **/
