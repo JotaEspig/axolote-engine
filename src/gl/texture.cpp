@@ -98,6 +98,7 @@ Texture::Texture(
 
     stbi_image_free(data);
     _loaded = true;
+    debug("Texture loaded: %s", texture_filename.c_str());
 }
 
 void Texture::Deleter::operator()(Texture *texture) {
