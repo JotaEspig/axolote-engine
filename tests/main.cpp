@@ -214,15 +214,20 @@ public:
 
 class MyDirLight : public axolote::DirectionalLight {
 public:
+    double abs_time = 0.0;
     MyDirLight(const glm::vec3 &color, bool is_set, const glm::vec3 &dir) :
       axolote::DirectionalLight{color, is_set, dir} {
     }
 
     void update(double absolute_time, double delta_time) override {
+        abs_time += delta_time / 10;
         dir = glm::vec3{
-            glm::cos((float)absolute_time / 10), 0.0f,
-            glm::sin((float)absolute_time / 10)
+            glm::cos((float)abs_time), 0.0f, glm::sin((float)abs_time)
         };
+
+        if (abs_time > M_PI * 2.0) {
+            abs_time -= M_PI * 2.0;
+        }
     }
 };
 
