@@ -156,20 +156,34 @@ void Window::process_input() {
     if (get_mouse_key_state(MouseKey::RIGHT) == MouseKeyState::PRESSED) {
         set_cursor_mode(CursorMode::DISABLED);
 
-        if (_current_scene->context->camera.first_click)
-            set_cursor_position((double)width() / 2, (double)height() / 2);
-
         double mouse_x, mouse_y;
         get_cursor_position(&mouse_x, &mouse_y);
-        _current_scene->context->camera.move_vision(
-            (float)mouse_x, (float)mouse_y, (float)width(), (float)height(),
-            _delta_time
-        );
-        set_cursor_position((double)width() / 2, (double)height() / 2);
+
+        static bool was_right_mouse_pressed = false;
+        static double last_mouse_x = 0.0, last_mouse_y = 0.0;
+
+        if (!_current_scene->context->camera.first_click
+            && was_right_mouse_pressed) {
+            double delta_x = mouse_x - last_mouse_x;
+            double delta_y = mouse_y - last_mouse_y;
+
+            _current_scene->context->camera.move_vision(
+                (float)delta_x, (float)delta_y, _delta_time
+            );
+        }
+
+        last_mouse_x = mouse_x;
+        last_mouse_y = mouse_y;
+        was_right_mouse_pressed = true;
+        _current_scene->context->camera.first_click = false;
     }
-    if (get_mouse_key_state(MouseKey::RIGHT) == MouseKeyState::RELEASED) {
+    else if (get_mouse_key_state(MouseKey::RIGHT) == MouseKeyState::RELEASED) {
         set_cursor_mode(CursorMode::NORMAL);
         _current_scene->context->camera.first_click = true;
+
+        // Reset state
+        static bool was_right_mouse_pressed = false;
+        was_right_mouse_pressed = false;
     }
 }
 

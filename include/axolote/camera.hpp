@@ -85,15 +85,11 @@ public:
     /**
      * @brief do view movement
      * @author João Vitor Espig (jotaespig@gmail.com)
-     * @param x mouse click point x value
-     * @param y mouse click point y value
-     * @param width Window width
-     * @param height Window height
+     * @param dx change of mouse pos x value
+     * @param dy change of mouse pos y value
      * @param delta_t time difference from last frame
      **/
-    void move_vision(
-        float x, float y, float width, float height, double delta_t = 1.0
-    );
+    void move_vision(float dx, float dy, double delta_t = 1.0f);
     /**
      * @brief get ray from camera to a point in the screen
      * @param x point x value

@@ -54,25 +54,25 @@ void Camera::downward(double delta_t) {
     should_calculate_matrix = true;
 }
 
-void Camera::move_vision(
-    float x, float y, float width, float height, double delta_t
-) {
-    if (first_click)
-        first_click = false;
+void Camera::move_vision(float dx, float dy, double delta_t) {
+    // Compute the rotation amounts based on delta, sensitivity, and delta time
+    double rot_x = delta_t * sensitivity * dy;
+    double rot_y = delta_t * sensitivity * dx;
 
-    double rot_x = delta_t * sensitivity * (y - (height / 2)) / height;
-    double rot_y = delta_t * sensitivity * (x - (width / 2)) / width;
-    glm::vec3 new_orientation = glm::rotate(
-        _orientation, (float)glm::radians(-rot_x),
-        glm::normalize(glm::cross(_orientation, _up))
-    );
+    // Rotate around the right vector (pitch)
+    glm::vec3 right = glm::normalize(glm::cross(_orientation, _up));
+    glm::vec3 new_orientation
+        = glm::rotate(_orientation, (float)glm::radians(-rot_x), right);
 
+    // Clamp the pitch to prevent flipping
     if (std::abs(glm::angle(new_orientation, _up) - glm::radians(90.0f))
         <= glm::radians(85.0f)) {
         _orientation = new_orientation;
     }
 
+    // Rotate around the global up vector (yaw)
     _orientation = glm::rotate(_orientation, (float)glm::radians(-rot_y), _up);
+
     should_calculate_matrix = true;
 }
 
