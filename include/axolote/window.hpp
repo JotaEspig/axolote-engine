@@ -272,7 +272,6 @@ public:
     /**
      * @brief process user input
      * @author João Vitor Espig (jotaespig@gmail.com)
-     * @param delta_t time difference from last frame
      *
      * Preconfigured way to process SPACE, SHIFT, CTRL and mouse movement
      * (this method can be overrided)
@@ -281,7 +280,6 @@ public:
     /**
      * @brief process the simplest user input (AWSD)
      * @author João Vitor Espig (jotaespig@gmail.com)
-     * @param delta_t time difference from last frame
      *
      * Preconfigured way to process A, W, S and D keys
      * (this method can be overrided)
@@ -333,6 +331,21 @@ public:
      * @author João Vitor Espig (jotaespig@gmail.com)
      **/
     void render();
+    /**
+     * @brief Where the ImGui frames are loaded
+     * @author João Vitor Espig (jotaespig@gmail.com)
+     *
+     * It's recommended to override this method if you want to use ImGui as UI.
+     * Example:
+     * ```cpp
+     * ImGui::Begin("Tests using ImGui");
+     * ImGui::Text("Hello World");
+     * ImGui::End();
+     * ```
+     *
+     * render method will render it for you then.
+     **/
+    virtual void imgui_frames();
 
     std::shared_ptr<Scene> current_scene() const;
     /**
@@ -417,6 +430,8 @@ public:
      * by the user to implement custom behavior. by default it retuns
      * true
      *
+     * NOT WORKING
+     *
      * @return true
      * @return false
      **/
@@ -425,6 +440,8 @@ public:
      * @brief Checks if the window should process keyboard input. Can be
      * overrided by the user to implement custom behavior. by default it retuns
      * true
+     *
+     * NOT WORKING
      *
      * @return true
      * @return false

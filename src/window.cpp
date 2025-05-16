@@ -245,6 +245,18 @@ void Window::update() {
 
 void Window::render() {
     _current_scene->render();
+
+    GLboolean is_srgb_enabled;
+    glGetBooleanv(GL_FRAMEBUFFER_SRGB, &is_srgb_enabled);
+    glDisable(GL_FRAMEBUFFER_SRGB);
+    imgui_frames();
+    ImGui::Render();
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+    if (is_srgb_enabled)
+        glEnable(GL_FRAMEBUFFER_SRGB);
+}
+
+void Window::imgui_frames() {
 }
 
 std::shared_ptr<Scene> Window::current_scene() const {

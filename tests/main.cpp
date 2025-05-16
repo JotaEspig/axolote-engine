@@ -203,9 +203,11 @@ public:
     std::shared_ptr<axolote::gl::Shader> shader_post_process;
     std::shared_ptr<axolote::gl::Shader> crazy_post_process_shader;
     int shader_num = 0;
+    int fps = 0;
 
     void process_input();
     void main_loop();
+    void imgui_frames() override;
 
     bool should_process_mouse_input() const override {
         return !_io->WantCaptureMouse;
@@ -324,6 +326,49 @@ void App::process_input() {
     }
 }
 
+void App::imgui_frames() {
+    // FPS
+    ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Always); // Top Left
+
+    ImGui::SetNextWindowBgAlpha(0.35f); // 35% opacity
+
+    ImGuiWindowFlags flags
+        = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
+          | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove
+          | ImGuiWindowFlags_NoSavedSettings
+          | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav;
+
+    // Begin the ImGui window
+    if (ImGui::Begin("FPS Overlay", nullptr, flags)) {
+        // Set text color to green
+        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 1.0f, 0.0f, 1.0f));
+        ImGui::Text("FPS: %.1f", ImGui::GetIO().Framerate);
+        ImGui::PopStyleColor();
+    }
+    ImGui::End();
+
+    // Small guide for using it
+    ImGui::Begin("Tests using ImGui");
+    ImGui::Text("Press 'P' to toggle scene pause rule");
+    ImGui::Text("Press 'X' to toggle crazy post processing shader");
+    ImGui::Text("Press 'V' to toggle vsync");
+    ImGui::Text("Press 'L' to toggle flashlight");
+    ImGui::Text("Press 'M' to toggle mirror");
+    ImGui::End();
+
+    // Gamma setter
+    ImGui::SetNextWindowSize(ImVec2(200, 100), ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowPos(
+        ImVec2(width() / 2.0, height() / 2.0 + height() / 4.0),
+        ImGuiCond_FirstUseEver
+    );
+    ImGui::Begin("Settings", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
+    static float gamma = current_scene()->gamma;
+    ImGui::SliderFloat("Gamma", &gamma, 0.3f, 1.8f);
+    current_scene()->gamma = gamma;
+    ImGui::End();
+}
+
 void App::main_loop() {
     // Set the window user pointer to this object
     glfwSetWindowUserPointer(window(), this);
@@ -363,7 +408,7 @@ void App::main_loop() {
     scene->renderer.setup_shader(shader_post_process);
     scene->context->camera.set_pos({0.0f, 0.0f, 12.35f});
     scene->context->camera.speed = 3.0f;
-    scene->context->camera.sensitivity = 10000.0f;
+    scene->context->camera.sensitivity = 100.0f;
     scene->ambient_light_intensity = 0.1f;
 
     mirror = std::make_shared<Mirror>(width(), height());
@@ -480,37 +525,11 @@ void App::main_loop() {
             process_input();
         }
 
-        std::stringstream sstr;
-        sstr << original_title << " | " << (int)(1 / _delta_time) << " fps";
-        set_title(sstr.str());
+        fps = (int)1 / _delta_time;
 
         update_camera((float)width() / height());
         update();
         render();
-
-        ImGui::Begin("Tests using ImGui");
-        ImGui::Text("Press 'P' to toggle scene pause rule");
-        ImGui::Text("Press 'X' to toggle crazy post processing shader");
-        ImGui::Text("Press 'V' to toggle vsync");
-        ImGui::Text("Press 'L' to toggle flashlight");
-        ImGui::Text("Press 'M' to toggle mirror");
-        ImGui::End();
-
-        glDisable(GL_FRAMEBUFFER_SRGB);
-        ImGui::SetNextWindowSize(ImVec2(200, 100), ImGuiCond_FirstUseEver);
-        ImGui::SetNextWindowPos(
-            ImVec2(width() / 2.0, height() / 2.0 + height() / 4.0),
-            ImGuiCond_FirstUseEver
-        );
-        ImGui::Begin("Settings", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
-        static float gamma = current_scene()->gamma;
-        ImGui::SliderFloat("Gamma", &gamma, 0.3f, 1.8f);
-        current_scene()->gamma = gamma;
-        ImGui::End();
-
-        ImGui::Render();
-        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-        glEnable(GL_FRAMEBUFFER_SRGB);
 
         finish_frame();
     }
