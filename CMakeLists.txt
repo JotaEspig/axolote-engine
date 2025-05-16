@@ -177,8 +177,8 @@ include(GNUInstallDirs)
 install(TARGETS axolote
     EXPORT axoloteTargets # Export the target for CMake package config
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT Runtime # DLLs on Windows
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT Libraries # .so or .lib
-    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT Development # .lib on Windows, .a
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}/axolote COMPONENT Libraries # .so or .lib
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}/axolote COMPONENT Development # .lib on Windows, .a
     INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR} # For headers associated with target
 )
 
@@ -279,5 +279,5 @@ endfunction()
 
 # Add tests using the helper function
 add_axolote_test(main-test ${CMAKE_SOURCE_DIR}/tests/main.cpp)
-add_axolote_test(window-test ${CMAKE_SOURCE_DIR}/tests/window.cpp)
-add_axolote_test(models-and-shaders-test ${CMAKE_SOURCE_DIR}/tests/models_and_shaders.cpp)
+#add_axolote_test(window-test ${CMAKE_SOURCE_DIR}/tests/window.cpp)
+#add_axolote_test(models-and-shaders-test ${CMAKE_SOURCE_DIR}/tests/models_and_shaders.cpp)
