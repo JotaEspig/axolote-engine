@@ -257,6 +257,26 @@ void Window::render() {
 }
 
 void Window::imgui_frames() {
+    // FPS
+    ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Always); // Top Left
+
+    ImGui::SetNextWindowBgAlpha(0.35f); // 35% opacity
+
+    ImGuiWindowFlags flags
+        = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
+          | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove
+          | ImGuiWindowFlags_NoSavedSettings
+          | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav;
+
+    // Begin the ImGui window
+    if (ImGui::Begin("FPS Overlay", nullptr, flags)) {
+        // Set text color to green
+        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 1.0f, 0.0f, 1.0f));
+        ImGui::Text("FPS: %.1f", ImGui::GetIO().Framerate);
+        ImGui::PopStyleColor();
+    }
+    ImGui::End();
+
 }
 
 std::shared_ptr<Scene> Window::current_scene() const {

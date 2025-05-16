@@ -327,26 +327,6 @@ void App::process_input() {
 }
 
 void App::imgui_frames() {
-    // FPS
-    ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Always); // Top Left
-
-    ImGui::SetNextWindowBgAlpha(0.35f); // 35% opacity
-
-    ImGuiWindowFlags flags
-        = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize
-          | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove
-          | ImGuiWindowFlags_NoSavedSettings
-          | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav;
-
-    // Begin the ImGui window
-    if (ImGui::Begin("FPS Overlay", nullptr, flags)) {
-        // Set text color to green
-        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 1.0f, 0.0f, 1.0f));
-        ImGui::Text("FPS: %.1f", ImGui::GetIO().Framerate);
-        ImGui::PopStyleColor();
-    }
-    ImGui::End();
-
     // Small guide for using it
     ImGui::Begin("Tests using ImGui");
     ImGui::Text("Press 'P' to toggle scene pause rule");
@@ -367,6 +347,8 @@ void App::imgui_frames() {
     ImGui::SliderFloat("Gamma", &gamma, 0.3f, 1.8f);
     current_scene()->gamma = gamma;
     ImGui::End();
+
+    Window::imgui_frames();
 }
 
 void App::main_loop() {
