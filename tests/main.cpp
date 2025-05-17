@@ -355,6 +355,8 @@ void App::main_loop() {
     // Set the window user pointer to this object
     glfwSetWindowUserPointer(window(), this);
 
+    auto audio_engine = axolote::AudioEngine::create();
+
     set_color(0xff, 0xff, 0xff);
     std::string original_title = title();
 
@@ -390,7 +392,7 @@ void App::main_loop() {
     scene->renderer.setup_shader(shader_post_process);
     scene->context->camera.set_pos({0.0f, 0.0f, 12.35f});
     scene->context->camera.speed = 3.0f;
-    scene->context->camera.sensitivity = 100.0f;
+    scene->context->camera.sensitivity = 10.0f;
     scene->ambient_light_intensity = 0.1f;
 
     mirror = std::make_shared<Mirror>(width(), height());
@@ -498,8 +500,11 @@ void App::main_loop() {
 
     std::cout << "Starting main loop" << std::endl;
 
+    audio_engine->load_mp3("test", myget_path("resources/audio/breakout.mp3"));
+
     set_scene(scene);
     double before = get_time();
+    bool first = true;
     while (!should_close()) {
         init_frame();
 
@@ -512,6 +517,12 @@ void App::main_loop() {
         update_camera((float)width() / height());
         update();
         render();
+
+        if (first) {
+            if (!audio_engine->play_sound("test"))
+                std::cout << "MERDA\n";
+            first = false;
+        }
 
         finish_frame();
     }

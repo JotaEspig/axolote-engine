@@ -47,7 +47,7 @@ find_package(OpenGL REQUIRED)
 find_package(glfw3 CONFIG REQUIRED)
 find_package(glm REQUIRED)
 find_package(Doxygen OPTIONAL_COMPONENTS dot)
-
+find_package(OpenAL CONFIG REQUIRED)
 find_package(assimp CONFIG REQUIRED)
 
 
@@ -85,6 +85,7 @@ set(SOURCE_DIR ${CMAKE_SOURCE_DIR}/src)
 set(
     SOURCE_FILES
     ${SOURCE_DIR}/assimp.cpp
+    ${SOURCE_DIR}/audio_engine.cpp
     ${SOURCE_DIR}/camera.cpp
     ${SOURCE_DIR}/camera_renderer.cpp
     ${SOURCE_DIR}/glad/glad.c
@@ -126,6 +127,7 @@ add_library(axolote SHARED ${SOURCE_FILES})
 add_library(axolote::axolote ALIAS axolote) # Add alias for modern CMake usage
 
 target_compile_definitions(axolote PUBLIC GLAD_GLAPI_EXPORT PRIVATE GLAD_GLAPI_EXPORT_BUILD)
+target_compile_definitions(axolote PRIVATE AXOLOTE_EXPORTS)
 
 # Public Header files for installation and usage
 target_include_directories(
@@ -149,6 +151,7 @@ target_link_libraries(
         glfw
         glm::glm
         assimp::assimp
+        OpenAL::OpenAL
     PRIVATE
         # Link libraries needed only internally by axolote
 )

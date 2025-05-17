@@ -7,6 +7,17 @@
 
 #include <string>
 
+// Macro for exporting functions
+#ifdef _WIN32
+#ifdef AXOLOTE_EXPORTS
+#define AXOLOTE_EXPORT __declspec(dllexport)
+#else
+#define AXOLOTE_EXPORT __declspec(dllimport)
+#endif
+#else
+#define AXOLOTE_EXPORT
+#endif
+
 namespace axolote {
 
 /**

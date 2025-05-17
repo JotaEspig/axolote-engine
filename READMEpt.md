@@ -24,6 +24,7 @@ sudo apt-get install cmake
 sudo apt-get install libglm-dev
 sudo apt-get install libglfw3-dev libglfw3
 sudo apt-get install libassimp-dev
+sudo apt-get install libopenal-dev
 ```
 
 Arch:
@@ -32,6 +33,7 @@ sudo pacman -S cmake
 sudo pacman -S glm
 sudo pamcan -S glfw
 sudo pacman -S assimp
+sudo pacman -S openal
 ```
 
 ### Windows
