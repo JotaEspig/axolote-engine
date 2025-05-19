@@ -1,6 +1,5 @@
 #include <iostream>
 #include <memory>
-#include <sstream>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -203,7 +202,6 @@ public:
     std::shared_ptr<axolote::gl::Shader> shader_post_process;
     std::shared_ptr<axolote::gl::Shader> crazy_post_process_shader;
     int shader_num = 0;
-    int fps = 0;
 
     void process_input();
     void main_loop();
@@ -216,9 +214,11 @@ public:
 
 class MyDirLight : public axolote::DirectionalLight {
 public:
+    std::shared_ptr<axolote::AudioEngine> ae = axolote::AudioEngine::create();
     double abs_time = 0.0;
     MyDirLight(const glm::vec3 &color, bool is_set, const glm::vec3 &dir) :
       axolote::DirectionalLight{color, is_set, dir} {
+        ae->load_mp3("bleep", myget_path("/resources/audio/bleep.mp3"));
     }
 
     void update(double absolute_time, double delta_time) override {
@@ -229,6 +229,7 @@ public:
 
         if (abs_time > M_PI * 2.0) {
             abs_time -= M_PI * 2.0;
+            ae->enqueue("bleep");
         }
     }
 };
@@ -501,6 +502,7 @@ void App::main_loop() {
     std::cout << "Starting main loop" << std::endl;
 
     audio_engine->load_mp3("test", myget_path("resources/audio/breakout.mp3"));
+    audio_engine->enqueue("test");
 
     set_scene(scene);
     double before = get_time();
@@ -512,17 +514,9 @@ void App::main_loop() {
             process_input();
         }
 
-        fps = (int)1 / _delta_time;
-
         update_camera((float)width() / height());
         update();
         render();
-
-        if (first) {
-            if (!audio_engine->play_sound("test"))
-                std::cout << "MERDA\n";
-            first = false;
-        }
 
         finish_frame();
     }

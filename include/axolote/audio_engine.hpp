@@ -5,6 +5,7 @@
 #pragma once
 
 #include <memory>
+#include <queue>
 #include <string>
 #include <unordered_map>
 
@@ -35,6 +36,8 @@ public:
     bool load_mp3(const std::string &name, const std::string &path);
     bool play_sound(const std::string &name);
     bool is_playing(const std::string &name);
+    void enqueue(const std::string &name);
+    void play_queue();
 
 private:
     struct Deleter {
@@ -46,6 +49,8 @@ private:
     ALCcontext *_context = nullptr;
     std::unordered_map<std::string, ALuint> _buffers;
     std::unordered_map<std::string, ALuint> _sources;
+    /** Queue with sources that will be played when scene is rendered **/
+    std::queue<std::pair<const std::string, ALuint>> _queue;
 
     AudioEngine();
 

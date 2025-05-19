@@ -341,11 +341,16 @@ void Scene::update(double absolute_time, double delta_time) {
 }
 
 void Scene::render() {
+    // Ensure PolygonMode is GL_FILL to do not affect the rendering of the
+    // framebuffer texture
     GLint polygon_mode[2];
     glGetIntegerv(GL_POLYGON_MODE, polygon_mode);
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     renderer.render();
     glPolygonMode(GL_FRONT_AND_BACK, polygon_mode[0]);
+
+    // Play enqueued sounds
+    _audio_engine->play_queue();
 }
 
 } // namespace axolote

@@ -2,6 +2,7 @@
 
 #define MINIMP3_IMPLEMENTATION
 #include "minimp3_ex.h"
+#include <al.h>
 
 #include "axolote/audio_engine.hpp"
 #include "axolote/utils.hpp"
@@ -11,6 +12,13 @@ namespace axolote {
 std::shared_ptr<AudioEngine> AudioEngine::_instance = nullptr;
 
 bool AudioEngine::load_mp3(const std::string &name, const std::string &path) {
+    bool already_exists = (_buffers.find(name) != _buffers.end())
+                          && (_sources.find(name) != _sources.end());
+    if (already_exists) {
+        debug("Sound already loaded: %s", name.c_str());
+        return false;
+    }
+
     mp3dec_ex_t mp3;
     if (mp3dec_ex_open(&mp3, path.c_str(), MP3D_SEEK_TO_SAMPLE)) {
         debug("Failed to load MP3 file: %s", path.c_str());
@@ -84,6 +92,27 @@ bool AudioEngine::is_playing(const std::string &name) {
     ALint state;
     alGetSourcei(it->second, AL_SOURCE_STATE, &state);
     return state == AL_PLAYING;
+}
+
+void AudioEngine::enqueue(const std::string &name) {
+    auto it = _sources.find(name);
+    if (it != _sources.end()) {
+        ALuint source = it->second;
+        _queue.push(std::make_pair(name, source));
+        debug("Enqueued sound: %s", name.c_str());
+    }
+    else {
+        debug("Sound not found: %s", name.c_str());
+    }
+}
+
+void AudioEngine::play_queue() {
+    while (!_queue.empty()) {
+        auto p = _queue.front();
+        alSourcePlay(p.second);
+        debug("Playing queued sound: %s", p.first.c_str());
+        _queue.pop();
+    }
 }
 
 void AudioEngine::Deleter::operator()(AudioEngine *audio_engine) {

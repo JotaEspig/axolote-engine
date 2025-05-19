@@ -8,6 +8,7 @@
 #include <memory>
 #include <vector>
 
+#include "axolote/audio_engine.hpp"
 #include "axolote/camera_renderer.hpp"
 #include "axolote/drawable.hpp"
 #include "axolote/light.hpp"
@@ -181,6 +182,8 @@ private:
     double last_aspect_ratio = 1.0;
     /** Camera renderers **/
     std::vector<std::shared_ptr<CameraRenderer>> _camera_renderers;
+    std::shared_ptr<AudioEngine> _audio_engine
+        = AudioEngine::create(); // Audio engine instance
 };
 
 } // namespace axolote
