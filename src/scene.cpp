@@ -200,7 +200,7 @@ void Scene::set_skybox(std::shared_ptr<Skybox> skybox) {
 }
 
 void Scene::unset_skybox() {
-    auto shaders = context->grid->get_shaders();
+    auto shaders = context->skybox->get_shaders();
     for (auto &shader : shaders) {
         bool found = context->cached_shaders.find(shader)
                      != context->cached_shaders.end();
@@ -208,7 +208,7 @@ void Scene::unset_skybox() {
             context->cached_shaders.erase(shader);
         }
     }
-    context->grid = nullptr;
+    context->skybox = nullptr;
 }
 
 std::shared_ptr<Skybox> Scene::skybox() const {
@@ -235,12 +235,26 @@ void Scene::update(double absolute_time, double delta_time) {
                 if (a->is_transparent < b->is_transparent)
                     return true;
 
-                return glm::length2(
-                           context->camera._pos - glm::vec3(a->get_matrix()[3])
-                       )
-                       > glm::length2(
-                           context->camera._pos - glm::vec3(b->get_matrix()[3])
-                       );
+                if (a->is_transparent) { // Both transparent: sort far to near
+                    return glm::length2(
+                               context->camera._pos
+                               - glm::vec3(a->get_matrix()[3])
+                           )
+                           > glm::length2(
+                               context->camera._pos
+                               - glm::vec3(b->get_matrix()[3])
+                           );
+                }
+                else { // Both opaque: sort near to far (optional optimization)
+                    return glm::length2(
+                               context->camera._pos
+                               - glm::vec3(a->get_matrix()[3])
+                           )
+                           < glm::length2(
+                               context->camera._pos
+                               - glm::vec3(b->get_matrix()[3])
+                           );
+                }
             }
         );
         context->camera._has_moved = false;
