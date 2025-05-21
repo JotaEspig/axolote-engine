@@ -57,7 +57,8 @@ void Grid::build_mesh() {
         }
     }
     else {
-        debug("2D grid is not implemented yet");
+        debug(DebugType::WARNING, "2D grid is not implemented yet");
+        return;
     }
 
     _vao = gl::VAO::create();

@@ -26,7 +26,7 @@ void Framebuffer::init(std::uint16_t width, std::uint16_t height) {
     );
 
     glGenRenderbuffers(1, &_rbo);
-    debug("Renderbuffer created: %u", _rbo);
+    debug(DebugType::INFO, "Renderbuffer created: %u", _rbo);
     glBindRenderbuffer(GL_RENDERBUFFER, _rbo);
     glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
     glBindRenderbuffer(GL_RENDERBUFFER, 0);
@@ -37,7 +37,7 @@ void Framebuffer::init(std::uint16_t width, std::uint16_t height) {
     bool is_ready
         = glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE;
     if (!is_ready) {
-        debug("Framebuffer %u is not complete!", _id);
+        debug(DebugType::ERROR, "Framebuffer %u is not complete!", _id);
     }
 
     unbind();
@@ -74,10 +74,10 @@ void Framebuffer::resize(std::uint16_t width, std::uint16_t height) {
     bool is_ready
         = glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE;
     if (!is_ready) {
-        debug("Framebuffer %u is not complete!", _id);
+        debug(DebugType::ERROR, "Framebuffer %u is not complete!", _id);
     }
 
-    debug("Framebuffer resized: %u", _id);
+    debug(DebugType::INFO, "Framebuffer resized: %u", _id);
     unbind();
     _texture->unbind();
 }
@@ -102,14 +102,14 @@ void Framebuffer::destroy() {
     GLuint id = _id;
     GLuint rbo_id = _rbo;
     glDeleteFramebuffers(1, &_id);
-    debug("Framebuffer destroyed: %u", id);
+    debug(DebugType::INFO, "Framebuffer destroyed: %u", id);
     glDeleteRenderbuffers(1, &_rbo);
-    debug("Renderbuffer destroyed: %u", rbo_id);
+    debug(DebugType::INFO, "Renderbuffer destroyed: %u", rbo_id);
 }
 
 Framebuffer::Framebuffer() {
     glGenFramebuffers(1, &_id);
-    debug("Framebuffer created: %u", _id);
+    debug(DebugType::INFO, "Framebuffer created: %u", _id);
 }
 
 void Framebuffer::Deleter::operator()(Framebuffer *fbo) {

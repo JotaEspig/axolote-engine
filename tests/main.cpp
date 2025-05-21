@@ -323,7 +323,9 @@ void App::process_input() {
         glm::vec3 ray = current_scene()->context->camera.get_ray(
             mx, my, width(), height()
         );
-        std::cout << "Ray: " << glm::to_string(ray) << std::endl;
+        axolote::debug(
+            axolote::DebugType::INFO2, "Ray: %s", glm::to_string(ray).c_str()
+        );
     }
 }
 
@@ -499,10 +501,12 @@ void App::main_loop() {
     // Overwrite the default framebuffer size callback
     glfwSetFramebufferSizeCallback(window(), framebuffer_size_callback);
 
-    std::cout << "Starting main loop" << std::endl;
+    axolote::debug(axolote::DebugType::INFO2, "Starting main loop");
 
     audio_engine->load_mp3("test", myget_path("resources/audio/breakout.mp3"));
     audio_engine->enqueue("test");
+    // Test for debug message
+    audio_engine->enqueue("debug test");
 
     set_scene(scene);
     double before = get_time();
@@ -523,7 +527,7 @@ void App::main_loop() {
 }
 
 int main() {
-    std::cout << "Axolote Engine" << std::endl;
+    axolote::debug(axolote::DebugType::INFO2, "Starting main test");
     App app{};
     app.set_title("Main test");
     app.set_maximized();

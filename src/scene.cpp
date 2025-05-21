@@ -24,7 +24,7 @@ Scene::Scene() {
 
     glBindBufferBase(GL_UNIFORM_BUFFER, 0, context->ubo_lights); // HARDCODED
 
-    debug(
+    debug(DebugType::INFO,
         "Created ubo for lights: %u, size: %zu bytes", context->ubo_lights,
         UBO_TOTAL_SIZE
     );

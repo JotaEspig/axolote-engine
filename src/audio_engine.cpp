@@ -1,3 +1,8 @@
+#include <memory>
+#include <queue>
+#include <stdexcept>
+#include <string>
+#include <unordered_map>
 #include <vector>
 
 #define MINIMP3_IMPLEMENTATION
@@ -15,13 +20,13 @@ bool AudioEngine::load_mp3(const std::string &name, const std::string &path) {
     bool already_exists = (_buffers.find(name) != _buffers.end())
                           && (_sources.find(name) != _sources.end());
     if (already_exists) {
-        debug("Sound already loaded: %s", name.c_str());
+        debug(DebugType::WARNING, "Sound already loaded: %s", name.c_str());
         return false;
     }
 
     mp3dec_ex_t mp3;
     if (mp3dec_ex_open(&mp3, path.c_str(), MP3D_SEEK_TO_SAMPLE)) {
-        debug("Failed to load MP3 file: %s", path.c_str());
+        debug(DebugType::ERROR, "Failed to load MP3 file: %s", path.c_str());
         return false;
     }
 
@@ -31,15 +36,15 @@ bool AudioEngine::load_mp3(const std::string &name, const std::string &path) {
     mp3dec_ex_read(&mp3, pcmData.data(), totalSamples);
     if (mp3.info.hz == 0 || mp3.info.channels == 0) {
         debug(
-            "MP3 has invalid metadata: %d Hz, %d channels", mp3.info.hz,
-            mp3.info.channels
+            DebugType::ERROR, "MP3 has invalid metadata: %d Hz, %d channels",
+            mp3.info.hz, mp3.info.channels
         );
         mp3dec_ex_close(&mp3);
         return false;
     }
 
     if (mp3.info.channels != 1 && mp3.info.channels != 2) {
-        debug("Invalid channel count: %d", mp3.info.channels);
+        debug(DebugType::ERROR, "Invalid channel count: %d", mp3.info.channels);
         mp3dec_ex_close(&mp3);
         return false;
     }
@@ -62,11 +67,11 @@ bool AudioEngine::load_mp3(const std::string &name, const std::string &path) {
 
     ALenum error = alGetError();
     if (error != AL_NO_ERROR) {
-        debug("alBufferData error: %x", error);
+        debug(DebugType::ERROR, "alBufferData error: %x", error);
         mp3dec_ex_close(&mp3);
         return false;
     }
-    debug("Loaded sound: %s", name.c_str());
+    debug(DebugType::INFO, "Loaded sound: %s", name.c_str());
     mp3dec_ex_close(&mp3);
     return true;
 }
@@ -75,11 +80,11 @@ bool AudioEngine::play_sound(const std::string &name) {
     auto it = _sources.find(name);
     if (it != _sources.end()) {
         alSourcePlay(it->second);
-        debug("Playing sound: %s", name.c_str());
+        debug(DebugType::INFO, "Playing sound: %s", name.c_str());
         return true;
     }
     else {
-        debug("Sound not found: %s", name.c_str());
+        debug(DebugType::ERROR, "Sound not found: %s", name.c_str());
         return false;
     }
 }
@@ -99,10 +104,10 @@ void AudioEngine::enqueue(const std::string &name) {
     if (it != _sources.end()) {
         ALuint source = it->second;
         _queue.push(std::make_pair(name, source));
-        debug("Enqueued sound: %s", name.c_str());
+        debug(DebugType::INFO, "Enqueued sound: %s", name.c_str());
     }
     else {
-        debug("Sound not found: %s", name.c_str());
+        debug(DebugType::WARNING, "Sound not found: %s", name.c_str());
     }
 }
 
@@ -110,7 +115,7 @@ void AudioEngine::play_queue() {
     while (!_queue.empty()) {
         auto p = _queue.front();
         alSourcePlay(p.second);
-        debug("Playing queued sound: %s", p.first.c_str());
+        debug(DebugType::INFO, "Playing queued sound: %s", p.first.c_str());
         _queue.pop();
     }
 }
@@ -118,28 +123,31 @@ void AudioEngine::play_queue() {
 void AudioEngine::Deleter::operator()(AudioEngine *audio_engine) {
     if (audio_engine) {
         audio_engine->destroy();
-        debug("AudioEngine deleted");
+        debug(DebugType::INFO, "AudioEngine deleted");
     }
 }
 
 AudioEngine::AudioEngine() {
     _device = alcOpenDevice(nullptr);
     if (!_device) {
-        debug("Failed to open audio device");
-        return;
+        debug(DebugType::FATAL, "Failed to open audio device");
+        throw std::runtime_error("Failed to open audio device");
     }
 
     _context = alcCreateContext(_device, nullptr);
     if (!_context) {
-        debug("Failed to create audio context");
+        debug(DebugType::FATAL, "Failed to create audio context");
         alcCloseDevice(_device);
-        return;
+        throw std::runtime_error("Failed to create audio context");
     }
 
     if (!alcMakeContextCurrent(_context)) {
-        debug("Failed to make context current");
+        debug(DebugType::FATAL, "Failed to make context current");
+        alcDestroyContext(_context);
+        alcCloseDevice(_device);
+        throw std::runtime_error("Failed to make context current");
     }
-    debug("AudioEngine created");
+    debug(DebugType::INFO, "AudioEngine created");
 }
 
 void AudioEngine::destroy() {

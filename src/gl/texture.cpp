@@ -43,12 +43,12 @@ void Texture::unbind() {
 void Texture::destroy() {
     GLuint id = _id;
     glDeleteTextures(1, &_id);
-    debug("Texture destroyed: %u", id);
+    debug(DebugType::INFO, "Texture destroyed: %u", id);
 }
 
 Texture::Texture() {
     glGenTextures(1, &_id);
-    debug("Texture created: %u", _id);
+    debug(DebugType::INFO, "Texture created: %u", _id);
 }
 
 Texture::Texture(
@@ -62,9 +62,11 @@ Texture::Texture(
     unsigned char *data = stbi_load(
         texture_filename.c_str(), &width_img, &height_img, &num_channels_img, 0
     );
-    if (!data)
-    {
-        debug("Failed to load texture: %s", texture_filename.c_str());
+    if (!data) {
+        debug(
+            DebugType::ERROR, "Failed to load texture: %s",
+            texture_filename.c_str()
+        );
         return;
     }
 
@@ -98,7 +100,7 @@ Texture::Texture(
 
     stbi_image_free(data);
     _loaded = true;
-    debug("Texture loaded: %s", texture_filename.c_str());
+    debug(DebugType::INFO, "Texture loaded: %s", texture_filename.c_str());
 }
 
 void Texture::Deleter::operator()(Texture *texture) {

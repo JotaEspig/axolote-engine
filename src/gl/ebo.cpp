@@ -35,12 +35,12 @@ void EBO::buffer_data(std::size_t size, const void *data, GLenum usage) {
 void EBO::destroy() {
     GLuint id = _id;
     glDeleteBuffers(1, &_id);
-    debug("EBO destroyed: %u", id);
+    debug(DebugType::INFO, "EBO destroyed: %u", id);
 }
 
 EBO::EBO() {
     glGenBuffers(1, &_id);
-    debug("EBO created: %u", _id);
+    debug(DebugType::INFO, "EBO created: %u", _id);
 }
 
 EBO::EBO(const std::vector<GLuint> &indices) :

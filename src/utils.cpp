@@ -7,7 +7,7 @@ namespace axolote {
 std::string get_file_content(const char *filename) {
     std::ifstream in(filename, std::ios::binary);
     if (!in) {
-        axolote::debug("Failed to open file: %s", filename);
+        axolote::debug(DebugType::FATAL, "Failed to open file: %s", filename);
         throw(errno);
     }
 
