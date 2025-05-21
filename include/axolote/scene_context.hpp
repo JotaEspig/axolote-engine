@@ -35,6 +35,8 @@ struct SceneContext {
     std::shared_ptr<Skybox> skybox;
     /** lights of the scene **/
     std::vector<std::shared_ptr<Light>> lights;
+    /** Uniform Buffer Object for Lights **/
+    GLuint ubo_lights = 0;
     /** Cached shaders in a set **/
     std::unordered_set<
         std::shared_ptr<gl::Shader>, gl::Shader::Hash, gl::Shader::Equal>

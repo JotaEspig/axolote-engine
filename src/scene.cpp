@@ -10,10 +10,24 @@
 #include "axolote/drawable.hpp"
 #include "axolote/object3d.hpp"
 #include "axolote/scene.hpp"
+#include "axolote/scene_renderer.hpp"
+#include "axolote/shaders/light_struct_ubo.hpp"
+#include "axolote/utils/grid.hpp"
 
 namespace axolote {
 
 Scene::Scene() {
+    glGenBuffers(1, &context->ubo_lights);
+    glBindBuffer(GL_UNIFORM_BUFFER, context->ubo_lights);
+    glBufferData(GL_UNIFORM_BUFFER, UBO_TOTAL_SIZE, nullptr, GL_DYNAMIC_DRAW);
+    glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
+    glBindBufferBase(GL_UNIFORM_BUFFER, 0, context->ubo_lights); // HARDCODED
+
+    debug(
+        "Created ubo for lights: %u, size: %zu bytes", context->ubo_lights,
+        UBO_TOTAL_SIZE
+    );
 }
 
 Scene::~Scene() {
@@ -279,41 +293,97 @@ void Scene::update(double absolute_time, double delta_time) {
         }
     }
 
-    // Bind lighs to every shader and calculate how much of each type
-    int num_point_lights = 0;
-    int num_directional_lights = 0;
-    int num_spot_lights = 0;
-    for (auto &light : context->lights) {
-        if (!light->is_set) {
+    static shaders::LightsUBOData
+        lights_data_buffer; // static to reuse memory, or member of
+                            // Scene/Context
+
+    int current_point_light_idx = 0;
+    int current_dir_light_idx = 0;
+    int current_spot_light_idx = 0;
+
+    for (auto &light_base_ptr : context->lights) {
+        if (!light_base_ptr->is_set) {
             continue;
         }
-        if (light->should_overlap_scene_pause || !pause) {
-            light->update(absolute_time, delta_time);
+        if (light_base_ptr->should_overlap_scene_pause || !pause) {
+            light_base_ptr->update(absolute_time, delta_time);
         }
 
-        std::string prefix;
+        // Common light properties often in base Light class:
+        // light_base_ptr->color, light_base_ptr->is_set
 
-        switch (light->type) {
-        case Light::Type::Point:
-            prefix = "axolote_scene_point_lights["
-                     + std::to_string(num_point_lights++) + "]";
-            break;
-        case Light::Type::Directional:
-            num_directional_lights++;
-            prefix = "axolote_scene_dir_lights["
-                     + std::to_string(num_directional_lights++) + "]";
-            break;
-        case Light::Type::Spot:
-            num_spot_lights++;
-            prefix = "axolote_scene_spot_lights["
-                     + std::to_string(num_spot_lights++) + "]";
-            break;
+        // You'll need to dynamic_cast to get specific light properties
+        // and fill the corresponding struct in lights_data_buffer.
+
+        if (auto p_light
+            = std::dynamic_pointer_cast<PointLight>(light_base_ptr)) {
+            if (current_point_light_idx < SHADER_MAX_LIGHTS) {
+                auto &ubo_pl
+                    = lights_data_buffer.point_lights[current_point_light_idx];
+                ubo_pl.color = p_light->color;
+                ubo_pl.is_set = p_light->is_set ? 1 : 0;
+                ubo_pl.pos = p_light->pos; // Assuming PointLight has 'pos'
+                ubo_pl.constant = p_light->constant;
+                ubo_pl.linear = p_light->linear;
+                ubo_pl.quadratic = p_light->quadratic;
+                // Ensure all padding fields are implicitly zero or correctly
+                // handled by struct init
+                current_point_light_idx++;
+            }
         }
-
-        for (auto &shader : context->cached_shaders) {
-            light->bind(shader, prefix);
+        else if (auto d_light
+                 = std::dynamic_pointer_cast<DirectionalLight>(light_base_ptr
+                 )) {
+            if (current_dir_light_idx < SHADER_MAX_LIGHTS) {
+                auto &ubo_dl
+                    = lights_data_buffer.dir_lights[current_dir_light_idx];
+                ubo_dl.color = d_light->color;
+                ubo_dl.is_set = d_light->is_set ? 1 : 0;
+                ubo_dl.dir
+                    = d_light->dir; // Assuming DirectionalLight has 'dir'
+                ubo_dl.intensity = d_light->intensity;
+                current_dir_light_idx++;
+            }
+        }
+        else if (auto s_light
+                 = std::dynamic_pointer_cast<SpotLight>(light_base_ptr)) {
+            if (current_spot_light_idx < SHADER_MAX_LIGHTS) {
+                auto &ubo_sl
+                    = lights_data_buffer.spot_lights[current_spot_light_idx];
+                ubo_sl.color = s_light->color;
+                ubo_sl.is_set = s_light->is_set ? 1 : 0;
+                ubo_sl.pos = s_light->pos; // Assuming SpotLight has 'pos'
+                ubo_sl.dir = s_light->dir; // Assuming SpotLight has 'dir'
+                ubo_sl.cut_off = s_light->cut_off;
+                ubo_sl.outer_cut_off = s_light->outer_cut_off;
+                ubo_sl.constant = s_light->constant;
+                ubo_sl.linear = s_light->linear;
+                ubo_sl.quadratic = s_light->quadratic;
+                current_spot_light_idx++;
+            }
         }
     }
+
+    // Fill remaining light slots in UBO with is_set = 0 (false)
+    for (int i = current_point_light_idx; i < SHADER_MAX_LIGHTS; ++i) {
+        lights_data_buffer.point_lights[i].is_set = 0;
+    }
+    for (int i = current_dir_light_idx; i < SHADER_MAX_LIGHTS; ++i) {
+        lights_data_buffer.dir_lights[i].is_set = 0;
+    }
+    for (int i = current_spot_light_idx; i < SHADER_MAX_LIGHTS; ++i) {
+        lights_data_buffer.spot_lights[i].is_set = 0;
+    }
+
+    lights_data_buffer.num_point_lights = current_point_light_idx;
+    lights_data_buffer.num_dir_lights = current_dir_light_idx;
+    lights_data_buffer.num_spot_lights = current_spot_light_idx;
+
+    // Update the UBO on the GPU
+    glBindBuffer(GL_UNIFORM_BUFFER, context->ubo_lights);
+    glBufferSubData(GL_UNIFORM_BUFFER, 0, UBO_TOTAL_SIZE, &lights_data_buffer);
+    glBindBuffer(GL_UNIFORM_BUFFER, 0);
+    // --- End of UBO Light Update Logic ---
 
     // Set number of each light type for every shader
     for (auto &shader : context->cached_shaders) {
@@ -323,15 +393,6 @@ void Scene::update(double absolute_time, double delta_time) {
         );
         shader->set_uniform_float(
             "axolote_scene_ambient_light_intensity", ambient_light_intensity
-        );
-        shader->set_uniform_int(
-            "axolote_scene_num_point_lights", num_point_lights
-        );
-        shader->set_uniform_int(
-            "axolote_scene_num_dir_lights", num_directional_lights
-        );
-        shader->set_uniform_int(
-            "axolote_scene_num_spot_lights", num_spot_lights
         );
         shader->set_uniform_float("axolote_scene_gamma", gamma);
     }
