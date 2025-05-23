@@ -3,7 +3,6 @@
 #include "axolote/glad/glad.h"
 
 #include "axolote/gl/ebo.hpp"
-
 #include "axolote/utils.hpp"
 
 namespace axolote {
@@ -30,6 +29,9 @@ void EBO::buffer_data(std::size_t size, const void *data, GLenum usage) {
     bind();
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, data, usage);
     _size = size;
+    debug(DebugType::INFO,
+        "EBO buffer data: %u, size: %zu bytes", _id, size
+    );
 }
 
 void EBO::destroy() {
