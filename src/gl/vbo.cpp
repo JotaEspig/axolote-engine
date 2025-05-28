@@ -22,9 +22,14 @@ void VBO::unbind() {
 void VBO::buffer_data(std::size_t size, const void *data, GLenum usage) {
     bind();
     glBufferData(GL_ARRAY_BUFFER, size, data, usage);
-    debug(
-        DebugType::INFO, "VBO buffer data: %u, size: %zu bytes", _id, size
-    );
+    debug(DebugType::INFO, "VBO buffer data: %u, size: %zu bytes", _id, size);
+}
+
+void VBO::buffer_sub_data(
+    std::size_t start_pos, std::size_t size, const void *data
+) {
+    bind();
+    glBufferSubData(GL_ARRAY_BUFFER, start_pos, size, data);
 }
 
 void VBO::destroy() {

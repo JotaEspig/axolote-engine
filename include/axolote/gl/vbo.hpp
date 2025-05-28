@@ -53,8 +53,6 @@ public:
     /**
      * @brief buffer data
      * @author João Vitor Espig (jotaespig@gmail.com)
-     * \data June 07, 2024
-     * \version June 07, 2024
      * @param size size of the data
      * @param data pointer to the data
      * @param usage usage of the data
@@ -62,6 +60,15 @@ public:
     void buffer_data(
         std::size_t size, const void *data, GLenum usage = GL_STATIC_DRAW
     );
+    /**
+     * @brief buffer sub data
+     * @author João Vitor Espig (jotaespig@gmail.com)
+     * @param offset start index of updating
+     * @param size size of the data
+     * @param data pointer to the data
+     **/
+    void
+    buffer_sub_data(std::size_t start_pos, std::size_t size, const void *data);
     /**
      * @brief destroys
      * @author João Vitor Espig (jotaespig@gmail.com)
