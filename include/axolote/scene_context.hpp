@@ -13,8 +13,9 @@
 #include "axolote/drawable.hpp"
 #include "axolote/light.hpp"
 #include "axolote/object3d.hpp"
-#include "axolote/utils/grid.hpp"
 #include "axolote/skybox.hpp"
+#include "axolote/gl/ubo.hpp"
+#include "axolote/utils/grid.hpp"
 
 namespace axolote {
 
@@ -36,7 +37,7 @@ struct SceneContext {
     /** lights of the scene **/
     std::vector<std::shared_ptr<Light>> lights;
     /** Uniform Buffer Object for Lights **/
-    GLuint ubo_lights = 0;
+    std::shared_ptr<gl::UBO> ubo_lights = gl::UBO::create();
     /** Cached shaders in a set **/
     std::unordered_set<
         std::shared_ptr<gl::Shader>, gl::Shader::Hash, gl::Shader::Equal>

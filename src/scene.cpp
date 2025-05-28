@@ -17,17 +17,9 @@
 namespace axolote {
 
 Scene::Scene() {
-    glGenBuffers(1, &context->ubo_lights);
-    glBindBuffer(GL_UNIFORM_BUFFER, context->ubo_lights);
-    glBufferData(GL_UNIFORM_BUFFER, UBO_TOTAL_SIZE, nullptr, GL_DYNAMIC_DRAW);
-    glBindBuffer(GL_UNIFORM_BUFFER, 0);
-
-    glBindBufferBase(GL_UNIFORM_BUFFER, 0, context->ubo_lights); // HARDCODED
-
-    debug(DebugType::INFO,
-        "Created ubo for lights: %u, size: %zu bytes", context->ubo_lights,
-        UBO_TOTAL_SIZE
-    );
+    context->ubo_lights->buffer_data(UBO_TOTAL_SIZE, nullptr);
+    context->ubo_lights->unbind();
+    context->ubo_lights->set_binding_point(0);
 }
 
 Scene::~Scene() {
@@ -309,12 +301,6 @@ void Scene::update(double absolute_time, double delta_time) {
             light_base_ptr->update(absolute_time, delta_time);
         }
 
-        // Common light properties often in base Light class:
-        // light_base_ptr->color, light_base_ptr->is_set
-
-        // You'll need to dynamic_cast to get specific light properties
-        // and fill the corresponding struct in lights_data_buffer.
-
         if (auto p_light
             = std::dynamic_pointer_cast<PointLight>(light_base_ptr)) {
             if (current_point_light_idx < SHADER_MAX_LIGHTS) {
@@ -322,12 +308,10 @@ void Scene::update(double absolute_time, double delta_time) {
                     = lights_data_buffer.point_lights[current_point_light_idx];
                 ubo_pl.color = p_light->color;
                 ubo_pl.is_set = p_light->is_set ? 1 : 0;
-                ubo_pl.pos = p_light->pos; // Assuming PointLight has 'pos'
+                ubo_pl.pos = p_light->pos;
                 ubo_pl.constant = p_light->constant;
                 ubo_pl.linear = p_light->linear;
                 ubo_pl.quadratic = p_light->quadratic;
-                // Ensure all padding fields are implicitly zero or correctly
-                // handled by struct init
                 current_point_light_idx++;
             }
         }
@@ -352,8 +336,8 @@ void Scene::update(double absolute_time, double delta_time) {
                     = lights_data_buffer.spot_lights[current_spot_light_idx];
                 ubo_sl.color = s_light->color;
                 ubo_sl.is_set = s_light->is_set ? 1 : 0;
-                ubo_sl.pos = s_light->pos; // Assuming SpotLight has 'pos'
-                ubo_sl.dir = s_light->dir; // Assuming SpotLight has 'dir'
+                ubo_sl.pos = s_light->pos;
+                ubo_sl.dir = s_light->dir;
                 ubo_sl.cut_off = s_light->cut_off;
                 ubo_sl.outer_cut_off = s_light->outer_cut_off;
                 ubo_sl.constant = s_light->constant;
@@ -380,12 +364,13 @@ void Scene::update(double absolute_time, double delta_time) {
     lights_data_buffer.num_spot_lights = current_spot_light_idx;
 
     // Update the UBO on the GPU
-    glBindBuffer(GL_UNIFORM_BUFFER, context->ubo_lights);
-    glBufferSubData(GL_UNIFORM_BUFFER, 0, UBO_TOTAL_SIZE, &lights_data_buffer);
-    glBindBuffer(GL_UNIFORM_BUFFER, 0);
+    context->ubo_lights->bind();
+    context->ubo_lights->buffer_sub_data(
+        0, UBO_TOTAL_SIZE, &lights_data_buffer
+    ); // TODO Maybe optimize this, so it doesnt make a GPU call every frame
+    context->ubo_lights->unbind();
     // --- End of UBO Light Update Logic ---
 
-    // Set number of each light type for every shader
     for (auto &shader : context->cached_shaders) {
         shader->set_uniform_float3(
             "axolote_scene_ambient_light", ambient_light.x, ambient_light.y,

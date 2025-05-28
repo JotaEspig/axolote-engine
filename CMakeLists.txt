@@ -94,6 +94,7 @@ set(
     ${SOURCE_DIR}/gl/framebuffer.cpp
     ${SOURCE_DIR}/gl/shader.cpp
     ${SOURCE_DIR}/gl/texture.cpp
+    ${SOURCE_DIR}/gl/ubo.cpp
     ${SOURCE_DIR}/gl/vao.cpp
     ${SOURCE_DIR}/gl/vbo.cpp
     ${SOURCE_DIR}/gmesh.cpp
