@@ -1,4 +1,4 @@
-mtllib D:\XNALara XPS\data\! World War II (GMOD scaling)\Tanks- self-propelled guns - recon vehicles\Allies - M26 Pershing (CoH)\m26pershing_coh.mtl
+mtllib m26pershing_coh.mtl
 g Model001_6_texalm26pershingdif_0.1_0_0
 usemtl Model001_Material001
 v 0.1689699 2.649418 -2.91933
@@ -17326,7 +17326,7 @@ f -1/-1/-1 -1391/-1391/-1391 -1384/-1384/-1384
 f -1335/-1335/-1335 -1355/-1355/-1355 -1356/-1356/-1356
 f -1353/-1353/-1353 -1336/-1336/-1336 -1354/-1354/-1354
 
-mtllib D:\XNALara XPS\data\! World War II (GMOD scaling)\Tanks- self-propelled guns - recon vehicles\Allies - M26 Pershing (CoH)\m26pershing_coh.mtl
+mtllib m26pershing_coh.mtl
 g Model001_6_m26pershingtracksdif_0.1_0_0
 usemtl Model001_Material002
 v -2.308471 0.05746029 0.9958699
