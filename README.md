@@ -32,7 +32,7 @@ Arch:
 ```bash
 sudo pacman -S cmake
 sudo pacman -S glm
-sudo pamcan -S glfw
+sudo pacman -S glfw
 sudo pacman -S assimp
 sudo pacman -S openal
 ```
