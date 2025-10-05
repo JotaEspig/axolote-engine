@@ -303,7 +303,10 @@ void App::process_input() {
         set_key_pressed(Key::L, true);
     }
     else if (l_key_state == KeyState::RELEASED && is_key_pressed(Key::L)) {
-        flashlight->is_set = !flashlight->is_set;
+        flashlight->render_state.should_draw
+            = !flashlight->render_state.should_draw;
+        flashlight->render_state.is_paused
+            = !flashlight->render_state.is_paused;
         set_key_pressed(Key::L, false);
     }
 
@@ -372,14 +375,16 @@ void App::main_loop() {
         myget_path("/resources/shaders/grid_base_fragment_shader.glsl")
     );
     shader_post_process = axolote::gl::Shader::create(
-        myget_path("/resources/shaders/post_processing_base_vertex_shader.glsl"
+        myget_path(
+            "/resources/shaders/post_processing_base_vertex_shader.glsl"
         ),
         myget_path(
             "/resources/shaders/post_processing_base_fragment_shader.glsl"
         )
     );
     crazy_post_process_shader = axolote::gl::Shader::create(
-        myget_path("/resources/shaders/post_processing_base_vertex_shader.glsl"
+        myget_path(
+            "/resources/shaders/post_processing_base_vertex_shader.glsl"
         ),
         myget_path("/tests/shaders/crazy_post_processing_frag.glsl")
     );
@@ -413,7 +418,7 @@ void App::main_loop() {
         glm::vec3{0.0f, -1.0f, 0.0f}, glm::cos(glm::radians(12.5f)),
         glm::cos(glm::radians(20.0f)), this
     );
-    flashlight->should_overlap_scene_pause = true;
+    flashlight->render_state.ignore_scene_pause_rule = true;
     flashlight->linear = 0.09f;
     flashlight->quadratic = 0.032f;
     scene->add_light(flashlight);

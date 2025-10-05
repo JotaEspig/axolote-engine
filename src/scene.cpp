@@ -234,19 +234,19 @@ void Scene::update(double absolute_time, double delta_time) {
         context->camera._has_moved = false;
     }
 
-    if (context->grid && !context->grid->paused) {
+    if (context->grid && !context->grid->render_state.is_paused) {
         context->grid->update(absolute_time, delta_time);
     }
 
     if (!pause) {
         for (std::shared_ptr<Object3D> d : context->sorted_drawables_objects) {
-            if (d->paused) {
+            if (d->render_state.is_paused) {
                 continue;
             }
             d->update(absolute_time, delta_time);
         }
         for (std::shared_ptr<Drawable> d : context->drawable_objects) {
-            if (d->paused) {
+            if (d->render_state.is_paused) {
                 continue;
             }
             d->update(absolute_time, delta_time);
@@ -275,7 +275,7 @@ void Scene::update(double absolute_time, double delta_time) {
                 auto &ubo_pl
                     = lights_data_buffer.point_lights[current_point_light_idx];
                 ubo_pl.color = p_light->color;
-                ubo_pl.is_set = p_light->is_set ? 1 : 0;
+                ubo_pl.is_set = p_light->render_state.should_draw ? 1 : 0;
                 ubo_pl.pos = p_light->pos;
                 ubo_pl.constant = p_light->constant;
                 ubo_pl.linear = p_light->linear;
@@ -290,7 +290,7 @@ void Scene::update(double absolute_time, double delta_time) {
                 auto &ubo_dl
                     = lights_data_buffer.dir_lights[current_dir_light_idx];
                 ubo_dl.color = d_light->color;
-                ubo_dl.is_set = d_light->is_set ? 1 : 0;
+                ubo_dl.is_set = d_light->render_state.should_draw ? 1 : 0;
                 ubo_dl.dir
                     = d_light->dir; // Assuming DirectionalLight has 'dir'
                 ubo_dl.intensity = d_light->intensity;
@@ -303,7 +303,7 @@ void Scene::update(double absolute_time, double delta_time) {
                 auto &ubo_sl
                     = lights_data_buffer.spot_lights[current_spot_light_idx];
                 ubo_sl.color = s_light->color;
-                ubo_sl.is_set = s_light->is_set ? 1 : 0;
+                ubo_sl.is_set = s_light->render_state.should_draw ? 1 : 0;
                 ubo_sl.pos = s_light->pos;
                 ubo_sl.dir = s_light->dir;
                 ubo_sl.cut_off = s_light->cut_off;

@@ -10,6 +10,7 @@
 
 #include <glm/glm.hpp>
 
+#include "axolote/RenderState.hpp"
 #include "axolote/gl/shader.hpp"
 
 namespace axolote {
@@ -20,8 +21,7 @@ namespace axolote {
  **/
 class Drawable {
 public:
-    /** Pause state, if it's true, the object will not call update **/
-    bool paused = false;
+    RenderState render_state;
 
     /**
      * @brief virtual function bind_shader

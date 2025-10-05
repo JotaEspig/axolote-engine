@@ -274,7 +274,8 @@ void App::process_input(double dt) {
         set_key_pressed(Key::L, true);
     }
     else if (l_key_state == KeyState::RELEASED && is_key_pressed(Key::L)) {
-        flashlight->is_set = !flashlight->is_set;
+        flashlight->render_state.should_draw = !flashlight->render_state.should_draw;
+        flashlight->render_state.is_paused = !flashlight->render_state.is_paused;
         set_key_pressed(Key::L, false);
     }
 

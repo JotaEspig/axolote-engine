@@ -6,8 +6,9 @@ namespace axolote {
 
 Light::Light(const glm::vec3 &color, bool is_set, Type type) :
   color{color},
-  is_set{is_set},
   type{type} {
+    render_state.is_paused = true;
+    render_state.should_draw = is_set;
 }
 
 void Light::bind(
@@ -17,7 +18,9 @@ void Light::bind(
     shader->set_uniform_float3(color_name.c_str(), color.x, color.y, color.z);
 
     std::string is_set_name = prefix + ".is_set";
-    shader->set_uniform_int(is_set_name.c_str(), is_set);
+    shader->set_uniform_int(
+        is_set_name.c_str(), render_state.should_draw ? 1 : 0
+    );
 }
 
 void Light::update(double absolute_time, double delta_time) {
