@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <cstdint>
 #include <memory>
 
 #include <glm/glm.hpp>
@@ -42,13 +43,7 @@ bool Scene::remove_drawable(std::shared_ptr<Drawable> d) {
 
     context->drawable_objects.erase(it);
     auto shaders = d->get_shaders();
-    for (auto &shader : shaders) {
-        bool found = context->cached_shaders.find(shader)
-                     != context->cached_shaders.end();
-        if (found) {
-            context->cached_shaders.erase(shader);
-        }
-    }
+    erase_shaders_from_context(shaders);
     return true;
 }
 
@@ -92,13 +87,7 @@ bool Scene::remove_sorted_drawable(std::shared_ptr<Object3D> d) {
 
     context->sorted_drawables_objects.erase(it);
     auto shaders = d->get_shaders();
-    for (auto &shader : shaders) {
-        bool found = context->cached_shaders.find(shader)
-                     != context->cached_shaders.end();
-        if (found) {
-            context->cached_shaders.erase(shader);
-        }
-    }
+    erase_shaders_from_context(shaders);
     return true;
 }
 
@@ -124,7 +113,8 @@ const std::vector<std::shared_ptr<Light>> &Scene::lights() const {
     return context->lights;
 }
 
-void Scene::add_camera_renderer(std::shared_ptr<CameraRenderer> camera_renderer
+void Scene::add_camera_renderer(
+    std::shared_ptr<CameraRenderer> camera_renderer
 ) {
     _camera_renderers.push_back(camera_renderer);
 }
@@ -151,14 +141,9 @@ void Scene::set_grid(std::shared_ptr<utils::Grid> grid) {
     assert(grid->get_shaders().size() > 0);
 
     if (context->grid) {
+        // Remove previous grid shaders from context
         auto shaders = context->grid->get_shaders();
-        for (auto &shader : shaders) {
-            bool found = context->cached_shaders.find(shader)
-                         != context->cached_shaders.end();
-            if (found) {
-                context->cached_shaders.erase(shader);
-            }
-        }
+        erase_shaders_from_context(shaders);
     }
 
     context->grid = grid;
@@ -170,13 +155,7 @@ void Scene::set_grid(std::shared_ptr<utils::Grid> grid) {
 
 void Scene::unset_grid() {
     auto shaders = context->grid->get_shaders();
-    for (auto &shader : shaders) {
-        bool found = context->cached_shaders.find(shader)
-                     != context->cached_shaders.end();
-        if (found) {
-            context->cached_shaders.erase(shader);
-        }
-    }
+    erase_shaders_from_context(shaders);
     context->grid = nullptr;
 }
 
@@ -188,14 +167,9 @@ void Scene::set_skybox(std::shared_ptr<Skybox> skybox) {
     assert(skybox->get_shaders().size() > 0);
 
     if (context->skybox) {
+        // Remove previous skybox shaders from context
         auto shaders = context->skybox->get_shaders();
-        for (auto &shader : shaders) {
-            bool found = context->cached_shaders.find(shader)
-                         != context->cached_shaders.end();
-            if (found) {
-                context->cached_shaders.erase(shader);
-            }
-        }
+        erase_shaders_from_context(shaders);
     }
 
     context->skybox = skybox;
@@ -207,13 +181,7 @@ void Scene::set_skybox(std::shared_ptr<Skybox> skybox) {
 
 void Scene::unset_skybox() {
     auto shaders = context->skybox->get_shaders();
-    for (auto &shader : shaders) {
-        bool found = context->cached_shaders.find(shader)
-                     != context->cached_shaders.end();
-        if (found) {
-            context->cached_shaders.erase(shader);
-        }
-    }
+    erase_shaders_from_context(shaders);
     context->skybox = nullptr;
 }
 
@@ -294,10 +262,10 @@ void Scene::update(double absolute_time, double delta_time) {
     int current_spot_light_idx = 0;
 
     for (auto &light_base_ptr : context->lights) {
-        if (!light_base_ptr->is_set) {
+        if (!light_base_ptr->render_state.should_draw) {
             continue;
         }
-        if (light_base_ptr->should_overlap_scene_pause || !pause) {
+        if (light_base_ptr->render_state.ignore_scene_pause_rule || !pause) {
             light_base_ptr->update(absolute_time, delta_time);
         }
 
@@ -312,11 +280,11 @@ void Scene::update(double absolute_time, double delta_time) {
                 ubo_pl.constant = p_light->constant;
                 ubo_pl.linear = p_light->linear;
                 ubo_pl.quadratic = p_light->quadratic;
-                current_point_light_idx++;
+                ++current_point_light_idx;
             }
         }
-        else if (auto d_light
-                 = std::dynamic_pointer_cast<DirectionalLight>(light_base_ptr
+        else if (auto d_light = std::dynamic_pointer_cast<DirectionalLight>(
+                     light_base_ptr
                  )) {
             if (current_dir_light_idx < SHADER_MAX_LIGHTS) {
                 auto &ubo_dl
@@ -326,7 +294,7 @@ void Scene::update(double absolute_time, double delta_time) {
                 ubo_dl.dir
                     = d_light->dir; // Assuming DirectionalLight has 'dir'
                 ubo_dl.intensity = d_light->intensity;
-                current_dir_light_idx++;
+                ++current_dir_light_idx;
             }
         }
         else if (auto s_light
@@ -343,7 +311,7 @@ void Scene::update(double absolute_time, double delta_time) {
                 ubo_sl.constant = s_light->constant;
                 ubo_sl.linear = s_light->linear;
                 ubo_sl.quadratic = s_light->quadratic;
-                current_spot_light_idx++;
+                ++current_spot_light_idx;
             }
         }
     }
@@ -407,10 +375,26 @@ void Scene::render() {
     glGetIntegerv(GL_POLYGON_MODE, polygon_mode);
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     renderer.render();
+
+    // Restore previous PolygonMode
     glPolygonMode(GL_FRONT_AND_BACK, polygon_mode[0]);
 
     // Play enqueued sounds
     _audio_engine->play_queue();
+}
+
+std::uint32_t Scene::erase_shaders_from_context(
+    const std::vector<std::shared_ptr<gl::Shader>> &shaders
+) {
+    std::uint32_t erased_count = 0;
+    for (auto &shader : shaders) {
+        auto found = context->cached_shaders.find(shader);
+        if (found != context->cached_shaders.end()) {
+            context->cached_shaders.erase(found);
+            erased_count++;
+        }
+    }
+    return erased_count;
 }
 
 } // namespace axolote

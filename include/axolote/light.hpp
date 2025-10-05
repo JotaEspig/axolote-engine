@@ -89,8 +89,9 @@ public:
      * @brief Bind light to shader
      * @author Mickael Reichert (mickael.reichert@gmail.com)
      **/
-    void bind(std::shared_ptr<gl::Shader> shader, const std::string &prefix)
-        override;
+    void bind(
+        std::shared_ptr<gl::Shader> shader, const std::string &prefix
+    ) override;
 };
 
 /**
@@ -114,8 +115,9 @@ public:
      * @brief Bind light to shader
      * @author Mickael Reichert (mickael.reichert@gmail.com)
      **/
-    void bind(std::shared_ptr<gl::Shader> shader, const std::string &prefix)
-        override;
+    void bind(
+        std::shared_ptr<gl::Shader> shader, const std::string &prefix
+    ) override;
 };
 
 /**
@@ -152,8 +154,9 @@ public:
      * @brief Bind light to shader
      * @author Mickael Reichert (mickael.reichert@gmail.com)
      **/
-    void bind(std::shared_ptr<gl::Shader> shader, const std::string &prefix)
-        override;
+    void bind(
+        std::shared_ptr<gl::Shader> shader, const std::string &prefix
+    ) override;
 };
 
 } // namespace axolote

@@ -36,16 +36,27 @@ public:
     /**
      * @brief virtual function update
      * @author João Vitor Espig (jotaespig@gmail.com)
+     * @param absolute_time absolute time in seconds since the start of the
+     * program
+     * @param delta_time time in seconds since the last call to update
+     *
+     * This function is called by scene object every frame before draw, you can
+     *use either absolute_time or delta_time to update your object
      **/
     virtual void update(double absolute_time, double delta_time) = 0;
     /**
      * @brief virtual function draw
      * @author João Vitor Espig (jotaespig@gmail.com)
+     *
+     * This function is called by scene object every frame after update
      **/
     virtual void draw() = 0;
     /**
      * @brief virtual function draw using a matrix 4x4 as the model matrix
      * @author João Vitor Espig (jotaespig@gmail.com)
+     * @param mat model matrix to be used in the draw call
+     *
+     * This function is called by scene object every frame after update
      **/
     virtual void draw(const glm::mat4 &mat) = 0;
 };

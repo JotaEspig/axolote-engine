@@ -121,8 +121,8 @@ public:
      * @param camera_renderer the camera renderer to be removed
      * @return true if the camera renderer was removed, false otherwise
      **/
-    bool remove_camera_renderer(std::shared_ptr<CameraRenderer> camera_renderer
-    );
+    bool
+    remove_camera_renderer(std::shared_ptr<CameraRenderer> camera_renderer);
     /**
      * @brief get the camera renderers of the scene
      * @author João Vitor Espig (jotaespig@gmail.com)
@@ -150,7 +150,8 @@ public:
      **/
     void set_skybox(std::shared_ptr<Skybox> skybox);
     /**
-     * @brief unset the skybox of the scene
+     * @brief unset the skybox of the scene. basically it sets the skybox to
+     * nullptr
      * @author João Vitor Espig (jotaespig@gmail.com)
      **/
     void unset_skybox();
@@ -184,6 +185,14 @@ private:
     std::vector<std::shared_ptr<CameraRenderer>> _camera_renderers;
     std::shared_ptr<AudioEngine> _audio_engine
         = AudioEngine::create(); // Audio engine instance
+
+    /**
+     * @brief Erase shaders from context cached shaders set
+     * @author João Vitor Espig (jotaespig@gmail.com)
+     **/
+    std::uint32_t erase_shaders_from_context(
+        const std::vector<std::shared_ptr<gl::Shader>> &shaders
+    );
 };
 
 } // namespace axolote
