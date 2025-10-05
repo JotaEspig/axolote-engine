@@ -53,15 +53,17 @@ find_package(assimp CONFIG REQUIRED)
 
 # =-=-=-=-=-=-= DOCS =-=-=-=-=-=-=
 if (DOXYGEN_FOUND)
-    message("Doxygen found. You can use `make docs`")
+    message("Doxygen found. You can use `docs` target")
 
-    # Configure Doxyfile template
     set(DOXYGEN_PROJECT_NAME ${PROJECT_NAME})
     set(DOXYGEN_PROJECT_NUMBER ${PROJECT_VERSION})
-    set(DOXYGEN_INPUT ${CMAKE_SOURCE_DIR}/include ${CMAKE_SOURCE_DIR}/src)
+
+    # Each directory on a new line
+    set(DOXYGEN_INPUT "${CMAKE_SOURCE_DIR}/include\n${CMAKE_SOURCE_DIR}/src")
+
     set(DOXYGEN_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/docs)
     set(DOXYGEN_RECURSIVE YES)
-    # Add other Doxygen variables as needed
+
     configure_file(${CMAKE_SOURCE_DIR}/Doxyfile.in ${CMAKE_BINARY_DIR}/Doxyfile @ONLY)
 
     add_custom_target(
@@ -71,9 +73,9 @@ if (DOXYGEN_FOUND)
         COMMENT "Generating API documentation with Doxygen"
         VERBATIM
     )
-else (DOXYGEN_FOUND)
+else()
     message("Doxygen not found. Documentation target 'docs' will not be available.")
-endif (DOXYGEN_FOUND)
+endif()
 
 
 # =-=-=-=-=-=-= LIBRARY =-=-=-=-=-=-=
