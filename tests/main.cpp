@@ -1,3 +1,4 @@
+#include "axolote/audio_engine.hpp"
 #include <iostream>
 #include <memory>
 
@@ -129,6 +130,8 @@ public:
     bool should_render = true;
     std::shared_ptr<MirrorDrawable> mirror_drawable
         = std::make_shared<MirrorDrawable>();
+    std::shared_ptr<axolote::AudioEngine> audio_engine
+        = axolote::AudioEngine::create();
 
     Mirror(double width, double height);
 
@@ -139,6 +142,10 @@ Mirror::Mirror(double width, double height) {
     fbo = axolote::gl::Framebuffer::create();
     fbo->init(width, height);
     mirror_drawable->init(fbo);
+
+    audio_engine->load_mp3(
+        "when-im-with-you", myget_path("resources/audio/when-im-with-you.mp3")
+    );
 }
 
 void Mirror::update(double absolute_time, double delta_time) {
@@ -153,6 +160,8 @@ void Mirror::update(double absolute_time, double delta_time) {
     bool mirror_dir_comes_towards_camera
         = glm::length2(vec_camera_mirror_pos + mirror_normal)
           <= 2.0; // Pitagoras :) MATH IS SICK
+    bool opposite_dir
+        = glm::length2(vec_camera_mirror_pos - mirror_normal) <= 2.0;
 
     if (should_render && mirror_dir_comes_towards_camera) {
         glm::mat4 reflection_matrix{1.0f};
@@ -191,12 +200,26 @@ void Mirror::update(double absolute_time, double delta_time) {
         // second pass
         fbo->unbind();
     }
+    if (opposite_dir) {
+        if (!audio_engine->is_playing("when-im-with-you")) {
+            audio_engine->set_local_volume("when-im-with-you", 1.0f);
+            audio_engine->set_local_volume("test", 0.2f);
+            audio_engine->enqueue("when-im-with-you");
+        }
+    }
+    else {
+        if (audio_engine->is_playing("when-im-with-you")) {
+            audio_engine->set_local_volume("test", 1.0f);
+            audio_engine->stop_sound("when-im-with-you");
+        }
+    }
     // restore the camera
     scene_context->camera = camera_original;
 }
 
 class App : public axolote::Window {
 public:
+    std::shared_ptr<axolote::AudioEngine> audio_engine;
     std::shared_ptr<axolote::SpotLight> flashlight;
     std::shared_ptr<Mirror> mirror;
     std::shared_ptr<axolote::gl::Shader> shader_post_process;
@@ -350,8 +373,11 @@ void App::imgui_frames() {
     );
     ImGui::Begin("Settings", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
     static float gamma = current_scene()->gamma;
+    static float global_volume = audio_engine->get_global_volume();
     ImGui::SliderFloat("Gamma", &gamma, 0.3f, 1.8f);
     current_scene()->gamma = gamma;
+    ImGui::SliderFloat("Global Volume", &global_volume, 0.0f, 1.0f);
+    audio_engine->set_global_volume(global_volume);
     ImGui::End();
 
     Window::imgui_frames();
@@ -361,7 +387,7 @@ void App::main_loop() {
     // Set the window user pointer to this object
     glfwSetWindowUserPointer(window(), this);
 
-    auto audio_engine = axolote::AudioEngine::create();
+    audio_engine = axolote::AudioEngine::create();
 
     set_color(0xff, 0xff, 0xff);
     std::string original_title = title();
@@ -511,7 +537,7 @@ void App::main_loop() {
     audio_engine->load_mp3("test", myget_path("resources/audio/breakout.mp3"));
     audio_engine->enqueue("test");
     // Test for debug message
-    audio_engine->enqueue("debug test");
+    audio_engine->enqueue("debug test (should not exist)");
 
     set_scene(scene);
     double before = get_time();
