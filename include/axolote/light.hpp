@@ -5,11 +5,9 @@
  **/
 #pragma once
 
-#include <memory>
-#include <string>
+#include <glm/vec3.hpp>
 
 #include "axolote/RenderState.hpp"
-#include "axolote/gl/shader.hpp"
 
 namespace axolote {
 
@@ -42,12 +40,6 @@ public:
     Light(const glm::vec3 &color, bool is_set, Type type);
 
     /**
-     * @brief Bind light to shader
-     * @author Mickael Reichert (mickael.reichert@gmail.com)
-     **/
-    virtual void
-    bind(std::shared_ptr<gl::Shader> shader, const std::string &prefix);
-    /**
      * @brief Update light
      * @author João Vitor Espig
      **/
@@ -78,14 +70,6 @@ public:
     PointLight(
         const glm::vec3 &color, bool is_set, const glm::vec3 &pos, float radius
     );
-
-    /**
-     * @brief Bind light to shader
-     * @author Mickael Reichert (mickael.reichert@gmail.com)
-     **/
-    void bind(
-        std::shared_ptr<gl::Shader> shader, const std::string &prefix
-    ) override;
 };
 
 /**
@@ -104,14 +88,6 @@ public:
      * @author Mickael Reichert (mickael.reichert@gmail.com)
      **/
     DirectionalLight(const glm::vec3 &color, bool is_set, const glm::vec3 &dir);
-
-    /**
-     * @brief Bind light to shader
-     * @author Mickael Reichert (mickael.reichert@gmail.com)
-     **/
-    void bind(
-        std::shared_ptr<gl::Shader> shader, const std::string &prefix
-    ) override;
 };
 
 /**
@@ -143,14 +119,6 @@ public:
         const glm::vec3 &color, bool is_set, const glm::vec3 &pos,
         const glm::vec3 &dir, float cut_off_angle, float outer_cut_off_angle
     );
-
-    /**
-     * @brief Bind light to shader
-     * @author Mickael Reichert (mickael.reichert@gmail.com)
-     **/
-    void bind(
-        std::shared_ptr<gl::Shader> shader, const std::string &prefix
-    ) override;
 };
 
 } // namespace axolote
