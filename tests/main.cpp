@@ -1,3 +1,12 @@
+/**
+ * @file main.cpp
+ * This is a test file for the axolote engine.
+ * It has A LOT OF CODE in only one file for simplicity in building process.
+ * This file uses a lot of axolote engine features.
+ * If you take a look at it, you will see how to use the engine. There is a lot
+ * of math as well, so be aware.
+ **/
+
 #include <memory>
 
 #include <glm/glm.hpp>
@@ -137,6 +146,8 @@ public:
 };
 
 Mirror::Mirror(double width, double height) {
+    // Initializes the framebuffer (from CameraRenderer) and pass it to the
+    // mirror drawable (the Drawable that will consume the framebuffer texture)
     fbo = axolote::gl::Framebuffer::create();
     fbo->init(width, height);
     mirror_drawable->init(fbo);

@@ -18,8 +18,14 @@ namespace axolote {
  * @brief Interface for a camera renderer
  * @author João Vitor Espig (jotaespig@gmail.com)
  *
+ * With this class, you can create a camera that renders to a framebuffer. That
+ * means you can create effects like mirrors, security cameras, etc. It works by
+ * rendering the scene from the camera's point of view to a framebuffer
+ * (texture), and then you can use that texture in your scene.
  * This class should be inherited by a class that will render to a framebuffer
  * using a camera
+ * This class only generates the framebuffer and holds the camera. The user
+ * should implement the drawable that will use the framebuffer texture
  **/
 class CameraRenderer {
 public:
