@@ -178,9 +178,6 @@ float AudioEngine::get_local_volume(const std::string &name) {
     if (it != _local_volumes.end()) {
         return it->second;
     }
-    else {
-        debug(DebugType::WARNING, "Sound not found: %s", name.c_str());
-    }
     return 1.0f; // Default volume
 }
 

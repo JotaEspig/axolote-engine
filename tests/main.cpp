@@ -157,13 +157,27 @@ void Mirror::update(double absolute_time, double delta_time) {
     );
     glm::vec3 vec_camera_mirror_pos
         = glm::normalize(mirror_pos - scene_context->camera.get_pos());
-    bool mirror_dir_comes_towards_camera
-        = glm::length2(vec_camera_mirror_pos + mirror_normal)
-          <= 2.0; // Pitagoras :) MATH IS SICK
-    bool opposite_dir
+
+    // Pitagoras. If the length of the sum of the two vectors is less than
+    // sqrt(2), then the angle between them is less than 90 degrees, assuming
+    // both are normalized
+    bool is_mirror_facing_camera
+        = glm::length2(vec_camera_mirror_pos + mirror_normal) <= 2.0;
+    bool is_mirror_back_facking_camera
         = glm::length2(vec_camera_mirror_pos - mirror_normal) <= 2.0;
 
-    if (should_render && mirror_dir_comes_towards_camera) {
+    bool is_camera_dir_facing_mirror_normal
+        = glm::length2(scene_context->camera.get_orientation() + mirror_normal)
+          <= 2.0;
+    bool is_camera_dir_facing_mirror_opposite_normal
+        = glm::length2(scene_context->camera.get_orientation() - mirror_normal)
+          <= 2.0;
+
+    bool should_update_mirror = should_render && is_mirror_facing_camera
+                                && is_camera_dir_facing_mirror_normal;
+    bool is_backside_visible = is_mirror_back_facking_camera
+                               && is_camera_dir_facing_mirror_opposite_normal;
+    if (should_update_mirror) {
         glm::mat4 reflection_matrix{1.0f};
         float A = mirror_normal.x;
         float B = mirror_normal.y;
@@ -200,7 +214,7 @@ void Mirror::update(double absolute_time, double delta_time) {
         // second pass
         fbo->unbind();
     }
-    if (opposite_dir) {
+    if (is_backside_visible) {
         if (!audio_engine->is_playing("when-im-with-you")) {
             audio_engine->set_local_volume("when-im-with-you", 1.0f);
             audio_engine->set_local_volume("test", 0.2f);
