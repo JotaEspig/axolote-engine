@@ -35,9 +35,15 @@ public:
 
     bool load_mp3(const std::string &name, const std::string &path);
     bool play_sound(const std::string &name);
+    void
+    stop_sound(const std::string &name); // TODO maybe create a queue
     bool is_playing(const std::string &name);
     void enqueue(const std::string &name);
     void play_queue();
+    void set_global_volume(float volume);
+    float get_global_volume();
+    void set_local_volume(const std::string &name, float volume);
+    float get_local_volume(const std::string &name);
 
 private:
     struct Deleter {
@@ -51,6 +57,8 @@ private:
     std::unordered_map<std::string, ALuint> _sources;
     /** Queue with sources that will be played when scene is rendered **/
     std::queue<std::pair<const std::string, ALuint>> _queue;
+    std::unordered_map<std::string, float> _local_volumes;
+    float _global_volume = 1.0f;
 
     AudioEngine();
 

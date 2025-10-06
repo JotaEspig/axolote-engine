@@ -89,6 +89,17 @@ bool AudioEngine::play_sound(const std::string &name) {
     }
 }
 
+void AudioEngine::stop_sound(const std::string &name) {
+    auto it = _sources.find(name);
+    if (it != _sources.end()) {
+        alSourceStop(it->second);
+        debug(DebugType::INFO, "Stopped sound: %s", name.c_str());
+    }
+    else {
+        debug(DebugType::ERROR, "Sound not found: %s", name.c_str());
+    }
+}
+
 bool AudioEngine::is_playing(const std::string &name) {
     auto it = _sources.find(name);
     if (it == _sources.end())
@@ -118,6 +129,59 @@ void AudioEngine::play_queue() {
         debug(DebugType::INFO, "Playing queued sound: %s", p.first.c_str());
         _queue.pop();
     }
+}
+
+void AudioEngine::set_global_volume(float volume) {
+    if (volume < 0.0f || volume > 1.0f) {
+        debug(DebugType::WARNING, "Volume must be between 0.0 and 1.0");
+        return;
+    }
+    if (volume == _global_volume) {
+        return;
+    }
+
+    _global_volume = volume;
+    alListenerf(AL_GAIN, _global_volume);
+    debug(DebugType::INFO, "Global volume set to: %.2f", _global_volume);
+}
+
+float AudioEngine::get_global_volume() {
+    return _global_volume;
+}
+
+void AudioEngine::set_local_volume(const std::string &name, float volume) {
+    if (volume < 0.0f || volume > 1.0f) {
+        debug(DebugType::WARNING, "Volume must be between 0.0 and 1.0");
+        return;
+    }
+    if (volume == get_local_volume(name)) {
+        return;
+    }
+
+    auto it = _sources.find(name);
+    if (it != _sources.end()) {
+        ALuint source = it->second;
+        alSourcef(source, AL_GAIN, volume);
+        _local_volumes[name] = volume;
+        debug(
+            DebugType::INFO, "Local volume for %s set to: %.2f", name.c_str(),
+            volume
+        );
+    }
+    else {
+        debug(DebugType::WARNING, "Sound not found: %s", name.c_str());
+    }
+}
+
+float AudioEngine::get_local_volume(const std::string &name) {
+    auto it = _local_volumes.find(name);
+    if (it != _local_volumes.end()) {
+        return it->second;
+    }
+    else {
+        debug(DebugType::WARNING, "Sound not found: %s", name.c_str());
+    }
+    return 1.0f; // Default volume
 }
 
 void AudioEngine::Deleter::operator()(AudioEngine *audio_engine) {
