@@ -1,3 +1,40 @@
+## v0.10.0 (2025-10-06)
+
+### Feat
+
+- **audio**: added volume control
+- added UBO class
+- **vbo**: added buffer_sub_data method
+- **audio**: added queue of sounds that is played every render call
+- added mp3 audio support
+- **window**: now use imgui_frames method to run ImGui Frames
+- implemented cubemap and skybox
+- improved abstraction for window rendering and added scene pause rule
+- storing time variables and creted function tick for updating them
+
+### Fix
+
+- path to .mtl
+- camera move vision in Wayland platforms
+- imgui installation and running
+- not updating when drawable is paused
+- grid lines not being transparent
+
+### Refactor
+
+- **lights**: removed unused methods
+- added render state to drawables and lights
+- **debug**: debug messages have colors and more descriptive info
+- **debug**: improved logs
+- **shaders**: renamed shaders uniforms to match each respective class that sets it
+- **gmesh**: now it protected
+- **camera**: has_moved member has become private and the works is done under the hoods
+- **drawable and light**: passing time variables in method
+
+### Perf
+
+- **shaders**: using std140 for lights uniforms
+
 ## v0.9.1 (2025-02-17)
 
 ### Fix
