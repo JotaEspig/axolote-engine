@@ -1,7 +1,7 @@
 #include <filesystem>
+#include <stdexcept>
 #include <string>
 #include <vector>
-#include <stdexcept>
 
 #include <stb/stb_image.h>
 
@@ -105,7 +105,7 @@ Skybox::Skybox(std::string texture_faces_folder_path) :
             }
             else {
                 debug(
-                    DebugType::FATAL, "Skybox texture not found: %s",
+                    DebugType::Fatal, "Skybox texture not found: %s",
                     texture_faces_filenames[i].c_str()
                 );
                 throw std::runtime_error(

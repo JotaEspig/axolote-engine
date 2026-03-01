@@ -21,7 +21,7 @@ void UBO::unbind() {
 void UBO::buffer_data(std::size_t size, const void *data, GLenum usage) {
     bind();
     glBufferData(GL_UNIFORM_BUFFER, size, data, usage);
-    debug(DebugType::INFO, "UBO buffer data: %u, size: %zu bytes", _id, size);
+    debug(DebugType::Info, "UBO buffer data: %u, size: %zu bytes", _id, size);
 }
 
 void UBO::buffer_sub_data(
@@ -33,7 +33,7 @@ void UBO::buffer_sub_data(
 
 void UBO::destroy() {
     glDeleteBuffers(1, &_id);
-    debug(DebugType::INFO, "UBO destroyed: %u", _id);
+    debug(DebugType::Info, "UBO destroyed: %u", _id);
 }
 
 GLuint UBO::binding_point() const {
@@ -44,13 +44,13 @@ void UBO::set_binding_point(GLuint binding_point) {
     _binding_point = binding_point;
     glBindBufferBase(GL_UNIFORM_BUFFER, binding_point, _id);
     debug(
-        DebugType::INFO, "UBO binding point set: %u, id: %u", binding_point, _id
+        DebugType::Info, "UBO binding point set: %u, id: %u", binding_point, _id
     );
 }
 
 UBO::UBO() {
     glGenBuffers(1, &_id);
-    debug(DebugType::INFO, "UBO created: %u", _id);
+    debug(DebugType::Info, "UBO created: %u", _id);
 }
 
 void UBO::Deleter::operator()(UBO *ubo) {

@@ -57,7 +57,7 @@ void Grid::build_mesh() {
         }
     }
     else {
-        debug(DebugType::WARNING, "2D grid is not implemented yet");
+        debug(DebugType::Warning, "2D grid is not implemented yet");
         return;
     }
 

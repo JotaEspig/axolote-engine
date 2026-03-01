@@ -9,6 +9,9 @@ message("Axolote version: ${PROJECT_VERSION}")
 project(axolote-engine VERSION ${PROJECT_VERSION} LANGUAGES C CXX)
 
 # CMake settings
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 if (UNIX)
@@ -248,9 +251,9 @@ endif ()
 enable_testing() # Enable CTest
 
 # Set output directory for executables consistently
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib) # For libraries if any tests are libs
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib) # For static libs
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
 # Helper function to reduce test target duplication
 function(add_axolote_test test_name source_file)
@@ -285,5 +288,6 @@ endfunction()
 
 # Add tests using the helper function
 add_axolote_test(main-test ${CMAKE_SOURCE_DIR}/tests/main.cpp)
+add_axolote_test(paint-test ${CMAKE_SOURCE_DIR}/tests/paint.cpp)
 #add_axolote_test(window-test ${CMAKE_SOURCE_DIR}/tests/window.cpp)
 #add_axolote_test(models-and-shaders-test ${CMAKE_SOURCE_DIR}/tests/models_and_shaders.cpp)

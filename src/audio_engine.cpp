@@ -14,19 +14,19 @@
 
 namespace axolote {
 
-std::shared_ptr<AudioEngine> AudioEngine::_instance = nullptr;
+AXOLOTE_EXPORT std::shared_ptr<AudioEngine> AudioEngine::_instance = nullptr;
 
 bool AudioEngine::load_mp3(const std::string &name, const std::string &path) {
     bool already_exists = (_buffers.find(name) != _buffers.end())
                           && (_sources.find(name) != _sources.end());
     if (already_exists) {
-        debug(DebugType::WARNING, "Sound already loaded: %s", name.c_str());
+        debug(DebugType::Warning, "Sound already loaded: %s", name.c_str());
         return false;
     }
 
     mp3dec_ex_t mp3;
     if (mp3dec_ex_open(&mp3, path.c_str(), MP3D_SEEK_TO_SAMPLE)) {
-        debug(DebugType::ERROR, "Failed to load MP3 file: %s", path.c_str());
+        debug(DebugType::Error, "Failed to load MP3 file: %s", path.c_str());
         return false;
     }
 
@@ -36,7 +36,7 @@ bool AudioEngine::load_mp3(const std::string &name, const std::string &path) {
     mp3dec_ex_read(&mp3, pcmData.data(), totalSamples);
     if (mp3.info.hz == 0 || mp3.info.channels == 0) {
         debug(
-            DebugType::ERROR, "MP3 has invalid metadata: %d Hz, %d channels",
+            DebugType::Error, "MP3 has invalid metadata: %d Hz, %d channels",
             mp3.info.hz, mp3.info.channels
         );
         mp3dec_ex_close(&mp3);
@@ -44,7 +44,7 @@ bool AudioEngine::load_mp3(const std::string &name, const std::string &path) {
     }
 
     if (mp3.info.channels != 1 && mp3.info.channels != 2) {
-        debug(DebugType::ERROR, "Invalid channel count: %d", mp3.info.channels);
+        debug(DebugType::Error, "Invalid channel count: %d", mp3.info.channels);
         mp3dec_ex_close(&mp3);
         return false;
     }
@@ -67,11 +67,11 @@ bool AudioEngine::load_mp3(const std::string &name, const std::string &path) {
 
     ALenum error = alGetError();
     if (error != AL_NO_ERROR) {
-        debug(DebugType::ERROR, "alBufferData error: %x", error);
+        debug(DebugType::Error, "alBufferData error: %x", error);
         mp3dec_ex_close(&mp3);
         return false;
     }
-    debug(DebugType::INFO, "Loaded sound: %s", name.c_str());
+    debug(DebugType::Info, "Loaded sound: %s", name.c_str());
     mp3dec_ex_close(&mp3);
     return true;
 }
@@ -80,11 +80,11 @@ bool AudioEngine::play_sound(const std::string &name) {
     auto it = _sources.find(name);
     if (it != _sources.end()) {
         alSourcePlay(it->second);
-        debug(DebugType::INFO, "Playing sound: %s", name.c_str());
+        debug(DebugType::Info, "Playing sound: %s", name.c_str());
         return true;
     }
     else {
-        debug(DebugType::ERROR, "Sound not found: %s", name.c_str());
+        debug(DebugType::Error, "Sound not found: %s", name.c_str());
         return false;
     }
 }
@@ -93,10 +93,10 @@ void AudioEngine::stop_sound(const std::string &name) {
     auto it = _sources.find(name);
     if (it != _sources.end()) {
         alSourceStop(it->second);
-        debug(DebugType::INFO, "Stopped sound: %s", name.c_str());
+        debug(DebugType::Info, "Stopped sound: %s", name.c_str());
     }
     else {
-        debug(DebugType::ERROR, "Sound not found: %s", name.c_str());
+        debug(DebugType::Error, "Sound not found: %s", name.c_str());
     }
 }
 
@@ -114,11 +114,12 @@ void AudioEngine::enqueue(const std::string &name) {
     auto it = _sources.find(name);
     if (it != _sources.end()) {
         ALuint source = it->second;
-        _queue.push(std::make_pair(name, source));
-        debug(DebugType::INFO, "Enqueued sound: %s", name.c_str());
+        auto pair = std::make_pair(name, source);
+        _queue.push(std::move(pair));
+        debug(DebugType::Info, "Enqueued sound: %s", name.c_str());
     }
     else {
-        debug(DebugType::WARNING, "Sound not found: %s", name.c_str());
+        debug(DebugType::Warning, "Sound not found: %s", name.c_str());
     }
 }
 
@@ -126,23 +127,27 @@ void AudioEngine::play_queue() {
     while (!_queue.empty()) {
         auto p = _queue.front();
         alSourcePlay(p.second);
-        debug(DebugType::INFO, "Playing queued sound: %s", p.first.c_str());
+        debug(DebugType::Info, "Playing queued sound: %s", p.first.c_str());
         _queue.pop();
     }
 }
 
 void AudioEngine::set_global_volume(float volume) {
     if (volume < 0.0f || volume > 1.0f) {
-        debug(DebugType::WARNING, "Volume must be between 0.0 and 1.0");
+        debug(DebugType::Warning, "Volume must be between 0.0 and 1.0");
         return;
     }
     if (volume == _global_volume) {
         return;
     }
 
+    debug(
+        DebugType::Info, "Changing global volume from %.2f to %.2f",
+        _global_volume, volume
+    );
     _global_volume = volume;
     alListenerf(AL_GAIN, _global_volume);
-    debug(DebugType::INFO, "Global volume set to: %.2f", _global_volume);
+    debug(DebugType::Info, "Global volume set to: %.2f", _global_volume);
 }
 
 float AudioEngine::get_global_volume() {
@@ -151,7 +156,7 @@ float AudioEngine::get_global_volume() {
 
 void AudioEngine::set_local_volume(const std::string &name, float volume) {
     if (volume < 0.0f || volume > 1.0f) {
-        debug(DebugType::WARNING, "Volume must be between 0.0 and 1.0");
+        debug(DebugType::Warning, "Volume must be between 0.0 and 1.0");
         return;
     }
     if (volume == get_local_volume(name)) {
@@ -164,12 +169,12 @@ void AudioEngine::set_local_volume(const std::string &name, float volume) {
         alSourcef(source, AL_GAIN, volume);
         _local_volumes[name] = volume;
         debug(
-            DebugType::INFO, "Local volume for %s set to: %.2f", name.c_str(),
+            DebugType::Info, "Local volume for %s set to: %.2f", name.c_str(),
             volume
         );
     }
     else {
-        debug(DebugType::WARNING, "Sound not found: %s", name.c_str());
+        debug(DebugType::Warning, "Sound not found: %s", name.c_str());
     }
 }
 
@@ -184,31 +189,31 @@ float AudioEngine::get_local_volume(const std::string &name) {
 void AudioEngine::Deleter::operator()(AudioEngine *audio_engine) {
     if (audio_engine) {
         audio_engine->destroy();
-        debug(DebugType::INFO, "AudioEngine deleted");
+        debug(DebugType::Info, "AudioEngine deleted");
     }
 }
 
 AudioEngine::AudioEngine() {
     _device = alcOpenDevice(nullptr);
     if (!_device) {
-        debug(DebugType::FATAL, "Failed to open audio device");
+        debug(DebugType::Fatal, "Failed to open audio device");
         throw std::runtime_error("Failed to open audio device");
     }
 
     _context = alcCreateContext(_device, nullptr);
     if (!_context) {
-        debug(DebugType::FATAL, "Failed to create audio context");
+        debug(DebugType::Fatal, "Failed to create audio context");
         alcCloseDevice(_device);
         throw std::runtime_error("Failed to create audio context");
     }
 
     if (!alcMakeContextCurrent(_context)) {
-        debug(DebugType::FATAL, "Failed to make context current");
+        debug(DebugType::Fatal, "Failed to make context current");
         alcDestroyContext(_context);
         alcCloseDevice(_device);
         throw std::runtime_error("Failed to make context current");
     }
-    debug(DebugType::INFO, "AudioEngine created");
+    debug(DebugType::Info, "AudioEngine created");
 }
 
 void AudioEngine::destroy() {

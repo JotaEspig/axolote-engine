@@ -1,6 +1,6 @@
 #include <iostream>
-#include <string>
 #include <stdexcept>
+#include <string>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -97,7 +97,7 @@ void Shader::compile(
     if (!check_shader_compilation(fragment_shader, info_log, 512)) {
         glDeleteShader(vertex_shader);
         glDeleteShader(fragment_shader);
-        debug(DebugType::FATAL, "Shader compilation failed: %s", info_log);
+        debug(DebugType::Fatal, "Shader compilation failed: %s", info_log);
         throw std::runtime_error("Shader compilation failed");
     }
 
@@ -110,12 +110,12 @@ void Shader::compile(
     glDeleteShader(vertex_shader);
     glDeleteShader(fragment_shader);
 
-    debug(DebugType::INFO, "Shader created: %u", _id);
+    debug(DebugType::Info, "Shader created: %u", _id);
 }
 
 void Shader::destroy() {
     glDeleteProgram(_id);
-    debug(DebugType::INFO, "Shader destroyed: %u", _id);
+    debug(DebugType::Info, "Shader destroyed: %u", _id);
 }
 
 Shader::Shader() {

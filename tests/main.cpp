@@ -21,6 +21,10 @@
 
 #include <axolote/engine.hpp>
 
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
+
 std::string myget_path(const std::string &path) {
     return std::string(PROJECT_ROOT_FOLDER) + "/" + path;
 }
@@ -373,7 +377,7 @@ void App::process_input() {
             mx, my, width(), height()
         );
         axolote::debug(
-            axolote::DebugType::INFO2, "Ray: %s", glm::to_string(ray).c_str()
+            axolote::DebugType::Info2, "Ray: %s", glm::to_string(ray).c_str()
         );
     }
 }
@@ -555,7 +559,7 @@ void App::main_loop() {
     // Overwrite the default framebuffer size callback
     glfwSetFramebufferSizeCallback(window(), framebuffer_size_callback);
 
-    axolote::debug(axolote::DebugType::INFO2, "Starting main loop");
+    axolote::debug(axolote::DebugType::Info2, "Starting main loop");
 
     audio_engine->load_mp3("test", myget_path("resources/audio/breakout.mp3"));
     audio_engine->enqueue("test");
@@ -581,7 +585,7 @@ void App::main_loop() {
 }
 
 int main() {
-    axolote::debug(axolote::DebugType::INFO2, "Starting main test");
+    axolote::debug(axolote::DebugType::Info2, "Starting main test");
     App app{};
     app.set_title("Main test");
     app.set_maximized();

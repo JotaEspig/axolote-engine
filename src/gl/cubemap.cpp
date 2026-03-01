@@ -31,12 +31,12 @@ void Cubemap::unbind() {
 void Cubemap::destroy() {
     GLuint id = _id;
     glDeleteTextures(1, &_id);
-    debug(DebugType::INFO, "Texture destroyed: %u", id);
+    debug(DebugType::Info, "Texture destroyed: %u", id);
 }
 
 Cubemap::Cubemap() {
     glGenTextures(1, &_id);
-    debug(DebugType::INFO, "Cubemap created: %u", _id);
+    debug(DebugType::Info, "Cubemap created: %u", _id);
 }
 
 Cubemap::Cubemap(std::string texture_faces_filenames[6]) :
@@ -59,7 +59,7 @@ Cubemap::Cubemap(std::string texture_faces_filenames[6]) :
         }
         else {
             debug(
-                DebugType::ERROR,
+                DebugType::Error,
                 "Failed to load cubemap face texture at path: %s",
                 texture_faces_filenames[i].c_str()
             );
@@ -67,8 +67,8 @@ Cubemap::Cubemap(std::string texture_faces_filenames[6]) :
             return;
         }
 
-        debug(DebugType::INFO, 
-            "Cubemap face texture loaded: %s",
+        debug(
+            DebugType::Info, "Cubemap face texture loaded: %s",
             texture_faces_filenames[i].c_str()
         );
     }
